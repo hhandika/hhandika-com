@@ -3,9 +3,9 @@ import ThemeIcon from "./ThemeIcon.astro";
 import Navigation from "./Navigation.astro";
 ---
 
-<header>
-  <nav>
-    <ThemeIcon />
+<div class="bg-white">
+  <header class="absolute inset-x-0 top-0 z-50">
     <Navigation />
-  </nav>
-</header>
+    <!-- Mobile menu, show/hide based on menu open state. -->
+  </header>
+</div>
