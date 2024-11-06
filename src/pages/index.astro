@@ -8,64 +8,58 @@ import insta from "../assets/icons/instagram.svg";
 
 <Layout title="Island small mammals and inclusive biodiversity software">
   <main>
-    <div class="bg-white dark:bg-black relative isolate px-6 pt-14 lg:px-8">
+    <div
+      class="absolute inset-x-0 -top-32 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-32"
+      aria-hidden="true"
+    >
       <div
-        class="absolute inset-x-0 -top-32 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-32"
-        aria-hidden="true"
+        class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
+        style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"
       >
-        <div
-          class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
-          style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"
-        >
-        </div>
       </div>
-      <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-32">
-        <div class="text-center item-center">
-          <img
-            class="block mx-auto md:h-32 lg:h-48 rounded-full sm:mx-auto"
-            src={profilePhoto.src}
-            alt="Handika's profile photo"
-          />
-          <h1 class="font-serif text-5xl dark:text-white text-gray-800 py-4">
-            Hi, I'm <strong>Heru Handika</strong>
-          </h1>
-          <p
-            class="mt-2 text-pretty text-lg font-medium text-slate-500 dark:text-slate-400 sm:text-xl/8"
+    </div>
+    <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-32">
+      <div class="text-center item-center">
+        <img
+          class="block mx-auto md:h-32 lg:h-48 rounded-full sm:mx-auto"
+          src={profilePhoto.src}
+          alt="Handika's profile photo"
+        />
+        <h1 class="font-serif text-5xl dark:text-white text-gray-800 py-4">
+          Hi, I'm <strong>Heru Handika</strong>
+        </h1>
+        <p
+          class="mt-2 text-pretty text-lg font-medium text-slate-500 dark:text-slate-400 sm:text-xl/8"
+        >
+          I study <strong>small mammal speciation</strong> on complex <strong
+            >island systems</strong
+          > and develop <strong>cross-platform, user-friendly software</strong>
+          to improve <strong>biodiversity research</strong>.
+        </p>
+        <div class="flex justify-center mt-4 space-x-4">
+          <a href="https://github.com/hhandika" target="_blank" rel="noopener">
+            <img src={github.src} alt="GitHub logo" class="w-8" />
+          </a>
+          <a
+            href="https://scholar.google.com/citations?user=Jaub_M0AAAAJ&hl=en"
+            target="_blank"
+            rel="noopener"
+            ><img src={gScholar.src} alt="Google Scholar logo" class="w-8" /></a
           >
-            I study <strong>small mammal speciation</strong> on complex <strong
-              >island systems</strong
-            > and develop <strong>cross-platform, user-friendly software</strong
-            >
-            to improve <strong>biodiversity research</strong>.
-          </p>
-          <div class="flex justify-center mt-4 space-x-4">
-            <a
-              href="https://github.com/hhandika"
-              target="_blank"
-              rel="noopener"
-            >
-              <img src={github.src} alt="GitHub logo" class="w-8" />
-            </a>
-            <a
-              href="https://scholar.google.com/citations?user=Jaub_M0AAAAJ&hl=en"
-              ><img
-                src={gScholar.src}
-                alt="Google Scholar logo"
-                class="w-8"
-              /></a
-            >
-            <a href="https://www.instagram.com/heru_hdka/"
-              ><img src={insta.src} alt="Instagram logo" class="w-8" /></a
-            >
+          <a
+            href="https://www.instagram.com/heru_hdka/"
+            target="_blank"
+            rel="noopener"
+            ><img src={insta.src} alt="Instagram logo" class="w-8" /></a
+          >
+        </div>
+        <div class="grid grid-cols-4 gap-4 text-center mt-24">
+          <div class="bg-blue-400 p-4 rounded"><p>Fieldwork</p></div>
+          <div class="bg-blue-400 p-4 rounded">
+            <p>Specimen contribution</p>
           </div>
-          <div class="grid grid-cols-4 gap-4 text-center mt-24">
-            <div class="bg-blue-400 p-4 rounded"><p>Fieldwork</p></div>
-            <div class="bg-blue-400 p-4 rounded">
-              <p>Specimen contribution</p>
-            </div>
-            <div class="bg-blue-400 p-4 rounded"><p>Code written</p></div>
-            <div class="bg-blue-400 p-4 rounded"><p>Top language</p></div>
-          </div>
+          <div class="bg-blue-400 p-4 rounded"><p>Code written</p></div>
+          <div class="bg-blue-400 p-4 rounded"><p>Top language</p></div>
         </div>
       </div>
     </div>
