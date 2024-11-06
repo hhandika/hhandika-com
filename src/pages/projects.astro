@@ -4,113 +4,69 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="My Research Projects">
-  <Header />
   <main>
-    <h2 class="project">Small Mammal Diversity & Evolution</h2>
-    <h3 class="project">
-      Understanding patterns that generate species diversity within a complex
-      island system
-    </h3>
-    <!-- columns for each section. Sum 12 for all columns for large and 12 for each for small to turn columns into rows  -->
-    <p class="project">
-      Indo-Australian Archipelago is among the most complex island system on
-      earth. Some islands, such as Sumatra, Java, and Borneo, were continuous
-      landmass during the Pleistocene low see level, called Sunda Shelf.
-      Sulawesi was separate islands. Other islands never been connected to other
-      landmasses, such as the Moluccas and Lesser Sunda islands. Within the
-      islands, isolated mountains present more opportunities for speciation. We
-      work on deciphering small mammal diversity and evolution in this complex
-      island system, with particular focus on Sulawesi and the Sunda Shelf.
-    </p>
-
-    <h4 class="project">Project 1</h4>
-    <h3 class="project">
-      In situ diversification of Hill Rats (<i>Bunomys</i>) on Sulawesi
-    </h3>
-    <p class="project">
-      The hill-rat species group, also referred as the
-      <i>Bunomys</i> Clade, is the most diverse endemic rodent group on Sulawesi.
-      From a single known colonizing ancestor, the group has diversified into 18+
-      species. Some species occur throughout the island. The other species are restricted
-      to a single area of endemism or only known from a single mountain. This project
-      is the main focus of my PhD. We hope to understand how complex geological history
-      of Sulawesi shaped the diversity of the group. Our understanding of this process
-      will help us to understand the evolution of small mammals in complex island
-      systems. It will also provide an improved understanding of species distribution
-      to inform conservation efforts on Sulawesi.
-    </p>
-    <p class="project">
-      Publications:<br />
-      Handika et. al. (In prep)<br />
-      Handika et. al. (2021) [<a
-        href="https://doi.org/10.1111/zsc.12460"
-        target="_blank"
-        >web
-      </a>] [<a href="https://doi.org/10.1111/zsc.12460" target="_blank"
-        >request pdf</a
-      >]
-    </p>
-
-    <style>
-      main {
-        margin: auto;
-        padding: 1rem;
-        width: 800px;
-        max-width: calc(100% - 2rem);
-        color: white;
-        font-size: 20px;
-        line-height: 1.6;
-      }
-      .astro-a {
-        position: absolute;
-        top: -32px;
-        left: 50%;
-        transform: translatex(-50%);
-        width: 220px;
-        height: auto;
-        z-index: -1;
-      }
-      h1 {
-        font-size: 4rem;
-        font-weight: 700;
-        line-height: 1;
-        text-align: center;
-        margin-bottom: 1em;
-      }
-      .text-gradient {
-        background-image: var(--accent-gradient);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-size: 400%;
-        background-position: 0%;
-      }
-      .instructions {
-        margin-bottom: 2rem;
-        border: 1px solid rgba(var(--accent-light), 25%);
-        background: linear-gradient(
-          rgba(var(--accent-dark), 66%),
-          rgba(var(--accent-dark), 33%)
-        );
-        padding: 1.5rem;
-        border-radius: 8px;
-      }
-      .instructions code {
-        font-size: 0.8em;
-        font-weight: bold;
-        background: rgba(var(--accent-light), 12%);
-        color: rgb(var(--accent-light));
-        border-radius: 4px;
-        padding: 0.3em 0.4em;
-      }
-      .instructions strong {
-        color: rgb(var(--accent-light));
-      }
-      .link-card-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
-        gap: 2rem;
-        padding: 0;
-      }
-    </style>
+    <div class="relative isolate px-6 pt-14 lg:px-8">
+      <div class="mx-auto max-w-2xl py-6 sm:py-16 lg:py-56">
+        <div class="text-center">
+          <h1
+            class="text-balance text-5xl font-semibold tracking-tight text-gray-900 py-4"
+          >
+            Research Projects
+          </h1>
+          <h2>Small Mammal Diversity & Evolution</h2>
+          <h3>
+            Understanding patterns that generate species diversity within a
+            complex island system
+          </h3>
+          <p>
+            Indo-Australian Archipelago is among the most complex island system
+            on earth. Some islands, such as Sumatra, Java, and Borneo, were
+            continuous landmass during the Pleistocene low see level, called
+            Sunda Shelf. Sulawesi was separate islands. Other islands never been
+            connected to other landmasses, such as the Moluccas and Lesser Sunda
+            islands. Within the islands, isolated mountains present more
+            opportunities for speciation. We work on deciphering small mammal
+            diversity and evolution in this complex island system, with
+            particular focus on Sulawesi and the Sunda Shelf.
+          </p>
+          <h3>
+            In situ diversification of Hill Rats (<i>Bunomys</i>) on Sulawesi
+          </h3>
+          <p>
+            The hill-rat species group, also referred as the
+            <i>Bunomys</i> Clade, is the most diverse endemic rodent group on Sulawesi.
+            From a single known colonizing ancestor, the group has diversified into
+            18+ species. Some species occur throughout the island. The other species
+            are restricted to a single area of endemism or only known from a single
+            mountain. This project is the main focus of my PhD. We hope to understand
+            how complex geological history of Sulawesi shaped the diversity of the
+            group. Our understanding of this process will help us to understand the
+            evolution of small mammals in complex island systems. It will also provide
+            an improved understanding of species distribution to inform conservation
+            efforts on Sulawesi.
+          </p>
+          <p>
+            Publications:<br />
+            Handika et. al. (In prep)<br />
+            Handika et. al. (2021) [<a
+              href="https://doi.org/10.1111/zsc.12460"
+              target="_blank"
+              >web
+            </a>] [<a href="https://doi.org/10.1111/zsc.12460" target="_blank"
+              >request pdf</a
+            >]
+          </p><div
+            class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
+            aria-hidden="true"
+          >
+            <div
+              class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
+              style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"
+            >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
 </Layout>
