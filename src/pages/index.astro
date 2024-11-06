@@ -1,11 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Navbar from "../components/Header.astro";
-import Header from "../components/Header.astro";
+import profilePhoto from "../assets/img/profile.jpg";
 ---
 
 <Layout title="Island small mammals and inclusive biodiversity software">
-  <Header />
   <main>
     <div class="relative isolate px-6 pt-14 lg:px-8">
       <div
@@ -19,22 +17,20 @@ import Header from "../components/Header.astro";
         </div>
       </div>
       <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
-        <div class="text-center">
-          <h1
-            class="text-balance text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl"
-          >
-            Hi,
+        <div class="text-center item-center">
+          <img
+            class="block mx-auto md:h-32 lg:h-48 rounded-full sm:mx-auto"
+            src={profilePhoto.src}
+            alt="Handika's profile photo"
+          />
+          <h1 class="font-serif text-5xl text-gray-800">
+            Hi, I'm <strong>Heru Handika</strong>
           </h1>
-          <h2
-            class="text-balance text-2xl font-semibold text-gray-900 sm:text-7xl"
-          >
-            I'm Heru Handika
-          </h2>
           <p
-            class="mt-8 text-pretty text-lg font-medium text-gray-500 sm:text-xl/8"
+            class="mt-2 text-pretty text-lg font-medium text-gray-500 sm:text-xl/8"
           >
-            I study <strong>island speciation</strong> in <strong
-              >small mammals</strong
+            I study <strong>small mammal speciation</strong> on complex <strong
+              >island systems</strong
             > and develop <strong>cross-platform, user-friendly software</strong
             >
             to improve <strong>biodiversity research</strong>.
@@ -74,13 +70,6 @@ import Header from "../components/Header.astro";
     width: 220px;
     height: auto;
     z-index: -1;
-  }
-  h1 {
-    font-size: 4rem;
-    font-weight: 700;
-    line-height: 1;
-    text-align: center;
-    margin-bottom: 1em;
   }
   .text-gradient {
     background-image: var(--accent-gradient);
