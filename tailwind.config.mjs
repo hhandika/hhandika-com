@@ -6,7 +6,7 @@ export default {
       colors: {
         "talamau-blue": "#1B578C",
         "talamau-light-blue": "#537FA6",
-        "talamau-yellw": "#F2BF27",
+        "talamau-yellow": "#F2BF27",
         "talamau-brown": "#A66414",
         "talamau-dark-brown": "#59290C",
       },
