@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+const currentPath = Astro.url.pathname;
 ---
 
 <Layout title="Software">
@@ -15,6 +16,7 @@ import Layout from "../layouts/Layout.astro";
           This is a placeholder page for software content. More information will
           be added soon.
         </p>
+        <p>Path {currentPath}</p>
       </div>
     </div>
   </main>
