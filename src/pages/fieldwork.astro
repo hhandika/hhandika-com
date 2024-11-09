@@ -4,7 +4,7 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout title="Fieldwork">
   <main>
-    <div class="mx-auto max-w-2xl py-6 sm:py-16 lg:py-8">
+    <div class="mx-auto max-w-4xl py-6 sm:py-16 lg:py-8">
       <div class="text-center">
         <h1
           class="text-balance text-2xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-7xl"
@@ -15,6 +15,37 @@ import Layout from "../layouts/Layout.astro";
           This is a placeholder page for Fieldwork content. More information
           will be added soon.
         </p>
+      </div>
+      <div
+        class="border-2 absolute border-opacity-20 border-gray-700 h-full border mt-16"
+        style="left: 32%"
+      >
+      </div>
+      <!-- right timeline -->
+      <div class="mb-8 flex justify-between items-center w-full mt-16">
+        <div class="order-1 w-16"></div>
+        <div
+          class="z-20 flex items-center order-1 bg-gray-800 shadow-xl w-16 h-16 rounded-full absolute"
+          style="left: 32%; transform: translateX(-50%);"
+        >
+          <h1 class="mx-auto font-semibold text-lg text-white">2023</h1>
+        </div>
+        <div
+          class="order-1 bg-gray-400 rounded-lg shadow-xl px-6 py-4 max-w-2/3"
+          style="left: 40%;"
+        >
+          <h3 class="mb-3 font-bold text-gray-800 text-xl">
+            Mts. Patah, Bandahara, Kemiri
+          </h3>
+          <p
+            class="text-sm leading-snug tracking-wide text-gray-900 text-opacity-100"
+          >
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industry's standard dummy text
+            ever since the 1500s, when an unknown printer took a galley of type
+            and scrambled it to make a type specimen book.
+          </p>
+        </div>
       </div>
     </div>
   </main>
