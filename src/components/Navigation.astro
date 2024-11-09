@@ -1,15 +1,16 @@
 ---
 const navItems = [
-  { path: "/", label: "About" },
-  { path: "/projects", label: "Projects" },
-  { path: "/cv", label: "CV" },
-  { path: "/fieldwork", label: "Fieldwork" },
-  { path: "/software", label: "Software" },
-  { path: "/teaching", label: "Teaching" },
-  { path: "/outreach", label: "Outreach" },
+  { path: "", label: "About" },
+  { path: "projects", label: "Projects" },
+  { path: "cv", label: "CV" },
+  { path: "fieldwork", label: "Fieldwork" },
+  { path: "software", label: "Software" },
+  { path: "teaching", label: "Teaching" },
+  { path: "outreach", label: "Outreach" },
 ];
 
-const currentPath = Astro.url.pathname;
+const pathName = Astro.url.pathname;
+const currentPath = pathName.slice(1);
 ---
 
 <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
@@ -55,7 +56,7 @@ const currentPath = Astro.url.pathname;
     {
       navItems.map(({ path, label }) => (
         <a
-          href={path}
+          href={`/${path}`}
           class={`-m-1.5 p-1.5 font-semibold text-gray-900 hover:text-talamau-brown ${currentPath === path ? "text-talamau-brown" : ""}`}
         >
           {label}
@@ -108,7 +109,7 @@ const currentPath = Astro.url.pathname;
             {
               navItems.map(({ path, label }) => (
                 <a
-                  href={path}
+                  href={`/${path}`}
                   class={`-m-1.5 p-1.5 font-semibold text-gray-900 hover:text-talamau-brown ${currentPath === path ? "text-talamau-brown" : ""}`}
                 >
                   {label}
