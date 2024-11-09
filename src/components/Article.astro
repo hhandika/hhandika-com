@@ -12,7 +12,7 @@ const { author, year, title, journal, pageVol, doi } = Astro.props;
 ---
 
 <div class="my-2">
-  <p class="dark:text-slate-400 text-slate-500">
+  <p class="text-chetwode-950 dark:text-chetwode-50">
     {
       author
         .split("Handika, H.")
@@ -20,7 +20,9 @@ const { author, year, title, journal, pageVol, doi } = Astro.props;
           <>
             {part}
             {index < array.length - 1 && (
-              <strong class="text-sky-500">Handika, H.</strong>
+              <strong class="text-chetwode-700 dark:text-chetwode-400">
+                Handika, H.
+              </strong>
             )}
           </>
         ))
