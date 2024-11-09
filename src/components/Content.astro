@@ -1,0 +1,9 @@
+---
+interface Content {
+  text: string;
+}
+
+const { text } = Astro.props;
+---
+
+<p class="dark:text-slate-400 text-slate-500">{text}</p>

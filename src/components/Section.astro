@@ -1,0 +1,13 @@
+---
+interface SectionHead {
+  title: string;
+  subtitle: string;
+}
+
+const { title, subtitle } = Astro.props;
+---
+
+<div class="mt-8 mb-2">
+  <h2 class="text-2xl text-orange-400">{title}</h2>
+  <h3 class="dark:text-slate-200 text-slate-800">{subtitle}</h3>
+</div>

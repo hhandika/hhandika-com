@@ -1,0 +1,30 @@
+---
+interface JournalArticle {
+  author: string;
+  year: string;
+  title: string;
+  journal: string;
+  pageVol: string;
+  doi: string;
+}
+
+const { author, year, title, journal, pageVol, doi } = Astro.props;
+---
+
+<div class="my-2">
+  <p class="dark:text-slate-400 text-slate-500">
+    {
+      author
+        .split("Handika, H.")
+        .map((part: string, index: number, array: string[]) => (
+          <>
+            {part}
+            {index < array.length - 1 && (
+              <strong class="text-sky-500">Handika, H.</strong>
+            )}
+          </>
+        ))
+    }. {year}. {title}. <em>{journal}</em>, {pageVol}.
+    <a href={doi} target="_blank">{doi}</a>
+  </p>
+</div>
