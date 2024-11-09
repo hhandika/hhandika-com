@@ -109,7 +109,7 @@ const currentPath = Astro.url.pathname;
               navItems.map(({ path, label }) => (
                 <a
                   href={path}
-                  class={`-m-1.5 p-1.5 font-semibold text-gray-900 hover:text-talamau-brown ${currentPath === path ? "text-talamau-brown" : ""}`}
+                  class={`-m-1.5 p-1.5 font-semibold text-gray-900 hover:text-talamau-brown ${currentPath === path || currentPath === `${path}/` ? "text-talamau-brown" : ""}`}
                 >
                   {label}
                 </a>
