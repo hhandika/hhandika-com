@@ -4,21 +4,23 @@ import profilePhoto from "../assets/img/profile.jpg";
 import github from "../assets/icons/github.svg";
 import gScholar from "../assets/icons/scholar.svg";
 import insta from "../assets/icons/instagram.svg";
+import Stats from "../components/Stats.astro";
+import rodentSvg from "../assets/icons/mammals.svg";
 ---
 
 <Layout title="Island small mammals and inclusive biodiversity software">
   <main>
     <div
-      class="absolute inset-x-0 -top-32 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-32"
+      class="absolute inset-x-0 -top-20 -z-10 transform-gpu overflow-hidden blur-2xl opacity-80 mt-24"
       aria-hidden="true"
     >
-      <div
-        class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
-        style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"
-      >
-      </div>
+      <img
+        src={rodentSvg.src}
+        alt="Rodent illustration"
+        class="block mx-auto sm:w-2/3"
+      />
     </div>
-    <div class="mx-auto max-w-2xl py-8 sm:py-24 lg:py-32">
+    <div class="mx-auto max-w-2xl py-8 sm:py-24 lg:py-16">
       <div class="text-center item-center">
         <img
           class="block mx-auto h-32 lg:h-48 rounded-full sm:mx-auto"
@@ -34,7 +36,7 @@ import insta from "../assets/icons/instagram.svg";
           I study small mammal diversity and speciation on islands and develop
           software to improve data integration and management, promote
           collaboration, and increase the accessibility of biodiversity research
-        </p>.
+        </p>
       </div>
       <div
         class="flex
@@ -60,26 +62,16 @@ import insta from "../assets/icons/instagram.svg";
       </div>
     </div>
     <div
-      class="grid bg-gradient-to-r from-cyan-100 to-blue-100 lg:grid-cols-3 gap-4 text-center rounded-2xl lg:rounded-full mb-16 mx-40"
+      class="grid bg-gradient-to-r from-porsche-400 to-chetwode-200 lg:grid-cols-3 gap-4 text-center rounded-2xl lg:rounded-full mt-16 mx-40"
     >
-      <div class="p-4 rounded">
-        <p class="text-slate-600">Fieldwork</p>
-        <p class="text-slate-500">
-          <strong class="font-bold text-orange-600 text-2xl">30+</strong> localities
-        </p>
-      </div>
-      <div class="p-4 rounded">
-        <p class="text-slate-600">Specimen contribution</p>
-        <p class="text-slate-500">
-          <strong class="font-bold text-orange-600 text-2xl">10k+</strong> vouchers
-        </p>
-      </div>
-      <div class="p-4 rounded">
-        <p class="text-slate-600">Code written</p>
-        <p class="text-slate-500">
-          <strong class="font-bold text-orange-600 text-2xl">150K+</strong> lines
-        </p>
-      </div>
+      <Stats title="Fieldwork" value="30" unit="localities" url="/fieldwork" />
+      <Stats
+        title="Specimen contribution"
+        value="10k"
+        unit="vouchers"
+        url="/fieldwork"
+      />
+      <Stats title="Code written" value="150K" unit="lines" url="/software" />
     </div>
   </main>
 </Layout>
