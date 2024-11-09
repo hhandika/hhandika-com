@@ -1,5 +1,7 @@
 ---
 import Icons from "./Icons.astro";
+import OpenMenuButton from "./buttons/OpenMenuButton.astro";
+import CloseMenuButton from "./buttons/CloseMenuButton.astro";
 
 const navItems = [
   { path: "/", label: "About" },
@@ -22,26 +24,7 @@ const currentPath = Astro.url.pathname;
     <Icons />
   </div>
   <div class="flex lg:hidden">
-    <button
-      id="menu-button"
-      type="button"
-      class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
-    >
-      <span class="sr-only">Open main menu</span>
-      <svg
-        class="h-6 w-6 stroke-porsche-950 dark:stroke-porsche-50"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        aria-hidden="true"
-        data-slot="icon"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
-      </svg>
-    </button>
+    <OpenMenuButton />
   </div>
   <div class="hidden lg:flex lg:gap-x-12">
     {
@@ -68,26 +51,7 @@ const currentPath = Astro.url.pathname;
           <span class="sr-only">Heru Handika</span>
           <Icons />
         </a>
-        <button
-          id="close-button"
-          type="button"
-          class="-m-2.5 rounded-md p-2.5 text-gray-700"
-        >
-          <span class="sr-only">Close menu</span>
-          <svg
-            class="h-6 w-6 stroke-porsche-950 dark:stroke-porsche-50"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            aria-hidden="true"
-            data-slot="icon"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M6 18 18 6M6 6l12 12"></path>
-          </svg>
-        </button>
+        <CloseMenuButton />
       </div>
       <div class="mt-6 flow-root">
         <div class="-my-6 divide-y divide-gray-500/10">
@@ -96,7 +60,7 @@ const currentPath = Astro.url.pathname;
               navItems.map(({ path, label }) => (
                 <a
                   href={path}
-                  class={`-mx-3 block rounded-lg px-3 py-2 text-base/7 hover:text-porsche-500 ${currentPath === path || currentPath === `${path}/` ? "text-porsche-600 dark:text-porsche-400" : "text-porsche-950 dark:text-porsche-50"}`}
+                  class={`-mx-3 block rounded-lg px-3 py-2 text-base/7 hover:text-porsche-500 ${currentPath === path || currentPath === `${path}/` ? "text-porsche-600 dark:text-porsche-300" : "text-porsche-950 dark:text-porsche-50"}`}
                 >
                   {label}
                 </a>
