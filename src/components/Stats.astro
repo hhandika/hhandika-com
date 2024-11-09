@@ -9,8 +9,8 @@ interface Stats {
 const { title, value, unit, url } = Astro.props;
 ---
 
-<div class="p-4 rounded">
-  <p class="text-chetwode-950">
+<div class="p-4 rounded text-chetwode-950 dark:text-chetwode-50">
+  <p>
     <a href={url}>
       {title}<svg
         xmlns="http://www.w3.org/2000/svg"
@@ -27,8 +27,8 @@ const { title, value, unit, url } = Astro.props;
       </svg></a
     >
 
-    <p class="text-chetwode-950">
-      <strong class="font-bold text-chetwode-950 text-2xl">{value}+</strong>
+    <p>
+      <strong class="font-bold text-2xl">{value}+</strong>
       {unit}
     </p>
   </p>
