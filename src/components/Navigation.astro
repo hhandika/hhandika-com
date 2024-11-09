@@ -1,5 +1,15 @@
 ---
+const navItems = [
+  { path: "/", label: "About" },
+  { path: "/projects", label: "Projects" },
+  { path: "/cv", label: "CV" },
+  { path: "/fieldwork", label: "Fieldwork" },
+  { path: "/software", label: "Software" },
+  { path: "/teaching", label: "Teaching" },
+  { path: "/outreach", label: "Outreach" },
+];
 
+const currentPath = Astro.url.pathname;
 ---
 
 <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
@@ -42,41 +52,16 @@
     </button>
   </div>
   <div class="hidden lg:flex lg:gap-x-12">
-    <a
-      href="/"
-      class="text-sm/6 font-semibold text-gray-900 dark:text-gray-100 hover:text-talamau-brown active:text-blue-700"
-      >About</a
-    >
-    <a
-      href="/projects"
-      class="text-sm/6 font-semibold text-gray-900 dark:text-gray-100 hover:text-talamau-brown active:text-blue-700"
-      >Projects</a
-    >
-    <a
-      href="/cv"
-      class="text-sm/6 font-semibold text-gray-900 dark:text-gray-100 hover:text-talamau-brown active:text-blue-700"
-      >CV</a
-    >
-    <a
-      href="/fieldwork"
-      class="text-sm/6 font-semibold text-gray-900 dark:text-gray-100 hover:text-talamau-brown active:text-blue-700"
-      >Fieldwork</a
-    >
-    <a
-      href="/software"
-      class="text-sm/6 font-semibold text-gray-900 dark:text-gray-100 hover:text-talamau-brown active:text-blue-700"
-      >Software</a
-    >
-    <a
-      href="/teaching"
-      class="text-sm/6 font-semibold text-gray-900 dark:text-gray-100 hover:text-talamau-brown active:text-blue-700"
-      >Teaching</a
-    >
-    <a
-      href="/outreach"
-      class="text-sm/6 font-semibold text-gray-900 dark:text-gray-100 hover:text-talamau-brown active:text-blue-700"
-      >Outreach</a
-    >
+    {
+      navItems.map(({ path, label }) => (
+        <a
+          href={path}
+          class={`-m-1.5 p-1.5 font-semibold text-gray-900 hover:text-talamau-brown ${currentPath === path ? "text-talamau-brown" : ""}`}
+        >
+          {label}
+        </a>
+      ))
+    }
   </div>
 </nav>
 <!-- Mobile menu, show/hide based on menu open state. -->
@@ -120,41 +105,16 @@
       <div class="mt-6 flow-root">
         <div class="-my-6 divide-y divide-gray-500/10">
           <div class="space-y-2 py-6">
-            <a
-              href="/"
-              class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 hover:text-talamau-brown active:text-blue-700"
-              >About</a
-            >
-            <a
-              href="/projects"
-              class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 hover:text-talamau-brown active:text-blue-700"
-              >Projects</a
-            >
-            <a
-              href="/cv"
-              class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 hover:text-talamau-brown active:text-blue-700"
-              >CV</a
-            >
-            <a
-              href="/fieldwork"
-              class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 hover:text-talamau-brown active:text-blue-700"
-              >Fieldwork</a
-            >
-            <a
-              href="/software"
-              class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 hover:text-talamau-brown active:text-blue-700"
-              >Software</a
-            >
-            <a
-              href="/teaching"
-              class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 hover:text-talamau-brown active:text-blue-700"
-              >Teaching</a
-            >
-            <a
-              href="/outreach"
-              class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 hover:text-talamau-brown active:text-blue-700"
-              >Outreach</a
-            >
+            {
+              navItems.map(({ path, label }) => (
+                <a
+                  href={path}
+                  class={`-m-1.5 p-1.5 font-semibold text-gray-900 hover:text-talamau-brown ${currentPath === path ? "text-talamau-brown" : ""}`}
+                >
+                  {label}
+                </a>
+              ))
+            }
           </div>
         </div>
       </div>
