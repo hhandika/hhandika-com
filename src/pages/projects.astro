@@ -1,22 +1,13 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import labIcon from "../assets/icons/microscope.svg";
+import SectionHead from "../components/Section.astro";
+import Content from "../components/Content.astro";
 ---
 
-<Layout title="My Research Projects">
+<Layout title="Research Projects">
   <main>
-    <div class="mx-auto max-w-2xl py-6 sm:py-16 lg:py-8">
+    <div class="mx-auto max-w-4xl py-6 sm:py-16 lg:py-8">
       <div class="text-center">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          class="w-6 h-6"
-        >
-          <path
-            d="M12 2a1 1 0 011 1v1h1a1 1 0 110 2h-1v1h1a1 1 0 110 2h-1v1h1a1 1 0 110 2h-1v1h1a1 1 0 110 2h-1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1h-1a1 1 0 110-2h1v-1h-1a1 1 0 110-2h1v-1h-1a1 1 0 110-2h1V6h-1a1 1 0 110-2h1V3a1 1 0 011-1z"
-          ></path>
-        </svg>
         <h1
           class="font-serif tracking-wide dark:text-white text-gray-900 text-5xl font-semibold tracking-tight py-4"
         >
@@ -31,13 +22,10 @@ import labIcon from "../assets/icons/microscope.svg";
         </p>
       </div>
       <div class="my-8 max-w-3xl">
-        <h2 class="text-2xl text-orange-400 text-slate-900">
-          Small Mammal Diversity & Speciation
-        </h2>
-        <h3 class="dark:text-slate-200 text-slate-800">
-          Understanding patterns that generate species diversity within a
-          complex island system
-        </h3>
+        <SectionHead
+          title="Small Mammal Diversity & Speciation"
+          subtitle="Understanding patterns that generate species diversity within a complex island system"
+        />
         <p class="dark:text-slate-400 text-slate-500">
           Indo-Australian Archipelago is among the most complex island system on
           earth. Some islands, such as Sumatra, Java, and Borneo, were
@@ -81,6 +69,19 @@ import labIcon from "../assets/icons/microscope.svg";
         >
           <br class="" />
         </div>
+        <SectionHead
+          title="Inclusive Open Source Software"
+          subtitle="Accessible software empowering new learners"
+        />
+        <p class="dark:text-slate-400 text-slate-500">
+          From fieldwork to laboratory work, field-based evolutionary studies
+          have become increasingly complex. For museum scientists, collecting
+          specimens with dozens of accompanying parts are common practices
+          nowadays. Genomic sequencing from thousands of loci to a whole genome
+          have become the norm. I am working on developing open and accessible
+          software to minimize the complexity, targeting the most neglected
+          aspect of the workflow.
+        </p>
       </div>
     </div>
   </main>
