@@ -5,81 +5,79 @@ import Content from "../components/Content.astro";
 import PageTitle from "../components/PageTitle.astro";
 import researchIcon from "../assets/icons/research.svg";
 import Background from "../components/Background.astro";
+import MainPage from "../components/MainPage.astro";
 ---
 
 <Layout title="Research Projects">
-  <main>
-    <div class="mx-auto max-w-5xl py-6 sm:py-16 lg:py-8">
-      <Background backgroundImage={researchIcon} />
-      <PageTitle title="Research Projects">
-        <h2 class="font-bold text-slate-400">Key Projects</h2>
-        <p class="text-slate-400">
-          small mammal diversity &middot; speciation &middot; digital field
-          catalog &middot; cross-platform pipeline &middot; genomic tools
-        </p>
-      </PageTitle>
-      <div class="my-8">
-        <SectionHead
-          title="Small Mammal Diversity & Speciation"
-          subtitle="Understanding patterns that generate species diversity within a complex island system"
-        />
-        <Content>
-          Indo-Australian Archipelago is among the most complex island system on
-          earth. Some islands, such as Sumatra, Java, and Borneo, were
-          continuous landmass during the Pleistocene low see level, called Sunda
-          Shelf. Sulawesi was separate islands. Other islands never been
-          connected to other landmasses, such as the Moluccas and Lesser Sunda
-          islands. Within the islands, isolated mountains present more
-          opportunities for speciation. We work on deciphering small mammal
-          diversity and evolution in this complex island system, with particular
-          focus on Sulawesi and the Sunda Shelf.
-        </Content>
-        <h3 class="dark:text-slate-200 text-slate-800 mt-8">
-          In situ diversification of Hill Rats (<i>Bunomys</i>) on Sulawesi
-        </h3>
-        <Content>
-          The hill-rat species group, also referred as the
-          <i>Bunomys</i> Clade, is the most diverse endemic rodent group on Sulawesi.
-          From a single known colonizing ancestor, the group has diversified into
-          18+ species. Some species occur throughout the island. The other species
-          are restricted to a single area of endemism or only known from a single
-          mountain. This project is the main focus of my PhD. We hope to understand
-          how complex geological history of Sulawesi shaped the diversity of the
-          group. Our understanding of this process will help us to understand the
-          evolution of small mammals in complex island systems. It will also provide
-          an improved understanding of species distribution to inform conservation
-          efforts on Sulawesi.
-        </Content>
-        <Content>
-          Publications:<br />
-          Handika et. al. (In prep)<br />
-          Handika et. al. (2021) [<a
-            href="https://doi.org/10.1111/zsc.12460"
-            target="_blank"
-            >web
-          </a>] [<a href="https://doi.org/10.1111/zsc.12460" target="_blank"
-            >request pdf</a
-          >]
-        </Content><div
-          class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
-          aria-hidden="true"
-        >
-          <br class="" />
-        </div>
-        <SectionHead
-          title="Inclusive Open Source Software"
-          subtitle="Accessible software empowering new learners"
-        />
-        <Content>
-          From fieldwork to laboratory work, field-based evolutionary studies
-          have become increasingly complex. For museum scientists, collecting
-          specimens with dozens of accompanying parts are common practices
-          nowadays. Genomic sequencing from thousands of loci to a whole genome
-          have become the norm. I am working on developing open and accessible
-          software to minimize the complexity, targeting the most neglected
-          aspect of the workflow.
-        </Content>
+  <MainPage>
+    <Background backgroundImage={researchIcon} />
+    <PageTitle title="Research Projects">
+      <h2 class="font-bold text-slate-400">Key Projects</h2>
+      <p class="text-slate-400">
+        small mammal diversity &middot; speciation &middot; digital field
+        catalog &middot; cross-platform pipeline &middot; genomic tools
+      </p>
+    </PageTitle>
+    <div class="my-8">
+      <SectionHead
+        title="Small Mammal Diversity & Speciation"
+        subtitle="Understanding patterns that generate species diversity within a complex island system"
+      />
+      <Content>
+        Indo-Australian Archipelago is among the most complex island system on
+        earth. Some islands, such as Sumatra, Java, and Borneo, were continuous
+        landmass during the Pleistocene low see level, called Sunda Shelf.
+        Sulawesi was separate islands. Other islands never been connected to
+        other landmasses, such as the Moluccas and Lesser Sunda islands. Within
+        the islands, isolated mountains present more opportunities for
+        speciation. We work on deciphering small mammal diversity and evolution
+        in this complex island system, with particular focus on Sulawesi and the
+        Sunda Shelf.
+      </Content>
+      <h3 class="dark:text-slate-200 text-slate-800 mt-8">
+        In situ diversification of Hill Rats (<i>Bunomys</i>) on Sulawesi
+      </h3>
+      <Content>
+        The hill-rat species group, also referred as the
+        <i>Bunomys</i> Clade, is the most diverse endemic rodent group on Sulawesi.
+        From a single known colonizing ancestor, the group has diversified into 18+
+        species. Some species occur throughout the island. The other species are
+        restricted to a single area of endemism or only known from a single mountain.
+        This project is the main focus of my PhD. We hope to understand how complex
+        geological history of Sulawesi shaped the diversity of the group. Our understanding
+        of this process will help us to understand the evolution of small mammals
+        in complex island systems. It will also provide an improved understanding
+        of species distribution to inform conservation efforts on Sulawesi.
+      </Content>
+      <Content>
+        Publications:<br />
+        Handika et. al. (In prep)<br />
+        Handika et. al. (2021) [<a
+          href="https://doi.org/10.1111/zsc.12460"
+          target="_blank"
+          >web
+        </a>] [<a href="https://doi.org/10.1111/zsc.12460" target="_blank"
+          >request pdf</a
+        >]
+      </Content><div
+        class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
+        aria-hidden="true"
+      >
+        <br class="" />
       </div>
+      <SectionHead
+        title="Inclusive Open Source Software"
+        subtitle="Accessible software empowering new learners"
+      />
+      <Content>
+        From fieldwork to laboratory work, field-based evolutionary studies have
+        become increasingly complex. For museum scientists, collecting specimens
+        with dozens of accompanying parts are common practices nowadays. Genomic
+        sequencing from thousands of loci to a whole genome have become the
+        norm. I am working on developing open and accessible software to
+        minimize the complexity, targeting the most neglected aspect of the
+        workflow.
+      </Content>
     </div>
-  </main>
+  </MainPage>
 </Layout>

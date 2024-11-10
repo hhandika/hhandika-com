@@ -1,22 +1,113 @@
 ---
+import cntl from "cntl";
 import PageTitle from "../components/PageTitle.astro";
 import Layout from "../layouts/Layout.astro";
 import teachingIcon from "../assets/icons/teaching.svg";
 import Background from "../components/Background.astro";
+import PageSubtitle from "../components/PageSubtitle.astro";
+import MainPage from "../components/MainPage.astro";
+
+const cardClasses = cntl`
+  bg-porsche-200
+  rounded-2xl
+  px-6
+  py-4
+`;
+
+const cardTitleClasses = cntl`
+  font-serif
+  font-bold
+  text-porsche-950
+  dark:text-porsche-50
+  text-xl
+  mt-8
+`;
+
+const cardSubtitleClasses = cntl`
+  font-semibold
+  text-porsche-950
+  text-lg
+`;
+
+const courseScheduleClasses = cntl`
+  font-serif
+  text-lg
+  text-porsche-800
+  mb-2
+`;
+
+const cardDescriptonClasses = cntl`
+  mb-2
+  text-porsche-950
+  text-md
+`;
 ---
 
 <Layout title="Teaching">
-  <main>
-    <div class="mx-auto max-w-2xl py-6 sm:py-16 lg:py-8">
-      <Background backgroundImage={teachingIcon} />
-      <PageTitle title="Teaching">
-        <p class="dark:text-slate-400 text-slate-500">
-          I am passionate about teaching and mentoring students. I have taught
-          various courses in biology, ecology, and evolution. I have also
-          mentored students in research projects and fieldwork. I am committed
-          to fostering an inclusive and diverse learning environment.
+  <MainPage>
+    <Background backgroundImage={teachingIcon} />
+    <PageTitle title="Teaching">
+      <p class="dark:text-slate-400 text-slate-500">
+        I have taught courses in introductory biology, genetics, mammalogy, and
+        computer applications for biologists. I have led workshops and mentored
+        students in research and fieldwork.
+      </p>
+    </PageTitle>
+    <PageSubtitle subtitle="Courses Taught" />
+    <h3 class={cardTitleClasses}>Lousiana State University, USA</h3>
+    <div class={cardClasses}>
+      <div class="mb-6">
+        <p class={cardSubtitleClasses}>BIOL 2153 Principles of Genetics</p>
+        <p class={courseScheduleClasses}>
+          Teaching assistant &middot; Fall 2024
         </p>
-      </PageTitle>
+        <p class={cardDescriptonClasses}>
+          This course covers several topics, including Mendelian inheritance,
+          gene mapping, population genetics, and genomics. I taught recitation
+          sections and assisted with homework, exam preparation, and grading. My
+          class size is around 60 students divided into two sections.
+        </p>
+      </div>
+      <div class="mb-6">
+        <p class={cardSubtitleClasses}>BIOL 4141 Mammalogy</p>
+        <p class={courseScheduleClasses}>
+          Teaching assistant &middot; Fall 2021
+        </p>
+        <p class={cardDescriptonClasses}>
+          This course covers the evolution and systematics of mammals. I taught
+          lab section using specimens from the museum collection. My class size
+          was 16 students.
+        </p>
+      </div>
+      <div>
+        <p class={cardSubtitleClasses}>BIOL1209 Introduction to Biology</p>
+        <p class={courseScheduleClasses}>
+          Teaching assistant &middot; Spring 2021
+        </p>
+        <p class={cardDescriptonClasses}>
+          This course is an introduction to the principles of biology that
+          covers topics on ecology, evolution, and diversity. I taught lab
+          section and assisted with grading. My class size was 60 students.
+        </p>
+      </div>
     </div>
-  </main>
+    <h3 class={cardTitleClasses}>Andalas University, Indonesia</h3>
+    <div class={cardClasses}>
+      <div class="mb-6">
+        <p class={cardSubtitleClasses}>
+          PAB125 Computer Application for Biology
+        </p>
+        <p class={courseScheduleClasses}>
+          Intructor &middot; 2nd Semester 2012
+        </p>
+        <p class={cardDescriptonClasses}>
+          This course introduces students to computer applications in biology
+          that covers topics on basic computational statistics, geographic
+          information system (GIS), and scientific photography. I developed the
+          syllabus, taught lectures, and graded assignments. My class size was
+          70 students.
+        </p>
+      </div>
+    </div>
+  </MainPage>
 </Layout>
