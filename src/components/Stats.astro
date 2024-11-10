@@ -1,4 +1,6 @@
 ---
+import LinkIcon from "./svg/LinkIcon.astro";
+
 interface Stats {
   title: string;
   value: number;
@@ -12,19 +14,9 @@ const { title, value, unit, url } = Astro.props;
 <div class="p-4 rounded text-chetwode-950 dark:text-chetwode-50">
   <p>
     <a href={url}>
-      {title}<svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-8 w-8 inline opacity-80 ml-[-4px]"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1"
-          d="m9.5 8.5h5v5m0-5-6 6"></path>
-      </svg></a
+      {title}<LinkIcon
+        style="h-8 w-8 inline stroke-chetwode-950 dark:stroke-chetwode-50 opacity-80 ml-[-4px]"
+      /></a
     >
 
     <p>

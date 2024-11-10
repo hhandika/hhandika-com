@@ -1,0 +1,25 @@
+---
+import LinkIcon from "../svg/LinkIcon.astro";
+
+interface OpenTabProps {
+  href: string;
+  text: string;
+}
+
+const { href, text } = Astro.props;
+---
+
+<div
+  class="rounded-full bg-chetwode-200 dark:bg-chetwode-800 pl-4 inline-flex items-center"
+>
+  <a
+    class="text-chetwode-950 dark:text-chetwode-50 no-underline"
+    href={href}
+    target="_blank"
+  >
+    {text}
+    <LinkIcon
+      style="h-8 w-8 inline stroke-chetwode-950 dark:stroke-chetwode-50 opacity-80"
+    />
+  </a>
+</div>
