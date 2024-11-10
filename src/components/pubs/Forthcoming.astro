@@ -7,7 +7,7 @@ interface JournalArticle {
   title: string;
   journal: string;
   url: string;
-  pdf: string;
+  pdf?: string;
 }
 
 const { author, year, title, journal, url, pdf } =
@@ -33,6 +33,15 @@ const { author, year, title, journal, url, pdf } =
   </p>
   <dir class="flex space-x-2 mt-2 -ml-10 mb-4">
     <DownloadButton text="View Online" url={url} />
-    <DownloadButton text="Download PDF" url={pdf} isDownload="true" />
+    {
+      pdf && (
+        <DownloadButton
+          text="Download PDF"
+          url={pdf}
+          isDownload="true"
+          extendClass="btn-active"
+        />
+      )
+    }
   </dir>
 </div>
