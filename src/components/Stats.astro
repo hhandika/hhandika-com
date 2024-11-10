@@ -1,5 +1,6 @@
 ---
 import LinkIcon from "./svg/LinkIcon.astro";
+import cntl from "cntl";
 
 interface Stats {
   title: string;
@@ -9,16 +10,29 @@ interface Stats {
 }
 
 const { title, value, unit, url } = Astro.props;
+
+const containerClasses = cntl`
+  p-4
+  text-pretty
+  rounded
+  text-chetwode-950
+  dark:text-chetwode-50
+`;
+
+const iconStyle = cntl`
+  h-8
+  w-8
+  inline
+  stroke-chetwode-950
+  dark:stroke-chetwode-50
+  opacity-80
+  ml-[-4px]
+`;
 ---
 
-<div class="p-4 rounded text-chetwode-950 dark:text-chetwode-50">
+<div class={containerClasses}>
   <p>
-    <a href={url}>
-      {title}<LinkIcon
-        style="h-8 w-8 inline stroke-chetwode-950 dark:stroke-chetwode-50 opacity-80 ml-[-4px]"
-      /></a
-    >
-
+    <a href={url}> {title}<LinkIcon style={iconStyle} /></a>
     <p>
       <strong class="font-bold text-2xl">{value}+</strong>
       {unit}
