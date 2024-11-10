@@ -2,26 +2,20 @@
 import Layout from "../layouts/Layout.astro";
 import SectionHead from "../components/Section.astro";
 import Content from "../components/Content.astro";
+import PageTitle from "../components/PageTitle.astro";
 ---
 
 <Layout title="Research Projects">
   <main>
-    <div class="mx-auto max-w-4xl py-6 sm:py-16 lg:py-8">
-      <div class="text-center">
-        <h1
-          class="font-serif tracking-wide dark:text-white text-gray-900 text-5xl font-semibold tracking-tight py-4"
-        >
-          Research Projects
-        </h1>
-      </div>
-      <div class="text-center mt-4 space-x-4">
+    <div class="mx-auto max-w-5xl py-6 sm:py-16 lg:py-8">
+      <PageTitle title="Research Projects">
         <h2 class="font-bold text-slate-400">Key Projects</h2>
         <p class="text-slate-400">
           small mammal diversity &middot; speciation &middot; digital field
           catalog &middot; cross-platform pipeline &middot; genomic tools
         </p>
-      </div>
-      <div class="my-8 max-w-3xl">
+      </PageTitle>
+      <div class="my-8">
         <SectionHead
           title="Small Mammal Diversity & Speciation"
           subtitle="Understanding patterns that generate species diversity within a complex island system"
