@@ -6,20 +6,31 @@ import gScholar from "../assets/icons/scholar.svg";
 import insta from "../assets/icons/instagram.svg";
 import Stats from "../components/Stats.astro";
 import rodentSvg from "../assets/icons/mammals.svg";
+import Background from "../components/Background.astro";
+import cntl from "cntl";
+
+const titleClasses = cntl`
+  font-serif
+  text-5xl
+  text-chetwode-950
+  dark:text-chetwode-50
+  py-4
+`;
+
+const heroTextClasses = cntl`
+  mt-2
+  text-pretty
+  text-lg
+  font-medium
+  text-slate-600
+  dark:text-slate-300
+  sm:text-xl/8
+`;
 ---
 
 <Layout title="Island small mammals and inclusive biodiversity software">
   <main>
-    <div
-      class="absolute inset-x-0 -top-20 -z-10 transform-gpu overflow-hidden blur-2xl opacity-80 mt-24"
-      aria-hidden="true"
-    >
-      <img
-        src={rodentSvg.src}
-        alt="Rodent illustration"
-        class="block mx-auto sm:w-2/3"
-      />
-    </div>
+    <Background backgroundImage={rodentSvg} />
     <div class="mx-auto max-w-2xl py-8 sm:py-24 lg:py-24">
       <div class="text-center item-center">
         <img
@@ -27,14 +38,10 @@ import rodentSvg from "../assets/icons/mammals.svg";
           src={profilePhoto.src}
           alt="Handika's profile photo"
         />
-        <h1
-          class="font-serif text-5xl text-chetwode-950 dark:text-chetwode-50 py-4"
-        >
+        <h1 class={titleClasses}>
           Hi, I'm <strong>Heru Handika</strong>
         </h1>
-        <p
-          class="mt-2 text-pretty text-lg font-medium text-slate-600 dark:text-slate-300 sm:text-xl/8"
-        >
+        <p class={heroTextClasses}>
           I study small mammal diversity and speciation on islands and develop
           software to improve data integration and management, promote
           collaboration, and increase the accessibility of biodiversity research
