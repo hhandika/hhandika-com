@@ -1,6 +1,5 @@
 ---
-import pdfIcon from "../../assets/icons/pdf.svg";
-import webIcon from "../../assets/icons/internet.svg";
+import DownloadButton from "../buttons/DownloadButton.astro";
 
 interface JournalArticle {
   author: string;
@@ -11,10 +10,11 @@ interface JournalArticle {
   pdf: string;
 }
 
-const { author, year, title, journal, url, pdf } = Astro.props;
+const { author, year, title, journal, url, pdf } =
+  Astro.props as JournalArticle;
 ---
 
-<div class="my-2 flex justify-between">
+<div class="my-2">
   <p class="text-chetwode-950 dark:text-chetwode-50">
     {
       author
@@ -30,11 +30,9 @@ const { author, year, title, journal, url, pdf } = Astro.props;
           </>
         ))
     }. {year}. {title}. <em>{journal}</em>.
-    <a href={url} target="_blank">
-      <img src={webIcon.src} alt="Web" class="h-6 w-6 inline" />
-    </a>
-    <a href={pdf} target="_blank">
-      <img src={pdfIcon.src} alt="PDF" class="h-6 w-6 inline" />
-    </a>
   </p>
+  <dir class="flex space-x-2 mt-2 -ml-10 mb-4">
+    <DownloadButton text="View Online" url={url} />
+    <DownloadButton text="Download PDF" url={pdf} isDownload="true" />
+  </dir>
 </div>
