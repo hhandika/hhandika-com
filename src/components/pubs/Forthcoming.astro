@@ -1,4 +1,5 @@
 ---
+import PubButton from "../../layouts/PubButton.astro";
 import DownloadButton from "../buttons/DownloadButton.astro";
 
 interface JournalArticle {
@@ -31,7 +32,7 @@ const { author, year, title, journal, url, pdf } =
         ))
     }. {year}. {title}. <em>{journal}</em>.
   </p>
-  <dir class="flex space-x-2 mt-2 -ml-10 mb-4">
+  <PubButton>
     <DownloadButton text="View Preprint" url={url} />
     {
       pdf && (
@@ -43,5 +44,5 @@ const { author, year, title, journal, url, pdf } =
         />
       )
     }
-  </dir>
+  </PubButton>
 </div>

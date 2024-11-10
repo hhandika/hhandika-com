@@ -1,4 +1,8 @@
 ---
+import PubButton from "../../layouts/PubButton.astro";
+import DownloadButton from "../buttons/DownloadButton.astro";
+import SendMessageButton from "../buttons/SendMessageButton.astro";
+
 interface JournalArticle {
   author: string;
   year: string;
@@ -6,9 +10,12 @@ interface JournalArticle {
   journal: string;
   pageVol: string;
   doi: string;
+  pdfUrl?: string;
+  isRequest: boolean;
 }
 
-const { author, year, title, journal, pageVol, doi } = Astro.props;
+const { author, year, title, journal, pageVol, doi, pdfUrl, isRequest } =
+  Astro.props as JournalArticle;
 ---
 
 <div class="my-2">
@@ -26,7 +33,27 @@ const { author, year, title, journal, pageVol, doi } = Astro.props;
             )}
           </>
         ))
-    }. {year}. {title}. <em>{journal}</em>, {pageVol}.
-    <a href={doi} target="_blank">{doi}</a>
+    }. {year}. {title}. <em>{journal}</em>, {pageVol}. {doi}
   </p>
+  <PubButton>
+    <DownloadButton text="View Article" url={doi} />
+    {
+      pdfUrl && isRequest ? (
+        <SendMessageButton
+          text="Request PDF"
+          url={pdfUrl}
+          extendClass="btn-active"
+        />
+      ) : (
+        pdfUrl && (
+          <DownloadButton
+            text="Download PDF"
+            url={pdfUrl}
+            isDownload="true"
+            extendClass="btn-active"
+          />
+        )
+      )
+    }
+  </PubButton>
 </div>
