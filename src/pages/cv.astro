@@ -3,10 +3,21 @@ import Layout from "../layouts/Layout.astro";
 import Published from "../components/pubs/Published.astro";
 import Publication from "../layouts/Publication.astro";
 import Forthcoming from "../components/pubs/Forthcoming.astro";
+import rodentSvg from "../assets/icons/mammals.svg";
 ---
 
 <Layout title="Curriculum Vitae">
   <main>
+    <div
+      class="absolute inset-x-0 -top-20 -z-10 transform-gpu overflow-hidden blur-2xl opacity-80 mt-24"
+      aria-hidden="true"
+    >
+      <img
+        src={rodentSvg.src}
+        alt="Rodent illustration"
+        class="block mx-auto sm:w-2/3"
+      />
+    </div>
     <div class="mx-auto max-w-4xl py-6 sm:py-16 lg:py-8">
       <div class="text-center">
         <h1

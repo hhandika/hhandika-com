@@ -1,0 +1,33 @@
+---
+import RodentIcon from "../components/svg/RodentIcon.astro";
+
+const { date, title, subtitle } = Astro.props;
+---
+
+<div class="relative">
+  <div class="md:flex items-center md:space-x-4 mb-3">
+    <div class="flex items-center space-x-4 md:space-x-2 md:space-x-reverse">
+      <!-- Icon -->
+      <div
+        class="flex items-center justify-center w-12 h-12 rounded-full bg-porsche-200 md:order-1 mb-4"
+      >
+        <RodentIcon fill="currentColor" />
+      </div>
+      <p
+        class="font-serif text-lg text-porsche-800 dark:text-porsche-100 md:w-28"
+      >
+        {date}
+      </p>
+    </div>
+  </div>
+  <!-- Card -->
+  <div class="order-1 bg-porsche-200 rounded-xl px-6 py-4 ml-14 md:ml-44">
+    <h3 class="font-bold text-porsche-950 text-xl">
+      {title}
+    </h3>
+    <h2 class="mb-2 text-porsche-950 text-lg">
+      {subtitle}
+    </h2>
+    <slot />
+  </div>
+</div>
