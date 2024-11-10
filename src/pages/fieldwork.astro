@@ -3,11 +3,14 @@ import PageTitle from "../components/PageTitle.astro";
 import Layout from "../layouts/Layout.astro";
 import Timeline from "../layouts/Timeline.astro";
 import TimelineItem from "../layouts/TimelineItem.astro";
+import fieldIcon from "../assets/icons/fieldwork.svg";
+import Background from "../components/Background.astro";
 ---
 
 <Layout title="Fieldwork">
   <main>
     <div class="mx-auto max-w-5xl py-6 sm:py-16 lg:py-8">
+      <Background backgroundImage={fieldIcon} />
       <PageTitle title="Fieldwork">
         <p class="dark:text-slate-400 text-slate-500">
           My journey through over 30 field expeditions across five countries,

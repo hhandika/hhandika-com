@@ -1,11 +1,14 @@
 ---
 import PageTitle from "../components/PageTitle.astro";
 import Layout from "../layouts/Layout.astro";
+import codingIcon from "../assets/icons/coding.svg";
+import Background from "../components/Background.astro";
 ---
 
 <Layout title="Software">
   <main>
     <div class="mx-auto max-w-2xl py-6 sm:py-16 lg:py-8">
+      <Background backgroundImage={codingIcon} />
       <PageTitle title="Software">
         <p class="dark:text-slate-400 text-slate-500">
           I am passionate about developing software tools that help researchers

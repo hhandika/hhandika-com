@@ -3,7 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import Published from "../components/pubs/Published.astro";
 import Publication from "../layouts/Publication.astro";
 import Forthcoming from "../components/pubs/Forthcoming.astro";
-import rodentSvg from "../assets/icons/mammals.svg";
+import cvIcon from "../assets/icons/cv.svg";
 import PageTitle from "../components/PageTitle.astro";
 import Background from "../components/Background.astro";
 ---
@@ -11,7 +11,7 @@ import Background from "../components/Background.astro";
 <Layout title="Curriculum Vitae">
   <main>
     <div class="mx-auto max-w-5xl py-6 sm:py-16 lg:py-8">
-      <Background backgroundImage={rodentSvg} />
+      <Background backgroundImage={cvIcon} />
       <PageTitle title="Publications" />
       <Publication year="Forthcoming">
         <Forthcoming
