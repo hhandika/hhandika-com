@@ -1,5 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import Timeline from "../layouts/Timeline.astro";
+import TimelineItem from "../layouts/TimelineItem.astro";
 ---
 
 <Layout title="Fieldwork">
@@ -12,31 +14,16 @@ import Layout from "../layouts/Layout.astro";
           Fieldwork
         </h1>
         <p class="dark:text-slate-400 text-slate-500">
-          This is a placeholder page for Fieldwork content. More information
-          will be added soon.
+          Over 30 field expeditions across four countries spanning more than 12
+          years
         </p>
       </div>
-      <div
-        class="border-2 absolute border-opacity-20 border-gray-700 h-full border mt-16"
-        style="left: 32%"
-      >
-      </div>
-      <!-- right timeline -->
-      <div class="mb-8 flex justify-between items-center w-full mt-16">
-        <div class="order-1 w-16"></div>
-        <div
-          class="z-20 flex items-center order-1 bg-gray-800 shadow-xl w-16 h-16 rounded-full absolute"
-          style="left: 32%; transform: translateX(-50%);"
+      <Timeline>
+        <TimelineItem
+          date="August-December 2023"
+          title="Mts. Patah, Bandahara, Kemiri"
+          subtitle="Sumatra, Indonesia 🇮🇩"
         >
-          <h1 class="mx-auto font-semibold text-lg text-white">2023</h1>
-        </div>
-        <div
-          class="order-1 bg-gray-400 rounded-lg shadow-xl px-6 py-4 max-w-2/3"
-          style="left: 40%;"
-        >
-          <h3 class="mb-3 font-bold text-gray-800 text-xl">
-            Mts. Patah, Bandahara, Kemiri
-          </h3>
           <p
             class="text-sm leading-snug tracking-wide text-gray-900 text-opacity-100"
           >
@@ -45,8 +32,45 @@ import Layout from "../layouts/Layout.astro";
             ever since the 1500s, when an unknown printer took a galley of type
             and scrambled it to make a type specimen book.
           </p>
-        </div>
-      </div>
+        </TimelineItem>
+        <TimelineItem
+          date="February-April 2023"
+          title="Mt. Gede"
+          subtitle="West Java, Indonesia 🇮🇩"
+        >
+          <p
+            class="text-sm leading-snug tracking-wide text-gray-900 text-opacity-100"
+          >
+            If you are going to use a passage of Lorem Ipsum, you need to be
+            sure there isn't anything embarrassing hidden in the middle of text.
+          </p>
+        </TimelineItem>
+        <TimelineItem
+          date="April-May 2022"
+          title="Black Gap WMA"
+          subtitle="Texas, USA 🇺🇸"
+        />
+        <TimelineItem
+          date="May 2021"
+          title="Davis Mountains"
+          subtitle="Texas, USA 🇺🇸"
+        />
+        <TimelineItem
+          date="July-August 2019"
+          title="Mt. Murud"
+          subtitle="Sarawak, Malaysia 🇲🇾"
+        />
+        <TimelineItem
+          date="July 2018"
+          title="Mt. Galang"
+          subtitle="Central Sulawesi, Indonesia 🇮🇩"
+        />
+        <TimelineItem
+          date="June 2017"
+          title="Mt. Talamau"
+          subtitle="West Sumatra, Indonesia 🇮🇩"
+        />
+      </Timeline>
     </div>
-  </main>
-</Layout>
+  </main></Layout
+>
