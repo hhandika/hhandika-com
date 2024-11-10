@@ -8,6 +8,7 @@ import Stats from "../components/Stats.astro";
 import rodentSvg from "../assets/icons/mammals.svg";
 import Background from "../components/Background.astro";
 import cntl from "cntl";
+import MainPage from "../components/MainPage.astro";
 
 const titleClasses = cntl`
   font-serif
@@ -46,46 +47,44 @@ const statsGridClasses = cntl`
 ---
 
 <Layout title="Island small mammals and inclusive biodiversity software">
-  <main>
+  <MainPage>
     <Background backgroundImage={rodentSvg} />
-    <div class="mx-auto max-w-2xl py-8 sm:py-24 lg:py-24">
-      <div class="text-center item-center">
-        <img
-          class="block mx-auto h-32 lg:h-48 rounded-full sm:mx-auto"
-          src={profilePhoto.src}
-          alt="Handika's profile photo"
-        />
-        <h1 class={titleClasses}>
-          Hi, I'm <strong>Heru Handika</strong>
-        </h1>
-        <p class={heroTextClasses}>
-          I study small mammal diversity and speciation on islands and develop
-          software to improve data integration and management, promote
-          collaboration, and increase the accessibility of biodiversity research
-        </p>
-      </div>
-      <div
-        class="flex
+    <div class="text-center item-center">
+      <img
+        class="block mx-auto h-32 lg:h-48 rounded-full sm:mx-auto"
+        src={profilePhoto.src}
+        alt="Handika's profile photo"
+      />
+      <h1 class={titleClasses}>
+        Hi, I'm <strong>Heru Handika</strong>
+      </h1>
+      <p class={heroTextClasses}>
+        I study small mammal diversity and speciation on islands and develop
+        software to improve data integration and management, promote
+        collaboration, and increase the accessibility of biodiversity research
+      </p>
+    </div>
+    <div
+      class="flex
             justify-center
             mt-4
             space-x-4"
+    >
+      <a href="https://github.com/hhandika" target="_blank" rel="noopener">
+        <img src={github.src} alt="GitHub logo" class="w-8" />
+      </a>
+      <a
+        href="https://scholar.google.com/citations?user=Jaub_M0AAAAJ&hl=en"
+        target="_blank"
+        rel="noopener"
+        ><img src={gScholar.src} alt="Google Scholar logo" class="w-8" /></a
       >
-        <a href="https://github.com/hhandika" target="_blank" rel="noopener">
-          <img src={github.src} alt="GitHub logo" class="w-8" />
-        </a>
-        <a
-          href="https://scholar.google.com/citations?user=Jaub_M0AAAAJ&hl=en"
-          target="_blank"
-          rel="noopener"
-          ><img src={gScholar.src} alt="Google Scholar logo" class="w-8" /></a
-        >
-        <a
-          href="https://www.instagram.com/heru_hdka/"
-          target="_blank"
-          rel="noopener"
-          ><img src={insta.src} alt="Instagram logo" class="w-8" /></a
-        >
-      </div>
+      <a
+        href="https://www.instagram.com/heru_hdka/"
+        target="_blank"
+        rel="noopener"
+        ><img src={insta.src} alt="Instagram logo" class="w-8" /></a
+      >
     </div>
     <div class={statsGridClasses}>
       <Stats title="Fieldwork" value="30" unit="localities" url="/fieldwork" />
@@ -97,5 +96,5 @@ const statsGridClasses = cntl`
       />
       <Stats title="Code written" value="150K" unit="lines" url="/software" />
     </div>
-  </main>
+  </MainPage>
 </Layout>
