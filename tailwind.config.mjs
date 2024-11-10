@@ -5,6 +5,7 @@ export default {
     extend: {
       colors: {
         porsche: {
+          default: "#dea96f",
           50: "#fcf8f0",
           100: "#f8eedc",
           200: "#efdab9",
@@ -18,6 +19,7 @@ export default {
           950: "#391d11",
         },
         chetwode: {
+          default: "#6f84de",
           50: "#f0f5fd",
           100: "#e4edfb",
           200: "#ceddf7",
