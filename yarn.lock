@@ -1773,6 +1773,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cntl@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "cntl@npm:1.0.0"
+  checksum: 10c0/ba587e0a6ed365cf0091caea86635bef051f1616282161238c3b08b181be0fe0768cf43aff0c8d7221d679469c7c1feff233da0d23e973c5a2e2ddbdda9e1856
+  languageName: node
+  linkType: hard
+
 "color-convert@npm:^2.0.1":
   version: 2.0.1
   resolution: "color-convert@npm:2.0.1"
@@ -4486,6 +4493,7 @@ __metadata:
     "@astrojs/check": "npm:^0.9.4"
     "@astrojs/tailwind": "npm:^5.1.2"
     astro: "npm:^4.16.8"
+    cntl: "npm:^1.0.0"
     tailwindcss: "npm:^3.4.14"
     typescript: "npm:^5.6.3"
   languageName: unknown
