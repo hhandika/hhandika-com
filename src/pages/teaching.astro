@@ -8,6 +8,7 @@ import PageSubtitle from "../components/PageSubtitle.astro";
 import MainPage from "../components/MainPage.astro";
 import CardLayout from "../layouts/CardLayout.astro";
 import Card from "../components/Card.astro";
+import PageDescription from "../components/PageDescription.astro";
 
 const cardTitleClasses = cntl`
   text-porsche-950
@@ -31,14 +32,25 @@ const cardDescriptonClasses = cntl`
 <Layout title="Teaching">
   <MainPage>
     <Background backgroundImage={teachingIcon} />
-    <PageTitle title="Teaching, Workshops, & Mentoring">
-      <p class="dark:text-slate-400 text-slate-500">
-        I have had the privilege of teaching various courses, from the
-        fundamentals of biology and genetics to the fascinating world of
-        mammalogy and the innovative use of computer applications in biology.
-        Additionally, I have led workshops and provided mentorship to students
-        both in Indonesia and the United States.
-      </p>
+    <PageTitle title="Teaching, Mentoring, & Workshops">
+      <PageDescription>
+        Most of my teaching experience comes from my time as a teaching
+        assistant at LSU, except for one course that I taught at Andalas
+        University as a senior undergraduate student. I have also conducted
+        several workshops on molecular analyses and computer programming. The
+        best part of teaching for me is mentoring students in their research and
+        in the field. Recently, in collaboration with <a
+          href="https://scholar.google.co.id/citations?user=nt8X_HAAAAAJ&hl=en"
+          target="_blank"
+          rel="noopener noreferrer">Nurul Inayah</a
+        > at <a
+          href="https://www.brin.go.id/"
+          target="_blank"
+          rel="noopener noreferrer">BRIN</a
+        > in Indonesia, we have initiated a project to mentor biology students near
+        our field sites. This initiative is part of our commitment to support equitable
+        access to research opportunities for students in Indonesia.
+      </PageDescription>
     </PageTitle>
     <PageSubtitle subtitle="Courses Taught" />
     <h3 class={cardTitleClasses}>Lousiana State University, USA</h3>

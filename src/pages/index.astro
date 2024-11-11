@@ -12,6 +12,7 @@ import MainPage from "../components/MainPage.astro";
 import mail from "../assets/icons/mail.svg";
 import cvIcon from "../assets/icons/curriculum-vitae.svg";
 import myCv from "../assets/docs/hhandika-cv.pdf";
+import PageDescription from "../components/PageDescription.astro";
 
 const socialMediaData = [
   {
@@ -59,8 +60,8 @@ const heroTextClasses = cntl`
   text-pretty
   text-lg
   font-medium
-  text-slate-600
-  dark:text-slate-300
+  text-slate-800
+  dark:text-slate-200
   sm:text-xl/8
 `;
 
@@ -101,9 +102,9 @@ const statsGridClasses = cntl`
       <h1 class={titleClasses}>
         Hi, I'm <strong>Heru Handika</strong>
       </h1>
-      <p class="text-slate-400">
+      <PageDescription>
         PhD Candidate · Louisiana State University, USA
-      </p>
+      </PageDescription>
       <p class={heroTextClasses}>
         I study small mammal diversity and speciation on islands and develop
         software to improve data integration and management, promote

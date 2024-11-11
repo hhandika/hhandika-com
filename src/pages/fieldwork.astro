@@ -6,16 +6,21 @@ import TimelineItem from "../layouts/TimelineItem.astro";
 import fieldIcon from "../assets/icons/fieldwork.svg";
 import Background from "../components/Background.astro";
 import MainPage from "../components/MainPage.astro";
+import PageDescription from "../components/PageDescription.astro";
 ---
 
 <Layout title="Fieldwork">
   <MainPage>
     <Background backgroundImage={fieldIcon} />
     <PageTitle title="Fieldwork">
-      <p class="dark:text-slate-400 text-slate-500">
-        My journey through over 30 field expeditions across five countries,
-        spanning more than 12 years.
-      </p>
+      <PageDescription>
+        My fieldwork is mainly on islands in Southeast Asia. However, I have
+        also had the privilege of joining fieldwork in Australia and the
+        mainland United States. My fieldwork journey spans over 12 years,
+        conducting 30+ field expeditions across five countries. It is only
+        possible with the help of local communities, park rangers, local
+        students, and colleagues.
+      </PageDescription>
     </PageTitle>
     <Timeline>
       <TimelineItem
@@ -26,10 +31,7 @@ import MainPage from "../components/MainPage.astro";
         <p
           class="text-sm leading-snug tracking-wide text-gray-900 text-opacity-100"
         >
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book.
+          Details will be updated soon...
         </p>
       </TimelineItem>
       <TimelineItem
@@ -40,8 +42,7 @@ import MainPage from "../components/MainPage.astro";
         <p
           class="text-sm leading-snug tracking-wide text-gray-900 text-opacity-100"
         >
-          If you are going to use a passage of Lorem Ipsum, you need to be sure
-          there isn't anything embarrassing hidden in the middle of text.
+          Details will be updated soon...
         </p>
       </TimelineItem>
       <TimelineItem
