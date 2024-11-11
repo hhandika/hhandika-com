@@ -6,12 +6,13 @@ import Background from "../components/Background.astro";
 import MainPage from "../components/MainPage.astro";
 import PageSubtitle from "../components/PageSubtitle.astro";
 import PopularArticle from "../components/pubs/PopularArticle.astro";
+import Events from "../components/Events.astro";
 ---
 
 <Layout title="Outreach">
   <MainPage>
     <Background backgroundImage={outreachIcon} />
-    <PageTitle title="Outreach">
+    <PageTitle title="Outreach & Service">
       <p class="dark:text-slate-400 text-slate-500">
         Engaging with the public through various outreach activities is a key
         part of my work. From interviews and writing popular articles to
@@ -19,6 +20,22 @@ import PopularArticle from "../components/pubs/PopularArticle.astro";
         interesting.
       </p>
     </PageTitle>
+    <PageSubtitle subtitle="In-Person Outreach" />
+    <Events
+      organizer="LSU Museum of Natural History, USA"
+      title="Night at the Museum"
+      date="14 November 2019"
+    />
+    <Events
+      organizer="LSU Museum of Natural History, USA"
+      title="Night at the Museum"
+      date="11 August 2018"
+    />
+    <Events
+      organizer="Museums Victoria, Australia"
+      title="Meet the Scientists"
+      date="22 August 2015"
+    />
     <PageSubtitle subtitle="Interviews" />
     <PopularArticle
       publisher="Science Next"
