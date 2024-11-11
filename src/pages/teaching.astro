@@ -10,28 +10,14 @@ import CardLayout from "../layouts/CardLayout.astro";
 import Card from "../components/Card.astro";
 
 const cardTitleClasses = cntl`
-  font-serif
-  font-bold
   text-porsche-950
   dark:text-porsche-50
   text-xl
-  mt-8
-`;
-
-const cardSubtitleClasses = cntl`
-  font-semibold
-  text-porsche-950
-  text-lg
 `;
 
 const courseScheduleClasses = cntl`
   font-serif
   text-lg
-  text-porsche-800
-`;
-
-const organizerClasses = cntl`
-  text-sm
   text-porsche-800
 `;
 
@@ -90,22 +76,24 @@ const cardDescriptonClasses = cntl`
         </p>
       </Card>
     </CardLayout>
-    <h3 class={cardTitleClasses}>Andalas University, Indonesia</h3>
-    <CardLayout>
-      <Card title="PAB125 Computer Application for Biology" isLast={true}>
-        <p class={courseScheduleClasses}>
-          Instructor &middot; 2<span class="align-super text-sm">nd</span>
-          semester 2012
-        </p>
-        <p class={cardDescriptonClasses}>
-          This course introduces students to computer applications in biology
-          that covers topics on basic computational statistics, geographic
-          information system (GIS), and scientific photography. I developed the
-          syllabus, taught lectures, and graded assignments. My class size was
-          70 students.
-        </p>
-      </Card>
-    </CardLayout>
+    <div class="mt-4">
+      <h3 class={cardTitleClasses}>Andalas University, Indonesia</h3>
+      <CardLayout>
+        <Card title="PAB125 Computer Application for Biology" isLast={true}>
+          <p class={courseScheduleClasses}>
+            Instructor &middot; 2<span class="align-super text-sm">nd</span>
+            semester 2012
+          </p>
+          <p class={cardDescriptonClasses}>
+            This course introduces students to computer applications in biology
+            that covers topics on basic computational statistics, geographic
+            information system (GIS), and scientific photography. I developed
+            the syllabus, taught lectures, and graded assignments. My class size
+            was 70 students.
+          </p>
+        </Card>
+      </CardLayout>
+    </div>
     <PageSubtitle subtitle="Workshops Taught" />
     <CardLayout>
       <Card

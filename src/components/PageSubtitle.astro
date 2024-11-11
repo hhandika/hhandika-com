@@ -2,11 +2,8 @@
 import cntl from "cntl";
 
 const pageTitleClasses = cntl`
-    font-serif
     text-balance 
     text-2xl
-    sm:text-4xl
-    font-semibold 
     tracking-tight 
     text-porsche-800 
     dark:text-porsche-100
@@ -17,6 +14,6 @@ const pageTitleClasses = cntl`
 const { subtitle } = Astro.props;
 ---
 
-<div class="text-center my-8">
+<div class="my-4">
   <h2 class={pageTitleClasses}>{subtitle}</h2>
 </div>
