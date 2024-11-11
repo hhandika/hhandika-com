@@ -3,12 +3,48 @@ import Layout from "../layouts/Layout.astro";
 import profilePhoto from "../assets/img/profile.jpg";
 import github from "../assets/icons/github.svg";
 import gScholar from "../assets/icons/scholar.svg";
-import insta from "../assets/icons/instagram.svg";
+import linkTree from "../assets/icons/linktree.svg";
 import Stats from "../components/Stats.astro";
 import rodentSvg from "../assets/icons/mammals.svg";
 import Background from "../components/Background.astro";
 import cntl from "cntl";
 import MainPage from "../components/MainPage.astro";
+import mail from "../assets/icons/mail.svg";
+import cvIcon from "../assets/icons/curriculum-vitae.svg";
+import myCv from "../assets/docs/hhandika-cv.pdf";
+
+const socialMediaData = [
+  {
+    name: "GitHub",
+    url: "https://github.com/hhandika",
+    alt: "Open my GitHub profile",
+    icon: github,
+  },
+  {
+    name: "Google Scholar",
+    url: "https://scholar.google.com/citations?user=Jaub_M0AAAAJ&hl=en",
+    alt: "Open my Google Scholar profile",
+    icon: gScholar,
+  },
+  {
+    name: "LinkTree",
+    url: "https://linktr.ee/hhandika",
+    alt: "Open my LinkTree profile",
+    icon: linkTree,
+  },
+  {
+    name: "Mail",
+    url: "mailto:" + "hhandi1" + "@" + "lsu.edu",
+    alt: "Send me an email",
+    icon: mail,
+  },
+  {
+    name: "CV",
+    url: myCv,
+    alt: "Download my CV",
+    icon: cvIcon,
+  },
+];
 
 const titleClasses = cntl`
   font-serif
@@ -26,6 +62,13 @@ const heroTextClasses = cntl`
   text-slate-600
   dark:text-slate-300
   sm:text-xl/8
+`;
+
+const socialMediaClasses = cntl`
+  flex
+  justify-center
+  mt-4
+  space-x-4
 `;
 
 const statsGridClasses = cntl`
@@ -67,27 +110,22 @@ const statsGridClasses = cntl`
         collaboration, and increase the accessibility of biodiversity research
       </p>
     </div>
-    <div
-      class="flex
-            justify-center
-            mt-4
-            space-x-4"
-    >
-      <a href="https://github.com/hhandika" target="_blank" rel="noopener">
-        <img src={github.src} alt="GitHub logo" class="w-8" />
-      </a>
-      <a
-        href="https://scholar.google.com/citations?user=Jaub_M0AAAAJ&hl=en"
-        target="_blank"
-        rel="noopener"
-        ><img src={gScholar.src} alt="Google Scholar logo" class="w-8" /></a
-      >
-      <a
-        href="https://www.instagram.com/heru_hdka/"
-        target="_blank"
-        rel="noopener"
-        ><img src={insta.src} alt="Instagram logo" class="w-8" /></a
-      >
+    <div class={socialMediaClasses}>
+      {
+        socialMediaData.map((item) => (
+          <a
+            href={item.name === "CV" ? item.url : item.url}
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              src={typeof item.icon === "string" ? item.icon : item.icon.src}
+              alt={item.alt}
+              class="w-8"
+            />
+          </a>
+        ))
+      }
     </div>
     <div class={statsGridClasses}>
       <Stats title="Fieldwork" value="30" unit="localities" url="/fieldwork" />
