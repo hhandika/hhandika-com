@@ -33,11 +33,15 @@ const courseScheduleClasses = cntl`
   font-serif
   text-lg
   text-porsche-800
-  mb-2
+`;
+
+const organizerClasses = cntl`
+  text-sm
+  text-porsche-800
 `;
 
 const cardDescriptonClasses = cntl`
-  mb-2
+  mt-2
   text-porsche-950
   text-md
 `;
@@ -56,7 +60,7 @@ const cardDescriptonClasses = cntl`
     <PageSubtitle subtitle="Courses Taught" />
     <h3 class={cardTitleClasses}>Lousiana State University, USA</h3>
     <div class={cardClasses}>
-      <div class="mb-6">
+      <div class="mb-4">
         <p class={cardSubtitleClasses}>BIOL 2153 Principles of Genetics</p>
         <p class={courseScheduleClasses}>
           Teaching assistant &middot; Fall 2024
@@ -68,7 +72,7 @@ const cardDescriptonClasses = cntl`
           class size is around 60 students divided into two sections.
         </p>
       </div>
-      <div class="mb-6">
+      <div class="mb-4">
         <p class={cardSubtitleClasses}>BIOL 4141 Mammalogy</p>
         <p class={courseScheduleClasses}>
           Teaching assistant &middot; Fall 2021
@@ -93,12 +97,12 @@ const cardDescriptonClasses = cntl`
     </div>
     <h3 class={cardTitleClasses}>Andalas University, Indonesia</h3>
     <div class={cardClasses}>
-      <div class="mb-6">
+      <div>
         <p class={cardSubtitleClasses}>
           PAB125 Computer Application for Biology
         </p>
         <p class={courseScheduleClasses}>
-          Intructor &middot; 2<span class="align-super text-sm">nd</span>
+          Instructor &middot; 2<span class="align-super text-sm">nd</span>
           semester 2012
         </p>
         <p class={cardDescriptonClasses}>
@@ -107,6 +111,55 @@ const cardDescriptonClasses = cntl`
           information system (GIS), and scientific photography. I developed the
           syllabus, taught lectures, and graded assignments. My class size was
           70 students.
+        </p>
+      </div>
+    </div>
+    <PageSubtitle subtitle="Workshops Taught" />
+    <div class={cardClasses}>
+      <div class="mb-4">
+        <p class={cardSubtitleClasses}>
+          Molecular Analyses of Indonesian Mammals
+        </p>
+        <p class={courseScheduleClasses}>
+          Instructor &middot; 18, 19, 25, and 26 May 2024
+        </p>
+        <p class={organizerClasses}>Organized by Generasi Biologi Indonesia</p>
+        <p class={cardDescriptonClasses}>
+          This workshop covers an introduction to mammalian phylogenetics,
+          multi-locus DNA sequencing analyses, and genomic analyses using
+          current methods and software. The workshop was tailored with data from
+          Indonesian mammals, but the methodologies are applicable to studies
+          utilizing both Sanger and short-read sequencing data.
+        </p>
+      </div>
+      <div class="mb-4">
+        <p class={cardSubtitleClasses}>
+          Coding for Conservation: Integrating GitHub to Your Workflow
+        </p>
+        <p class={courseScheduleClasses}>Instructor &middot; 8-9 April 2023</p>
+        <p class={organizerClasses}>
+          Organized by Tambora Muda, RLadies Jakarta, and RLadies Bogor
+        </p>
+        <p class={cardDescriptonClasses}>
+          This workshop was designed to introduce students to version control
+          and collaborative coding using GitHub. I taught the basics of Git and
+          GitHub, including creating a repository, staging, making commits, and
+          creating pull requests. I also introduced students to advanced
+          approach to R dependency management and writing cross-platform code.
+        </p>
+      </div>
+      <div>
+        <p class={cardSubtitleClasses}>Introduction to Phylogenetics</p>
+        <p class={courseScheduleClasses}>Instructor &middot; 15 January 2020</p>
+        <p class={organizerClasses}>
+          Organized by Graduate Student Association at Andalas University,
+          Indonesia
+        </p>
+        <p class={cardDescriptonClasses}>
+          This workshop covers the fundamental concepts of phylogenetics,
+          including phylogenetic tree construction and interpretation. It also
+          introduces students to multi-locus DNA sequencing analyses using
+          IQ-TREE.
         </p>
       </div>
     </div>
