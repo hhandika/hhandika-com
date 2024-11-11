@@ -6,13 +6,8 @@ import teachingIcon from "../assets/icons/teaching.svg";
 import Background from "../components/Background.astro";
 import PageSubtitle from "../components/PageSubtitle.astro";
 import MainPage from "../components/MainPage.astro";
-
-const cardClasses = cntl`
-  bg-porsche-200
-  rounded-2xl
-  px-6
-  py-4
-`;
+import CardLayout from "../layouts/CardLayout.astro";
+import Card from "../components/Card.astro";
 
 const cardTitleClasses = cntl`
   font-serif
@@ -61,48 +56,43 @@ const cardDescriptonClasses = cntl`
     </PageTitle>
     <PageSubtitle subtitle="Courses Taught" />
     <h3 class={cardTitleClasses}>Lousiana State University, USA</h3>
-    <div class={cardClasses}>
-      <div class="mb-4">
-        <p class={cardSubtitleClasses}>BIOL 2153 Principles of Genetics</p>
-        <p class={courseScheduleClasses}>
-          Teaching assistant &middot; Fall 2024
-        </p>
+    <CardLayout>
+      <Card
+        title="BIOL 2153 Principles of Genetics"
+        subtitle="Teaching assistant · Fall 2024"
+      >
         <p class={cardDescriptonClasses}>
           This course covers several topics, including Mendelian inheritance,
           gene mapping, population genetics, and genomics. I taught recitation
           sections and assisted with homework, exam preparation, and grading. My
           class size is around 60 students divided into two sections.
         </p>
-      </div>
-      <div class="mb-4">
-        <p class={cardSubtitleClasses}>BIOL 4141 Mammalogy</p>
-        <p class={courseScheduleClasses}>
-          Teaching assistant &middot; Fall 2021
-        </p>
+      </Card>
+      <Card
+        title="BIOL 4141 Mammalogy"
+        subtitle="Teaching assistant · Fall 2021"
+      >
         <p class={cardDescriptonClasses}>
           This course covers the evolution and systematics of mammals. I taught
           lab section using specimens from the museum collection. My class size
           was 16 students.
         </p>
-      </div>
-      <div>
-        <p class={cardSubtitleClasses}>BIOL1209 Introduction to Biology</p>
-        <p class={courseScheduleClasses}>
-          Teaching assistant &middot; Spring 2021
-        </p>
+      </Card>
+      <Card
+        title="BIOL 1209 Introduction to Biology"
+        subtitle="Teaching assistant · Spring 2021"
+        isLast={true}
+      >
         <p class={cardDescriptonClasses}>
           This course is an introduction to the principles of biology that
           covers topics on ecology, evolution, and diversity. I taught lab
           section and assisted with grading. My class size was 60 students.
         </p>
-      </div>
-    </div>
+      </Card>
+    </CardLayout>
     <h3 class={cardTitleClasses}>Andalas University, Indonesia</h3>
-    <div class={cardClasses}>
-      <div>
-        <p class={cardSubtitleClasses}>
-          PAB125 Computer Application for Biology
-        </p>
+    <CardLayout>
+      <Card title="PAB125 Computer Application for Biology" isLast={true}>
         <p class={courseScheduleClasses}>
           Instructor &middot; 2<span class="align-super text-sm">nd</span>
           semester 2012
@@ -114,18 +104,15 @@ const cardDescriptonClasses = cntl`
           syllabus, taught lectures, and graded assignments. My class size was
           70 students.
         </p>
-      </div>
-    </div>
+      </Card>
+    </CardLayout>
     <PageSubtitle subtitle="Workshops Taught" />
-    <div class={cardClasses}>
-      <div class="mb-4">
-        <p class={cardSubtitleClasses}>
-          Molecular Analyses of Indonesian Mammals
-        </p>
-        <p class={courseScheduleClasses}>
-          Instructor &middot; 18, 19, 25, and 26 May 2024
-        </p>
-        <p class={organizerClasses}>Organized by Generasi Biologi Indonesia</p>
+    <CardLayout>
+      <Card
+        title="Molecular Analyses of Indonesian Mammals"
+        subtitle="Instructor · 18, 19, 25, and 26 May 2023"
+        description="Organized by Generasi Biologi Indonesia"
+      >
         <p class={cardDescriptonClasses}>
           This workshop covers an introduction to mammalian phylogenetics,
           multi-locus DNA sequencing analyses, and genomic analyses using
@@ -133,15 +120,12 @@ const cardDescriptonClasses = cntl`
           Indonesian mammals, but the methodologies are applicable to studies
           utilizing both Sanger and short-read sequencing data.
         </p>
-      </div>
-      <div class="mb-4">
-        <p class={cardSubtitleClasses}>
-          Coding for Conservation: Integrating GitHub to Your Workflow
-        </p>
-        <p class={courseScheduleClasses}>Instructor &middot; 8-9 April 2023</p>
-        <p class={organizerClasses}>
-          Organized by Tambora Muda, RLadies Jakarta, and RLadies Bogor
-        </p>
+      </Card>
+      <Card
+        title="Coding for Conservation: Integrating GitHub to Your Workflow"
+        subtitle="Instructor · 8-9 April 2023"
+        description="Organized by Tambora Muda, RLadies Jakarta, and RLadies Bogor"
+      >
         <p class={cardDescriptonClasses}>
           This workshop was designed to introduce students to version control
           and collaborative coding using GitHub. I taught the basics of Git and
@@ -149,22 +133,21 @@ const cardDescriptonClasses = cntl`
           creating pull requests. I also introduced students to advanced
           approach to R dependency management and writing cross-platform code.
         </p>
-      </div>
-      <div>
-        <p class={cardSubtitleClasses}>Introduction to Phylogenetics</p>
-        <p class={courseScheduleClasses}>Instructor &middot; 15 January 2020</p>
-        <p class={organizerClasses}>
-          Organized by Graduate Student Association at Andalas University,
-          Indonesia
-        </p>
+      </Card>
+      <Card
+        title="Introduction to Phylogenetics"
+        subtitle="Instructor · 15 January 2020"
+        description="Organized by Graduate Student Association at Andalas University, Indonesia"
+        isLast={true}
+      >
         <p class={cardDescriptonClasses}>
           This workshop covers the fundamental concepts of phylogenetics,
           including phylogenetic tree construction and interpretation. It also
           introduces students to multi-locus DNA sequencing analyses using
           IQ-TREE.
         </p>
-      </div>
-    </div>
+      </Card>
+    </CardLayout>
     <PageSubtitle subtitle="Mantees" />
     <p>Coming soon...</p>
   </MainPage>

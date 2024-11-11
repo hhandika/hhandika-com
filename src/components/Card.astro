@@ -1,21 +1,36 @@
 ---
-interface Props {
+import cntl from "cntl";
+
+interface CardProps {
   title: string;
-  body: string;
-  href: string;
+  subtitle: string;
+  description?: string;
+  isLast?: boolean;
 }
 
-const { href, title, body } = Astro.props;
+const { title, subtitle, description, isLast } = Astro.props as CardProps;
+
+const titleClasses = cntl`
+  font-semibold
+  text-porsche-950
+  text-lg
+`;
+
+const subtitleClasses = cntl`
+  font-serif
+  text-lg
+  text-porsche-800
+`;
+
+const descriptionClasses = cntl`
+  text-sm
+  text-porsche-800
+`;
 ---
 
-<li class="link-card">
-  <a href={href}>
-    <h2>
-      {title}
-      <span>&rarr;</span>
-    </h2>
-    <p>
-      {body}
-    </p>
-  </a>
-</li>
+<div class={!isLast ? "mb-4" : ""}>
+  <p class={titleClasses}>{title}</p>
+  <p class={subtitleClasses}>{subtitle}</p>
+  {description && <p class={descriptionClasses}>{description}</p>}
+  <slot />
+</div>
