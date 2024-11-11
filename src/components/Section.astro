@@ -4,7 +4,7 @@ interface SectionHead {
   subtitle: string;
 }
 
-const { title, subtitle } = Astro.props;
+const { title, subtitle } = Astro.props as SectionHead;
 ---
 
 <div class="mt-8 mb-2">
