@@ -6,17 +6,24 @@ import PageTitle from "../components/PageTitle.astro";
 import researchIcon from "../assets/icons/research.svg";
 import Background from "../components/Background.astro";
 import MainPage from "../components/MainPage.astro";
+import PageDescription from "../components/PageDescription.astro";
 ---
 
 <Layout title="Research Projects">
   <MainPage>
     <Background backgroundImage={researchIcon} />
     <PageTitle title="Research Projects">
-      <h2 class="font-bold text-slate-400">Key Projects</h2>
-      <p class="text-slate-400">
-        small mammal diversity &middot; speciation &middot; digital field
-        catalog &middot; cross-platform pipeline &middot; genomic tools
-      </p>
+      <PageDescription>
+        My research focuses on understanding the patterns that generate species
+        diversity within and across islands. I am particularly interested in the
+        evolution of small mammals in the Indo-Australian Archipelago. I am also
+        involved in projects on other taxa, such as plants and birds. My
+        research integrates fieldwork, museum collections, and the development
+        of genomic tools to address questions about speciation, biogeography,
+        and conservation. I work towards making biodiversity research involving
+        genomic data accessible to students and researchers in countries with
+        limited computing resources.
+      </PageDescription>
     </PageTitle>
     <div class="my-8">
       <SectionHead

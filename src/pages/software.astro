@@ -4,13 +4,100 @@ import Layout from "../layouts/Layout.astro";
 import codingIcon from "../assets/icons/coding.svg";
 import Background from "../components/Background.astro";
 import MainPage from "../components/MainPage.astro";
+import PageDescription from "../components/PageDescription.astro";
+import PageSubtitle from "../components/PageSubtitle.astro";
+import CardLayout from "../layouts/CardLayout.astro";
+import Card from "../components/Card.astro";
+import cntl from "cntl";
+
+const cardDescriptonClasses = cntl`
+  mt-2
+  text-porsche-950
+  text-md
+`;
 ---
 
 <Layout title="Software">
   <MainPage>
     <Background backgroundImage={codingIcon} />
     <PageTitle title="Software Development">
-      <p class="dark:text-slate-400 text-slate-500">Coming soon!</p>
+      <PageDescription>
+        I believe high-quality software is essential not only for
+        reproducibility and advancing science but also for making science more
+        inclusive. My software development projects primarily focus on
+        developing tools to improve data collection and management in the field,
+        as well as simplifying data integration and analysis. All of this
+        software is developed with accessibility and ease of use in mind.
+        Whenever possible, I ensure cross-platform compatibility, including
+        support for Windows and mobile operating systems, which are often
+        overlooked in the scientific community.
+      </PageDescription>
     </PageTitle>
+    <PageSubtitle subtitle="Software Projects" />
+    <CardLayout>
+      <Card title="SEGUL" subtitle="A cross-platform phylogenomic tool">
+        <p class={cardDescriptonClasses}>
+          We develop SEGUL (SEquence and Genomic UtiLities) to address the need
+          for a high-performance and accessible phylogenomic tool. It is
+          particularly well-suited for large-scale phylogenomic projects,
+          especially those involving thousands of loci and hundreds of samples.
+          Additionally, SEGUL is capable of handling small Sanger sequences
+          effectively. SEGUL is a practical solution to typical phylogenomic
+          data analyses and a proof of concept for genomic software that scales
+          from smartphones, tablets, and personal computers to high-performance
+          computing clusters.
+        </p>
+      </Card>
+    </CardLayout>
+    <div class="mt-4">
+      <CardLayout>
+        <Card
+          title="NAHPU"
+          subtitle="A cross-platform field catalog for natural history collections"
+        >
+          <p class={cardDescriptonClasses}>
+            The NAHPU field catalog is a mobile and desktop application to
+            streamline data collection in the field that I developed in
+            collaboration with field biologists at institutions in the United
+            States, Mexico, Hong kong, and Indonesia . The app is designed to
+            work offline and is optimized for low-end devices. The app is
+            currently being used by several field teams in Indonesia and the
+            USA. It supports ornithology and mammalogy data collection and is
+            planned to support other taxa.
+          </p>
+        </Card>
+      </CardLayout>
+    </div>
+    <div class="mt-4">
+      <CardLayout>
+        <Card
+          title="ULLAR"
+          subtitle="An Ultrafast, scaLable, Accessible, and Reproducible pipeline for phylogenomics"
+        >
+          <p class={cardDescriptonClasses}>
+            My goal with ULLAR is to develop a lightweight and scalable pipeline
+            that requires minimal learning. In addition to Linux and macOS, the
+            typical supported operating systems for bioinformatics, ULLAR will
+            run natively on Windows whenever possible.
+          </p>
+        </Card>
+      </CardLayout>
+      <div class="mt-4">
+        <CardLayout>
+          <Card
+            title="MDD app"
+            subtitle="A mobile app for the ASM's Mammal Diversity Database"
+          >
+            <p class={cardDescriptonClasses}>
+              The Mammal Diversity Database (MDD) app is a mobile application
+              that I developed in collaboration with the MDD team. It allows
+              offline access, advanced search, and user-selected export
+              functions for the American Society of Mammalogists' Mammal
+              Diversity Database.
+            </p>
+          </Card>
+        </CardLayout>
+      </div>
+    </div>
   </MainPage>
 </Layout>
