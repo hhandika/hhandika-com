@@ -10,7 +10,7 @@ interface JournalArticle {
   title: string;
   journal: string;
   pageVol: string;
-  doi: string;
+  doi?: string;
   pdfUrl?: string;
   isRequest: boolean;
 }
@@ -36,25 +36,27 @@ const { id, author, year, title, journal, pageVol, doi, pdfUrl, isRequest } =
         ))
     }. {year}. {title}. <em>{journal}</em>, {pageVol}. {doi}
   </p>
-  <WrapButton>
-    <DownloadButton text="View Article" url={doi} />
-    {
-      pdfUrl && isRequest ? (
-        <SendMessageButton
-          text="Request PDF"
-          url={pdfUrl}
-          extendClass="btn-active"
-        />
-      ) : (
-        pdfUrl && (
-          <DownloadButton
-            text="Download PDF"
+  {
+    doi && (
+      <WrapButton>
+        <DownloadButton text="View Article" url={doi} />
+        {pdfUrl && isRequest ? (
+          <SendMessageButton
+            text="Request PDF"
             url={pdfUrl}
-            isDownload="true"
             extendClass="btn-active"
           />
-        )
-      )
-    }
-  </WrapButton>
+        ) : (
+          pdfUrl && (
+            <DownloadButton
+              text="Download PDF"
+              url={pdfUrl}
+              isDownload="true"
+              extendClass="btn-active"
+            />
+          )
+        )}
+      </WrapButton>
+    )
+  }
 </div>

@@ -1,0 +1,134 @@
+---
+import WrapButton from "../../layouts/WrapButton.astro";
+import DownloadButton from "./DownloadButton.astro";
+import SendMessageButton from "./SendMessageButton.astro";
+import cntl from "cntl";
+
+interface PubButton {
+  author: string;
+  year: string;
+  title: string;
+  doi?: string;
+  pdfUrl?: string;
+  isRequest: boolean;
+}
+
+const { title, author, year, doi, pdfUrl, isRequest } =
+  Astro.props as PubButton;
+
+const openBtnClasses = cntl`
+  btn 
+  btn-active 
+  btn-link 
+  btn-md 
+  -mx-5
+`;
+
+const closeBtnClasses = cntl`
+  btn 
+  btn-circle 
+  btn-ghost 
+  btn-xs
+`;
+
+const snackbarClasses = cntl`
+  hidden
+  alert
+  fixed
+  bottom-4
+  max-w-sm
+  md:max-w-md
+  xl:max-w-4xl
+  rounded-2xl
+`;
+---
+
+<button id="open-snackbar" class={openBtnClasses}>
+  {year}
+</button>
+
+<div id="snackbar" role="alert" class={snackbarClasses}>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    class="stroke-info h-6 w-6 shrink-0"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+  </svg>
+  <div class="text-start">
+    <h3 class="font-bold">{title}</h3>
+    <div class="text-xs">{author}. {year}</div>
+    {
+      doi && (
+        <WrapButton>
+          <DownloadButton text="View Article" url={doi} />
+          {pdfUrl && isRequest ? (
+            <SendMessageButton
+              text="Request PDF"
+              url={pdfUrl}
+              extendClass="btn-active"
+            />
+          ) : (
+            pdfUrl && (
+              <DownloadButton
+                text="Download PDF"
+                url={pdfUrl}
+                isDownload="true"
+                extendClass="btn-active"
+              />
+            )
+          )}
+        </WrapButton>
+      )
+    }
+  </div>
+  <button id="close-snackbar" class={closeBtnClasses}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-6 w-6"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M6 18L18 6M6 6l12 12"></path>
+    </svg>
+  </button>
+</div>
+
+<script>
+  document.querySelectorAll("#open-snackbar").forEach((button) => {
+    button.addEventListener("click", () => {
+      const snackbar = button.nextElementSibling;
+      // if snackbar is not hidden, then hide it
+      document
+        .querySelectorAll("#snackbar:not(.hidden)")
+        .forEach((snackbar) => {
+          snackbar.classList.add("hidden");
+        });
+      snackbar?.classList.toggle("hidden");
+      // set time 10 seconds
+      setTimeout(() => {
+        snackbar?.classList.add("hidden");
+      }, 12000);
+    });
+  });
+
+  document.querySelectorAll("#close-snackbar").forEach((closeButton) => {
+    closeButton.addEventListener("click", () => {
+      document
+        .querySelectorAll("#snackbar:not(.hidden)")
+        .forEach((snackbar) => {
+          snackbar.classList.add("hidden");
+        });
+    });
+  });
+</script>
