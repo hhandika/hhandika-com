@@ -1,5 +1,5 @@
 ---
-import PubButton from "../../layouts/PubButton.astro";
+import WrapButton from "../../layouts/WrapButton.astro";
 import DownloadButton from "../buttons/DownloadButton.astro";
 import SendMessageButton from "../buttons/SendMessageButton.astro";
 
@@ -35,7 +35,7 @@ const { author, year, title, journal, pageVol, doi, pdfUrl, isRequest } =
         ))
     }. {year}. {title}. <em>{journal}</em>, {pageVol}. {doi}
   </p>
-  <PubButton>
+  <WrapButton>
     <DownloadButton text="View Article" url={doi} />
     {
       pdfUrl && isRequest ? (
@@ -55,5 +55,5 @@ const { author, year, title, journal, pageVol, doi, pdfUrl, isRequest } =
         )
       )
     }
-  </PubButton>
+  </WrapButton>
 </div>

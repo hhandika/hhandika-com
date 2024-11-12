@@ -1,5 +1,5 @@
 ---
-import PubButton from "../../layouts/PubButton.astro";
+import WrapButton from "../../layouts/WrapButton.astro";
 import DownloadButton from "../buttons/DownloadButton.astro";
 
 interface PopularArticle {
@@ -18,7 +18,7 @@ const { publisher, title, url, pdfUrl, dateVolume } =
   <p class="text-chetwode-950 dark:text-chetwode-50">
     {publisher}: "<i>{title}</i>", {dateVolume}.
   </p>
-  <PubButton>
+  <WrapButton>
     {url && <DownloadButton text="View Article" url={url} />}
     {
       pdfUrl && (
@@ -30,5 +30,5 @@ const { publisher, title, url, pdfUrl, dateVolume } =
         />
       )
     }
-  </PubButton>
+  </WrapButton>
 </div>

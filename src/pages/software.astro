@@ -6,8 +6,8 @@ import Background from "../components/Background.astro";
 import MainPage from "../components/MainPage.astro";
 import PageDescription from "../components/PageDescription.astro";
 import PageSubtitle from "../components/PageSubtitle.astro";
-import CardLayout from "../layouts/CardLayout.astro";
-import Card from "../components/Card.astro";
+import SoftwareLayout from "../layouts/SoftwareLayout.astro";
+import SoftwareCard from "../components/SoftwareCard.astro";
 import cntl from "cntl";
 
 const cardDescriptonClasses = cntl`
@@ -35,8 +35,21 @@ const cardDescriptonClasses = cntl`
       </PageDescription>
     </PageTitle>
     <PageSubtitle subtitle="Software Projects" />
-    <CardLayout>
-      <Card title="SEGUL" subtitle="A cross-platform phylogenomic tool">
+    <SoftwareLayout>
+      <SoftwareCard
+        title="SEGUL"
+        subtitle="A cross-platform phylogenomic tool"
+        platform={[
+          "Desktop GUI",
+          "Mobile app",
+          "Command-line app",
+          "Python package",
+          "Rust crate",
+        ]}
+        repo="https://github.com/hhandika/segul"
+        docs="https://www.segul.app/"
+        install="https://www.segul.app/docs/installation/overview"
+      >
         <p class={cardDescriptonClasses}>
           We develop SEGUL (SEquence and Genomic UtiLities) to address the need
           for a high-performance and accessible phylogenomic tool. It is
@@ -48,13 +61,17 @@ const cardDescriptonClasses = cntl`
           from smartphones, tablets, and personal computers to high-performance
           computing clusters.
         </p>
-      </Card>
-    </CardLayout>
+      </SoftwareCard>
+    </SoftwareLayout>
     <div class="mt-4">
-      <CardLayout>
-        <Card
+      <SoftwareLayout>
+        <SoftwareCard
           title="NAHPU"
           subtitle="A cross-platform field catalog for natural history collections"
+          platform={["Mobile app", "Desktop app"]}
+          repo="https://github.com/hhandika/nahpu"
+          docs="https://www.nahpu.app/"
+          install="https://www.nahpu.app/docs/installation"
         >
           <p class={cardDescriptonClasses}>
             The NAHPU field catalog is a mobile and desktop application designed
@@ -69,14 +86,18 @@ const cardDescriptonClasses = cntl`
             collection for ornithology and mammalogy, with plans to extend
             support to other taxa.
           </p>
-        </Card>
-      </CardLayout>
+        </SoftwareCard>
+      </SoftwareLayout>
     </div>
     <div class="mt-4">
-      <CardLayout>
-        <Card
+      <SoftwareLayout>
+        <SoftwareCard
           title="ULLAR"
           subtitle="An Ultrafast, scaLable, Accessible, and Reproducible pipeline for phylogenomics"
+          platform={["Command-line app", "Python package"]}
+          repo="https://github.com/hhandika/ullar"
+          docs="https://github.com/hhandika/ullar"
+          install="https://github.com/hhandika/ullar"
         >
           <p class={cardDescriptonClasses}>
             ULLAR is currently in its early development stage. The goal of ULLAR
@@ -87,13 +108,17 @@ const cardDescriptonClasses = cntl`
             operating systems for bioinformatics, ULLAR will also run natively
             on Windows whenever possible.
           </p>
-        </Card>
-      </CardLayout>
+        </SoftwareCard>
+      </SoftwareLayout>
       <div class="mt-4">
-        <CardLayout>
-          <Card
+        <SoftwareLayout>
+          <SoftwareCard
             title="MDD app"
-            subtitle="A mobile app for the ASM's Mammal Diversity Database"
+            subtitle="A mobile and desktop app for the ASM's Mammal Diversity Database"
+            platform={["Mobile app", "Desktop app"]}
+            repo="https://github.com/mammaldiversity/mdd_app"
+            docs="https://github.com/mammaldiversity/mdd_app"
+            install="https://github.com/mammaldiversity/mdd_app"
           >
             <p class={cardDescriptonClasses}>
               The Mammal Diversity Database (MDD) app is a mobile application
@@ -102,8 +127,8 @@ const cardDescriptonClasses = cntl`
               functions for the American Society of Mammalogists' Mammal
               Diversity Database.
             </p>
-          </Card>
-        </CardLayout>
+          </SoftwareCard>
+        </SoftwareLayout>
       </div>
     </div>
   </MainPage>
