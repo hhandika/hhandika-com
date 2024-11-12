@@ -9,6 +9,7 @@ import MainPage from "../components/MainPage.astro";
 import CardLayout from "../layouts/CardLayout.astro";
 import Card from "../components/Card.astro";
 import PageDescription from "../components/PageDescription.astro";
+import Link from "../components/Link.astro";
 
 const cardTitleClasses = cntl`
   text-porsche-950
@@ -39,15 +40,13 @@ const cardDescriptonClasses = cntl`
         University as a senior undergraduate student. I have also conducted
         several workshops on molecular analyses and computer programming. The
         best part of teaching for me is mentoring students in their research and
-        in the field. Recently, in collaboration with <a
-          href="https://scholar.google.co.id/citations?user=nt8X_HAAAAAJ&hl=en"
+        in the field. Recently, in collaboration with <Link
+          text="Nurul Inayah"
+          url="https://scholar.google.co.id/citations?user=nt8X_HAAAAAJ&hl=en"
           target="_blank"
-          rel="noopener noreferrer">Nurul Inayah</a
-        > at <a
-          href="https://www.brin.go.id/"
-          target="_blank"
-          rel="noopener noreferrer">BRIN</a
-        > in Indonesia, we have initiated a project to mentor biology students near
+          rel="noopener noreferrer"
+        /> at <Link text="BRIN" url="https://www.brin.go.id/" />
+        in Indonesia, we have initiated a project to mentor biology students near
         our field sites. This initiative is part of our commitment to support equitable
         access to research opportunities for students in Indonesia.
       </PageDescription>
