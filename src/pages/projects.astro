@@ -7,6 +7,7 @@ import researchIcon from "../assets/icons/research.svg";
 import Background from "../components/Background.astro";
 import MainPage from "../components/MainPage.astro";
 import PageDescription from "../components/PageDescription.astro";
+import Link from "../components/Link.astro";
 ---
 
 <Layout title="Research Projects">
@@ -58,14 +59,8 @@ import PageDescription from "../components/PageDescription.astro";
       </Content>
       <Content>
         Publications:<br />
-        Handika et. al. (In prep)<br />
-        Handika et. al. (2021) [<a
-          href="https://doi.org/10.1111/zsc.12460"
-          target="_blank"
-          >web
-        </a>] [<a href="https://doi.org/10.1111/zsc.12460" target="_blank"
-          >request pdf</a
-        >]
+        Handika et. al. (In prep)
+        <p><Link url="/pubs#handika2021" text=" Handika et. al. (2021)" /></p>
       </Content><div
         class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
         aria-hidden="true"

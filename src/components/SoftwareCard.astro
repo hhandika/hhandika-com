@@ -1,8 +1,6 @@
 ---
 import cntl from "cntl";
-import Link from "./Link.astro";
-import WrapButton from "../layouts/WrapButton.astro";
-import { record } from "astro:schema";
+import ButtonLink from "./buttons/ButtonLink.astro";
 
 interface CardProps {
   title: string;
@@ -50,10 +48,10 @@ const techonolgyClasses = cntl`
       ))
     }
     <slot />
-    <p class="flex -m-3 mt-2">
-      <Link text="Code" url={repo} />
-      <Link text="Docs" url={docs} />
-      <Link text="Install" url={install} />
+    <p class="flex mt-4">
+      <ButtonLink text="Code" url={repo} />
+      <ButtonLink text="Docs" url={docs} />
+      <ButtonLink text="Install" url={install} />
     </p>
   </div>
 </div>

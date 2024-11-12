@@ -4,6 +4,7 @@ import DownloadButton from "../buttons/DownloadButton.astro";
 import SendMessageButton from "../buttons/SendMessageButton.astro";
 
 interface JournalArticle {
+  id: string;
   author: string;
   year: string;
   title: string;
@@ -14,11 +15,11 @@ interface JournalArticle {
   isRequest: boolean;
 }
 
-const { author, year, title, journal, pageVol, doi, pdfUrl, isRequest } =
+const { id, author, year, title, journal, pageVol, doi, pdfUrl, isRequest } =
   Astro.props as JournalArticle;
 ---
 
-<div class="my-2">
+<div class=`my-2 ${id}`>
   <p class="text-chetwode-950 dark:text-chetwode-50">
     {
       author
