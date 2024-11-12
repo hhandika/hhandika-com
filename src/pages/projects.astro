@@ -7,7 +7,13 @@ import researchIcon from "../assets/icons/research.svg";
 import Background from "../components/Background.astro";
 import MainPage from "../components/MainPage.astro";
 import PageDescription from "../components/PageDescription.astro";
-import Link from "../components/Link.astro";
+import PubButton from "../components/buttons/PubButton.astro";
+import ProjectPubs from "../layouts/ProjectPubs.astro";
+import cntl from "cntl";
+
+const spaceClasses = cntl`
+  mr-1
+`;
 ---
 
 <Layout title="Research Projects">
@@ -15,15 +21,15 @@ import Link from "../components/Link.astro";
     <Background backgroundImage={researchIcon} />
     <PageTitle title="Research Projects">
       <PageDescription>
-        My research centers on understanding the patterns that drive species
-        diversity both within and across islands. I have a particular interest
-        in the speciation of small mammals in the Indo-Australian Archipelago.
-        Additionally, I have been involved in projects that focus on other taxa,
-        including plants and birds. My research integrates fieldwork, museum
-        collections, and the development of genomic tools to address questions
-        related to speciation, biogeography, and conservation. I strive to make
-        biodiversity research, especially involving genomic data, accessible to
-        students and researchers with limited access to computing resources.
+        My research integrates fieldwork, museum collections, and the
+        development of digital tools to address speciation, biogeography, and
+        conservation questions. In particular, it centers on identifying
+        patterns of small mammal diversity and understanding speciation
+        processes within and across islands in the Indo-Australian Archipelago.
+        I have also engaged in projects focusing on other taxa in other regions.
+        I strive to make biodiversity research, especially involving genomic
+        data, accessible to students and researchers with limited technical
+        knowledge and access to computing resources.
       </PageDescription>
     </PageTitle>
     <div class="my-8">
@@ -32,36 +38,91 @@ import Link from "../components/Link.astro";
         subtitle="Understanding patterns that generate species diversity within a complex island system"
       />
       <Content>
-        Indo-Australian Archipelago is among the most complex island system on
-        earth. Some islands, such as Sumatra, Java, and Borneo, were continuous
-        landmass during the Pleistocene low see level, called Sunda Shelf.
-        Sulawesi was separate islands. Other islands never been connected to
-        other landmasses, such as the Moluccas and Lesser Sunda islands. Within
-        the islands, isolated mountains present more opportunities for
-        speciation. We work on deciphering small mammal diversity and evolution
-        in this complex island system, with particular focus on Sulawesi and the
-        Sunda Shelf.
+        The Indo-Australian Archipelago (IAA) is a complex island system. The
+        Sunda Shelf islands (e.g., Sumatra, Java, Borneo) were connected during
+        the Pleistocene, while the Sahul Shelf islands experienced similar
+        connections. Sulawesi formed from separate islands, and others like the
+        Moluccas and Lesser Sunda islands were never connected to nearby
+        landmasses. Isolated mountains within these islands promote speciation.
+        Our research focuses on small mammal diversity and evolution,
+        particularly in Sulawesi and the Sunda Shelf, involving extensive
+        fieldwork, genomic studies using thousands of loci, and describing
+        undocumented species as necessary. For my dissertation I focus on the
+        diversification of hill rats (<i>Bunomys</i>) on Sulawesi, aiming to
+        understand how the island's geological history shaped their diversity,
+        which will aid in conservation efforts and improve our understanding of
+        speciation on a large, isolated island.
+        <div class="mt-4 mb-2 text-semibold">Publications:</div>
+        <ProjectPubs author="Esselstyn et. al.">
+          <PubButton
+            author="Esselstyn, J.A., Achmadi, A.S., Handika, H. , Swanson, M. T., Giarla, T.C. and Rowe, K.C"
+            year="2021"
+            title="Fourteen new, endemic species of shrew (genus Crocidura) from Sulawesi reveal a spectacular island radiation"
+            doi="https://doi.org/10.1206/0003-0090.454.1.1"
+            pdfUrl="https://bioone.org/journalArticle/Download?urlId=10.1206%2F0003-0090.454.1.1"
+          />
+          <span class={spaceClasses}>,</span>
+          <PubButton
+            author="Esselstyn, J.A., Achmadi, A.S., Handika, H., Giarla, T.C. and Rowe, K.C"
+            year="2019"
+            title="A new climbing shrew from Sulawesi highlights the tangled taxonomy of an endemic radiation"
+            doi="https://doi.org/10.1093/jmammal/gyz077"
+            pdfUrl="https://esselstyn.github.io/publications/2019/Esselstyn-2019.pdf"
+          />
+          <span class={spaceClasses}>,</span>
+          <PubButton
+            author="Esselstyn, J.A., Achmadi, A.S., Handika, H. and Rowe, K.C"
+            year="2015"
+            title="A hog-nosed shrew rat (Rodentia: Muridae) from Sulawesi Island, Indonesia"
+            doi="https://doi.org/10.1093/jmammal/gyv093"
+            pdfUrl="https://esselstyn.github.io/publications/2015/Esselstyn-2015.pdf"
+          />
+        </ProjectPubs>
+        <ProjectPubs author="Handika et. al.">
+          <PubButton
+            title="A new species of Frateromys from the Northern Peninsula of Sulawesi, Indonesia"
+            year="In prep"
+            author="Handika, H., Rowe, K.C., Achmadi, A.S., Swanson, M. T., and Esselstyn, J.A"
+          />
+          <span class={spaceClasses}>,</span>
+          <PubButton
+            author="Handika, H., Achmadi, A.S., Esselstyn, J.A., and Rowe, K.C"
+            year="2021"
+            title="Molecular and morphological systematics of the Bunomys division (Rodentia: Muridae), an endemic radiation on Sulawesi"
+            doi="https://doi.org/10.1111/zsc.12460"
+            pdfUrl="https://www.researchgate.net/publication/346459790_Molecular_and_morphological_systematics_of_the_Bunomys_division_Rodentia_Muridae_an_endemic_radiation_on_Sulawesi?_tp=eyJjb250ZXh0Ijp7ImZpcnN0UGFnZSI6InB1YmxpY2F0aW9uIiwicGFnZSI6InByb2ZpbGUiLCJwcmV2aW91c1BhZ2UiOiJwcm9maWxlIiwicG9zaXRpb24iOiJwYWdlQ29udGVudCJ9fQ"
+            isRequest={true}
+          />
+        </ProjectPubs>
+        <ProjectPubs author="Nations et. al.">
+          <PubButton
+            author="Nations, J. A., Handika, H., Mursyid, A., Butsa, R. D., Apandi, Achmadi, A. S. Esselstyn, J. A"
+            year={2024}
+            title="Three new species of shrew (Soricidae: Crocidura) from West Sumatra, Indonesia: elevational and morphological divergence in syntopic sister taxa"
+            doi="https://doi.org/10.1093/jmammal/gyad126"
+            pdfUrl="https://www.researchgate.net/publication/377726198_Three_new_shrews_Soricidae_Crocidura_from_West_Sumatra_Indonesia_elevational_and_morphological_divergence_in_syntopic_sister_taxa"
+          />
+        </ProjectPubs>
+        <ProjectPubs author="Demos et. al.">
+          <PubButton
+            author="Demos, T.C., Achmadi, A.S., Handika, H., Rowe, K.C. and Esselstyn, J.A"
+            year={2017}
+            title="A new species of shrew (Soricomorpha: Crocidura) from Java, Indonesia: possible character displacement despite interspecific gene flow"
+            doi="https://doi.org/10.1093/jmammal/gyw183"
+            pdfUrl="https://esselstyn.github.io/publications/2017/Demos-2017.pdf"
+          />
+          <span class={spaceClasses}>,</span>
+          <PubButton
+            author="Demos, T.C., Achmadi, A.S., Giarla, T.C., Handika, H., Rowe, K.C. and Esselstyn, J.A"
+            year={2016}
+            title="Local endemism and within‐island diversification of shrews illustrate the importance of speciation in building Sundaland mammal diversity"
+            doi="https://doi.org/10.1111/mec.13820"
+            pdfUrl="https://esselstyn.github.io/publications/2016/Demos-2016.pdf"
+          />
+        </ProjectPubs>
       </Content>
-      <h3 class="dark:text-slate-200 text-slate-800 mt-8">
-        In situ diversification of Hill Rats (<i>Bunomys</i>) on Sulawesi
-      </h3>
-      <Content>
-        The hill-rat species group, also referred as the
-        <i>Bunomys</i> Clade, is the most diverse endemic rodent group on Sulawesi.
-        From a single known colonizing ancestor, the group has diversified into 18+
-        species. Some species occur throughout the island. The other species are
-        restricted to a single area of endemism or only known from a single mountain.
-        This project is the main focus of my PhD. We hope to understand how complex
-        geological history of Sulawesi shaped the diversity of the group. Our understanding
-        of this process will help us to understand the evolution of small mammals
-        in complex island systems. It will also provide an improved understanding
-        of species distribution to inform conservation efforts on Sulawesi.
-      </Content>
-      <Content>
-        Publications:<br />
-        Handika et. al. (In prep)
-        <p><Link url="/pubs#handika2021" text=" Handika et. al. (2021)" /></p>
-      </Content><div
+
+      <div
         class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
         aria-hidden="true"
       >
@@ -79,6 +140,17 @@ import Link from "../components/Link.astro";
         norm. I am working on developing open and accessible software to
         minimize the complexity, targeting the most neglected aspect of the
         workflow.
+        <div class="mt-4 mb-2 text-semibold">Publications:</div>
+        <ProjectPubs author="Handika and Esselstyn">
+          <PubButton
+            author="Handika, H. and Esselstyn, J. A"
+            year={2024}
+            title="SEGUL: Ultrafast, memory-efficient and mobile-friendly software for manipulating and summarizing phylogenomic datasets"
+            doi="https://doi.org/10.1111/1755-0998.13964"
+            pdfUrl="https://www.researchgate.net/publication/380125709_SEGUL_Ultrafast_memory-efficient_and_mobile-friendly_software_for_manipulating_and_summarizing_phylogenomic_datasets"
+            isRequest={true}
+          />
+        </ProjectPubs>
       </Content>
     </div>
   </MainPage>
