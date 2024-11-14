@@ -10,6 +10,7 @@ import PageDescription from "../components/PageDescription.astro";
 import PubButton from "../components/buttons/PubButton.astro";
 import ProjectPubs from "../layouts/ProjectPubs.astro";
 import cntl from "cntl";
+import Link from "../components/Link.astro";
 
 const spaceClasses = cntl`
   mr-1
@@ -21,16 +22,17 @@ const spaceClasses = cntl`
     <Background backgroundImage={researchIcon} />
     <PageTitle title="Research Projects">
       <PageDescription>
-        My research integrates fieldwork, museum collections, and the
+        My research integrates fieldwork, museum collections, genomics, and the
         development of digital tools to address speciation, biogeography, and
         conservation questions. In particular, it centers on identifying
         patterns of small mammal diversity and understanding speciation
         processes within and across islands in the Indo-Australian Archipelago.
-        I have also engaged in projects focusing on other taxa and regions to
-        help advance biodiversity research. I strive to make research involving
-        museum collections and genomic data accessible to students and
-        researchers with limited technical knowledge and access to computing
-        resources.
+        I have also engaged in projects focusing on other taxa and in different
+        regions. Most of the tools I develop are taxon-agnostic. My work is
+        collaborative, involving more than a dozen people in some projects. I
+        strive to make research using museum collections and genomic data
+        accessible to students and researchers with limited technical knowledge
+        and access to computing resources.
       </PageDescription>
     </PageTitle>
     <div class="my-8">
@@ -135,30 +137,37 @@ const spaceClasses = cntl`
         subtitle="Developing digital tools empowering new learners in evolutionary studies"
       />
       <Content>
-        Collection-based evolutionary studies have become increasingly
-        complicated, from specimen collection in the field to studies using
-        natural history collections. Museum scientists have now routinely
-        collected voucher specimens with numerous parts and complex derivative
-        data features. Studies using natural history collections often involve
+        Every aspect of collection-based evolutionary studies has become
+        increasingly complicated. Museum scientists have now routinely collected
+        voucher specimens with numerous parts and complex derivative data
+        features. Studies using natural history collections often involve
         intricate and computationally demanding genomic data analyses. To reduce
         the technical difficulties of these workflows, enhance computing
         efficiency, and improve data integration, I develop open and accessible
-        software, especially targeting the neglected aspects of the workflows. I
-        aim to facilitate inclusive and mutually beneficial international
-        collaborations through innovative data management, data-sharing
-        approaches, and low-cost computing practices. To achieve my goals, I
-        leverage emerging technologies in software development (e.g., Rust,
-        Flutter, CI/CD) to create user-friendly, memory-efficient, and
-        cross-platform software. Whenever feasible, I support mobile operating
-        systems, offering a more flexible way to collect data in the field and
-        allowing teaching genomic analyses where access to computing power is
-        limited. I also capitalize on advancements in CPU technology and
-        heterogenous computing to accelerate data processing and reduce reliance
-        on power-hungry and costly High-Performance Computing Clusters.
-        Promoting more energy- and resource-efficient data analysis practices
-        reduces the ecological footprint of evolutionary studies while allowing
-        underfunded labs to benefit from the decreasing cost of genomic
-        sequencing.
+        software, targeting part of the workflow where investment in quality
+        software is lacking or not yet present. I aim to facilitate inclusive
+        and mutually beneficial international collaborations through innovative
+        data management, data-sharing approaches, and low-cost computing
+        practices. To achieve my goals, I leverage emerging technologies in
+        software development (e.g., <Link
+          text="Rust"
+          url="https://www.rust-lang.org/"
+        />, <Link text="Flutter" url="https://flutter.dev/" />, and <Link
+          text="CI/CD"
+          url="https://en.wikipedia.org/wiki/CI/CD"
+        />
+        ) to create user-friendly, memory-efficient, and cross-platform software.
+        Whenever feasible, I support mobile operating systems, offering a more flexible
+        way to collect data in the field and allowing teaching genomic analyses where
+        access to computing power is limited. I also capitalize on advancements in
+        CPU technology and <Link
+          text="heterogenous computing"
+          url="https://en.wikipedia.org/wiki/Heterogeneous_computing"
+        /> to accelerate data processing and reduce reliance on power-hungry and
+        costly High-Performance Computing Clusters. Promoting more energy- and resource-efficient
+        data analysis practices reduces the ecological footprint of evolutionary
+        studies while allowing underfunded labs to benefit from the decreasing cost
+        of genomic sequencing.
         <div class="mt-4 mb-2 text-semibold">Publications:</div>
         <ProjectPubs author="Handika and Esselstyn">
           <PubButton

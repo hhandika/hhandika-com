@@ -9,6 +9,7 @@ import PageSubtitle from "../components/PageSubtitle.astro";
 import SoftwareLayout from "../layouts/SoftwareLayout.astro";
 import SoftwareCard from "../components/SoftwareCard.astro";
 import cntl from "cntl";
+import Link from "../components/Link.astro";
 
 const cardDescriptonClasses = cntl`
   mt-2
@@ -52,14 +53,20 @@ const cardDescriptonClasses = cntl`
       >
         <p class={cardDescriptonClasses}>
           We develop SEGUL (SEquence and Genomic UtiLities) to address the need
-          for a high-performance and accessible phylogenomic tool. It is
-          designed to handle large-scale phylogenomic datasets involving
-          thousands of loci and hundreds of samples. Additionally, SEGUL is
-          capable of handling small Sanger sequences effectively. It scales from
-          smartphones, tablets, and personal computers to high-performance
-          computing clusters. SEGUL is a practical solution to typical
-          phylogenomic data analyses and a proof of concept for scalable,
-          cross-platform genomic software.
+          for a high-performance and accessible phylogenomic tool. It features a
+          growing list of high-performance, memory-efficient solutions for
+          genomic data exploration, cleaning, filtering, and conversion tasks.
+          We designed SEGUL to handle large-scale phylogenomic datasets
+          involving thousands of loci and hundreds of samples. Additionally, it
+          is capable of handling small Sanger sequences effectively. It scales
+          from smartphones, tablets, and personal computers to high-performance
+          computing clusters and is available as a command-line app, GUI, and
+          packages for Rust and Python. Usage in other languages is also
+          possible using Rust-interface, such as usage in R using <Link
+            text="extendr"
+            url="https://extendr.github.io/"
+          />. It is a practical solution to typical phylogenomic data analyses
+          and a proof of concept for scalable, cross-platform genomic software.
         </p>
       </SoftwareCard>
     </SoftwareLayout>
