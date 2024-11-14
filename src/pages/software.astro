@@ -9,7 +9,7 @@ import PageSubtitle from "../components/PageSubtitle.astro";
 import SoftwareLayout from "../layouts/SoftwareLayout.astro";
 import SoftwareCard from "../components/SoftwareCard.astro";
 import cntl from "cntl";
-import Link from "../components/Link.astro";
+import LinkCard from "../components/LinkCard.astro";
 
 const cardDescriptonClasses = cntl`
   mt-2
@@ -62,7 +62,7 @@ const cardDescriptonClasses = cntl`
           from smartphones, tablets, and personal computers to high-performance
           computing clusters and is available as a command-line app, GUI, and
           packages for Rust and Python. Usage in other languages is also
-          possible using Rust-interface, such as usage in R using <Link
+          possible using Rust-interface, such as usage in R using <LinkCard
             text="extendr"
             url="https://extendr.github.io/"
           />. It is a practical solution to typical phylogenomic data analyses
