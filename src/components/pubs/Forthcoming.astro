@@ -7,7 +7,7 @@ interface JournalArticle {
   year: string;
   title: string;
   journal: string;
-  url: string;
+  url?: string;
   pdf?: string;
 }
 
@@ -32,17 +32,19 @@ const { author, year, title, journal, url, pdf } =
         ))
     }. {year}. {title}. <em>{journal}</em>.
   </p>
-  <WrapButton>
-    <DownloadButton text="View Preprint" url={url} />
-    {
-      pdf && (
-        <DownloadButton
-          text="Download PDF"
-          url={pdf}
-          isDownload="true"
-          extendClass="btn-active"
-        />
-      )
-    }
-  </WrapButton>
+  {
+    url && (
+      <WrapButton>
+        <DownloadButton text="View Preprint" url={url} />
+        {pdf && (
+          <DownloadButton
+            text="Download PDF"
+            url={pdf}
+            isDownload="true"
+            extendClass="btn-active"
+          />
+        )}
+      </WrapButton>
+    )
+  }
 </div>
