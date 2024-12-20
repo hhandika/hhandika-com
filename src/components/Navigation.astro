@@ -31,7 +31,7 @@ const currentPath = Astro.url.pathname;
       navItems.map(({ path, label }) => (
         <a
           href={path}
-          class={`-m-1.5 p-1.5 font-semibold hover:text-porsche-500 ${currentPath === path || currentPath === `${path}/` ? "text-porsche-600 dark:text-porsche-400" : "text-porsche-950 dark:text-porsche-50"}`}
+          class={`-m-1.5 p-1.5 font-semibold hover:text-porsche-600 dark:hover:text-porsche-300 ${currentPath === path || currentPath === `${path}/` ? "text-porsche-600 dark:text-porsche-300" : "text-porsche-950 dark:text-porsche-50"}`}
         >
           {label}
         </a>

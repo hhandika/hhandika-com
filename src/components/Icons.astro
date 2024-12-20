@@ -1,14 +1,20 @@
 ---
-
+import { Image } from "astro:assets";
 ---
 
-<img
-  class="h-8 w-auto block dark:hidden"
-  src="/favicon.svg"
-  alt="handika research logo"
-/>
-<img
-  class="h-8 w-auto hidden dark:block"
-  src="/favicon-dark.svg"
-  alt="handika research logo"
-/>
+<div class="h-8 w-auto block dark:hidden">
+  <Image
+    src="/favicon.svg"
+    alt="handika research logo"
+    height={32}
+    width={32}
+  />
+</div>
+<div class="h-8 w-auto hidden dark:block">
+  <Image
+    src="/favicon-dark.svg"
+    alt="handika research logo"
+    height={32}
+    width={32}
+  />
+</div>
