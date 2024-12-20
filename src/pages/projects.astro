@@ -10,6 +10,7 @@ import PageDescription from "../components/PageDescription.astro";
 import PubButton from "../components/buttons/PubButton.astro";
 import ProjectPubs from "../layouts/ProjectPubs.astro";
 import cntl from "cntl";
+import Link from "../components/Link.astro";
 
 const spaceClasses = cntl`
   mr-1
@@ -21,16 +22,17 @@ const spaceClasses = cntl`
     <Background backgroundImage={researchIcon} />
     <PageTitle title="Research Projects">
       <PageDescription>
-        My research integrates fieldwork, museum collections, and the
-        development of digital tools to address speciation, biogeography, and
-        conservation questions. In particular, it centers on identifying
-        patterns of small mammal diversity and understanding speciation
-        processes within and across islands in the Indo-Australian Archipelago.
-        I have also engaged in projects focusing on other taxa and regions to
-        help advance biodiversity research. I strive to make research involving
-        museum collections and genomic data accessible to students and
-        researchers with limited technical knowledge and access to computing
-        resources.
+        My research integrates fieldwork, natural history collections, genomics,
+        and the development of digital tools to address speciation,
+        biogeography, and conservation questions. In particular, it centers on
+        identifying patterns of small mammal diversity and understanding
+        speciation processes within and across islands in the Indo-Australian
+        Archipelago. I have also engaged in projects focusing on other taxa and
+        in different regions. Most of the tools I develop are taxon-agnostic. My
+        collaborative work involves more than a dozen people in some projects. I
+        strive to make research using natural history collections and genomic
+        data accessible to students and researchers with limited technical
+        knowledge and access to computing resources.
       </PageDescription>
     </PageTitle>
     <div class="my-8">
@@ -55,6 +57,39 @@ const spaceClasses = cntl`
         conservation efforts and deepen our understanding of speciation on a
         large, isolated island like Sulawesi.
         <div class="mt-4 mb-2 text-semibold">Publications:</div>
+        <ProjectPubs author="Handika et. al.">
+          <PubButton
+            title="A new species of Frateromys from the Northern Peninsula of Sulawesi, Indonesia"
+            year="In prep"
+            author="Handika, H., Rowe, K.C., Achmadi, A.S., Swanson, M. T., and Esselstyn, J.A"
+          />
+          <span class={spaceClasses}>,</span>
+          <PubButton
+            author="Handika, H., Achmadi, A.S., Esselstyn, J.A., and Rowe, K.C"
+            year="2021"
+            title="Molecular and morphological systematics of the Bunomys division (Rodentia: Muridae), an endemic radiation on Sulawesi"
+            doi="https://doi.org/10.1111/zsc.12460"
+            pdfUrl="https://www.researchgate.net/publication/346459790_Molecular_and_morphological_systematics_of_the_Bunomys_division_Rodentia_Muridae_an_endemic_radiation_on_Sulawesi?_tp=eyJjb250ZXh0Ijp7ImZpcnN0UGFnZSI6InB1YmxpY2F0aW9uIiwicGFnZSI6InByb2ZpbGUiLCJwcmV2aW91c1BhZ2UiOiJwcm9maWxlIiwicG9zaXRpb24iOiJwYWdlQ29udGVudCJ9fQ"
+            isRequest={true}
+          />
+        </ProjectPubs>
+        <ProjectPubs author="Demos et. al.">
+          <PubButton
+            author="Demos, T.C., Achmadi, A.S., Handika, H., Rowe, K.C. and Esselstyn, J.A"
+            year={2017}
+            title="A new species of shrew (Soricomorpha: Crocidura) from Java, Indonesia: possible character displacement despite interspecific gene flow"
+            doi="https://doi.org/10.1093/jmammal/gyw183"
+            pdfUrl="https://esselstyn.github.io/publications/2017/Demos-2017.pdf"
+          />
+          <span class={spaceClasses}>,</span>
+          <PubButton
+            author="Demos, T.C., Achmadi, A.S., Giarla, T.C., Handika, H., Rowe, K.C. and Esselstyn, J.A"
+            year={2016}
+            title="Local endemism and within‐island diversification of shrews illustrate the importance of speciation in building Sundaland mammal diversity"
+            doi="https://doi.org/10.1111/mec.13820"
+            pdfUrl="https://esselstyn.github.io/publications/2016/Demos-2016.pdf"
+          />
+        </ProjectPubs>
         <ProjectPubs author="Esselstyn et. al.">
           <PubButton
             author="Esselstyn, J.A., Achmadi, A.S., Handika, H. , Swanson, M. T., Giarla, T.C. and Rowe, K.C"
@@ -80,20 +115,12 @@ const spaceClasses = cntl`
             pdfUrl="https://esselstyn.github.io/publications/2015/Esselstyn-2015.pdf"
           />
         </ProjectPubs>
-        <ProjectPubs author="Handika et. al.">
+        <ProjectPubs author="Giarla et. al.">
           <PubButton
-            title="A new species of Frateromys from the Northern Peninsula of Sulawesi, Indonesia"
-            year="In prep"
-            author="Handika, H., Rowe, K.C., Achmadi, A.S., Swanson, M. T., and Esselstyn, J.A"
-          />
-          <span class={spaceClasses}>,</span>
-          <PubButton
-            author="Handika, H., Achmadi, A.S., Esselstyn, J.A., and Rowe, K.C"
-            year="2021"
-            title="Molecular and morphological systematics of the Bunomys division (Rodentia: Muridae), an endemic radiation on Sulawesi"
-            doi="https://doi.org/10.1111/zsc.12460"
-            pdfUrl="https://www.researchgate.net/publication/346459790_Molecular_and_morphological_systematics_of_the_Bunomys_division_Rodentia_Muridae_an_endemic_radiation_on_Sulawesi?_tp=eyJjb250ZXh0Ijp7ImZpcnN0UGFnZSI6InB1YmxpY2F0aW9uIiwicGFnZSI6InByb2ZpbGUiLCJwcmV2aW91c1BhZ2UiOiJwcm9maWxlIiwicG9zaXRpb24iOiJwYWdlQ29udGVudCJ9fQ"
-            isRequest={true}
+            author="Giarla, T. C., Achmadi, A.S., Fabre, P. H., Handika, H., Chipps, A. S., Swanson, M.T., Nations, J. A., Morni, M. A., William-Dee, J., Inayah, N., Jayanti, E. D., Nurdin, M.R.T.J., Griffin, K. E., Khan, F. A. A., Heaney, L. R., Rowe, K. C., Esselstyn, J. A"
+            year="Accepted"
+            title="Systematics and historical biogeography of Crunomys and Maxomys (Muridae: Murinae), with the description of a new species from Sulawesi and new genus-level classification"
+            journal="Journal of Mammalogy"
           />
         </ProjectPubs>
         <ProjectPubs author="Nations et. al.">
@@ -105,25 +132,7 @@ const spaceClasses = cntl`
             pdfUrl="https://www.researchgate.net/publication/377726198_Three_new_shrews_Soricidae_Crocidura_from_West_Sumatra_Indonesia_elevational_and_morphological_divergence_in_syntopic_sister_taxa"
           />
         </ProjectPubs>
-        <ProjectPubs author="Demos et. al.">
-          <PubButton
-            author="Demos, T.C., Achmadi, A.S., Handika, H., Rowe, K.C. and Esselstyn, J.A"
-            year={2017}
-            title="A new species of shrew (Soricomorpha: Crocidura) from Java, Indonesia: possible character displacement despite interspecific gene flow"
-            doi="https://doi.org/10.1093/jmammal/gyw183"
-            pdfUrl="https://esselstyn.github.io/publications/2017/Demos-2017.pdf"
-          />
-          <span class={spaceClasses}>,</span>
-          <PubButton
-            author="Demos, T.C., Achmadi, A.S., Giarla, T.C., Handika, H., Rowe, K.C. and Esselstyn, J.A"
-            year={2016}
-            title="Local endemism and within‐island diversification of shrews illustrate the importance of speciation in building Sundaland mammal diversity"
-            doi="https://doi.org/10.1111/mec.13820"
-            pdfUrl="https://esselstyn.github.io/publications/2016/Demos-2016.pdf"
-          />
-        </ProjectPubs>
       </Content>
-
       <div
         class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
         aria-hidden="true"
@@ -135,30 +144,37 @@ const spaceClasses = cntl`
         subtitle="Developing digital tools empowering new learners in evolutionary studies"
       />
       <Content>
-        Collection-based evolutionary studies have become increasingly
-        complicated, from specimen collection in the field to studies using
-        natural history collections. Museum scientists have now routinely
-        collected voucher specimens with numerous parts and complex derivative
-        data features. Studies using natural history collections often involve
+        Every aspect of collection-based evolutionary studies has become
+        increasingly complicated. Museum scientists have now routinely collected
+        voucher specimens with numerous parts and complex derivative data
+        features. Studies using natural history collections often involve
         intricate and computationally demanding genomic data analyses. To reduce
         the technical difficulties of these workflows, enhance computing
         efficiency, and improve data integration, I develop open and accessible
-        software, especially targeting the neglected aspects of the workflows. I
-        aim to facilitate inclusive and mutually beneficial international
-        collaborations through innovative data management, data-sharing
-        approaches, and low-cost computing practices. To achieve my goals, I
-        leverage emerging technologies in software development (e.g., Rust,
-        Flutter, CI/CD) to create user-friendly, memory-efficient, and
-        cross-platform software. Whenever feasible, I support mobile operating
-        systems, offering a more flexible way to collect data in the field and
-        allowing teaching genomic analyses where access to computing power is
-        limited. I also capitalize on advancements in CPU technology and
-        heterogenous computing to accelerate data processing and reduce reliance
-        on power-hungry and costly High-Performance Computing Clusters.
-        Promoting more energy- and resource-efficient data analysis practices
-        reduces the ecological footprint of evolutionary studies while allowing
-        underfunded labs to benefit from the decreasing cost of genomic
-        sequencing.
+        software, targeting part of the workflow where investment in quality
+        software is lacking or not yet present. I aim to facilitate inclusive
+        and mutually beneficial international collaborations through innovative
+        data management, data-sharing approaches, and low-cost computing
+        practices. To achieve my goals, I leverage emerging technologies in
+        software development (e.g., <Link
+          text="Rust"
+          url="https://www.rust-lang.org/"
+        />, <Link text="Flutter" url="https://flutter.dev/" />, and <Link
+          text="CI/CD"
+          url="https://en.wikipedia.org/wiki/CI/CD"
+        />
+        ) to create user-friendly, memory-efficient, and cross-platform software.
+        Whenever feasible, I support mobile operating systems, offering a more flexible
+        way to collect data in the field and allowing teaching genomic analyses where
+        access to computing power is limited. I also capitalize on advancements in
+        CPU technology and <Link
+          text="heterogenous computing"
+          url="https://en.wikipedia.org/wiki/Heterogeneous_computing"
+        /> to accelerate data processing and reduce reliance on power-hungry and
+        costly High-Performance Computing Clusters. Promoting more energy- and resource-efficient
+        data analysis practices reduces the ecological footprint of evolutionary
+        studies while allowing underfunded labs to benefit from the decreasing cost
+        of genomic sequencing.
         <div class="mt-4 mb-2 text-semibold">Publications:</div>
         <ProjectPubs author="Handika and Esselstyn">
           <PubButton
