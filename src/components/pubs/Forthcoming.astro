@@ -6,7 +6,7 @@ interface JournalArticle {
   author: string;
   year: string;
   title: string;
-  journal: string;
+  journal?: string;
   doi?: string;
   pdfUrl?: string;
 }
@@ -30,7 +30,7 @@ const { author, year, title, journal, doi, pdfUrl } =
             )}
           </>
         ))
-    }. {year}. {title}. <em>{journal}</em>.
+    }. {year}. {title}. {journal && <em>{journal}</em>}
   </p>
   {
     doi && (
