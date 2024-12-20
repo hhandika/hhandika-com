@@ -1430,9 +1430,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^4.16.8":
-  version: 4.16.8
-  resolution: "astro@npm:4.16.8"
+"astro@npm:4.16.15":
+  version: 4.16.15
+  resolution: "astro@npm:4.16.15"
   dependencies:
     "@astrojs/compiler": "npm:^2.10.3"
     "@astrojs/internal-helpers": "npm:0.4.1"
@@ -1476,7 +1476,7 @@ __metadata:
     micromatch: "npm:^4.0.8"
     mrmime: "npm:^2.0.0"
     neotraverse: "npm:^0.6.18"
-    ora: "npm:^8.1.0"
+    ora: "npm:^8.1.1"
     p-limit: "npm:^6.1.0"
     p-queue: "npm:^8.0.1"
     preferred-pm: "npm:^4.0.0"
@@ -1502,7 +1502,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: 10c0/692c19970c5dfb5029a19f57556dcd9070645c01a5d8b5fa8e593c317c3e289c24cda19ea5a556e4a381d7c4b7d32060217c4d178c49834e0d31206b8c95e761
+  checksum: 10c0/f993f71dd9982bccdb13aa8b0215cb1d96bc6cead16d4cd3757cf48d5aeb4490ccdca1a5e3f3c1345652f4e8ecd80d0845678da01c50f445751ac9f9f65a7f2b
   languageName: node
   linkType: hard
 
@@ -3846,7 +3846,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ora@npm:^8.1.0":
+"ora@npm:^8.1.1":
   version: 8.1.1
   resolution: "ora@npm:8.1.1"
   dependencies:
@@ -4528,7 +4528,7 @@ __metadata:
   dependencies:
     "@astrojs/check": "npm:^0.9.4"
     "@astrojs/tailwind": "npm:^5.1.2"
-    astro: "npm:^4.16.8"
+    astro: "npm:4.16.15"
     cntl: "npm:^1.0.0"
     daisyui: "npm:^4.12.14"
     tailwindcss: "npm:^3.4.14"
