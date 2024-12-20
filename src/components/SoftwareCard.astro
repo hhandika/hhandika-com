@@ -1,6 +1,6 @@
 ---
 import cntl from "cntl";
-import ButtonLink from "./buttons/ButtonLink.astro";
+import CardLink from "./buttons/CardLink.astro";
 
 interface CardProps {
   title: string;
@@ -49,9 +49,9 @@ const techonolgyClasses = cntl`
     }
     <slot />
     <p class="flex mt-4">
-      <ButtonLink text="Code" url={repo} />
-      <ButtonLink text="Docs" url={docs} />
-      <ButtonLink text="Install" url={install} />
+      <CardLink text="Code" url={repo} />
+      <CardLink text="Docs" url={docs} />
+      <CardLink text="Install" url={install} />
     </p>
   </div>
 </div>
