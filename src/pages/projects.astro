@@ -15,6 +15,13 @@ import Link from "../components/Link.astro";
 const spaceClasses = cntl`
   mr-1
 `;
+
+const firstParagraphClasses = cntl`
+  first-letter:text-7xl
+  first-letter:font-semibold
+  first-letter:mr-2
+  first-letter:float-left
+`;
 ---
 
 <Layout title="Research Projects">
@@ -41,21 +48,24 @@ const spaceClasses = cntl`
         subtitle="Understanding patterns that generate species diversity within a complex island system"
       />
       <Content>
-        The Indo-Australian Archipelago (IAA) is a complex island system. The
-        Sunda Shelf islands (e.g., Sumatra, Java, Borneo) were connected during
-        the Pleistocene, while the Sahul Shelf islands experienced similar
-        connections. Sulawesi formed from separate islands, and others like the
-        Moluccas and Lesser Sunda islands were never connected to nearby
-        landmasses. Isolated mountains within these islands promote other
-        opportunities for speciation. This project focuses on studying small
-        mammal diversity and speciation, particularly in Sulawesi and the Sunda
-        Shelf, involving extensive fieldwork, genomic studies, and describing
-        undocumented species as necessary. For my dissertation, I focus on
-        in-situ diversification of hill rats (<i>Bunomys</i>) on Sulawesi,
-        aiming to improve phylogenetic resolution and understand how the
-        island's geological history has shaped their diversity. I hope to aid
-        conservation efforts and deepen our understanding of speciation on a
-        large, isolated island like Sulawesi.
+        <p class={firstParagraphClasses}>
+          This project studies small mammal diversity and speciation in Sulawesi
+          and islands on the Sunda Shelf, Southeast Asia. During the
+          Pleistocene, the islands on the Sunda Shelf—such as Sumatra, Java, and
+          Borneo— were connected as a continuous landmass. In contrast, Sulawesi
+          were formed from separate islands. The isolated mountains on these
+          islands promote other opportunities for speciation. We conduct
+          extensive fieldwork, perform genomic studies, and describe
+          undocumented species as necessary.
+        </p>
+        <p class="mt-2">
+          My dissertation focuses on the in-situ diversification of hill rats
+          (the <i>Bunomys</i> species group) in Sulawesi. I aim to improve phylogenetic
+          resolution and understand how the island's geological history has shaped
+          the group's diversity. Ultimately, I aim to deepen our understanding of
+          speciation on a large, isolated island like Sulawesi and aid conservation
+          efforts by improving our knowledge of species diversity and endemism.
+        </p>
         <div class="mt-4 mb-2 text-semibold">Publications:</div>
         <ProjectPubs author="Handika et. al.">
           <PubButton
@@ -144,37 +154,46 @@ const spaceClasses = cntl`
         subtitle="Developing digital tools empowering new learners in evolutionary studies"
       />
       <Content>
-        Every aspect of collection-based evolutionary studies has become
-        increasingly complicated. Museum scientists have now routinely collected
-        voucher specimens with numerous parts and complex derivative data
-        features. Studies using natural history collections often involve
-        intricate and computationally demanding genomic data analyses. To reduce
-        the technical difficulties of these workflows, enhance computing
-        efficiency, and improve data integration, I develop open and accessible
-        software, targeting part of the workflow where investment in quality
-        software is lacking or not yet present. I aim to facilitate inclusive
-        and mutually beneficial international collaborations through innovative
-        data management, data-sharing approaches, and low-cost computing
-        practices. To achieve my goals, I leverage emerging technologies in
-        software development (e.g., <Link
-          text="Rust"
-          url="https://www.rust-lang.org/"
-        />, <Link text="Flutter" url="https://flutter.dev/" />, and <Link
-          text="CI/CD"
-          url="https://en.wikipedia.org/wiki/CI/CD"
-        />
-        ) to create user-friendly, memory-efficient, and cross-platform software.
-        Whenever feasible, I support mobile operating systems, offering a more flexible
-        way to collect data in the field and allowing teaching genomic analyses where
-        access to computing power is limited. I also capitalize on advancements in
-        CPU technology and <Link
-          text="heterogenous computing"
-          url="https://en.wikipedia.org/wiki/Heterogeneous_computing"
-        /> to accelerate data processing and reduce reliance on power-hungry and
-        costly High-Performance Computing Clusters. Promoting more energy- and resource-efficient
-        data analysis practices reduces the ecological footprint of evolutionary
-        studies while allowing underfunded labs to benefit from the decreasing cost
-        of genomic sequencing.
+        <p class={firstParagraphClasses}>
+          My goal for this project is to promote efficient, integrative, and
+          inclusive collection-based evolutionary studies through
+          high-performance computing and innovative data management and
+          data-sharing approaches. Additionally, I aim to facilitate low-cost
+          computing practices in genomic studies, which will reduce the
+          ecological footprint of evolutionary studies while allowing
+          underfunded labs to benefit from the decreasing cost of genomic
+          sequencing. I create user-friendly, memory-efficient, cross-platform
+          apps to achieve my objectives. The development of the apps leverages
+          emerging technologies in software development (e.g., <Link
+            text="Rust"
+            url="https://www.rust-lang.org/"
+          />, <Link text="Flutter" url="https://flutter.dev/" />, and <Link
+            text="CI/CD"
+            url="https://en.wikipedia.org/wiki/CI/CD"
+          />
+          ). Furthermore, I take advantage of advancements in CPU technology and heterogenous
+          computing to accelerate data processing and minimize reliance on expensive
+          and power-hungry High-Performance Computing Clusters.
+        </p>
+        <p class="mt-2">
+          I developed three apps under this project: <Link
+            text="NAHPU"
+            url="https://nahpu.app"
+          />, <Link text="SEGUL" url="https://segul.app" />, and ULLAR. NAHPU is
+          a digital field catalog that simplifies data acquisition and
+          management for increasingly complex collection-based evolutionary
+          studies. The app integrates specimen, tissue, and derivative data,
+          such as specimen photographs and audio recordings. It streamlines data
+          management from fieldwork to the museum database, eliminating typical
+          secondary data entry required for conventional paper-based field
+          catalogs. SEGUL is a high-performance, memory-efficient tool for
+          genomic studies. It is a proof of concept for a genomic tool that runs
+          from mobile devices and personal computers to high-performance
+          computing clusters. It enables teaching genomic analyses in
+          environments with limited access to computing power. ULLAR is
+          currently in the early development stage. I develop the app to
+          minimize dependencies and simplify phylogenomic data analyses.
+        </p>
         <div class="mt-4 mb-2 text-semibold">Publications:</div>
         <ProjectPubs author="Handika et al.">
           <PubButton
@@ -247,7 +266,9 @@ const spaceClasses = cntl`
           Genomics and Systematics of Antbirds in the Neotropics
         </h3>
         <p>
-          This project is led by <Link
+          I am involved in two projects led by Marky Mutchler (the University of
+          Chicago) and Ryan Zucker (Cornell University). Both students are under
+          the supervision of <Link
             text="Dr. Glaucia Del-Rio"
             url="https://www.gdel-rio.com/"
           />, the University of Florida. We aim to understand the genomic basis
