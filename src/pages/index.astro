@@ -13,6 +13,7 @@ import mail from "../assets/icons/mail.svg";
 import cvIcon from "../assets/icons/curriculum-vitae.svg";
 import myCv from "../assets/docs/hhandika-cv.pdf";
 import PageDescription from "../components/PageDescription.astro";
+import Image from "astro/components/Image.astro";
 
 const socialMediaData = [
   {
@@ -93,9 +94,13 @@ const statsGridClasses = cntl`
   <MainPage>
     <Background backgroundImage={rodentSvg} />
     <div class="text-center item-center mt-8 md:mt-16">
-      <img
-        class="block mx-auto h-32 lg:h-48 rounded-full sm:mx-auto"
-        src={profilePhoto.src}
+      <Image
+        class="block mx-auto rounded-full sm:mx-auto"
+        src={profilePhoto}
+        height={180}
+        width={180}
+        decoding="async"
+        loading="lazy"
         alt="Handika's profile"
       />
       <h1 class={titleClasses}>
