@@ -12,11 +12,22 @@ interface JournalArticle {
   pageVol: string;
   doi?: string;
   pdfUrl?: string;
+  altUrl?: string;
   isRequest: boolean;
 }
 
-const { id, author, year, title, journal, pageVol, doi, pdfUrl, isRequest } =
-  Astro.props as JournalArticle;
+const {
+  id,
+  author,
+  year,
+  title,
+  journal,
+  pageVol,
+  doi,
+  altUrl,
+  pdfUrl,
+  isRequest,
+} = Astro.props as JournalArticle;
 ---
 
 <div class=`my-2 ${id}`>
@@ -37,9 +48,9 @@ const { id, author, year, title, journal, pageVol, doi, pdfUrl, isRequest } =
     }. {year}. {title}. <em>{journal}</em>, {pageVol}. {doi}
   </p>
   {
-    doi && (
+    (doi || altUrl) && (
       <WrapButton>
-        <DownloadButton text="View Article" url={doi} />
+        <DownloadButton text="View Article" url={doi ? doi : altUrl} />
         {pdfUrl && isRequest ? (
           <SendMessageButton
             text="Request PDF"
