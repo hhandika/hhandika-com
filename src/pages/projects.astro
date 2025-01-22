@@ -11,6 +11,10 @@ import PubButton from "../components/buttons/PubButton.astro";
 import ProjectPubs from "../layouts/ProjectPubs.astro";
 import cntl from "cntl";
 import Link from "../components/Link.astro";
+import Image from "astro/components/Image.astro";
+import lenomys from "../assets/img/lenomys-meyeri.jpg";
+import nahpu from "../assets/img/nahpu-preview.jpg";
+import herbarium from "../assets/img/herbarium.jpg";
 
 const spaceClasses = cntl`
   mr-1
@@ -48,6 +52,12 @@ const firstParagraphClasses = cntl`
         subtitle="Understanding patterns that generate species diversity within a complex island system"
       />
       <Content>
+        <Image
+          src={lenomys}
+          alt="Lenomys meyeri"
+          width={340}
+          class="rounded-xl float-left mr-4 mt-2"
+        />
         <p class={firstParagraphClasses}>
           This project studies small mammal diversity and speciation in Sulawesi
           and islands on the Sunda Shelf, Southeast Asia. During the
@@ -154,6 +164,12 @@ const firstParagraphClasses = cntl`
         subtitle="Developing digital tools empowering new learners in evolutionary studies"
       />
       <Content>
+        <Image
+          src={nahpu}
+          alt="SEGUL app preview"
+          width={200}
+          class="rounded-xl float-right ml-4"
+        />
         <p class={firstParagraphClasses}>
           My goal for this project is to promote efficient, integrative, and
           inclusive collection-based evolutionary studies through
@@ -194,6 +210,7 @@ const firstParagraphClasses = cntl`
           currently in the early development stage. I develop the app to
           minimize dependencies and simplify phylogenomic data analyses.
         </p>
+
         <div class="mt-4 mb-2 text-semibold">Publications:</div>
         <ProjectPubs author="Handika et al.">
           <PubButton
@@ -213,68 +230,74 @@ const firstParagraphClasses = cntl`
           />
         </ProjectPubs>
       </Content>
-      <SectionHead
-        title="GPU-Agnostic, Low-cost Machine Learning Approaches"
-        subtitle="Developing on-devices, cross-platform machine-learning methods to improve biodiversity research"
-      />
-      <Content>
-        Coming soon as a part of my postdoc project at <Link
-          text="Porto's lab"
-          url="https://agporto.github.io/"
-        />, the University of Florida.
-      </Content>
-      <hr class="my-4 border-t-2 border-chetwode-200 rounded-full" />
-      <SectionHead
-        title="Other Projects"
-        subtitle="Projects on other taxa and regions"
-      />
-      <Content>
-        <h3 class="font-semibold">Specimen Digitization</h3>
-        <p>
-          This project is led by Dr. Nurainas at the Herbarium Universitas
-          Andalas (ANDA) funded through the collection and data mobilization
-          grant provided by the Global Biodiversity Information Facility (GBIF).
-          We aim to digitize >65,000 sheets of the herbarium specimens at ANDA
-          and make the data accessible through the GBIF portal.
-        </p>
-        <div class="mt-4 mb-2 text-semibold">Published datasets:</div>
-        <ProjectPubs author="Nurainas et. al.">
-          <PubButton
-            author="Nurainas N, Amolia R R, Taufiq A, Handika H, Syamsuardi S"
-            year="2024a"
-            title="Flora of Sumatra : Vascular plant collection from Batang Toru Forest deposited in ANDA Herbarium"
-            doi="https://doi.org/10.15468/ue7xy"
-          />
-          <span class={spaceClasses}>,</span>
-          <PubButton
-            author="Nurainas N, Taufiq A, Handika H, Syamsuardi S"
-            year="2024b"
-            title="lora of Sumatra: Vascular plant collection of selected families deposited at Herbarium of Andalas University (ANDA)"
-            doi="https://doi.org/10.15468/sncpxn"
-          />
-          <span class={spaceClasses}>,</span>
-          <PubButton
-            author="Nurainas N, Taufiq A, Handika H, Harapan T S, Syamsuardi S"
-            year="2024c"
-            title="Flora Sumatra: Digitizing and data basing specimens of the Sumatran Flora deposited at Herbarium Universitas Andalas (ANDA)-Part 2"
-            doi="https://doi.org/10.15468/55evew "
-          />
-        </ProjectPubs>
-      </Content>
-      <Content>
-        <h3 class="font-semibold">
-          Genomics and Systematics of Antbirds in the Neotropics
-        </h3>
-        <p>
-          I am involved in two projects led by Marky Mutchler (the University of
-          Chicago) and Ryan Zucker (Cornell University). Both students are under
-          the supervision of <Link
-            text="Dr. Glaucia Del-Rio"
-            url="https://www.gdel-rio.com/"
-          />, the University of Florida. We aim to understand the genomic basis
-          of speciation and systematics of antbirds in the Neotropics.
-        </p>
-      </Content>
     </div>
+    <SectionHead
+      title="GPU-Agnostic, Low-cost Machine Learning Approaches"
+      subtitle="Developing on-devices, cross-platform machine-learning methods to improve biodiversity research"
+    />
+    <Content>
+      Coming soon as a part of my postdoc project at <Link
+        text="Porto's lab"
+        url="https://agporto.github.io/"
+      />, the University of Florida.
+    </Content>
+    <hr class="my-4 border-t-2 border-chetwode-200 rounded-full" />
+    <Image
+      src={herbarium}
+      alt="Herbarium Universitas Andalas"
+      width={220}
+      class="rounded-xl float-right ml-4 mt-8"
+    />
+    <SectionHead
+      title="Other Projects"
+      subtitle="Projects on other taxa and regions"
+    />
+    <Content>
+      <h3 class="font-semibold">Specimen Digitization</h3>
+      <p>
+        This project is led by Dr. Nurainas at the Herbarium Universitas Andalas
+        (ANDA) funded through the collection and data mobilization grant
+        provided by the Global Biodiversity Information Facility (GBIF). We aim
+        to digitize >65,000 sheets of the herbarium specimens at ANDA and make
+        the data accessible through the GBIF portal.
+      </p>
+      <div class="mt-4 mb-2 text-semibold">Published datasets:</div>
+      <ProjectPubs author="Nurainas et. al.">
+        <PubButton
+          author="Nurainas N, Amolia R R, Taufiq A, Handika H, Syamsuardi S"
+          year="2024a"
+          title="Flora of Sumatra : Vascular plant collection from Batang Toru Forest deposited in ANDA Herbarium"
+          doi="https://doi.org/10.15468/ue7xyn"
+        />
+        <span class={spaceClasses}>,</span>
+        <PubButton
+          author="Nurainas N, Taufiq A, Handika H, Syamsuardi S"
+          year="2024b"
+          title="lora of Sumatra: Vascular plant collection of selected families deposited at Herbarium of Andalas University (ANDA)"
+          doi="https://doi.org/10.15468/sncpxn"
+        />
+        <span class={spaceClasses}>,</span>
+        <PubButton
+          author="Nurainas N, Taufiq A, Handika H, Harapan T S, Syamsuardi S"
+          year="2024c"
+          title="Flora Sumatra: Digitizing and data basing specimens of the Sumatran Flora deposited at Herbarium Universitas Andalas (ANDA)-Part 2"
+          doi="https://doi.org/10.15468/55evew "
+        />
+      </ProjectPubs>
+    </Content>
+    <Content>
+      <h3 class="font-semibold">
+        Genomics and Systematics of Antbirds in the Neotropics
+      </h3>
+      <p>
+        I am involved in two projects led by Marky Mutchler (the University of
+        Chicago) and Ryan Zucker (Cornell University). Both students are under
+        the supervision of <Link
+          text="Dr. Glaucia Del-Rio"
+          url="https://www.gdel-rio.com/"
+        />, the University of Florida. We aim to understand the genomic basis of
+        speciation and systematics of antbirds in the Neotropics.
+      </p>
+    </Content>
   </MainPage>
 </Layout>
