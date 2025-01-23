@@ -2,10 +2,11 @@
 import WrapButton from "../../layouts/WrapButton.astro";
 import DownloadButton from "../buttons/DownloadButton.astro";
 import SendMessageButton from "../buttons/SendMessageButton.astro";
+import Authors from "./Authors.astro";
 
 interface JournalArticle {
   id: string;
-  author: string;
+  authors: string[];
   year: string;
   title: string;
   journal: string;
@@ -18,7 +19,7 @@ interface JournalArticle {
 
 const {
   id,
-  author,
+  authors,
   year,
   title,
   journal,
@@ -32,20 +33,9 @@ const {
 
 <div class=`my-2 ${id}`>
   <p class="text-chetwode-950 dark:text-chetwode-50">
-    {
-      author
-        .split("Handika, H.")
-        .map((part: string, index: number, array: string[]) => (
-          <>
-            {part}
-            {index < array.length - 1 && (
-              <strong class="text-chetwode-700 dark:text-chetwode-400 -mr-1">
-                Handika, H.
-              </strong>
-            )}
-          </>
-        ))
-    }. {year}. {title}. <em>{journal}</em>, {pageVol}. {doi}
+    <Authors authors={authors} />. {year}. {title}. <em>{journal}</em>, {
+      pageVol
+    }. {doi}
   </p>
   {
     (doi || altUrl) && (
