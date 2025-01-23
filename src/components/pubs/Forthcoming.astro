@@ -1,9 +1,10 @@
 ---
 import WrapButton from "../../layouts/WrapButton.astro";
 import DownloadButton from "../buttons/DownloadButton.astro";
+import Authors from "./Authors.astro";
 
 interface JournalArticle {
-  author: string;
+  authors: string[];
   year: string;
   title: string;
   journal?: string;
@@ -11,26 +12,14 @@ interface JournalArticle {
   pdfUrl?: string;
 }
 
-const { author, year, title, journal, doi, pdfUrl } =
+const { authors, year, title, journal, doi, pdfUrl } =
   Astro.props as JournalArticle;
 ---
 
 <div class="my-2">
   <p class="text-chetwode-950 dark:text-chetwode-50">
-    {
-      author
-        .split("Handika, H.")
-        .map((part: string, index: number, array: string[]) => (
-          <>
-            {part}
-            {index < array.length - 1 && (
-              <strong class="text-chetwode-700 dark:text-chetwode-400 -mr-1">
-                Handika, H.
-              </strong>
-            )}
-          </>
-        ))
-    }. {year}. {title}. {journal && <em>{journal}</em>}
+    <Authors authors={authors} />.
+    {year}. {title}. {journal && <em>{journal}</em>}
   </p>
   {
     doi && (
