@@ -121,17 +121,20 @@ const statsGridClasses = cntl`
     <div class={socialMediaClasses}>
       {
         socialMediaData.map((item) => (
-          <a
-            href={item.name === "CV" ? item.url : item.url}
-            target="_blank"
-            rel="noopener"
+          <div
+            class="tooltip tooltip-bottom"
+            data-tip={item.alt}
+            aria-label={item.name}
           >
-            <img
-              src={typeof item.icon === "string" ? item.icon : item.icon.src}
-              alt={item.alt}
-              class="w-8"
-            />
-          </a>
+            <a href={item.url} target="_blank" rel="noopener">
+              <Image
+                src={typeof item.icon === "string" ? item.icon : item.icon}
+                alt={item.alt}
+                width={36}
+                height={36}
+              />
+            </a>
+          </div>
         ))
       }
     </div>
