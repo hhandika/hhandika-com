@@ -10,9 +10,11 @@ interface JournalArticle {
   journal?: string;
   doi?: string;
   pdfUrl?: string;
+  url?: string;
+  codeUrl?: string;
 }
 
-const { authors, year, title, journal, doi, pdfUrl } =
+const { authors, year, title, journal, doi, pdfUrl, url, codeUrl } =
   Astro.props as JournalArticle;
 ---
 
@@ -33,6 +35,31 @@ const { authors, year, title, journal, doi, pdfUrl } =
             extendClass="btn-active"
           />
         )}
+      </WrapButton>
+    )
+  }
+  {
+    url && (
+      <WrapButton>
+        <DownloadButton text="Learn More" url={url} />
+        {codeUrl && (
+          <DownloadButton
+            text="View Code"
+            url={codeUrl}
+            extendClass="btn-active"
+          />
+        )}
+      </WrapButton>
+    )
+  }
+  {
+    codeUrl && !url && (
+      <WrapButton>
+        <DownloadButton
+          text="View Code"
+          url={codeUrl}
+          extendClass="btn-active"
+        />
       </WrapButton>
     )
   }
