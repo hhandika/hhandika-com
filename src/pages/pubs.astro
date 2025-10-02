@@ -13,7 +13,7 @@ import Background from "../components/Background.astro";
     <div class="mx-auto h-full max-w-5xl py-6 sm:py-16 lg:py-8">
       <Background backgroundImage={cvIcon} />
       <PageTitle title="Publications" />
-      <Publication year="Forthcoming" />
+      <!-- <Publication year="Forthcoming" /> -->
 
       <Publication year="2025">
         <Published
@@ -369,8 +369,11 @@ import Background from "../components/Background.astro";
           authors={[
             "Handika, H.",
             "Moncrieff, A. E.",
-            "Del-Rio G.",
+            "Del-Rio, G.",
             "Canton, R.",
+            "Jaiswal, A.",
+            "Gan, J. B.",
+            "Henderson, C.",
             "Rutledge, S. L.",
             "Hernández-Canchola, G.",
             "Babb-Biernacki, S. J.",
@@ -385,6 +388,14 @@ import Background from "../components/Background.astro";
           year="In prep"
           title="NAHPU: A field cataloging application for efficient, repeatable, and inclusive collection-based evolutionary studies"
           journal=""
+          url="https://nahpu.app"
+          codeUrl="https://github.com/nahpu/nahpu"
+        />
+        <Forthcoming
+          authors={["Handika, H.", "Del-Rio, G. D.", "Esselstyn, J. A"]}
+          year="In prep"
+          title="ULLAR: An ULtrafast, scaLable, Accessible, and Reproducible phylogenomic pipeline"
+          codeUrl="https://github.com/hhandika/ullar"
         />
         <Forthcoming
           authors={[
