@@ -14,23 +14,26 @@ import Background from "../components/Background.astro";
       <Background backgroundImage={cvIcon} />
       <PageTitle title="Publications" />
       <Publication year="Forthcoming" />
-      <Forthcoming
-        authors={[
-          "Burgin, C. J.",
-          "Zijlstra, J. S.",
-          "Becker, M. A.",
-          "Handika, H.",
-          "Widness, J.",
-          "Liphardt, S.",
-          "Huckaby, D. G.",
-          "Upham, N. S",
-        ]}
-        year="Accepted"
-        title="How many mammal species are there now? Updates and trends in taxonomic, nomenclatural, and geographic knowledge"
-        journal="Journal of Mammalogy"
-        doi="https://doi.org/10.1101/2025.02.27.640393"
-      />
+
       <Publication year="2025">
+        <Published
+          authors={[
+            "Burgin, C. J.",
+            "Zijlstra, J. S.",
+            "Becker, M. A.",
+            "Handika, H.",
+            "Widness, J.",
+            "Liphardt, S.",
+            "Huckaby, D. G.",
+            "Upham, N. S",
+          ]}
+          year={2025}
+          title="How many mammal species are there now? Updates and trends in taxonomic, nomenclatural, and geographic knowledge"
+          journal="Journal of Mammalogy"
+          pageVol="gyaf047"
+          doi="https://doi.org/10.1093/jmammal/gyaf047"
+          pdfUrl="https://doi.org/10.1093/jmammal/gyaf047"
+        />
         <Published
           authors={[
             "Giarla, T. C.",
