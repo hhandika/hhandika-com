@@ -12,9 +12,11 @@ interface PubButton {
   doi?: string;
   pdfUrl?: string;
   isRequest: boolean;
+  url?: string;
+  codeUrl?: string;
 }
 
-const { title, author, year, doi, pdfUrl, isRequest } =
+const { title, author, year, doi, pdfUrl, isRequest, url, codeUrl } =
   Astro.props as PubButton;
 
 const openBtnClasses = cntl`
@@ -59,27 +61,70 @@ const snackbarClasses = cntl`
     <h3 class="font-bold">{title}</h3>
     <div class="text-xs">{author}. {year}</div>
     {
-      doi && (
-        <WrapButton>
-          <DownloadButton text="View Article" url={doi} />
-          {pdfUrl && isRequest ? (
-            <SendMessageButton
-              text="Request PDF"
-              url={pdfUrl}
-              extendClass="btn-active"
-            />
-          ) : (
-            pdfUrl && (
-              <DownloadButton
-                text="Download PDF"
-                url={pdfUrl}
-                isDownload="true"
-                extendClass="btn-active"
-              />
-            )
-          )}
-        </WrapButton>
-      )
+      (() => {
+        let activeGiven = false;
+        const active = () => {
+          if (activeGiven) return "";
+          activeGiven = true;
+          return "btn-active";
+        };
+
+        return (
+          (doi || url || codeUrl) && (
+            <WrapButton>
+              {doi && (
+                <>
+                  {pdfUrl &&
+                    (isRequest ? (
+                      <SendMessageButton
+                        text="Request PDF"
+                        url={pdfUrl}
+                        extendClass={active()}
+                      />
+                    ) : (
+                      <DownloadButton
+                        text="Download PDF"
+                        url={pdfUrl}
+                        isDownload="true"
+                        extendClass={active()}
+                      />
+                    ))}
+                  <DownloadButton
+                    text="Article"
+                    url={doi}
+                    extendClass={!pdfUrl ? active() : ""}
+                  />
+                </>
+              )}
+              {url && (
+                <>
+                  <DownloadButton
+                    text="Website"
+                    url={url}
+                    extendClass={!isRequest && !doi && !pdfUrl ? active() : ""}
+                  />
+                  {codeUrl && (
+                    <DownloadButton
+                      text="Code"
+                      url={codeUrl}
+                      extendClass={
+                        !isRequest && !doi && !pdfUrl && !url ? active() : ""
+                      }
+                    />
+                  )}
+                </>
+              )}
+              {!url && codeUrl && !doi && (
+                <DownloadButton
+                  text="Code"
+                  url={codeUrl}
+                  extendClass={!isRequest && !doi && !pdfUrl ? active() : ""}
+                />
+              )}
+            </WrapButton>
+          )
+        );
+      })()
     }
   </div>
   <button id="close-snackbar" class={closeBtnClasses}>

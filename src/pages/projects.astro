@@ -79,6 +79,12 @@ const firstParagraphClasses = cntl`
         <div class="mt-4 mb-2 text-semibold">Publications:</div>
         <ProjectPubs author="Handika et. al.">
           <PubButton
+            title="An island of islands: complex gene tree discordance and local endemism on a recent, rapid rodent radiation on Sulawesi"
+            year="In prep"
+            author="Handika, H., Rowe, K.C., Achmadi, A.S., Zulkurnia Irsaf, Swanson, M. T., and Esselstyn, J.A"
+          />
+          <span class={spaceClasses}>,</span>
+          <PubButton
             title="A new species of Frateromys from the Northern Peninsula of Sulawesi, Indonesia"
             year="In prep"
             author="Handika, H., Rowe, K.C., Achmadi, A.S., Swanson, M. T., and Esselstyn, J.A"
@@ -207,6 +213,22 @@ const firstParagraphClasses = cntl`
           power-hungry High-Performance Computing Clusters.
         </p>
         <div class="mt-4 mb-2 text-semibold">Publications:</div>
+        <ProjectPubs author="Handika et al.">
+          <PubButton
+            author="Handika, H., Moncrieff, A. E., Del-Rio G., Canton, R., Rutledge, S. L., Hernández-Canchola, G., Babb-Biernacki, S. J.  Chipps, A. S., Pérez-Amaya, N., Chornelia, A., Morales-Martínez, D. M., McCallum, Q., Thom, G., Esselstyn, J. A"
+            year="In prep"
+            title="NAHPU: A field cataloging application for efficient, repeatable, and inclusive collection-based evolutionary studies"
+            codeUrl="https://github.com/nahpu/nahpu"
+            url="https://nahpu.app"
+          />
+          <span class={spaceClasses}>,</span>
+          <PubButton
+            author="Handika, H., Del-Rio, G. D., Esselstyn, J. A"
+            year="In prep"
+            title="ULLAR: An ULtrafast, scaLable, Accessible, and Reproducible phylogenomic pipeline"
+            codeUrl="https://github.com/hhandika/ullar"
+          />
+        </ProjectPubs>
         <ProjectPubs author="Handika and Esselstyn">
           <PubButton
             author="Handika, H. and Esselstyn, J. A"
@@ -215,22 +237,18 @@ const firstParagraphClasses = cntl`
             doi="https://doi.org/10.1111/1755-0998.13964"
             pdfUrl="https://www.researchgate.net/publication/380125709_SEGUL_Ultrafast_memory-efficient_and_mobile-friendly_software_for_manipulating_and_summarizing_phylogenomic_datasets"
             isRequest={true}
+            url="https://segul.app"
+            codeUrl="https://github.com/handika/segul"
           />
         </ProjectPubs>
-        <ProjectPubs author="Handika et al.">
-          <PubButton
-            author="Handika, H., Moncrieff, A. E., Del-Rio G., Canton, R., Rutledge, S. L., Hernández-Canchola, G., Babb-Biernacki, S. J.  Chipps, A. S., Pérez-Amaya, N., Chornelia, A., Morales-Martínez, D. M., McCallum, Q., Thom, G., Esselstyn, J. A"
-            year="In prep"
-            title="NAHPU: A field cataloging application for efficient, repeatable, and inclusive collection-based evolutionary studies"
-          />
-        </ProjectPubs>
-
         <ProjectPubs author="Burgin et al.">
           <PubButton
             author="Burgin, C. J., Zijlstra, J. S., Becker, M. A., Handika, H., Widness, J., Liphardt, S., Huckaby, D. G., and Upham, N. S."
-            year="In review"
+            year={2025}
             title="How many mammal species are there now? Updates and trends in taxonomic, nomenclatural, and geographic knowledge"
-            doi="https://doi.org/10.1101/2025.02.27.640393"
+            doi="https://doi.org/10.1093/jmammal/gyaf047"
+            url="https://mammaldiversity.org"
+            codeUrl="https://github.com/mammaldiversity/mammaldiversity"
           />
         </ProjectPubs>
       </Content>
@@ -339,7 +357,7 @@ const firstParagraphClasses = cntl`
         <PubButton
           author="Nurainas N, Taufiq A, Handika H, Syamsuardi S"
           year="2024b"
-          title="lora of Sumatra: Vascular plant collection of selected families deposited at Herbarium of Andalas University (ANDA)"
+          title="Flora of Sumatra: Vascular plant collection of selected families deposited at Herbarium of Andalas University (ANDA)"
           doi="https://doi.org/10.15468/sncpxn"
         />
         <span class={spaceClasses}>,</span>
