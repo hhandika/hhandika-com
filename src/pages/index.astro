@@ -43,6 +43,25 @@ const statsGridClasses = cntl`
   mx-8
   lg:mx-24
 `;
+
+const keywordClasses = cntl`
+    border-2
+    border-chetwode-300
+    dark:border-chetwode-400
+    text-chetwode-700
+    dark:text-chetwode-400
+    rounded-full
+    py-1
+    px-4 
+    text-sm 
+    m-2
+`;
+
+const keywordList = [
+  "Biodiversity Informatics",
+  "In situ diversification",
+  "Artificial Intelligence",
+];
 ---
 
 <Layout
@@ -66,6 +85,13 @@ const statsGridClasses = cntl`
       <PageDescription>
         Post-Doctoral Associate · the University of Florida, USA
       </PageDescription>
+      <div class="mb-8 mt-4">
+        {
+          keywordList.map((keyword) => (
+            <span class={keywordClasses}>{keyword}</span>
+          ))
+        }
+      </div>
       <p class={heroTextClasses}>
         I study small mammal diversity and speciation on islands and develop
         software to improve data integration and management, promote mutually
