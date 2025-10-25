@@ -27,6 +27,15 @@ const heroTextClasses = cntl`
   sm:text-xl/8
 `;
 
+const sectionTitleClasses = cntl`
+  text-3xl
+  text-porsche-600
+  dark:text-porsche-300
+  mt-16
+  mb-8
+  text-center
+`;
+
 const statsGridClasses = cntl`
   grid
   bg-gradient-to-r
@@ -39,7 +48,7 @@ const statsGridClasses = cntl`
   text-center
   rounded-2xl
   lg:rounded-full
-  mt-24
+  mt-16
   mx-8
   lg:mx-24
 `;
@@ -62,6 +71,28 @@ const keywordList = [
   "In situ diversification",
   "Artificial Intelligence",
 ];
+
+const highlightedTextClasses = cntl`
+  bg-yellow-100
+  dark:bg-yellow-600
+  text-yellow-800
+  dark:text-yellow-50
+  px-2
+  pb-1
+  inline-block
+  -rotate-3
+`;
+
+const highlightedTextClasses2 = cntl`
+  bg-teal-100
+  dark:bg-teal-600
+  text-teal-800
+  dark:text-teal-50
+  px-2
+  pb-1
+  inline-block
+  rotate-2
+`;
 ---
 
 <Layout
@@ -93,13 +124,12 @@ const keywordList = [
         }
       </div>
       <p class={heroTextClasses}>
-        I study small mammal diversity and speciation on islands and develop
-        software to improve data integration and management, promote mutually
-        beneficial international collaboration, and increase the accessibility
-        of biodiversity research. My work encompasses conducting fieldwork in
-        remote montane forests and developing computer programs that scale from
-        mobile devices, personal computers, to high-performance computing
-        clusters.
+        I study island small-mammal diversity and speciation, and build open,
+        scalable tools to enhance data integration, curation, and access for
+        biodiversity research. My work combines fieldwork in remote montane
+        forests, leveraging emerging AI technologies, and developing computer
+        programs that scale from mobile devices and personal computers, to
+        high-performance computing clusters.
       </p>
     </div>
     <SocialMediaIcons />
@@ -112,6 +142,26 @@ const keywordList = [
         url="/fieldwork"
       />
       <Stats title="Code written" value="130K" unit="lines" url="/software" />
+    </div>
+    <div>
+      <h2 class={sectionTitleClasses}>
+        How do islands <span class={highlightedTextClasses}>generate</span> and <span
+          class={highlightedTextClasses2}>maintain</span
+        > biodiversity?
+      </h2>
+    </div>
+    <div class={sectionTitleClasses}>
+      <h2>
+        How can we leverage <span class={highlightedTextClasses}
+          >emerging AI</span
+        > technologies to understand complex biological systems?
+      </h2>
+    </div>
+    <div class={sectionTitleClasses}>
+      <h2>
+        How can we improve <span class={highlightedTextClasses}>access</span> to
+        <span class={highlightedTextClasses2}>cutting-edge</span> biodiversity studies?
+      </h2>
     </div>
   </MainPage>
 </Layout>
