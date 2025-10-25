@@ -29,8 +29,8 @@ const heroTextClasses = cntl`
 
 const sectionTitleClasses = cntl`
   text-3xl
-  text-porsche-600
-  dark:text-porsche-300
+  text-porsche-950
+  dark:text-porsche-50
   mt-16
   mb-8
   text-center
@@ -73,10 +73,10 @@ const keywordList = [
 ];
 
 const highlightedTextClasses = cntl`
-  bg-yellow-100
-  dark:bg-yellow-600
-  text-yellow-800
-  dark:text-yellow-50
+  bg-porsche-100
+  dark:bg-porsche-600
+  text-porsche-800
+  dark:text-porsche-50
   px-2
   pb-1
   inline-block
@@ -84,10 +84,10 @@ const highlightedTextClasses = cntl`
 `;
 
 const highlightedTextClasses2 = cntl`
-  bg-teal-100
-  dark:bg-teal-600
-  text-teal-800
-  dark:text-teal-50
+  bg-chetwode-100
+  dark:bg-chetwode-600
+  text-chetwode-800
+  dark:text-chetwode-50
   px-2
   pb-1
   inline-block
@@ -149,19 +149,21 @@ const highlightedTextClasses2 = cntl`
           class={highlightedTextClasses2}>maintain</span
         > biodiversity?
       </h2>
-    </div>
-    <div class={sectionTitleClasses}>
-      <h2>
-        How can we leverage <span class={highlightedTextClasses}
-          >emerging AI</span
-        > technologies to understand complex biological systems?
-      </h2>
-    </div>
-    <div class={sectionTitleClasses}>
-      <h2>
-        How can we improve <span class={highlightedTextClasses}>access</span> to
-        <span class={highlightedTextClasses2}>cutting-edge</span> biodiversity studies?
-      </h2>
+      <p>It starts with fieldwork</p>
+      <div class={sectionTitleClasses}>
+        <h2>
+          How can we leverage <span class={highlightedTextClasses}
+            >emerging AI</span
+          > technologies to understand complex biological systems?
+        </h2>
+      </div>
+      <div class={sectionTitleClasses}>
+        <h2>
+          How can we improve <span class={highlightedTextClasses}>access</span> to
+          <span class={highlightedTextClasses2}>cutting-edge</span> biodiversity
+          studies?
+        </h2>
+      </div>
     </div>
   </MainPage>
 </Layout>
