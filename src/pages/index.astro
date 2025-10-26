@@ -9,6 +9,7 @@ import MainPage from "../components/MainPage.astro";
 import PageDescription from "../components/PageDescription.astro";
 import Image from "astro/components/Image.astro";
 import SocialMediaIcons from "../components/SocialMediaIcons.astro";
+import Link from "../components/Link.astro";
 
 const titleClasses = cntl`
   font-serif
@@ -44,9 +45,8 @@ const sectionTitleClasses = cntl`
   text-2xl
   text-porsche-950
   dark:text-porsche-50
-  mt-16
-  mb-8
   text-center
+  m-4
 `;
 
 const statsGridClasses = cntl`
@@ -88,7 +88,7 @@ const keywordList = [
 
 const highlightedTextClasses = cntl`
   bg-porsche-100
-  dark:bg-porsche-600
+  dark:bg-porsche-700
   text-porsche-800
   dark:text-porsche-50
   px-2
@@ -99,13 +99,30 @@ const highlightedTextClasses = cntl`
 
 const highlightedTextClasses2 = cntl`
   bg-chetwode-100
-  dark:bg-chetwode-600
+  dark:bg-chetwode-700
   text-chetwode-800
   dark:text-chetwode-50
   px-2
   pb-1
   inline-block
   rotate-2
+`;
+
+const buttonClasses = cntl`
+  mt-12
+  mx-auto
+  bg-chetwode-600
+  hover:bg-chetwode-900
+  text-chetwode-50
+  font-semibold
+  py-3
+  px-6
+  rounded-xl
+  shadow-lg
+  transition
+  duration-300
+  ease-in-out
+  w-fit
 `;
 ---
 
@@ -166,19 +183,24 @@ const highlightedTextClasses2 = cntl`
         collection-based evolutionary studies"
       </p>
     </div>
-    <div>
-      <h2 class={sectionTitleClasses}>Research Questions</h2>
+    <div class="mt-16">
+      <h2
+        class="mb-4 font-semibold text-center text-2xl text-chetwode-950 dark:text-chetwode-50"
+      >
+        Research Questions
+      </h2>
       <h3 class={sectionTitleClasses}>
         How do islands <span class={highlightedTextClasses}>generate</span> and <span
           class={highlightedTextClasses2}>maintain</span
         > biodiversity?
       </h3>
-      <p>It starts with fieldwork</p>
       <div class={sectionTitleClasses}>
         <h3>
           How can we leverage <span class={highlightedTextClasses}
             >emerging AI</span
-          > technologies to understand complex biological systems?
+          > technologies to understand <span class={highlightedTextClasses2}
+            >complex</span
+          > biological systems?
         </h3>
       </div>
       <div class={sectionTitleClasses}>
@@ -188,6 +210,11 @@ const highlightedTextClasses2 = cntl`
           studies?
         </h3>
       </div>
+    </div>
+    <div class={buttonClasses}>
+      <a href="/projects">
+        <p>Learn more</p>
+      </a>
     </div>
   </MainPage>
 </Layout>
