@@ -23,20 +23,21 @@ const tabData = [
 
 const tabContainerClasses = cntl`
   border
-  border-porsche-300
-  dark:border-porsche-800
+  border-chetwode-200
+  dark:border-chetwode-900
   flex
   rounded-full
   items-center
   justify-center
-  gap-2
+  gap-x-2
   w-fit
   mx-auto
+  mt-8
 `;
 
 const activeClass = cntl`
-  bg-porsche-600
-  dark:bg-porsche-300
+  bg-chetwode-600
+  dark:bg-chetwode-300
   text-white
   dark:text-porsche-950
   font-semibold
@@ -45,8 +46,8 @@ const activeClass = cntl`
 const inactiveClass = cntl`
   text-porsche-950
   dark:text-porsche-50
-  hover:bg-porsche-200
-  dark:hover:bg-porsche-800
+  hover:bg-chetwode-300
+  dark:hover:bg-chetwode-800
   font-normal
 `;
 ---
@@ -57,7 +58,7 @@ const inactiveClass = cntl`
       {
         tabData.map(({ id, label }) => (
           <button
-            class={`py-2 px-4 rounded-full transition-colors duration-300 tab-button ${
+            class={`py-2 text-sm px-4 rounded-full transition-colors duration-300 tab-button ${
               id === "publications" ? activeClass : inactiveClass
             }`}
             data-section={id}
@@ -105,8 +106,8 @@ const inactiveClass = cntl`
       // Update button styles
       document.querySelectorAll(".tab-button").forEach((btn) => {
         btn.classList.remove(
-          "bg-porsche-600",
-          "dark:bg-porsche-300",
+          "bg-chetwode-600",
+          "dark:bg-chetwode-300",
           "text-white",
           "dark:text-porsche-950",
           "font-semibold"
@@ -114,8 +115,8 @@ const inactiveClass = cntl`
         btn.classList.add(
           "text-porsche-950",
           "dark:text-porsche-50",
-          "hover:bg-porsche-200",
-          "dark:hover:bg-porsche-800",
+          "hover:bg-chetwode-300",
+          "dark:hover:bg-chetwode-800",
           "font-normal"
         );
       });
@@ -125,15 +126,15 @@ const inactiveClass = cntl`
       );
       if (activeButton) {
         activeButton.classList.remove(
-          "text-porsche-950",
+          "text-chetwode-950",
           "dark:text-porsche-50",
-          "hover:bg-porsche-200",
-          "dark:hover:bg-porsche-800",
+          "hover:bg-chetwode-300",
+          "dark:hover:bg-chetwode-800",
           "font-normal"
         );
         activeButton.classList.add(
-          "bg-porsche-600",
-          "dark:bg-porsche-300",
+          "bg-chetwode-600",
+          "dark:bg-chetwode-300",
           "text-white",
           "dark:text-porsche-950",
           "font-semibold"
