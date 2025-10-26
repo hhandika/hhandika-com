@@ -5,12 +5,54 @@ import PopularArticle from "../components/pubs/PopularArticle.astro";
 import Events from "../components/Events.astro";
 import outreachIcon from "../assets/icons/outreach.svg";
 import Background from "../components/Background.astro";
+import { Image } from "astro:assets";
+import mediaKeuangan from "../assets/img/hh-media-keuangan.webp";
+import kompasHogNosedRat from "../assets/img/hh-kompas-hyorhinomys.webp";
+import lsuOutreach from "../assets/img/hh-lsu_outreach.webp";
+import tamboraOutreach from "../assets/img/hh-tambora_outreach.webp";
+import lsuOutreach2 from "../assets/img/hh-lsu_outreach2.webp";
+
+const outreachImages = [
+  {
+    src: lsuOutreach2,
+    alt: "Heru Handika giving outreach presentation at LSU Museum of Natural History",
+  },
+  {
+    src: tamboraOutreach,
+    alt: "Heru Handika giving outreach presentation at Tambora Muda Indonesia",
+  },
+];
+
+const interviewImages = [
+  {
+    src: mediaKeuangan,
+    alt: "Heru Handika profile in Media Keuangan Magazine by Indonesian Ministry of Finance",
+  },
+  {
+    src: kompasHogNosedRat,
+    alt: "Heru Handika interview in Kompas.com about Hog-nosed Rat discovery",
+  },
+];
+
+const imgClass = "rounded-lg shadow-lg h-80 w-auto object-contain";
 ---
 
 <div class="mx-auto h-full max-w-5xl py-6 sm:py-16 lg:py-8">
   <Background backgroundImage={outreachIcon} />
   <PageTitle title="Outreach & Service" />
   <PageSubtitle subtitle="Outreach Events" />
+  <div class="flex-wrap mb-4 flex gap-4">
+    {
+      outreachImages.map((image) => (
+        <Image
+          src={image.src}
+          alt={image.alt}
+          class={imgClass}
+          loading="lazy"
+        />
+      ))
+    }
+  </div>
   <Events
     organizer="KCA-LH Rafflesia FMIPA Unand Conservation Club, Indonesia"
     title="Manusia Hebat Tidak Hanya Terlahir dari Bakat (Great People Are Not Only Born from Talents)"
@@ -42,6 +84,18 @@ import Background from "../components/Background.astro";
     date="2009-2012"
   />
   <PageSubtitle subtitle="Interviews" />
+  <div class="flex-wrap mb-4 flex gap-4">
+    {
+      interviewImages.map((image) => (
+        <Image
+          src={image.src}
+          alt={image.alt}
+          class={imgClass}
+          loading="lazy"
+        />
+      ))
+    }
+  </div>
   <PopularArticle
     publisher="Science Next"
     title="What Could Recovery Look Like for Blazing Australia?"
