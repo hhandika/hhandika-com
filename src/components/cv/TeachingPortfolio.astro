@@ -1,11 +1,14 @@
 ---
 import cntl from "cntl";
-import PageTitle from "../components/PageTitle.astro";
-import PageSubtitle from "../components/PageSubtitle.astro";
-import CardLayout from "../layouts/CardLayout.astro";
-import Card from "../components/Card.astro";
-import teachingIcon from "../assets/icons/teaching.svg";
-import Background from "../components/Background.astro";
+import PageTitle from "../../components/PageTitle.astro";
+import PageSubtitle from "../../components/PageSubtitle.astro";
+import CardLayout from "../../layouts/CardLayout.astro";
+import Card from "../../components/Card.astro";
+import teachingIcon from "../../assets/icons/teaching.svg";
+import Background from "../../components/Background.astro";
+import tamboraGh from "../../assets/img/tambora-gh.webp";
+import tamboraGhFlyer from "../../assets/img/tambora-gh-flyer.webp";
+import { Image } from "astro:assets";
 
 const cardTitleClasses = cntl`
   text-porsche-950
@@ -24,6 +27,19 @@ const cardDescriptonClasses = cntl`
   text-porsche-950
   text-md
 `;
+
+const workshopImages = [
+  {
+    src: tamboraGh,
+    alt: "Heru Handika giving a GitHub workshop at Tambora Muda Indonesia",
+  },
+  {
+    src: tamboraGhFlyer,
+    alt: "Flyer for GitHub workshop at Tambora Muda Indonesia",
+  },
+];
+
+const imgClass = "rounded-lg shadow-lg h-80 w-auto object-contain";
 ---
 
 <div class="mx-auto h-full max-w-5xl py-6 sm:py-16 lg:py-8">
@@ -81,7 +97,20 @@ const cardDescriptonClasses = cntl`
     </CardLayout>
   </div>
   <PageSubtitle subtitle="Workshops Taught" />
+
   <CardLayout>
+    <div class="flex-wrap mb-4 flex gap-4">
+      {
+        workshopImages.map((image) => (
+          <Image
+            src={image.src}
+            alt={image.alt}
+            class={imgClass}
+            loading="lazy"
+          />
+        ))
+      }
+    </div>
     <Card
       title="Molecular Analyses of Indonesian Mammals"
       subtitle="Instructor · 18, 19, 25, and 26 May 2023"
