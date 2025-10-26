@@ -2,6 +2,7 @@
 import Icons from "./Icons.astro";
 import OpenMenuButton from "./buttons/OpenMenuButton.astro";
 import CloseMenuButton from "./buttons/CloseMenuButton.astro";
+import cntl from "cntl";
 
 const navItems = [
   { path: "/", label: "About" },
@@ -12,9 +13,83 @@ const navItems = [
 ];
 
 const currentPath = Astro.url.pathname;
+
+const navClasses = cntl`
+  flex
+  items-center
+  justify-between
+  p-6
+  lg:px-8
+`;
+
+const activeLinkClasses = cntl`
+  bg-porsche-100
+  dark:bg-porsche-800
+  rounded-full
+  text-porsche-600
+  dark:text-porsche-200
+  font-semibold
+  px-4
+`;
+
+const desktopNavClasses = cntl`
+  hidden
+  lg:flex
+  gap-x-12
+  bg-porsche-200
+  dark:bg-porsche-950
+  border
+  border-porsche-300
+  dark:border-porsche-800
+  rounded-full
+  p-2
+`;
+
+const desktopLinkClasses = cntl`
+  -m-1.5
+  p-1.5
+  font-semibold
+  hover:text-porsche-600
+  dark:hover:text-porsche-300
+`;
+
+const inactiveLinkClasses = cntl`
+  text-porsche-950
+  dark:text-porsche-50
+`;
+
+const mobileMenuClasses = cntl`
+  lg:hidden
+`;
+
+const mobileLinkClasses = cntl`
+  -mx-3
+  block
+  rounded-lg
+  px-3
+  py-2
+  text-base/7
+  hover:text-porsche-500
+`;
+
+const mobileMenuPanelClasses = cntl`
+  fixed
+  bg-porsche-200
+  dark:bg-porsche-950
+  inset-y-0
+  right-0
+  z-50
+  w-full
+  overflow-y-auto
+  px-6
+  py-6
+  sm:max-w-sm
+  sm:ring-1
+  sm:ring-gray-900/10
+`;
 ---
 
-<nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
+<nav class={navClasses} aria-label="Global">
   <div class="flex lg:flex-1">
     <a href="/" class="-m-1.5 p-1.5">
       <span class="sr-only">Heru Handika</span>
@@ -24,12 +99,12 @@ const currentPath = Astro.url.pathname;
   <div class="flex lg:hidden">
     <OpenMenuButton />
   </div>
-  <div class="hidden lg:flex lg:gap-x-12">
+  <div class={desktopNavClasses}>
     {
       navItems.map(({ path, label }) => (
         <a
           href={path}
-          class={`-m-1.5 p-1.5 font-semibold hover:text-porsche-600 dark:hover:text-porsche-300 ${currentPath === path || currentPath === `${path}/` ? "text-porsche-600 dark:text-porsche-300" : "text-porsche-950 dark:text-porsche-50"}`}
+          class={`${desktopLinkClasses} ${currentPath === path || currentPath === `${path}/` ? activeLinkClasses : inactiveLinkClasses}`}
         >
           {label}
         </a>
@@ -38,12 +113,10 @@ const currentPath = Astro.url.pathname;
   </div>
 </nav>
 <!-- Mobile menu, show/hide based on menu open state. -->
-<div id="mobile-menu" class="lg:hidden hidden" role="dialog" aria-modal="true">
+<div id="mobile-menu" class={mobileMenuClasses} role="dialog" aria-modal="true">
   <!-- Background backdrop, show/hide based on slide-over state. -->
   <div class="fixed inset-0 z-50">
-    <div
-      class="fixed bg-porsche-200 dark:bg-porsche-950 inset-y-0 right-0 z-50 w-full overflow-y-auto px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"
-    >
+    <div class={mobileMenuPanelClasses}>
       <div class="flex items-center justify-between">
         <a href="#" class="-m-1.5 p-1.5">
           <span class="sr-only">Heru Handika</span>
@@ -58,7 +131,7 @@ const currentPath = Astro.url.pathname;
               navItems.map(({ path, label }) => (
                 <a
                   href={path}
-                  class={`-mx-3 block rounded-lg px-3 py-2 text-base/7 hover:text-porsche-500 ${currentPath === path || currentPath === `${path}/` ? "text-porsche-600 dark:text-porsche-300" : "text-porsche-950 dark:text-porsche-50"}`}
+                  class={`${mobileLinkClasses} ${currentPath === path || currentPath === `${path}/` ? activeLinkClasses : inactiveLinkClasses}`}
                 >
                   {label}
                 </a>
