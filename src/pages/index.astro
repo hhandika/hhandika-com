@@ -27,8 +27,21 @@ const heroTextClasses = cntl`
   sm:text-xl/8
 `;
 
-const sectionTitleClasses = cntl`
+const researchSentenceClasses = cntl`
+  font-serif
+  font-semibold
   text-3xl
+  bg-gradient-to-r
+  from-porsche-600
+  to-chetwode-700
+  dark:from-porsche-300
+  dark:to-chetwode-200
+  bg-clip-text
+  text-transparent
+`;
+
+const sectionTitleClasses = cntl`
+  text-2xl
   text-porsche-950
   dark:text-porsche-50
   mt-16
@@ -62,13 +75,14 @@ const keywordClasses = cntl`
     rounded-full
     py-1
     px-4 
-    text-sm 
+    text-sm
+    font-semibold 
     m-2
 `;
 
 const keywordList = [
-  "Biodiversity Informatics",
   "In situ diversification",
+  "Biodiversity Informatics",
   "Artificial Intelligence",
 ];
 
@@ -143,26 +157,36 @@ const highlightedTextClasses2 = cntl`
       />
       <Stats title="Code written" value="130K" unit="lines" url="/software" />
     </div>
+    <div id="key-approach" class="mt-16 mx-auto text-center text-pretty">
+      <p class="text-porsche-950 dark:text-porsche-50 text-lg">
+        I describe my work as:
+      </p>
+      <p class={researchSentenceClasses}>
+        "An end-to-end approach to accelerate and broaden access to cutting-edge
+        collection-based evolutionary studies"
+      </p>
+    </div>
     <div>
-      <h2 class={sectionTitleClasses}>
+      <h2 class={sectionTitleClasses}>Research Questions</h2>
+      <h3 class={sectionTitleClasses}>
         How do islands <span class={highlightedTextClasses}>generate</span> and <span
           class={highlightedTextClasses2}>maintain</span
         > biodiversity?
-      </h2>
+      </h3>
       <p>It starts with fieldwork</p>
       <div class={sectionTitleClasses}>
-        <h2>
+        <h3>
           How can we leverage <span class={highlightedTextClasses}
             >emerging AI</span
           > technologies to understand complex biological systems?
-        </h2>
+        </h3>
       </div>
       <div class={sectionTitleClasses}>
-        <h2>
+        <h3>
           How can we improve <span class={highlightedTextClasses}>access</span> to
           <span class={highlightedTextClasses2}>cutting-edge</span> biodiversity
           studies?
-        </h2>
+        </h3>
       </div>
     </div>
   </MainPage>
