@@ -9,6 +9,7 @@ import MainPage from "../components/MainPage.astro";
 import PageDescription from "../components/PageDescription.astro";
 import Image from "astro/components/Image.astro";
 import SocialMediaIcons from "../components/SocialMediaIcons.astro";
+import CodeStats from "../components/github/CodeStats.astro";
 
 const titleClasses = cntl`
   font-serif
@@ -208,8 +209,7 @@ const buttonClasses = cntl`
       <div class={sectionTitleClasses}>
         <h3>
           How can we improve <span class={highlightedTextClasses}>access</span> to
-          <span class={highlightedTextClasses2}>cutting-edge</span> biodiversity
-          studies?
+          <span class={highlightedTextClasses2}>cutting-edge</span> biodiversity studies?
         </h3>
       </div>
     </div>
@@ -218,5 +218,6 @@ const buttonClasses = cntl`
         <p>Learn more</p>
       </a>
     </div>
+    <CodeStats />
   </MainPage>
 </Layout>
