@@ -4,6 +4,20 @@ import Image from "astro/components/Image.astro";
 const codeStatsUrl = "https://githubcard.com/hhandika.svg?d=8fDRLgon";
 ---
 
-<div class="mt-8 rounded-xl">
-  <Image src={codeStatsUrl} alt="GitHub Code Stats" width="960" height="470" />
+<div class="my-8">
+  <h2
+    class="text-2xl font-semibold text-center mb-4 text-chetwode-950 dark:text-chetwode-50"
+  >
+    GitHub Code Stats
+  </h2>
+  <div
+    class="rounded-xl items-center justify-center overflow-hidden shadow-lg w-fit mx-auto"
+  >
+    <Image
+      src={codeStatsUrl}
+      alt="GitHub Code Stats"
+      width="650"
+      height="250"
+    />
+  </div>
 </div>

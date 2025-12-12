@@ -10,6 +10,7 @@ import SoftwareLayout from "../layouts/SoftwareLayout.astro";
 import SoftwareCard from "../components/SoftwareCard.astro";
 import cntl from "cntl";
 import LinkCard from "../components/LinkCard.astro";
+import CodeStats from "../components/github/CodeStats.astro";
 
 const cardDescriptonClasses = cntl`
   mt-2
@@ -35,7 +36,9 @@ const cardDescriptonClasses = cntl`
         for Windows and mobile operating systems.
       </PageDescription>
     </PageTitle>
+    <CodeStats />
     <PageSubtitle subtitle="Software Projects" />
+
     <SoftwareLayout>
       <SoftwareCard
         title="SEGUL"
