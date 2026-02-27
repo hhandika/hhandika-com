@@ -33,6 +33,8 @@ const tabContainerClasses = cntl`
   w-fit
   mx-auto
   mt-8
+  overflow-x-auto
+  scrollbar-hide
 `;
 
 const activeClass = cntl`
@@ -44,6 +46,10 @@ const activeClass = cntl`
 `;
 
 const inactiveClass = cntl`
+  border-r
+  pr-4
+  border-chetwode-200
+  dark:border-chetwode-900
   text-porsche-950
   dark:text-porsche-50
   hover:bg-chetwode-300
@@ -110,19 +116,19 @@ const inactiveClass = cntl`
           "dark:bg-chetwode-300",
           "text-white",
           "dark:text-porsche-950",
-          "font-semibold"
+          "font-semibold",
         );
         btn.classList.add(
           "text-porsche-950",
           "dark:text-porsche-50",
           "hover:bg-chetwode-300",
           "dark:hover:bg-chetwode-800",
-          "font-normal"
+          "font-normal",
         );
       });
 
       const activeButton = document.querySelector(
-        `[data-section="${section}"]`
+        `[data-section="${section}"]`,
       );
       if (activeButton) {
         activeButton.classList.remove(
@@ -130,14 +136,14 @@ const inactiveClass = cntl`
           "dark:text-porsche-50",
           "hover:bg-chetwode-300",
           "dark:hover:bg-chetwode-800",
-          "font-normal"
+          "font-normal",
         );
         activeButton.classList.add(
           "bg-chetwode-600",
           "dark:bg-chetwode-300",
           "text-white",
           "dark:text-porsche-950",
-          "font-semibold"
+          "font-semibold",
         );
       }
     }
