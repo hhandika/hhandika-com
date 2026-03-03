@@ -5,6 +5,7 @@ import TeachingPortfolio from "../components/cv/TeachingPortfolio.astro";
 import OutreachAndServices from "../components/cv/OutreachAndServices.astro";
 import MainPage from "../components/MainPage.astro";
 import cntl from "cntl";
+import PageTitle from "../components/PageTitle.astro";
 
 const tabData = [
   {
@@ -58,7 +59,8 @@ const inactiveClass = cntl`
 ---
 
 <Layout title="Curriculum Vitae">
-  <MainPage>
+  <MainPage
+    ><PageTitle title="Curriculum Vitae" />
     <div class={tabContainerClasses}>
       {
         tabData.map(({ id, label }) => (

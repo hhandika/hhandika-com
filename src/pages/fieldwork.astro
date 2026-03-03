@@ -7,6 +7,7 @@ import fieldIcon from "../assets/icons/fieldwork.svg";
 import Background from "../components/Background.astro";
 import MainPage from "../components/MainPage.astro";
 import PageDescription from "../components/PageDescription.astro";
+import SectionHead from "../components/SectionHead.astro";
 ---
 
 <Layout title="Fieldwork">
@@ -14,20 +15,42 @@ import PageDescription from "../components/PageDescription.astro";
     <Background backgroundImage={fieldIcon} />
     <PageTitle title="Fieldwork">
       <PageDescription>
-        My fieldwork is mainly on Southeast Asian islands. However, I have also
-        been privileged to participate in fieldwork in Australia and the
-        mainland United States. The journey spans over 12 years, conducting 30+
-        field expeditions across five countries. These field expeditions
-        involved countless individuals, from local communities, park rangers,
-        friends, colleagues, and research advisors to students I had the honor
-        of mentoring. I started as someone more useful in washing dishes than
-        preparing specimens 😉. Eventually, I led complex field expeditions in
-        the remote mountains of Indonesia. My favorite parts of this journey are
-        contributing to the growth of essential natural history collections,
-        many of which were unknown to science, and working among exceptional
-        scientists and incredible local communities.
+        Documenting the unknown through collaborative fieldwork and the growth
+        of global natural history collections.
       </PageDescription>
     </PageTitle>
+    <SectionHead text="Museums hosting our collections" />
+    <div class="space-y-6">
+      <div>
+        <h3 class="font-semibold text-chetwode-800 dark:text-chetwode-100 mb-2">
+          Australia 🇦🇺
+        </h3>
+        <ul class="list-disc list-inside space-y-2">
+          <li>Museums Victoria (NMV)</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-semibold text-chetwode-800 dark:text-chetwode-100 mb-2">
+          Indonesia 🇮🇩
+        </h3>
+        <ul class="list-disc list-inside space-y-2">
+          <li>Museum Zoologicum Bogoriense (MZB)</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-semibold text-chetwode-800 dark:text-chetwode-100 mb-2">
+          United States 🇺🇸
+        </h3>
+        <ul class="list-disc list-inside space-y-2">
+          <li>Museum of Vertebrate Zoology (MVZ)</li>
+          <li>Field Museum of Natural History (FMNH)</li>
+          <li>Louisiana State University Museum of Natural Science (LSUMS)</li>
+          <li>KU Natural History Museum (KUMNH)</li>
+        </ul>
+      </div>
+    </div>
+
+    <SectionHead text="Field expedition timeline" />
     <Timeline>
       <TimelineItem
         date="August-December 2023"
