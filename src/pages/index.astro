@@ -9,7 +9,8 @@ import MainPage from "../components/MainPage.astro";
 import PageDescription from "../components/PageDescription.astro";
 import Image from "astro/components/Image.astro";
 import SocialMediaIcons from "../components/SocialMediaIcons.astro";
-// import handikaResearch from "../assets/img/handika-research.webp";
+import vectorEmbedding from "../assets/graphics/vector-embeddings.svg";
+import vectorEmbeddingPortrait from "../assets/graphics/vector-embeddings-portrait.svg";
 
 const titleClasses = cntl`
   font-serif
@@ -42,10 +43,10 @@ const researchSentenceClasses = cntl`
 `;
 
 const sectionTitleClasses = cntl`
-  text-2xl
+  text-xl
   text-porsche-950
   dark:text-porsche-50
-  text-center
+  text-left
   m-4
 `;
 
@@ -109,7 +110,7 @@ const highlightedTextClasses2 = cntl`
 `;
 
 const buttonClasses = cntl`
-  mt-12
+  mt-8
   mx-auto
   bg-chetwode-600
   hover:bg-chetwode-900
@@ -187,63 +188,50 @@ const buttonClasses = cntl`
       </p>
     </div>
     <div class="mt-16"></div>
-    <!-- <div class="flex flex-col lg:flex-row items-start justify-start gap-8 mt-4">
+    <div class="mt-16">
+      <h2
+        class="mb-4 font-semibold text-center text-2xl text-chetwode-950 dark:text-chetwode-50"
+      >
+        Research Overview
+      </h2>
       <div>
-        <Image
-          class="block
-      mx-auto
-      rounded-lg
-      shadow-lg"
-          src={handikaResearch}
-          alt="Handika's both code- and field-intensive research"
-          width={400}
-        />
-      </div> -->
-    <!-- <div class="text-left">
-        <h2 class="mb-2 text-xl text-porsche-950 dark:text-porsche-50">
-          It's code- and field-intensive research, involving many collaborators
-          and local communities.
-        </h2>
+        <h3 class={sectionTitleClasses}>
+          Field-based <span class={highlightedTextClasses}>evolutionary</span> studies
+          of
+          <span class={highlightedTextClasses2}>small mammals</span> in Indo-Australian
+          Archipelago
+        </h3>
+      </div>
+      <div class={sectionTitleClasses}>
+        <h3>
+          Improving <span class={highlightedTextClasses}>access</span> to
+          <span class={highlightedTextClasses2}>cutting-edge</span> biodiversity research
+        </h3>
       </div>
     </div>
-    <div class="mt-16">
-      <h2
-        class="mb-4 font-semibold text-center text-2xl text-chetwode-950 dark:text-chetwode-50"
-      >
-        30+ expeditions and counting...
-      </h2>
-      <p></p>
-    </div> -->
-    <div class="mt-16">
-      <h2
-        class="mb-4 font-semibold text-center text-2xl text-chetwode-950 dark:text-chetwode-50"
-      >
-        Research Questions
-      </h2>
-      <h3 class={sectionTitleClasses}>
-        How do islands <span class={highlightedTextClasses}>generate</span> and
-        <span class={highlightedTextClasses2}>maintain</span> biodiversity?
+    <div class={sectionTitleClasses}>
+      <h3>
+        Leveraging <span class={highlightedTextClasses}>emerging AI</span> technologies
+        to understand <span class={highlightedTextClasses2}>complex</span> small mammal
+        coloration
       </h3>
-      <div class={sectionTitleClasses}>
-        <h3>
-          How can we leverage <span class={highlightedTextClasses}
-            >emerging AI</span
-          > technologies to understand <span class={highlightedTextClasses2}
-            >complex</span
-          > biological systems?
-        </h3>
-      </div>
-      <div class={sectionTitleClasses}>
-        <h3>
-          How can we improve <span class={highlightedTextClasses}>access</span> to
-          <span class={highlightedTextClasses2}>cutting-edge</span> biodiversity studies?
-        </h3>
+      <Image
+        src={vectorEmbedding}
+        alt="Vector embedding graphic"
+        class="mt-4 rounded-lg shadow-lg block large:hidden"
+      />
+      <Image
+        src={vectorEmbeddingPortrait}
+        alt="Vector embedding graphic"
+        class="mt-4 rounded-lg shadow-lg hidden large:block"
+      />
+      <div>
+        <div class={buttonClasses}>
+          <a href="/projects">
+            <p>Learn more</p>
+          </a>
+        </div>
       </div>
     </div>
-    <div class={buttonClasses}>
-      <a href="/projects">
-        <p>Learn more</p>
-      </a>
-    </div>
-  </MainPage></Layout
->
+  </MainPage>
+</Layout>
