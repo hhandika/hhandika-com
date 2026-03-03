@@ -1,12 +1,13 @@
 ---
 import Image from "astro/components/Image.astro";
 import Content from "../Content.astro";
-import SectionHead from "../Section.astro";
+import SectionHead from "../SectionHead.astro";
 import cntl from "cntl";
 import ProjectPubs from "../../layouts/ProjectPubs.astro";
 import PubButton from "../buttons/PubButton.astro";
 import nahpu from "../../assets/img/nahpu-preview.jpg";
 import Link from "../Link.astro";
+import PageSubtitle from "../PageSubtitle.astro";
 
 const firstParagraphClasses = cntl`
   first-letter:text-7xl
@@ -20,10 +21,10 @@ const spaceClasses = cntl`
 `;
 ---
 
-<div class="my-8">
+<div>
+  <PageSubtitle subtitle="Cross-platform, Open, and Accessible Software" />
   <SectionHead
-    title="Inclusive, Open, and Accessible Software"
-    subtitle="Developing digital tools empowering new learners in evolutionary studies"
+    text="Developing digital tools empowering new learners in evolutionary studies"
   />
   <Content>
     <Image
