@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import profilePhoto from "../assets/img/profile.jpg";
+import profilePhoto from "../assets/img/profile.webp";
 import Stats from "../components/Stats.astro";
 import rodentSvg from "../assets/icons/mammals.svg";
 import Background from "../components/Background.astro";
@@ -9,6 +9,7 @@ import MainPage from "../components/MainPage.astro";
 import PageDescription from "../components/PageDescription.astro";
 import Image from "astro/components/Image.astro";
 import SocialMediaIcons from "../components/SocialMediaIcons.astro";
+import handikaResearch from "../assets/img/handika-research.webp";
 
 const titleClasses = cntl`
   font-serif
@@ -63,6 +64,7 @@ const statsGridClasses = cntl`
   mt-16
   mx-8
   lg:mx-24
+  animate-slide-in-bottom
 `;
 
 const keywordClasses = cntl`
@@ -133,9 +135,8 @@ const buttonClasses = cntl`
       <Image
         class="block mx-auto rounded-full sm:mx-auto"
         src={profilePhoto}
-        height={180}
-        width={180}
-        decoding="async"
+        height={200}
+        width={200}
         loading="lazy"
         alt="Handika's profile"
       />
@@ -170,11 +171,11 @@ const buttonClasses = cntl`
       <Stats title="Fieldwork" value="30" unit="expeditions" url="/fieldwork" />
       <Stats
         title="Specimen contribution"
-        value="10k"
+        value="8k"
         unit="vouchers"
         url="/fieldwork"
       />
-      <Stats title="Code written" value="130K" unit="lines" url="/software" />
+      <Stats title="Code written" value="500K" unit="lines" url="/software" />
     </div>
     <div id="key-approach" class="mt-16 mx-auto text-center text-pretty">
       <p class="text-porsche-950 dark:text-porsche-50 text-lg">
@@ -185,6 +186,34 @@ const buttonClasses = cntl`
         collection-based evolutionary studies"
       </p>
     </div>
+    <div class="mt-16"></div>
+    <!-- <div class="flex flex-col lg:flex-row items-start justify-start gap-8 mt-4">
+      <div>
+        <Image
+          class="block
+      mx-auto
+      rounded-lg
+      shadow-lg"
+          src={handikaResearch}
+          alt="Handika's both code- and field-intensive research"
+          width={400}
+        />
+      </div> -->
+    <!-- <div class="text-left">
+        <h2 class="mb-2 text-xl text-porsche-950 dark:text-porsche-50">
+          It's code- and field-intensive research, involving many collaborators
+          and local communities.
+        </h2>
+      </div>
+    </div>
+    <div class="mt-16">
+      <h2
+        class="mb-4 font-semibold text-center text-2xl text-chetwode-950 dark:text-chetwode-50"
+      >
+        30+ expeditions and counting...
+      </h2>
+      <p></p>
+    </div> -->
     <div class="mt-16">
       <h2
         class="mb-4 font-semibold text-center text-2xl text-chetwode-950 dark:text-chetwode-50"
@@ -192,9 +221,8 @@ const buttonClasses = cntl`
         Research Questions
       </h2>
       <h3 class={sectionTitleClasses}>
-        How do islands <span class={highlightedTextClasses}>generate</span> and <span
-          class={highlightedTextClasses2}>maintain</span
-        > biodiversity?
+        How do islands <span class={highlightedTextClasses}>generate</span> and
+        <span class={highlightedTextClasses2}>maintain</span> biodiversity?
       </h3>
       <div class={sectionTitleClasses}>
         <h3>
@@ -217,5 +245,5 @@ const buttonClasses = cntl`
         <p>Learn more</p>
       </a>
     </div>
-  </MainPage>
-</Layout>
+  </MainPage></Layout
+>
