@@ -1,5 +1,4 @@
 ---
-import PageTitle from "../../components/PageTitle.astro";
 import PageSubtitle from "../../components/PageSubtitle.astro";
 import PopularArticle from "../../components/pubs/PopularArticle.astro";
 import Events from "../../components/Events.astro";
@@ -9,6 +8,7 @@ import { Image } from "astro:assets";
 import kompasHogNosedRat from "../../assets/img/hh-kompas-hyorhinomys.webp";
 import tamboraOutreach from "../../assets/img/hh-tambora_outreach.webp";
 import lsuOutreach2 from "../../assets/img/hh-lsu_outreach2.webp";
+import SectionHead from "../../components/SectionHead.astro";
 
 const outreachImages = [
   {
@@ -31,10 +31,10 @@ const interviewImages = [
 const imgClass = "rounded-lg shadow-lg h-80 w-auto object-contain";
 ---
 
-<div class="mx-auto h-full max-w-5xl py-6 sm:py-16 lg:py-8">
+<div>
   <Background backgroundImage={outreachIcon} />
-  <PageTitle title="Outreach & Service" />
-  <PageSubtitle subtitle="Outreach Events" />
+  <PageSubtitle subtitle="Outreach & Service" />
+  <SectionHead text="Outreach" />
   <div class="flex-wrap mb-4 flex gap-4">
     {
       outreachImages.map((image) => (
@@ -77,7 +77,7 @@ const imgClass = "rounded-lg shadow-lg h-80 w-auto object-contain";
     title="Peringatan Hari Bumi (Earth Day Celebration)"
     date="2009-2012"
   />
-  <PageSubtitle subtitle="Interviews" />
+  <SectionHead text="Interviews" />
   <div class="flex-wrap mb-4 flex gap-4">
     {
       interviewImages.map((image) => (
@@ -109,7 +109,7 @@ const imgClass = "rounded-lg shadow-lg h-80 w-auto object-contain";
     url="https://sains.kompas.com/read/2015/10/26/18070041/Kisah.Mahasiswa.Indonesia.Terlibat.Penemuan.Tikus.Hidung.Babi?page=all"
     pdfUrl="https://hhandika.com/dl/interview-tikus-hidung-babi-kompas.pdf"
   />
-  <PageSubtitle subtitle="Popular Articles" />
+  <SectionHead text="Popular Articles" />
   <PopularArticle
     publisher="Republika-ABC AustraliaPlus"
     title="Hal yang Perlu Dilakukan agar Kuliah S2 di Luar Negeri (What You Need to Do to Study Abroad for a Master's Degree)"

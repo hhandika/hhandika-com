@@ -1,0 +1,24 @@
+---
+import cntl from "cntl";
+
+interface SectionHead {
+  text: string;
+}
+
+const sectionHeadClasses = cntl`
+  text-xl
+  font-semibold
+  text-porsche-800
+  dark:text-porsche-200
+  mt-8
+  mb-2
+`;
+
+const { text } = Astro.props as SectionHead;
+---
+
+<div class={sectionHeadClasses}>
+  <h2>
+    {text}
+  </h2>
+</div>

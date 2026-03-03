@@ -1,26 +1,23 @@
 ---
 import Image from "astro/components/Image.astro";
 import Content from "../Content.astro";
-import SectionHead from "../Section.astro";
+import SectionHead from "../SectionHead.astro";
 import cntl from "cntl";
 import ProjectPubs from "../../layouts/ProjectPubs.astro";
 import PubButton from "../buttons/PubButton.astro";
 import Link from "../Link.astro";
 import herbarium from "../../assets/img/herbarium.jpg";
+import PageSubtitle from "../PageSubtitle.astro";
 
 const spaceClasses = cntl`
   mr-1
 `;
 ---
 
-<SectionHead
-  title="Other Projects"
-  subtitle="Projects that I am involved in outside my main research"
-/>
+<PageSubtitle subtitle="Other Projects" />
+<SectionHead text="
+    Mammalian Microbiomes and Host-Parasites Interaction" />
 <Content>
-  <h3 class="font-semibold">
-    Mammalian Microbiomes and Host-Parasites Interaction
-  </h3>
   <p>
     This project is part of our ongoing research on Sulawesi Island, Indonesia.
     We aim to understand the microbial communities in the gut regions of shrews
@@ -72,14 +69,14 @@ const spaceClasses = cntl`
   width={220}
   class="rounded-xl float-right ml-4 mt-8"
 />
+<SectionHead text="Herbarium Digitization and Data Mobilization" />
 <Content>
-  <h3 class="font-semibold mt-4">Specimen Digitization</h3>
   <p>
     This project is led by Dr. Nurainas at the Herbarium Universitas Andalas
     (ANDA) funded through the collection and data mobilization grant provided by
-    the Global Biodiversity Information Facility (GBIF). We aim to digitize
-    >65,000 sheets of the herbarium specimens at ANDA and make the data
-    accessible through the GBIF portal.
+    the Global Biodiversity Information Facility (GBIF). We digitized >65,000
+    sheets of the herbarium specimens at ANDA and make the data accessible
+    through the GBIF portal.
   </p>
   <div class="mt-4 mb-2 text-semibold">Published datasets:</div>
   <ProjectPubs author="Nurainas et. al.">
@@ -104,18 +101,15 @@ const spaceClasses = cntl`
       doi="https://doi.org/10.15468/55evew "
     />
   </ProjectPubs>
-</Content>
-<Content>
-  <h3 class="font-semibold mt-4">
-    Genomics and Systematics of Antbirds in the Neotropics
-  </h3>
-  <p>
-    I mentored to students: Marky Mutchler (the University of Chicago) and Ryan
-    Zucker (Cornell University). Both of them are under the supervision of <Link
-      text="Dr. Glaucia Del-Rio"
-      url="https://www.gdel-rio.com/"
-    />, the University of Florida. We aim to understand the genomic basis of
-    speciation and systematics of antbirds in the Neotropics. My involement is
-    primarily in the phylogenomic analyses of the studies.
-  </p>
+  <SectionHead text="Genomics and Systematics of Antbirds in the Neotropics" />
+  <Content>
+    <p>
+      I mentored to students: Marky Mutchler (the University of Chicago) and
+      Ryan Zucker (Cornell University). Both of them are under the supervision
+      of <Link text="Dr. Glaucia Del-Rio" url="https://www.gdel-rio.com/" />,
+      the University of Florida. We aim to understand the genomic basis of
+      speciation and systematics of antbirds in the Neotropics. My involement is
+      primarily in the phylogenomic analyses of the studies.
+    </p>
+  </Content>
 </Content>
