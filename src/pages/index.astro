@@ -44,7 +44,7 @@ const sectionTitleClasses = cntl`
   text-xl
   text-porsche-950
   dark:text-porsche-50
-  text-left
+  text-center
   m-4
 `;
 
@@ -103,6 +103,28 @@ const buttonClasses = cntl`
   transform
   w-fit
 `;
+
+const highlightedTextClasses = cntl`
+  bg-porsche-100
+  dark:bg-porsche-700
+  text-porsche-800
+  dark:text-porsche-50
+  px-2
+  pb-1
+  inline-block
+  -rotate-3
+`;
+
+const highlightedTextClasses2 = cntl`
+  bg-chetwode-100
+  dark:bg-chetwode-700
+  text-chetwode-800
+  dark:text-chetwode-50
+  px-2
+  pb-1
+  inline-block
+  rotate-2
+`;
 ---
 
 <Layout
@@ -138,10 +160,12 @@ const buttonClasses = cntl`
       </div>
       <p class={heroTextClasses}>
         I study island small-mammal diversity and speciation and build open,
-        scalable tools to enhance data integration, analyses, and access. My
-        work combines fieldwork in remote montane forests with emerging AI
-        technologies and high-performance software that scales from mobile
-        devices to HPC clusters.
+        scalable tools to enhance data integration, analyses, and access to
+        biodiversity research. My work bridges the gap between traditional
+        natural history work in remote montane forests and modern biodiversity
+        informatics. I utilize emerging AI technologies and develop
+        high-performance software that scales from mobile devices to HPC
+        clusters.
       </p>
     </div>
     <SocialMediaIcons />
@@ -164,34 +188,32 @@ const buttonClasses = cntl`
         collection-based evolutionary studies"
       </p>
     </div>
-    <!-- <div class="mt-16"></div>
     <div class="mt-16">
       <h2
         class="mb-4 font-semibold text-center text-2xl text-chetwode-950 dark:text-chetwode-50"
       >
-        Research Overview
+        Research Questions
       </h2>
-      <div>
-        <h3 class={sectionTitleClasses}>
-          Field-based <span class={highlightedTextClasses}>evolutionary</span> studies
-          of
-          <span class={highlightedTextClasses2}>small mammals</span> in Indo-Australian
-          Archipelago
+      <h3 class={sectionTitleClasses}>
+        How do islands <span class={highlightedTextClasses}>generate</span> and
+        <span class={highlightedTextClasses2}>maintain</span> biodiversity?
+      </h3>
+      <div class={sectionTitleClasses}>
+        <h3>
+          How can we leverage <span class={highlightedTextClasses}
+            >emerging AI</span
+          > technologies to understand <span class={highlightedTextClasses2}
+            >complex</span
+          > biological systems?
         </h3>
       </div>
       <div class={sectionTitleClasses}>
         <h3>
-          Improving <span class={highlightedTextClasses}>access</span> to
-          <span class={highlightedTextClasses2}>cutting-edge</span> biodiversity research
+          How can we improve <span class={highlightedTextClasses}>access</span> to
+          <span class={highlightedTextClasses2}>cutting-edge</span> biodiversity studies?
         </h3>
       </div>
     </div>
-    <div class={sectionTitleClasses}>
-      <h3>
-        Leveraging <span class={highlightedTextClasses}>emerging AI</span> technologies
-        to understand <span class={highlightedTextClasses2}>complex</span> small mammal
-        coloration
-      </h3> -->
     <div>
       <div class={buttonClasses}>
         <a href="/projects">
@@ -199,5 +221,5 @@ const buttonClasses = cntl`
         </a>
       </div>
     </div>
-  </MainPage>
-</Layout>
+  </MainPage></Layout
+>
