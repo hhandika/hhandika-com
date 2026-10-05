@@ -24,12 +24,12 @@ const tabData = [
 
 const tabContainerClasses = cntl`
   border
-  border-chetwode-200
-  dark:border-chetwode-900
+  border-moss-200
+  dark:border-moss-900
   gap-x-2
   divide-x
-  divide-chetwode-200
-  dark:divide-chetwode-900
+  divide-moss-200
+  dark:divide-moss-900
   flex
   rounded-full
   items-center
@@ -43,18 +43,18 @@ const tabContainerClasses = cntl`
 `;
 
 const activeClass = cntl`
-  bg-chetwode-600
-  dark:bg-chetwode-300
+  bg-moss-600
+  dark:bg-moss-300
   text-white
-  dark:text-porsche-950
+  dark:text-sunrise-950
   font-semibold
 `;
 
 const inactiveClass = cntl`
-  text-porsche-950
-  dark:text-porsche-50
-  hover:bg-chetwode-300
-  dark:hover:bg-chetwode-800
+  text-sunrise-950
+  dark:text-sunrise-50
+  hover:bg-moss-300
+  dark:hover:bg-moss-800
   font-normal
 `;
 ---
@@ -114,17 +114,17 @@ const inactiveClass = cntl`
       // Update button styles
       document.querySelectorAll(".tab-button").forEach((btn) => {
         btn.classList.remove(
-          "bg-chetwode-600",
-          "dark:bg-chetwode-300",
+          "bg-moss-600",
+          "dark:bg-moss-300",
           "text-white",
-          "dark:text-porsche-950",
+          "dark:text-sunrise-950",
           "font-semibold",
         );
         btn.classList.add(
-          "text-porsche-950",
-          "dark:text-porsche-50",
-          "hover:bg-chetwode-300",
-          "dark:hover:bg-chetwode-800",
+          "text-sunrise-950",
+          "dark:text-sunrise-50",
+          "hover:bg-moss-300",
+          "dark:hover:bg-moss-800",
           "font-normal",
         );
       });
@@ -134,17 +134,17 @@ const inactiveClass = cntl`
       );
       if (activeButton) {
         activeButton.classList.remove(
-          "text-chetwode-950",
-          "dark:text-porsche-50",
-          "hover:bg-chetwode-300",
-          "dark:hover:bg-chetwode-800",
+          "text-moss-950",
+          "dark:text-sunrise-50",
+          "hover:bg-moss-300",
+          "dark:hover:bg-moss-800",
           "font-normal",
         );
         activeButton.classList.add(
-          "bg-chetwode-600",
-          "dark:bg-chetwode-300",
+          "bg-moss-600",
+          "dark:bg-moss-300",
           "text-white",
-          "dark:text-porsche-950",
+          "dark:text-sunrise-950",
           "font-semibold",
         );
       }

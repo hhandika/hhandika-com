@@ -2,13 +2,17 @@
 import cntl from "cntl";
 
 const cardClasses = cntl`
-  bg-porsche-200
-  rounded-2xl
-  px-6
-  py-4
+  overflow-hidden
+  rounded-3xl
+  border
+  border-sunrise-900/10
+  bg-sunrise-50
+  shadow-sm
+  dark:border-sunrise-100/10
+  dark:bg-sunrise-950/40
 `;
 ---
 
-<div class={cardClasses}>
+<article class={cardClasses}>
   <slot />
-</div>
+</article>

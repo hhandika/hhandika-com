@@ -1,0 +1,496 @@
+---
+// Animated image-embedding pipeline for the phenomics work. It reuses the
+// NAHPU architecture's visual language (tones, rounded cards, flowing
+// connectors, packets) so the two diagrams read as one system.
+import { tones, wrapChips, arrowHead, lineClass, seeded, type Tone } from "./diagram";
+
+// Specimen groups: two butterfly morphs and a rodent.
+const groups = [
+  {
+    thumb: "fill-sunrise-100 dark:fill-sunrise-900",
+    mark: "fill-sunrise-500 dark:fill-sunrise-400",
+    stroke: "stroke-sunrise-500 dark:stroke-sunrise-400",
+    glyph: "butterfly",
+  },
+  {
+    thumb: "fill-crater-100 dark:fill-crater-900",
+    mark: "fill-crater-500 dark:fill-crater-400",
+    stroke: "stroke-crater-500 dark:stroke-crater-400",
+    glyph: "butterfly",
+  },
+  {
+    thumb: "fill-moss-100 dark:fill-moss-900",
+    mark: "fill-moss-500 dark:fill-moss-400",
+    stroke: "stroke-moss-500 dark:stroke-moss-400",
+    glyph: "rodent",
+  },
+] as const;
+
+const rand = seeded(7);
+
+// 1. Specimens: 3 × 3 thumbnails, 52 px each.
+const thumbs = [0, 1, 2, 1, 2, 0, 2, 0, 1].map((g, k) => ({ g, x: (k % 3) * 60, y: Math.floor(k / 3) * 60 }));
+
+// 2. Encoder: narrowing layers inside a funnel.
+const layerCounts = [6, 5, 4, 3];
+const layers = layerCounts.map((count, c) =>
+  Array.from({ length: count }, (_, j) => ({ x: 16 + c * 46, y: 90 + (j - (count - 1) / 2) * 25, c })),
+);
+const synapses = layers.slice(1).flatMap((layer, c) =>
+  layer.flatMap((b) => layers[c].map((a) => ({ x1: a.x, y1: a.y, x2: b.x, y2: b.y }))),
+);
+
+// 3. Embeddings: similar specimens get similar vectors.
+const prototypes = groups.map(() => Array.from({ length: 10 }, () => 0.15 + rand() * 0.85));
+const vectors = [0, 1, 2, 0, 1, 2].map((g, i) => ({
+  g,
+  y: 6 + i * 26,
+  cells: prototypes[g].map((v, j) => ({
+    x: 20 + j * 15,
+    v: Math.min(1, Math.max(0.12, v + (rand() - 0.5) * 0.3)),
+    delay: ((i * 10 + j) * 0.137) % 6,
+  })),
+}));
+
+// 4. Morphospace: one cluster per group, plus a query and its neighbours.
+const centres = [
+  [50, 50],
+  [128, 60],
+  [94, 122],
+];
+const points = centres.flatMap(([cx, cy], g) =>
+  Array.from({ length: 7 }, () => ({
+    g,
+    x: cx + (rand() + rand() - 1) * 36,
+    y: cy + (rand() + rand() - 1) * 30,
+  })),
+);
+const query = points[7];
+const neighbours = points
+  .filter((p) => p !== query)
+  .map((p) => ({ ...p, d: Math.hypot(p.x - query.x, p.y - query.y) }))
+  .sort((a, b) => a.d - b.d)
+  .slice(0, 3);
+
+interface Stage {
+  id: "specimens" | "encoder" | "embeddings" | "morphospace";
+  tone: Tone;
+  title: string;
+  sub: string;
+  short: string;
+}
+
+const stages: Stage[] = [
+  { id: "specimens", tone: "dart", title: "Specimens", sub: "Digitized collection images", short: "Digitized images" },
+  { id: "encoder", tone: "rust", title: "Vision encoder", sub: "Open-weight image model", short: "Open-weight model" },
+  { id: "embeddings", tone: "rust", title: "Embeddings", sub: "One vector per specimen", short: "Vector per specimen" },
+  { id: "morphospace", tone: "data", title: "Morphospace", sub: "Phenotypic similarity", short: "Trait similarity" },
+];
+
+const questions = [
+  "Visual-similarity search",
+  "Natural-language search",
+  "Mimicry & convergence",
+  "Phenotype × genome × geography",
+];
+
+interface Layout {
+  name: string;
+  class: string;
+  width: number;
+  height: number;
+  card: { w: number; h: number; scale: number; contentY: number };
+  pos: [number, number][];
+  edges: [number, number, number, number][];
+  band: { x: number; y: number; w: number; h: number; inline: boolean };
+}
+
+const wide: Layout = {
+  name: "wide",
+  class: "hidden md:block",
+  width: 960,
+  height: 376,
+  card: { w: 196, h: 252, scale: 1, contentY: 62 },
+  pos: [
+    [40, 20],
+    [268, 20],
+    [496, 20],
+    [724, 20],
+  ],
+  edges: [
+    [236, 146, 268, 146],
+    [464, 146, 496, 146],
+    [692, 146, 724, 146],
+    [822, 272, 822, 304],
+  ],
+  band: { x: 40, y: 304, w: 880, h: 56, inline: true },
+};
+
+const narrow: Layout = {
+  name: "narrow",
+  class: "block md:hidden",
+  width: 360,
+  height: 640,
+  card: { w: 152, h: 210, scale: 0.74, contentY: 66 },
+  // Snake order: 1 → 2, down, 3 ← 4 reads right to left on the second row.
+  pos: [
+    [12, 12],
+    [196, 12],
+    [196, 262],
+    [12, 262],
+  ],
+  edges: [
+    [164, 117, 196, 117],
+    [272, 222, 272, 262],
+    [196, 367, 164, 367],
+    [88, 472, 88, 512],
+  ],
+  band: { x: 12, y: 512, w: 336, h: 116, inline: false },
+};
+
+const layouts = [wide, narrow].map((layout) => {
+  const { band } = layout;
+  const chips = band.inline
+    ? wrapChips(questions, band.x + 150, band.y + 18, band.w - 166, { charW: 6.4 })
+    : wrapChips(questions, band.x + 14, band.y + 38, band.w - 24, { charW: 5.8 });
+  return { ...layout, chips };
+});
+
+// Packets hop across one connector at a time over a shared cycle.
+const cycle = 12;
+const hop = (k: number) => {
+  const a = (k * 2.8) / cycle;
+  const b = a + 1.8 / cycle;
+  return {
+    times: `0;${a.toFixed(3)};${b.toFixed(3)};1`,
+    fade: `0;${a.toFixed(3)};${(a + 0.02).toFixed(3)};${(b - 0.02).toFixed(3)};${b.toFixed(3)};1`,
+  };
+};
+
+const butterfly = [
+  "M26 25 C 19 10, 5 12, 7 22 C 8 29, 18 30, 26 25 Z",
+  "M26 25 C 33 10, 47 12, 45 22 C 44 29, 34 30, 26 25 Z",
+  "M26 27 C 19 30, 12 40, 18 42 C 22 43, 25 35, 26 27 Z",
+  "M26 27 C 33 30, 40 40, 34 42 C 30 43, 27 35, 26 27 Z",
+];
+---
+
+<figure class="not-prose my-6">
+  <div
+    class="rounded-2xl border border-moss-900/10 bg-white/70 p-3 shadow-sm dark:border-moss-100/10 dark:bg-moss-950/40 sm:p-5"
+  >
+    {
+      layouts.map((layout) => (
+        <svg
+          viewBox={`0 0 ${layout.width} ${layout.height}`}
+          class={`w-full h-auto font-sans ${layout.class}`}
+          role="img"
+          aria-label="Specimen images pass through a vision encoder that turns each image into a vector embedding; the embeddings place specimens in a morphospace where similar phenotypes cluster, supporting similarity search and comparisons with genomes and geography."
+        >
+          <g>
+            {layout.edges.map(([x1, y1, x2, y2]) => (
+              <g>
+                <line x1={x1} y1={y1} x2={x2} y2={y2} class={`flow ${lineClass}`} stroke-width="1.75" />
+                <polygon points={arrowHead(x1, y1, x2, y2)} class="fill-moss-400 dark:fill-moss-500" />
+              </g>
+            ))}
+            {layout.edges.map(([x1, y1, x2, y2], k) => {
+              const t = hop(k);
+              const path = `M${x1} ${y1} L${x2} ${y2}`;
+              return (
+                <g class={`packet ${groups[k % 3].mark}`} opacity="0">
+                  {k === 0 ? (
+                    <rect x="-5" y="-5" width="10" height="10" rx="2.5" />
+                  ) : (
+                    <g>
+                      <circle r="9" opacity="0.22" />
+                      <circle r="4.5" />
+                    </g>
+                  )}
+                  <animateMotion
+                    path={path}
+                    dur={`${cycle}s`}
+                    keyPoints="0;0;1;1"
+                    keyTimes={t.times}
+                    calcMode="linear"
+                    repeatCount="indefinite"
+                  />
+                  <animate
+                    attributeName="opacity"
+                    values="0;0;1;1;0;0"
+                    keyTimes={t.fade}
+                    dur={`${cycle}s`}
+                    repeatCount="indefinite"
+                  />
+                </g>
+              );
+            })}
+          </g>
+
+          {stages.map((s, i) => {
+            const [x, y] = layout.pos[i];
+            const t = tones[s.tone];
+            const { w, h, scale, contentY } = layout.card;
+            const cx = x + (w - 172 * scale) / 2;
+            return (
+              <g class="node" style={`--i:${i}`}>
+                <rect x={x} y={y} width={w} height={h} rx="14" class={t.box} stroke-width="1.5" />
+                <circle cx={x + 24} cy={y + 24} r="11" class={t.badge} />
+                <text
+                  x={x + 24}
+                  y={y + 28}
+                  text-anchor="middle"
+                  font-size="12"
+                  class={`font-bold ${t.badgeText}`}
+                >
+                  {i + 1}
+                </text>
+                <text x={x + 42} y={y + 29} font-size={layout.name === "wide" ? 15 : 13.5} class={`font-semibold ${t.title}`}>
+                  {s.title}
+                </text>
+                <text x={x + 14} y={y + 52} font-size={layout.name === "wide" ? 12 : 10.5} class={t.muted}>
+                  {layout.name === "wide" ? s.sub : s.short}
+                </text>
+
+                <g transform={`translate(${cx} ${y + contentY}) scale(${scale})`}>
+                  {s.id === "specimens" && (
+                    <g>
+                      {thumbs.map((th) => (
+                        <g transform={`translate(${th.x} ${th.y})`}>
+                          <rect width="52" height="52" rx="8" class={groups[th.g].thumb} />
+                          {groups[th.g].glyph === "butterfly" ? (
+                            <g class={groups[th.g].mark}>
+                              {butterfly.map((d) => (
+                                <path d={d} opacity="0.9" />
+                              ))}
+                              <line x1="26" y1="18" x2="26" y2="40" stroke-width="2.4" stroke-linecap="round" class="stroke-moss-900 dark:stroke-moss-100" />
+                              <path d="M26 19 Q 23 12 20 11 M26 19 Q 29 12 32 11" fill="none" stroke-width="1" class="stroke-moss-900 dark:stroke-moss-100" />
+                            </g>
+                          ) : (
+                            <g class={groups[th.g].mark}>
+                              <ellipse cx="29" cy="30" rx="13" ry="8.5" />
+                              <circle cx="16" cy="26" r="6.5" />
+                              <circle cx="18" cy="19.5" r="3.2" />
+                              <circle cx="13.5" cy="25" r="1.1" class="fill-moss-950 dark:fill-moss-50" />
+                              <path d="M41 33 C 49 35, 48 42, 41 43" fill="none" stroke-width="1.8" stroke-linecap="round" class={groups[th.g].stroke} />
+                            </g>
+                          )}
+                        </g>
+                      ))}
+                      <rect class="scan fill-sunrise-300 dark:fill-sunrise-500" x="-4" y="0" width="180" height="10" rx="5" opacity="0.35" />
+                    </g>
+                  )}
+
+                  {s.id === "encoder" && (
+                    <g>
+                      <polygon points="2,10 170,52 170,128 2,170" class="fill-sunrise-100/70 stroke-sunrise-200 dark:fill-sunrise-900/50 dark:stroke-sunrise-800" stroke-width="1" />
+                      {synapses.map((l) => (
+                        <line {...l} stroke-width="0.6" class="stroke-sunrise-400/60 dark:stroke-sunrise-600/60" />
+                      ))}
+                      {layers.flat().map((n) => (
+                        <circle
+                          cx={n.x}
+                          cy={n.y}
+                          r="5.5"
+                          class="neuron fill-sunrise-500 stroke-white dark:fill-sunrise-400 dark:stroke-sunrise-950"
+                          stroke-width="1.5"
+                          style={`--d:${n.c * 0.75}s`}
+                        />
+                      ))}
+                      <text x="86" y="182" text-anchor="middle" font-size="10.5" class="font-mono fill-sunrise-800 dark:fill-sunrise-200">
+                        image → vector
+                      </text>
+                    </g>
+                  )}
+
+                  {s.id === "embeddings" && (
+                    <g>
+                      {vectors.map((row) => (
+                        <g>
+                          <circle cx="7" cy={row.y + 9} r="5" class={groups[row.g].mark} />
+                          {row.cells.map((c) => (
+                            <rect
+                              x={c.x}
+                              y={row.y}
+                              width="13"
+                              height="18"
+                              rx="3"
+                              fill-opacity={c.v.toFixed(2)}
+                              class={`cell ${groups[row.g].mark}`}
+                              style={`--d:${c.delay.toFixed(2)}s`}
+                            />
+                          ))}
+                        </g>
+                      ))}
+                      <text x="86" y="182" text-anchor="middle" font-size="10.5" class="font-mono fill-sunrise-800 dark:fill-sunrise-200">
+                        [0.82, −0.14, 0.57, …]
+                      </text>
+                    </g>
+                  )}
+
+                  {s.id === "morphospace" && (
+                    <g>
+                      <path d="M10 4 V160 H170" fill="none" stroke-width="1.25" class="stroke-crater-300 dark:stroke-crater-700" />
+                      <text x="170" y="174" text-anchor="end" font-size="10" class="font-mono fill-crater-700 dark:fill-crater-300">axis 1</text>
+                      <text x="0" y="0" transform="translate(4 4) rotate(90)" font-size="10" class="font-mono fill-crater-700 dark:fill-crater-300">axis 2</text>
+                      {neighbours.map((p) => (
+                        <line x1={query.x} y1={query.y} x2={p.x} y2={p.y} stroke-width="1.25" stroke-dasharray="2 3" class="stroke-crater-500 dark:stroke-crater-300" />
+                      ))}
+                      {points.map((p, k) => (
+                        <circle cx={p.x} cy={p.y} r="4" class={`dot ${groups[p.g].mark}`} style={`--d:${(k * 0.05).toFixed(2)}s`} />
+                      ))}
+                      <circle cx={query.x} cy={query.y} r="6" fill="none" stroke-width="2" class="stroke-crater-700 dark:stroke-crater-100" />
+                      <circle cx={query.x} cy={query.y} r="6" fill="none" stroke-width="1.5" class="ring stroke-crater-500 dark:stroke-crater-300" />
+                    </g>
+                  )}
+                </g>
+              </g>
+            );
+          })}
+
+          <g class="node" style="--i:4">
+            <rect
+              x={layout.band.x}
+              y={layout.band.y}
+              width={layout.band.w}
+              height={layout.band.h}
+              rx="14"
+              class={tones.app.box}
+              stroke-width="1.5"
+            />
+            <text
+              x={layout.band.x + 18}
+              y={layout.band.y + (layout.band.inline ? 33 : 26)}
+              font-size={layout.band.inline ? 15 : 13.5}
+              class={`font-semibold ${tones.app.title}`}
+            >
+              Explore &amp; ask
+            </text>
+            {layout.chips.map((c) => (
+              <g>
+                <rect x={c.x} y={c.y} width={c.w} height="20" rx="10" class={tones.app.chip} stroke-width="1" />
+                <text
+                  x={c.x + c.w / 2}
+                  y={c.y + 14}
+                  text-anchor="middle"
+                  font-size={layout.band.inline ? 11.5 : 10.5}
+                  class={tones.app.chipText}
+                >
+                  {c.label}
+                </text>
+              </g>
+            ))}
+          </g>
+        </svg>
+      ))
+    }
+  </div>
+  <figcaption class="mx-auto mt-3 max-w-3xl px-4 text-center text-sm text-moss-800 dark:text-moss-200">
+    Each specimen image becomes a vector. Distances between vectors measure
+    phenotypic similarity, so color patterns can be compared across hundreds of
+    thousands of specimens and tested against genomes and geography.
+  </figcaption>
+</figure>
+
+<style>
+  .flow {
+    stroke-dasharray: 4 5;
+    animation: flow 3s linear infinite;
+  }
+  @keyframes flow {
+    to {
+      stroke-dashoffset: -9;
+    }
+  }
+  .node {
+    animation: rise 0.6s ease-out backwards;
+    animation-delay: calc(var(--i) * 120ms);
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+  .scan {
+    animation: scan 8s ease-in-out infinite;
+  }
+  @keyframes scan {
+    0%,
+    100% {
+      transform: translateY(-2px);
+    }
+    50% {
+      transform: translateY(166px);
+    }
+  }
+  .neuron {
+    animation: fire 6s ease-in-out infinite;
+    animation-delay: var(--d);
+  }
+  @keyframes fire {
+    0%,
+    60%,
+    100% {
+      opacity: 0.45;
+    }
+    20% {
+      opacity: 1;
+    }
+  }
+  .cell {
+    animation: shimmer 6s ease-in-out infinite;
+    animation-delay: var(--d);
+  }
+  @keyframes shimmer {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.75;
+    }
+  }
+  .dot {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: pop 0.5s ease-out backwards;
+    animation-delay: calc(0.6s + var(--d));
+  }
+  @keyframes pop {
+    from {
+      transform: scale(0);
+    }
+  }
+  .ring {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: ping 5s ease-out infinite;
+  }
+  @keyframes ping {
+    from {
+      transform: scale(1);
+      opacity: 0.9;
+    }
+    to {
+      transform: scale(2.4);
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .flow,
+    .node,
+    .scan,
+    .neuron,
+    .cell,
+    .dot,
+    .ring {
+      animation: none;
+    }
+    .scan,
+    .ring,
+    .packet {
+      display: none;
+    }
+  }
+</style>

@@ -1,23 +1,99 @@
 ---
-import Image from "astro/components/Image.astro";
+import {
+  languageBarHtml,
+  loadStats,
+  STATS_SOURCE_URL,
+  topLanguages,
+  selectedReposHtml,
+} from "../../scripts/github-stats";
+import LiveStat from "./LiveStat.astro";
+import LiveStatsScript from "./LiveStatsScript.astro";
 
-const codeStatsUrl = "https://githubcard.com/hhandika.svg?d=8fDRLgon";
+const stats = await loadStats();
+
+const tiles = [
+  { path: "overview.total_contributions", label: "Contributions" },
+  { path: "code_changes.totals.commits", label: "Commits" },
+  { path: "code_changes.totals.additions", label: "Lines added", format: "compact" },
+  { path: "code_changes.totals.deletions", label: "Lines removed", format: "compact" },
+  { path: "overview.total_repositories", label: "Repositories" },
+  { path: "overview.total_pull_requests", label: "Pull requests" },
+  { path: "overview.total_reviews", label: "Reviews" },
+  { path: "overview.streak_days", label: "Day streak" },
+] as const;
+
+const panelClasses =
+  "rounded-3xl border border-moss-900/10 bg-white p-5 text-moss-950 shadow-sm dark:border-moss-100/10 dark:bg-moss-950/60 dark:text-moss-50 sm:p-6";
 ---
 
-<div class="my-8">
-  <h2
-    class="text-2xl font-semibold text-center mb-4 text-chetwode-950 dark:text-chetwode-50"
-  >
-    My GitHub Code Stats
-  </h2>
-  <div
-    class="rounded-xl items-center justify-center overflow-hidden shadow-lg w-fit mx-auto"
-  >
-    <Image
-      src={codeStatsUrl}
-      alt="GitHub Code Stats"
-      width="650"
-      height="250"
-    />
+<section class="my-10" aria-labelledby="code-metrics-title">
+  <div class="flex flex-wrap items-end justify-between gap-2">
+    <h2
+      id="code-metrics-title"
+      class="text-2xl font-semibold text-moss-950 dark:text-moss-50"
+    >
+      Code metrics
+    </h2>
+    <p class="text-sm text-slate-600 dark:text-slate-400">
+      <span
+        class="mr-1 inline-block h-2 w-2 animate-pulse rounded-full bg-moss-500"
+      ></span>
+      Live from GitHub · updated <LiveStat path="generated_at" format="date" />
+    </p>
   </div>
-</div>
+
+  <dl class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+    {
+      tiles.map((t) => (
+        <div class="rounded-2xl bg-moss-50 p-4 dark:bg-moss-900/50">
+          <dt class="text-xs uppercase tracking-wide text-moss-700 dark:text-moss-300">
+            {t.label}
+          </dt>
+          <dd class="mt-1 text-2xl font-semibold tabular-nums text-moss-950 dark:text-moss-50 sm:text-3xl">
+            <LiveStat path={t.path} format={"format" in t ? t.format : "number"} />
+          </dd>
+        </div>
+      ))
+    }
+  </dl>
+
+  <div class="mt-4 grid gap-4 lg:grid-cols-5">
+    <div class={`${panelClasses} lg:col-span-2`}>
+      <h3 class="font-semibold">Language mix</h3>
+      <p class="mb-4 text-sm text-slate-600 dark:text-slate-400">
+        Share of code across public repositories, by bytes.
+      </p>
+      <div
+        data-gh-languages="7"
+        set:html={languageBarHtml(topLanguages(stats, 7))}
+      />
+      <p class="mt-6 text-sm text-slate-600 dark:text-slate-400">
+        Most active on <strong class="text-moss-950 dark:text-moss-50"
+          ><LiveStat path="overview.peak_day" format="text" /></strong
+        >, mostly in the <strong class="text-moss-950 dark:text-moss-50"
+          ><LiveStat path="overview.peak_hours" format="text" /></strong
+        >.
+      </p>
+    </div>
+    <div class={`${panelClasses} lg:col-span-3`}>
+      <h3 class="font-semibold">Selected repositories</h3>
+      <p class="mb-4 text-sm text-slate-600 dark:text-slate-400">
+        Featured projects and their language composition.
+      </p>
+      <ol
+        class="grid gap-5 sm:grid-cols-2 sm:gap-x-6"
+        data-gh-selected-repos
+        set:html={selectedReposHtml(stats)}
+      />
+    </div>
+  </div>
+  <p class="mt-3 text-xs text-slate-500 dark:text-slate-400">
+    Public repositories only; code changes cover <LiveStat
+      path="code_changes.repositories_counted"
+    /> of <LiveStat path="code_changes.repositories_total" /> repositories. Source:
+    <a class="underline" href={STATS_SOURCE_URL} target="_blank" rel="noopener"
+      >hhandika/hhandika</a
+    >.
+  </p>
+</section>
+<LiveStatsScript />

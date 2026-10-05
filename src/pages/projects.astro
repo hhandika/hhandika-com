@@ -8,41 +8,29 @@ import PageDescription from "../components/PageDescription.astro";
 import cntl from "cntl";
 import Speciation from "../components/projects/Speciation.astro";
 import Software from "../components/projects/Software.astro";
-import Ai from "../components/projects/Ai.astro";
 import Others from "../components/projects/Others.astro";
 
 const tabData = [
-  {
-    id: "speciation",
-    label: "Speciation",
-  },
-  {
-    id: "software",
-    label: "Software",
-  },
-  {
-    id: "ai",
-    label: "AI",
-  },
-  {
-    id: "others",
-    label: "Others",
-  },
+  { id: "speciation", label: "Island speciation" },
+  { id: "software", label: "Software & AI" },
+  { id: "others", label: "Other projects" },
 ];
 
 const tabContainerClasses = cntl`
   border
-  border-chetwode-200
-  dark:border-chetwode-900
+  border-moss-200
+  dark:border-moss-900
   p-1
   gap-x-2
   divide-x
-  divide-chetwode-200
-  dark:divide-chetwode-900
+  divide-moss-200
+  dark:divide-moss-900
   flex
   rounded-full
   items-center
-  justify-center
+  justify-start
+  sm:justify-center
+  max-w-full
   w-fit
   mx-auto
   mt-8
@@ -51,18 +39,18 @@ const tabContainerClasses = cntl`
 `;
 
 const activeClass = cntl`
-  bg-chetwode-600
-  dark:bg-chetwode-300
+  bg-moss-600
+  dark:bg-moss-300
   text-white
-  dark:text-porsche-950
+  dark:text-sunrise-950
   font-semibold
 `;
 
 const inactiveClass = cntl`
-  text-porsche-950
-  dark:text-porsche-50
-  hover:bg-chetwode-300
-  dark:hover:bg-chetwode-800
+  text-sunrise-950
+  dark:text-sunrise-50
+  hover:bg-moss-300
+  dark:hover:bg-moss-800
   font-normal
 `;
 ---
@@ -72,17 +60,20 @@ const inactiveClass = cntl`
     <Background backgroundImage={researchIcon} />
     <PageTitle title="Research Projects">
       <PageDescription>
-        Integrating fieldwork, natural history collections, genomics, and the
-        development of digital tools to address speciation, biogeography, and
-        conservation questions.
+        How does geographic isolation shape genomic divergence, ecological
+        interactions, and phenotypic evolution? I integrate fieldwork, natural
+        history collections, genomics, AI, and open-source software to find
+        out.
       </PageDescription>
     </PageTitle>
     <div class={tabContainerClasses}>
       {
         tabData.map((tab) => (
           <button
-            class={`tab-button px-4 py-2 rounded-full transition-colors duration-300 ${inactiveClass} ${tab.id === "speciation" ? activeClass : ""}`}
+            class={`tab-button whitespace-nowrap px-4 py-2 rounded-full transition-colors duration-300 ${inactiveClass} ${tab.id === "speciation" ? activeClass : ""}`}
             data-section={tab.id}
+            role="tab"
+            aria-selected={tab.id === "speciation" ? "true" : "false"}
           >
             {tab.label}
           </button>
@@ -95,87 +86,56 @@ const inactiveClass = cntl`
     <div id="software-section" class="mt-8 hidden">
       <Software />
     </div>
-    <div id="ai-section" class="mt-8 hidden">
-      <Ai />
-    </div>
     <div id="others-section" class="mt-8 hidden">
       <Others />
     </div>
   </MainPage>
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      console.log("Script loaded");
+    const activeTokens = [
+      "bg-moss-600",
+      "dark:bg-moss-300",
+      "text-white",
+      "dark:text-sunrise-950",
+      "font-semibold",
+    ];
+    const inactiveTokens = [
+      "text-sunrise-950",
+      "dark:text-sunrise-50",
+      "hover:bg-moss-300",
+      "dark:hover:bg-moss-800",
+      "font-normal",
+    ];
 
-      function showSection(section: string) {
-        console.log("showSection called with:", section);
+    function showSection(section: string) {
+      document
+        .querySelectorAll<HTMLElement>("[id$='-section']")
+        .forEach((el) => el.classList.toggle("hidden", el.id !== `${section}-section`));
 
-        const sections = ["speciation", "software", "ai", "others"];
-
-        sections.forEach((sec) => {
-          const element = document.querySelector(`#${sec}-section`);
-          console.log(`Section ${sec}:`, element);
-          if (element) {
-            element.classList.add("hidden");
-          }
-        });
-
-        const activeSection = document.querySelector(`#${section}-section`);
-        console.log("Active section:", activeSection);
-        if (activeSection) {
-          activeSection.classList.remove("hidden");
-        }
-
-        // Update button styles
-        document.querySelectorAll(".tab-button").forEach((btn) => {
-          btn.classList.remove(
-            "bg-chetwode-600",
-            "dark:bg-chetwode-300",
-            "text-white",
-            "dark:text-porsche-950",
-            "font-semibold",
-          );
-          btn.classList.add(
-            "text-porsche-950",
-            "dark:text-porsche-50",
-            "hover:bg-chetwode-300",
-            "dark:hover:bg-chetwode-800",
-            "font-normal",
-          );
-        });
-
-        const activeButton = document.querySelector(
-          `[data-section="${section}"]`,
-        );
-        if (activeButton) {
-          activeButton.classList.remove(
-            "text-chetwode-950",
-            "dark:text-porsche-50",
-            "hover:bg-chetwode-300",
-            "dark:hover:bg-chetwode-800",
-            "font-normal",
-          );
-          activeButton.classList.add(
-            "bg-chetwode-600",
-            "dark:bg-chetwode-300",
-            "text-white",
-            "dark:text-porsche-950",
-            "font-semibold",
-          );
-        }
-      }
-
-      // Add event listeners to all tab buttons
-      const buttons = document.querySelectorAll(".tab-button");
-      console.log("Found buttons:", buttons.length);
-
-      buttons.forEach((button) => {
-        button.addEventListener("click", () => {
-          const section = button.getAttribute("data-section");
-          console.log("Button clicked, section:", section);
-          if (section) showSection(section);
-        });
+      document.querySelectorAll<HTMLElement>(".tab-button").forEach((btn) => {
+        const active = btn.dataset.section === section;
+        btn.classList.remove(...(active ? inactiveTokens : activeTokens));
+        btn.classList.add(...(active ? activeTokens : inactiveTokens));
+        btn.setAttribute("aria-selected", String(active));
       });
-    });
+    }
+
+    const tabIds = [...document.querySelectorAll<HTMLElement>(".tab-button")].map(
+      (b) => b.dataset.section!,
+    );
+    document.querySelectorAll<HTMLElement>(".tab-button").forEach((btn) =>
+      btn.addEventListener("click", () => {
+        showSection(btn.dataset.section!);
+        history.replaceState(null, "", `#${btn.dataset.section}`);
+      }),
+    );
+
+    // Deep links like /projects#phenomics open that tab.
+    const fromHash = () => {
+      const id = location.hash.slice(1);
+      if (tabIds.includes(id)) showSection(id);
+    };
+    addEventListener("hashchange", fromHash);
+    fromHash();
   </script>
 </Layout>

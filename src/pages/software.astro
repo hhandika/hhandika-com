@@ -11,10 +11,27 @@ import SoftwareCard from "../components/SoftwareCard.astro";
 import cntl from "cntl";
 import LinkCard from "../components/LinkCard.astro";
 import CodeStats from "../components/github/CodeStats.astro";
+import seguiWindows from "../assets/img/segul/segui-windows-genomics.png";
+import seguiIosGenomics from "../assets/img/segul/segui-ios-genomics.jpg";
+import seguiIosAlignments from "../assets/img/segul/segui-ios-alignments.jpg";
+import seguiIosHome from "../assets/img/segul/segui-ios-home-dark.webp";
+import nahpuHome from "../assets/img/nahpu/phone-home-screen.jpg";
+import nahpuCoordinates from "../assets/img/nahpu/phone-coordinates.jpg";
+import nahpuSpecimenPart from "../assets/img/nahpu/phone-specimen-part.jpg";
+import nahpuTemplate from "../assets/img/nahpu/mac-template-design.jpg";
+import nahpuMedia from "../assets/img/nahpu/media-gallery.jpg";
+import mddHome from "../assets/img/mdd/mdd-home.jpg";
+import mddTaxon from "../assets/img/mdd/mdd-taxon.jpg";
+import mddAppTree from "../assets/img/mdd/app-taxonomy-tree.webp";
+import mddAppTaxon from "../assets/img/mdd/app-taxon-info.webp";
+import mddAppMap from "../assets/img/mdd/app-occurrence-map.webp";
+import mddAppStats from "../assets/img/mdd/app-statistics.webp";
 
 const cardDescriptonClasses = cntl`
-  mt-2
-  text-porsche-950
+  mt-4
+  text-pretty
+  text-sunrise-950
+  dark:text-sunrise-50
   text-md
 `;
 ---
@@ -45,7 +62,15 @@ const cardDescriptonClasses = cntl`
         ]}
         repo="https://github.com/hhandika/segul"
         docs="https://www.segul.app/"
-        install="https://www.segul.app/docs/installation/overview"
+        install="https://www.segul.app/docs/installation/intro"
+        metricRepos={["hhandika/segul", "hhandika/segui"]}
+        languageRepo="hhandika/segui"
+        screenshots={[
+          { src: seguiWindows, alt: "SEGUI on Windows summarizing genomic reads" },
+          { src: seguiIosHome, alt: "SEGUI home screen on iPhone in dark mode" },
+          { src: seguiIosGenomics, alt: "SEGUI genomic sequence tools on iPhone" },
+          { src: seguiIosAlignments, alt: "SEGUI alignment concatenation on iPhone" },
+        ]}
       >
         <p class={cardDescriptonClasses}>
           We develop SEGUL (SEquence and Genomic UtiLities) to address the need
@@ -75,7 +100,15 @@ const cardDescriptonClasses = cntl`
           platform={["Mobile app", "Desktop app"]}
           repo="https://github.com/hhandika/nahpu"
           docs="https://www.nahpu.app/"
-          install="https://www.nahpu.app/docs/installation"
+          install="https://nahpu.app/get-started/"
+          languageRepo="nahpu/nahpu"
+          screenshots={[
+            { src: nahpuHome, alt: "NAHPU home screen on a phone" },
+            { src: nahpuTemplate, alt: "NAHPU catalog template design on macOS" },
+            { src: nahpuCoordinates, alt: "Recording collecting-site coordinates in NAHPU" },
+            { src: nahpuMedia, alt: "NAHPU media gallery for specimen photographs" },
+            { src: nahpuSpecimenPart, alt: "Specimen part records in NAHPU" },
+          ]}
         >
           <p class={cardDescriptonClasses}>
             The NAHPU project is a collaborative effort to develop a digital
@@ -88,7 +121,7 @@ const cardDescriptonClasses = cntl`
             data features and multi-language support. NAHPU features real-time
             statistics to keep track of specimen records to aid in making
             decisions in collecting efforts and avoiding over-sampling. The app
-            is in beta. Several field teams tested NAHPU for fieldwork in
+            is stable. Field teams have used NAHPU for fieldwork in
             Brazil, Colombia, Indonesia, Mexico, and the United States. It
             supports data collection for ornithology and mammalogy, with plans
             to extend support to other taxa.
@@ -105,6 +138,16 @@ const cardDescriptonClasses = cntl`
           repo="https://github.com/hhandika/ullar"
           docs="https://github.com/hhandika/ullar"
           install="https://github.com/hhandika/ullar"
+          metricRepos={["hhandika/ullar"]}
+          languageRepo="hhandika/ullar"
+          screenshots={[
+            {
+              src: "/images/ullar-mafft.gif",
+              alt: "ULLAR running a MAFFT sequence alignment pipeline on 4,421 loci in the terminal",
+              width: 806,
+              height: 414,
+            },
+          ]}
         >
           <p class={cardDescriptonClasses}>
             ULLAR is currently in the beta development stage. It aims to create
@@ -127,7 +170,16 @@ const cardDescriptonClasses = cntl`
             platform={["Mobile app", "Desktop app"]}
             repo="https://github.com/mammaldiversity/mdd_app"
             docs="https://github.com/mammaldiversity/mdd_app"
-            install="https://github.com/mammaldiversity/mdd_app"
+            install="https://github.com/mammaldiversity/mdd_app/releases/latest"
+            languageRepo="mammaldiversity/mdd_app"
+            screenshots={[
+              { src: mddAppTree, alt: "MDD app taxonomy tree" },
+              { src: mddHome, alt: "MDD app home screen on desktop" },
+              { src: mddAppTaxon, alt: "Species information in the MDD app" },
+              { src: mddAppMap, alt: "Occurrence map in the MDD app" },
+              { src: mddTaxon, alt: "Taxon page in the MDD desktop app" },
+              { src: mddAppStats, alt: "Database statistics in the MDD app" },
+            ]}
           >
             <p class={cardDescriptonClasses}>
               The American Society of Mammalogists' Mammal Diversity Database

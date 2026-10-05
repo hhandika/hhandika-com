@@ -1,0 +1,85 @@
+---
+// NAHPU screenshots, copied from nahpu-docs (src/assets/images/app-screenshots).
+import { Image } from "astro:assets";
+import templateDesign from "../../../assets/img/nahpu/mac-template-design.jpg";
+import specimenRecord from "../../../assets/img/nahpu/specimen-record.jpg";
+import mediaGallery from "../../../assets/img/nahpu/media-gallery.jpg";
+import phoneHome from "../../../assets/img/nahpu/phone-home-screen.jpg";
+import phoneParts from "../../../assets/img/nahpu/phone-specimen-part.jpg";
+import phoneCoords from "../../../assets/img/nahpu/phone-coordinates.jpg";
+
+const shots = [
+  {
+    src: templateDesign,
+    alt: "NAHPU label template editor on macOS showing a specimen label with a QR code",
+    caption: "Label template editor",
+    device: "macOS",
+    class: "col-span-3 md:col-span-4",
+    width: 900,
+  },
+  {
+    src: specimenRecord,
+    alt: "NAHPU specimen record on iPad in dark mode with measurements and specimen parts",
+    caption: "Specimen record",
+    device: "iPad",
+    class: "hidden md:block md:col-span-2",
+    width: 480,
+  },
+  {
+    src: mediaGallery,
+    alt: "NAHPU media gallery with field site photographs",
+    caption: "Media gallery",
+    device: "macOS",
+    class: "col-span-3",
+    width: 720,
+  },
+  {
+    src: phoneHome,
+    alt: "NAHPU project list on iPhone",
+    caption: "Projects",
+    device: "iPhone",
+    class: "col-span-1",
+    width: 300,
+  },
+  {
+    src: phoneParts,
+    alt: "NAHPU specimen parts on iPhone",
+    caption: "Specimen parts",
+    device: "iPhone",
+    class: "col-span-1",
+    width: 300,
+  },
+  {
+    src: phoneCoords,
+    alt: "NAHPU coordinate import on iPhone supporting CSV, Excel, GeoJSON, KML, Shapefile, and GPX",
+    caption: "Coordinate import",
+    device: "iPhone",
+    class: "col-span-1",
+    width: 300,
+  },
+];
+---
+
+<div class="my-6 grid grid-cols-3 gap-3 md:grid-cols-6">
+  {
+    shots.map((shot) => (
+      <figure
+        class={`group flex flex-col overflow-hidden rounded-2xl border border-moss-900/10 bg-moss-50 p-1.5 transition duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-moss-100/10 dark:bg-moss-900/40 ${shot.class}`}
+      >
+        <div class="min-h-0 flex-1 overflow-hidden rounded-xl">
+          <Image
+            src={shot.src}
+            alt={shot.alt}
+            width={shot.width}
+            loading="lazy"
+            class="h-full w-full object-cover object-top transition duration-500 group-hover:scale-[1.02]"
+          />
+        </div>
+        <figcaption class="flex flex-wrap items-baseline justify-between gap-x-2 px-2 pb-0.5 pt-1.5 text-xs">
+          <span class="font-semibold text-moss-900 dark:text-moss-100">{shot.caption}</span>
+          <span class="font-mono text-[0.7rem] text-moss-600 dark:text-moss-400">{shot.device}</span>
+        </figcaption>
+      </figure>
+    ))
+  }
+</div>

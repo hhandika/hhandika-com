@@ -3,6 +3,7 @@ import Icons from "./Icons.astro";
 import OpenMenuButton from "./buttons/OpenMenuButton.astro";
 import CloseMenuButton from "./buttons/CloseMenuButton.astro";
 import cntl from "cntl";
+import ThemeIcon from "./ThemeIcon.astro";
 
 const navItems = [
   { path: "/", label: "About" },
@@ -23,11 +24,11 @@ const navClasses = cntl`
 `;
 
 const activeLinkClasses = cntl`
-  bg-porsche-100
-  dark:bg-porsche-800
+  bg-sunrise-100
+  dark:bg-sunrise-800
   rounded-full
-  text-porsche-600
-  dark:text-porsche-100
+  text-sunrise-600
+  dark:text-sunrise-100
   font-semibold
   px-4
 `;
@@ -35,13 +36,13 @@ const activeLinkClasses = cntl`
 const desktopNavClasses = cntl`
   hidden
   border
-  border-porsche-300
-  dark:border-porsche-800
+  border-sunrise-300
+  dark:border-sunrise-800
   lg:flex
   gap-x-4
   rounded-full
-  bg-porsche-200
-  dark:bg-porsche-950
+  bg-sunrise-200
+  dark:bg-sunrise-950
   p-2
 `;
 
@@ -49,13 +50,13 @@ const desktopLinkClasses = cntl`
   -m-1.5
   p-1.5
   font-semibold
-  hover:text-porsche-600
-  dark:hover:text-porsche-300
+  hover:text-sunrise-600
+  dark:hover:text-sunrise-300
 `;
 
 const inactiveLinkClasses = cntl`
-  text-porsche-950
-  dark:text-porsche-50
+  text-sunrise-950
+  dark:text-sunrise-50
   px-4
 `;
 
@@ -67,14 +68,14 @@ const mobileLinkClasses = cntl`
   block
   px-4
   py-2
-  hover:text-porsche-600
-  dark:hover:text-porsche-300
+  hover:text-sunrise-600
+  dark:hover:text-sunrise-300
   text-base/7
 `;
 
 const mobileMenuPanelClasses = cntl`
-  bg-porsche-200
-  dark:bg-porsche-950
+  bg-sunrise-200
+  dark:bg-sunrise-950
   inset-y-0
   right-0
   z-50
@@ -100,7 +101,8 @@ const mobileMenuPanelClasses = cntl`
     </a>
     <Icons />
   </div>
-  <div class="flex lg:hidden">
+  <div class="flex items-center gap-3 lg:hidden">
+    <ThemeIcon />
     <OpenMenuButton />
   </div>
   <div class={desktopNavClasses}>
@@ -114,6 +116,9 @@ const mobileMenuPanelClasses = cntl`
         </a>
       ))
     }
+  </div>
+  <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+    <ThemeIcon />
   </div>
 </nav>
 <!-- Mobile menu, show/hide based on menu open state. -->

@@ -1,0 +1,160 @@
+---
+import { Image } from "astro:assets";
+import Content from "../Content.astro";
+import SectionHead from "../SectionHead.astro";
+import Link from "../Link.astro";
+import EmbeddingPipeline from "./software/EmbeddingPipeline.astro";
+import MorphospacePlot from "./biocosmos/MorphospacePlot.tsx";
+import PlannerPlot from "./biocosmos/PlannerPlot.tsx";
+import stats from "../../data/biocosmos/morphospace-stats.json";
+import lepiverseHome from "../../assets/img/biocosmos/lepiverse-home.jpg";
+import lepiverseSpecies from "../../assets/img/biocosmos/lepiverse-species.jpg";
+import lepiverseSimilar from "../../assets/img/biocosmos/lepiverse-similar-species.jpg";
+
+const morphoStats = [
+  { value: stats.species.toLocaleString(), label: "species in the morphospace" },
+  { value: stats.bothSides.toLocaleString(), label: "seen from both wing sides" },
+  { value: `${stats.generaSignificant}/${stats.genera}`, label: "genera with integrated dorsal and ventral patterns (Mantel p < 0.05)" },
+  { value: `r = ${stats.scopeMantelR}`, label: "dorso-ventral integration across all species" },
+];
+
+// From the lepiverse.com collection summary (October 2026).
+const collection = [
+  { value: "619,739", label: "specimen images" },
+  { value: "9,342", label: "species" },
+  { value: "196", label: "countries" },
+  { value: "8", label: "validated families" },
+];
+
+const figureClasses =
+  "rounded-2xl border border-moss-900/10 bg-white/70 p-3 shadow-sm dark:border-moss-100/10 dark:bg-moss-950/40 sm:p-5";
+const shotClasses =
+  "group overflow-hidden rounded-2xl border border-moss-900/10 bg-moss-50 p-1.5 transition duration-500 hover:-translate-y-0.5 hover:shadow-lg dark:border-moss-100/10 dark:bg-moss-900/40";
+---
+
+<SectionHead text="AI-assisted phenomics: quantifying complex traits at collection scale" />
+<Content>
+  <p>
+    Coloration is a complex phenotype shaped by shared ancestry, convergence,
+    and environmental selection. Using image embeddings from digitized
+    specimens, we measure phenotypic similarity within and among species and
+    have found latitudinal variation in color similarity alongside species
+    richness. Butterflies are our test case: I am testing these patterns in
+    butterfly mimicry by integrating image-based similarity with genetic
+    relationships and geographic co-occurrence.
+  </p>
+  <p class="mt-2">
+    I hope to extend this framework to Indo-Australian rodents, asking
+    whether phenotypic divergence among isolated island and mountain
+    populations parallels genomic divergence or reflects local environments,
+    and, through collaborations, to frogs, reptiles, and birds.
+  </p>
+  <EmbeddingPipeline />
+</Content>
+
+<SectionHead text="The butterfly morphospace: upper and under wings tell different stories" />
+<Content>
+  <p>
+    Each point is a species centroid in a principal-component space of image
+    embeddings from BioCosmos. Switch between the dorsal (upper) and ventral
+    (under) wing surfaces to watch species shift: skippers (Hesperiidae) and
+    whites and sulphurs (Pieridae) separate clearly, while many lineages change
+    position between sides. Hover a point for its name, or pick a family to
+    highlight it.
+  </p>
+</Content>
+<figure class={`not-prose my-6 ${figureClasses}`}>
+  <MorphospacePlot client:visible />
+</figure>
+<dl class="grid grid-cols-2 gap-3 lg:grid-cols-4">
+  {
+    morphoStats.map((s) => (
+      <div class="rounded-2xl border border-moss-900/10 px-3 py-3 dark:border-moss-100/10">
+        <dt class="sr-only">{s.label}</dt>
+        <dd class="font-serif text-xl font-semibold text-sunrise-700 dark:text-sunrise-300">{s.value}</dd>
+        <dd class="mt-1 text-xs text-moss-700 dark:text-moss-300">{s.label}</dd>
+      </div>
+    ))
+  }
+</dl>
+
+<SectionHead text="BioCosmos: AI-enabled exploration of biological collections" />
+<Content>
+  <p>
+    <Link text="BioCosmos" url="https://lepiverse.com" /> is a low-cost,
+    AI-enabled web platform deployed through LepiVerse that brings together more
+    than 600,000 digitized Lepidoptera specimen images. It combines taxonomic
+    harmonization and geographic data validation with visual-similarity search,
+    natural-language search, interactive morphospace plots, and enriched species
+    pages, showing that image embeddings and open-weight large language models
+    can make large collections explorable. Next, I plan to extend
+    embedding-based trait exploration across more Lepidoptera and connect
+    phenotypes with taxonomic, geographic, and genomic data.
+  </p>
+  <p class="mt-2">
+    This work is part of my postdoc in the AI Biodiversity Informatics Division
+    at the Florida Museum of Natural History, with <Link
+      text="Porto's lab"
+      url="https://agporto.github.io/"
+    />, University of Florida.
+  </p>
+</Content>
+
+<dl class="mx-auto mt-6 grid max-w-4xl grid-cols-2 gap-3 text-center sm:grid-cols-4">
+  {
+    collection.map((s) => (
+      <div class="rounded-2xl border border-moss-900/10 px-3 py-4 dark:border-moss-100/10">
+        <dt class="sr-only">{s.label}</dt>
+        <dd class="font-serif text-2xl font-semibold text-sunrise-700 dark:text-sunrise-300">{s.value}</dd>
+        <dd class="mt-1 text-xs text-moss-700 dark:text-moss-300">{s.label}</dd>
+      </div>
+    ))
+  }
+</dl>
+
+<div class="my-6 grid gap-3 md:grid-cols-2">
+  <a href="https://lepiverse.com" class={shotClasses}>
+    <Image src={lepiverseHome} alt="LepiVerse home page with semantic, text, and image search beside a grid of butterfly specimens" width={900} loading="lazy" class="rounded-xl" />
+    <p class="flex justify-between px-2 pt-1.5 text-xs">
+      <span class="font-semibold text-moss-900 dark:text-moss-100">Semantic, text, and image search</span>
+      <span class="font-mono text-moss-600 dark:text-moss-400">lepiverse.com</span>
+    </p>
+  </a>
+  <a href="https://lepiverse.com/species/morpho_aega" class={shotClasses}>
+    <Image src={lepiverseSpecies} alt="LepiVerse species page for Morpho aega with specimen images, classification, and distribution map" width={900} loading="lazy" class="rounded-xl" />
+    <p class="flex justify-between px-2 pt-1.5 text-xs">
+      <span class="font-semibold text-moss-900 dark:text-moss-100">Enriched species page</span>
+      <span class="font-mono text-moss-600 dark:text-moss-400"><i>Morpho aega</i></span>
+    </p>
+  </a>
+</div>
+<figure class={shotClasses}>
+  <Image
+    src={lepiverseSimilar}
+    alt="Visually similar species to Morpho aega. Dorsal matches are blue Morpho species; ventral matches include brown Morpho, Zeuxidia, Tanaecia, and Vindula species."
+    width={1400}
+    loading="lazy"
+    class="w-full rounded-xl"
+  />
+  <figcaption class="px-2 pt-2 text-xs text-moss-800 dark:text-moss-200">
+    <span class="font-semibold">Visually similar species.</span> Nearest neighbours
+    of <i>Morpho aega</i> in embedding space. Dorsal matches are all blue
+    <i>Morpho</i>, but the cryptic brown undersides also match <i>Zeuxidia</i>,
+    <i>Tanaecia</i>, and <i>Vindula</i>, from different genera: the same
+    upper/under contrast the morphospace shows.
+  </figcaption>
+</figure>
+
+<SectionHead text="Choosing an open-weight LLM for natural-language search" />
+<Content>
+  <p>
+    I designed the search features in BioCosmos, where a language model turns a
+    question such as “orange butterflies with black stripes from Peru” into
+    structured search calls (color, country, trait, or similarity). To choose
+    the best model for production, I benchmark open-weight models on the same
+    set of queries, comparing accuracy, consistency, latency, and token cost.
+  </p>
+</Content>
+<figure class={`not-prose my-6 ${figureClasses}`}>
+  <PlannerPlot client:visible />
+</figure>

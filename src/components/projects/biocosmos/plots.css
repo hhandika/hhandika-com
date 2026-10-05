@@ -1,0 +1,42 @@
+/* Gentle, one-time entrance animations for the BioCosmos plots.
+   Slow durations and no looping, to avoid motion discomfort. */
+.bc-anim g[aria-label="bar"] rect {
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: bc-grow-x 1.6s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: var(--d, 0ms);
+}
+.bc-anim g[aria-label="dot"] circle {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: bc-pop 1.4s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: var(--d, 0ms);
+}
+.bc-anim g[aria-label="link"] :is(path, line) {
+  stroke-dasharray: 1;
+  animation: bc-draw 1.8s ease-out backwards;
+  animation-delay: var(--d, 0ms);
+}
+.bc-anim g[aria-label="cell"] rect,
+.bc-anim g[aria-label="text"] text {
+  animation: bc-fade 1.2s ease-out backwards;
+  animation-delay: var(--d, 0ms);
+}
+@keyframes bc-grow-x {
+  from { transform: scaleX(0); }
+}
+@keyframes bc-pop {
+  from { transform: scale(0); opacity: 0; }
+}
+@keyframes bc-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes bc-fade {
+  from { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bc-anim * {
+    animation: none !important;
+  }
+}

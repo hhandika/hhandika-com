@@ -1,6 +1,23 @@
 ---
 import cntl from "cntl";
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
 import CardLink from "./buttons/CardLink.astro";
+import LiveStatsScript from "./github/LiveStatsScript.astro";
+import {
+  languageBarHtml,
+  loadStats,
+  repoLanguages,
+  repoMetricsHtml,
+} from "../scripts/github-stats";
+
+interface Screenshot {
+  /** A plain URL (e.g. an animated GIF in public/) skips image optimization. */
+  src: ImageMetadata | string;
+  alt: string;
+  width?: number;
+  height?: number;
+}
 
 interface CardProps {
   title: string;
@@ -9,49 +26,133 @@ interface CardProps {
   repo: string;
   docs: string;
   install: string;
+  /** Repos (owner/name) whose commits and line changes are summed. */
+  metricRepos?: string[];
+  /** Repo (owner/name) whose language mix is shown. */
+  languageRepo?: string;
+  screenshots?: Screenshot[];
 }
 
-const { title, subtitle, platform, repo, docs, install } =
-  Astro.props as CardProps;
+const {
+  title,
+  subtitle,
+  platform,
+  repo,
+  docs,
+  install,
+  metricRepos = [],
+  languageRepo,
+  screenshots = [],
+} = Astro.props as CardProps;
+
+const stats = await loadStats();
+const metricsHtml = repoMetricsHtml(stats, metricRepos);
+const languagesHtml = languageRepo
+  ? languageBarHtml(repoLanguages(stats, languageRepo))
+  : "";
+const hasMetrics = metricRepos.length > 0 || languageRepo;
 
 const titleClasses = cntl`
-  font-semibold
-  text-porsche-950
-  text-lg
+  font-serif
+  text-3xl
+  text-sunrise-950
+  dark:text-sunrise-50
 `;
 
 const subtitleClasses = cntl`
-  font-serif
+  mt-1
   text-lg
-  text-porsche-800
+  text-sunrise-800
+  dark:text-sunrise-200
 `;
 
-const techonolgyClasses = cntl`
-    bg-porsche-100 
-    text-porsche-800 
-    rounded-full 
-    px-2 
-    py-1 
-    text-sm 
-    mr-2 
-    mb-2
+const shotClasses = cntl`
+  h-56
+  w-auto
+  shrink-0
+  snap-start
+  rounded-xl
+  border
+  border-sunrise-900/10
+  object-contain
+  shadow-sm
+  sm:h-72
+`;
+
+const platformClasses = cntl`
+  rounded-full
+  bg-sunrise-100
+  px-2.5
+  py-1
+  text-sm
+  text-sunrise-800
+  dark:bg-sunrise-900
+  dark:text-sunrise-100
 `;
 ---
 
-<div id="software-card">
-  <p class={titleClasses}>{title}</p>
-  <p class={subtitleClasses}>{subtitle}</p>
-  <div class="flex flex-wrap mt-2">
+<div>
+  {
+    screenshots.length > 0 && (
+      <div
+        class="flex snap-x gap-3 overflow-x-auto bg-sunrise-100/70 p-3 dark:bg-sunrise-950/60"
+        tabindex="0"
+        aria-label={`${title} screenshots`}
+      >
+        {screenshots.map((shot) =>
+          typeof shot.src === "string" ? (
+            <img
+              src={shot.src}
+              alt={shot.alt}
+              width={shot.width}
+              height={shot.height}
+              loading="lazy"
+              class={shotClasses}
+            />
+          ) : (
+            <Image src={shot.src} alt={shot.alt} height={640} class={shotClasses} />
+          ),
+        )}
+      </div>
+    )
+  }
+  <div class="grid gap-6 p-6 lg:grid-cols-[1fr_16rem]">
+    <div>
+      <h3 class={titleClasses}>{title}</h3>
+      <p class={subtitleClasses}>{subtitle}</p>
+      <div class="mt-3 flex flex-wrap gap-2">
+        {platform.map((p) => <span class={platformClasses}>{p}</span>)}
+      </div>
+      <slot />
+      <p class="mt-4 flex">
+        <CardLink text="Code" url={repo} />
+        <CardLink text="Docs" url={docs} />
+        <CardLink text="Install" url={install} />
+      </p>
+    </div>
     {
-      platform?.map((tech: string) => (
-        <span class={techonolgyClasses}>{tech}</span>
-      ))
+      hasMetrics && (
+        <aside class="self-start rounded-2xl bg-white/80 p-4 text-sunrise-950 dark:bg-black/30 dark:text-sunrise-50">
+          <p class="text-xs font-semibold uppercase tracking-widest text-sunrise-700 dark:text-sunrise-300">
+            On GitHub
+          </p>
+          {metricRepos.length > 0 && (
+            <dl
+              class="mt-3 grid grid-cols-3 gap-2 lg:grid-cols-1"
+              data-gh-repo-metrics={metricRepos.join(",")}
+              set:html={metricsHtml}
+            />
+          )}
+          {languageRepo && (
+            <div
+              class="mt-4 [&_ul]:text-xs"
+              data-gh-repo-langs={languageRepo}
+              set:html={languagesHtml}
+            />
+          )}
+        </aside>
+      )
     }
-    <slot />
-    <p class="flex mt-4">
-      <CardLink text="Code" url={repo} />
-      <CardLink text="Docs" url={docs} />
-      <CardLink text="Install" url={install} />
-    </p>
   </div>
 </div>
+<LiveStatsScript />
