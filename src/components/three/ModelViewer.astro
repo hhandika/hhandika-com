@@ -48,7 +48,7 @@ const {
   <div
     class="pointer-events-none absolute bottom-3 left-3 flex items-center gap-2 rounded-full bg-black/50 px-3 py-1 text-xs font-medium text-white backdrop-blur"
   >
-    <span class="mv-dot inline-block h-2 w-2 rounded-full bg-sunrise-400"></span>
+    <span class="mv-dot inline-block h-2 w-2 rounded-full bg-moss-400"></span>
     <span class="mv-status">{label} · drag to rotate</span>
   </div>
 </div>
@@ -83,15 +83,15 @@ const {
     renderer.outputColorSpace = THREE.SRGBColorSpace;
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(dark ? 0x191f0c : 0xfbefc9);
+    scene.background = new THREE.Color(dark ? 0x0e1a12 : 0xe4ecee);
     const camera = new THREE.PerspectiveCamera(35, 1, 0.01, 100);
     camera.position.set(0, 0.4, 3.2);
 
-    scene.add(new THREE.HemisphereLight(0xe9edd6, 0x3e170a, 1.2));
-    const key = new THREE.DirectionalLight(0xffe2bd, 2.2);
+    scene.add(new THREE.HemisphereLight(0xe4ecee, 0x1c2b21, 1.2));
+    const key = new THREE.DirectionalLight(0xf4f7f8, 2.2);
     key.position.set(2, 3, 2);
     scene.add(key);
-    const rim = new THREE.DirectionalLight(0x788d36, 1.5);
+    const rim = new THREE.DirectionalLight(0x86ae3e, 1.5);
     rim.position.set(-3, 1, -2);
     scene.add(rim);
 
@@ -142,7 +142,7 @@ const {
         new THREE.Mesh(
           geo,
           new THREE.MeshStandardMaterial({
-            color: 0xeeab30,
+            color: 0x86ae3e,
             roughness: 0.55,
             metalness: 0.1,
             flatShading: true,
@@ -153,7 +153,7 @@ const {
         new THREE.LineSegments(
           new THREE.WireframeGeometry(geo),
           new THREE.LineBasicMaterial({
-            color: 0xb5c47c,
+            color: 0xcdd9dd,
             transparent: true,
             opacity: 0.25,
           }),
@@ -161,7 +161,7 @@ const {
       );
       const pts = new THREE.Points(
         geo.clone().scale(1.12, 1.12, 1.12),
-        new THREE.PointsMaterial({ color: 0xd3dcae, size: 0.012 }),
+        new THREE.PointsMaterial({ color: 0xd3e4a9, size: 0.012 }),
       );
       root.add(pts);
       status.textContent = "3D model coming soon · drag to rotate";

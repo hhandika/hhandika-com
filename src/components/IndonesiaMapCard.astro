@@ -33,7 +33,7 @@ const config = { bbox: meta.bbox, lines: meta.biogeoLines, pins, hotspotIds: [] 
 ---
 
 <figure id="indonesia-map" class="relative">
-  <div class="relative h-[300px] overflow-hidden rounded-3xl bg-crater-950 shadow-xl sm:h-[440px]">
+  <div class="relative h-[300px] overflow-hidden rounded-3xl bg-mist-950 shadow-xl sm:h-[440px]">
     <Image
       src={indonesiaSvg}
       alt="Map of the Indonesian archipelago"
@@ -52,25 +52,25 @@ const config = { bbox: meta.bbox, lines: meta.biogeoLines, pins, hotspotIds: [] 
       id="sea-toggle"
       type="button"
       aria-pressed="false"
-      class="absolute right-3 top-3 z-10 rounded-full border border-white/25 bg-crater-950/75 px-4 py-2 text-sm font-semibold text-moss-50 backdrop-blur transition hover:border-sunrise-300 aria-pressed:border-sunrise-300 aria-pressed:bg-sunrise-400 aria-pressed:text-sunrise-950"
+      class="absolute right-3 top-3 z-10 rounded-full border border-white/25 bg-mist-950/75 px-4 py-2 text-sm font-semibold text-forest-50 backdrop-blur transition hover:border-moss-300 aria-pressed:border-moss-300 aria-pressed:bg-moss-400 aria-pressed:text-moss-950"
     >
       <span class="sea-off">Lower sea level −120 m</span>
       <span class="sea-on hidden">Back to today</span>
     </button>
     <p
       id="sea-badge"
-      class="pointer-events-none absolute left-3 top-3 z-10 rounded-full bg-crater-950/75 px-3 py-1 font-mono text-xs text-moss-100 backdrop-blur"
+      class="pointer-events-none absolute left-3 top-3 z-10 rounded-full bg-mist-950/75 px-3 py-1 font-mono text-xs text-forest-100 backdrop-blur"
     >
       Sea level: today
     </p>
   </div>
-  <figcaption class="mt-3 text-pretty text-center text-sm text-moss-700 dark:text-moss-300">
+  <figcaption class="mt-3 text-pretty text-center text-sm text-forest-700 dark:text-forest-300">
     During the last ice age (~20,000 years ago) sea level was about 120 m
     lower: Sumatra, Java, and Borneo joined Asia as
-    <span class="font-semibold text-sunrise-700 dark:text-sunrise-300">Sundaland</span>,
+    <span class="font-semibold text-[#a44212] dark:text-[#f9bb4e]">Sundaland</span>,
     while Sulawesi stayed isolated between Wallace's line
-    (<span class="text-sunrise-600">orange</span>) and Lydekker's line
-    (<span class="text-crater-500">blue</span>). Pins mark field sites.
+    (<span class="text-[#c95d10] dark:text-[#f5a028]">orange</span>) and Lydekker's line
+    (<span class="text-[#3d73b3] dark:text-[#8ab3dd]">blue</span>). Pins mark field sites.
   </figcaption>
 </figure>
 

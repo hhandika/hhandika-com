@@ -14,16 +14,23 @@ const buttonClasses = cntl`
     btn-sm
     btn
     btn-outline  
+    text-forest-950
+    hover:bg-forest-900
+    hover:text-forest-50
+    dark:text-forest-50
+    dark:hover:bg-forest-50
+    dark:hover:text-forest-950
     ${extendClass} 
 `;
 ---
 
-<button class={buttonClasses}>
+<a href={url} class={buttonClasses} target="_blank" rel="noopener noreferrer">
   {
     isDownload && (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="h-4 w-4"
+        aria-hidden="true"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -37,5 +44,5 @@ const buttonClasses = cntl`
       </svg>
     )
   }
-  <a href={url} target="_blank" rel="noopener noreferrer">{text}</a>
-</button>
+  {text}
+</a>

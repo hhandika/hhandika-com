@@ -51,32 +51,32 @@ const elev = [
     <defs>
       <clipPath id="island-clip"><path d={island} /></clipPath>
       <linearGradient id="sea-grad" x1="0" x2="0" y1="0" y2="1">
-        <stop offset="0" stop-color="#5a7bbe" stop-opacity="0.7" />
-        <stop offset="1" stop-color="#303c5b" stop-opacity="0.9" />
+        <stop offset="0" stop-color="#3d73b3" stop-opacity="0.7" />
+        <stop offset="1" stop-color="#1b3559" stop-opacity="0.9" />
       </linearGradient>
     </defs>
 
     <!-- elevation axis -->
     {
       elev.map((e) => (
-        <g class="fill-moss-700 dark:fill-moss-300">
-          <line x1="40" x2="800" y1={e.y} y2={e.y} class="stroke-moss-900/10 dark:stroke-moss-100/10" stroke-width="1" />
+        <g class="fill-forest-700 dark:fill-forest-300">
+          <line x1="40" x2="800" y1={e.y} y2={e.y} class="stroke-forest-900/10 dark:stroke-forest-100/10" stroke-width="1" />
           <text x="4" y={e.y + 4} font-size="11">{e.m}</text>
         </g>
       ))
     }
 
     <!-- island -->
-    <path d={island} class="fill-moss-500 dark:fill-moss-600" />
+    <path d={island} class="fill-forest-500 dark:fill-forest-600" />
     <g clip-path="url(#island-clip)">
-      <rect x="0" y="0" width="820" height="160" class="fill-moss-800 dark:fill-moss-900" />
-      <rect x="0" y="0" width="820" height="85" class="fill-sunrise-800/70" />
+      <rect x="0" y="0" width="820" height="160" class="fill-forest-800 dark:fill-forest-900" />
+      <rect x="0" y="0" width="820" height="85" class="fill-moss-800/70" />
     </g>
     <rect x="0" y="270" width="820" height="50" fill="url(#sea-grad)" />
 
     <!-- cloud line -->
     <line x1="40" x2="800" y1="160" y2="160" stroke="#e9edd6" stroke-width="1.5" stroke-dasharray="6 6" opacity="0.8" />
-    <text x="796" y="154" text-anchor="end" font-size="12" class="fill-moss-800 dark:fill-moss-100">cloud line ≈ 1,500 m</text>
+    <text x="796" y="154" text-anchor="end" font-size="12" class="fill-forest-800 dark:fill-forest-100">cloud line ≈ 1,500 m</text>
 
     <!-- populations -->
     {lowland.map((d) => <circle cx={d.x} cy={d.y} r="4" class="dot-low" />)}
@@ -95,16 +95,16 @@ const elev = [
 
     <text x="60" y="300" font-size="12" fill="#f6f7ee">Lowland: one connected population</text>
   </svg>
-  <figcaption class="mt-3 grid gap-2 text-sm text-moss-800 sm:grid-cols-2 dark:text-moss-200">
-    <span><span class="mr-2 inline-block h-2.5 w-2.5 rounded-full bg-sunrise-400 align-middle"></span>Below the clouds, warm lowland forests connect populations.</span>
-    <span><span class="mr-2 inline-block h-2.5 w-2.5 rounded-full bg-crater-400 align-middle"></span>Above them, cool, wet summits isolate populations that diverge.</span>
+  <figcaption class="mt-3 grid gap-2 text-sm text-forest-800 sm:grid-cols-2 dark:text-forest-200">
+    <span><span class="mr-2 inline-block h-2.5 w-2.5 rounded-full bg-moss-400 align-middle"></span>Below the clouds, warm lowland forests connect populations.</span>
+    <span><span class="mr-2 inline-block h-2.5 w-2.5 rounded-full bg-mist-400 align-middle"></span>Above them, cool, wet summits isolate populations that diverge.</span>
   </figcaption>
 </figure>
 
 <style>
-  .dot-low { fill: #eeab30; }
+  .dot-low { fill: #f5a028; }
   .dot-peak {
-    fill: #eeab30;
+    fill: #f5a028;
     transition: fill 1.2s ease;
   }
   .peak-label {
@@ -112,11 +112,11 @@ const elev = [
     transition: opacity 0.8s ease;
   }
   .sky-island.in .peak-label { opacity: 1; }
-  .sky-island.in .p1 { fill: #7598cd; }
-  .sky-island.in .p2 { fill: #c46815; }
+  .sky-island.in .p1 { fill: #5f92cb; }
+  .sky-island.in .p2 { fill: #c95d10; }
   .sky-island.in .p3 { fill: #e9edd6; }
-  .sky-island.in .p1-text { fill: #7598cd; }
-  .sky-island.in .p2-text { fill: #e08b1b; }
+  .sky-island.in .p1-text { fill: #5f92cb; }
+  .sky-island.in .p2-text { fill: #e67e14; }
   .sky-island.in .p3-text { fill: #b5c47c; }
   @media (prefers-reduced-motion: reduce) {
     .dot-peak, .peak-label { transition: none; }

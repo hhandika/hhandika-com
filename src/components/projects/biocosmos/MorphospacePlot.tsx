@@ -236,7 +236,7 @@ export default function MorphospacePlot() {
   return (
     <div class="bc-plot">
       <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
-        <div class="inline-flex rounded-full border border-moss-900/15 p-1 dark:border-moss-100/15" role="tablist" aria-label="Wing surface">
+        <div class="inline-flex rounded-full border border-forest-900/15 p-1 dark:border-forest-100/15" role="tablist" aria-label="Wing surface">
           {MODES.map((m) => (
             <button
               type="button"
@@ -245,21 +245,21 @@ export default function MorphospacePlot() {
               onClick={() => setMode(m.id)}
               class={`rounded-full px-3 py-1 text-sm transition-colors duration-500 ${
                 mode === m.id
-                  ? "bg-moss-600 text-white dark:bg-moss-300 dark:text-moss-950"
-                  : "text-moss-800 hover:bg-moss-100 dark:text-moss-200 dark:hover:bg-moss-900"
+                  ? "bg-forest-600 text-white dark:bg-forest-300 dark:text-forest-950"
+                  : "text-forest-800 hover:bg-forest-100 dark:text-forest-200 dark:hover:bg-forest-900"
               }`}
             >
               {m.label}
             </button>
           ))}
         </div>
-        <p class="text-xs text-moss-700 dark:text-moss-300">
+        <p class="text-xs text-forest-700 dark:text-forest-300">
           {counts ? `${counts.dorsal.toLocaleString()} dorsal · ${counts.ventral.toLocaleString()} ventral species centroids` : "Loading…"}
           <span class="ml-2">● dorsal ○ ventral</span>
         </p>
       </div>
 
-      <div ref={wrapRef} class="relative w-full text-moss-900 dark:text-moss-100" style={{ height: `${height}px` }} onMouseMove={onMove} onMouseLeave={() => setTip(null)}>
+      <div ref={wrapRef} class="relative w-full text-forest-900 dark:text-forest-100" style={{ height: `${height}px` }} onMouseMove={onMove} onMouseLeave={() => setTip(null)}>
         <div ref={axesRef} class="absolute inset-0" aria-hidden="true" />
         <canvas
           ref={canvasRef}
@@ -269,11 +269,11 @@ export default function MorphospacePlot() {
         />
         {tip && (
           <div
-            class="pointer-events-none absolute z-10 rounded-lg bg-white/95 px-2.5 py-1.5 text-xs shadow-md ring-1 ring-moss-900/10 dark:bg-moss-950/95 dark:ring-moss-100/10"
+            class="pointer-events-none absolute z-10 rounded-lg bg-white/95 px-2.5 py-1.5 text-xs shadow-md ring-1 ring-forest-900/10 dark:bg-forest-950/95 dark:ring-forest-100/10"
             style={{ left: `${Math.min(tip.x + 12, width - 180)}px`, top: `${Math.max(tip.y - 44, 0)}px` }}
           >
             <div class="font-semibold italic">{tip.text}</div>
-            <div class="text-moss-700 dark:text-moss-300">{tip.sub}</div>
+            <div class="text-forest-700 dark:text-forest-300">{tip.sub}</div>
           </div>
         )}
       </div>
@@ -287,7 +287,7 @@ export default function MorphospacePlot() {
               onClick={() => setFamily(family === i ? null : i)}
               class={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs transition-opacity duration-500 ${
                 family === null || family === i ? "opacity-100" : "opacity-50"
-              } border-moss-900/15 text-moss-900 hover:bg-moss-50 dark:border-moss-100/15 dark:text-moss-100 dark:hover:bg-moss-900`}
+              } border-forest-900/15 text-forest-900 hover:bg-forest-50 dark:border-forest-100/15 dark:text-forest-100 dark:hover:bg-forest-900`}
             >
               <span class="h-2.5 w-2.5 rounded-full" style={{ background: PALETTE[i] }} />
               {name}

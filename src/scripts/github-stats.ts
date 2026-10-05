@@ -198,7 +198,7 @@ export function selectedReposHtml(stats: GithubStats | null): string {
     .map((r) => {
       const c = repoChanges(stats, [r.name_with_owner]);
       const changes = c
-        ? `<p class="mt-1 text-xs tabular-nums opacity-80">${numberFormat.format(c.commits)} commits · <span class="text-moss-700 dark:text-moss-300">+${compactFormat.format(c.additions)}</span> <span class="text-sunrise-700 dark:text-sunrise-300">−${compactFormat.format(c.deletions)}</span></p>`
+        ? `<p class="mt-1 text-xs tabular-nums text-forest-800 dark:text-forest-200">${numberFormat.format(c.commits)} commits · <span class="text-forest-700 dark:text-forest-300">+${compactFormat.format(c.additions)}</span> <span class="text-moss-700 dark:text-moss-300">−${compactFormat.format(c.deletions)}</span></p>`
         : "";
       return `<li>
   <a class="font-mono text-sm font-medium hover:underline" href="https://github.com/${escape(r.name_with_owner)}" target="_blank" rel="noopener">${escape(r.name_with_owner)}</a>

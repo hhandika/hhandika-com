@@ -62,7 +62,7 @@ const museums = [
 ];
 
 const chipClasses =
-  "inline-flex items-center gap-2 rounded-full border border-moss-900/15 px-3 py-1.5 text-sm text-moss-900 transition hover:border-sunrise-400 aria-pressed:border-sunrise-400 aria-pressed:bg-sunrise-100 aria-pressed:text-sunrise-950 dark:border-moss-100/15 dark:text-moss-100 dark:aria-pressed:bg-sunrise-900/50 dark:aria-pressed:text-sunrise-50";
+  "inline-flex items-center gap-2 rounded-full border border-forest-900/15 px-3 py-1.5 text-sm text-forest-900 transition hover:border-moss-400 aria-pressed:border-moss-400 aria-pressed:bg-moss-100 aria-pressed:text-moss-950 dark:border-forest-100/15 dark:text-forest-100 dark:aria-pressed:bg-moss-900/50 dark:aria-pressed:text-moss-50";
 ---
 
 <Layout title="Fieldwork">
@@ -78,13 +78,13 @@ const chipClasses =
     <dl class="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4">
       {
         stats.map((s) => (
-          <div class="rounded-3xl border border-moss-900/10 bg-white p-5 dark:border-moss-100/10 dark:bg-moss-950/60">
+          <div class="rounded-3xl border border-forest-900/10 bg-white p-5 dark:border-forest-100/10 dark:bg-forest-950/60">
             <dt class="sr-only">{s.label}</dt>
             <dd>
-              <span class="block text-3xl font-semibold tabular-nums text-moss-950 dark:text-moss-50">
+              <span class="block text-3xl font-semibold tabular-nums text-forest-950 dark:text-forest-50">
                 {s.value}
               </span>
-              <span class="text-sm text-moss-700 dark:text-moss-300">
+              <span class="text-sm text-forest-700 dark:text-forest-300">
                 {s.label}
               </span>
             </dd>
@@ -125,9 +125,9 @@ const chipClasses =
         {
           years.map((year) => (
             <section data-year={year}>
-              <h3 class="relative flex items-center gap-4 font-serif text-2xl text-sunrise-800 dark:text-sunrise-200">
+              <h3 class="relative flex items-center gap-4 font-serif text-2xl text-moss-800 dark:text-moss-200">
                 <span class="flex w-10 justify-center" aria-hidden="true">
-                  <span class="h-3 w-3 rounded-full bg-sunrise-500 ring-4 ring-white dark:bg-sunrise-300 dark:ring-black" />
+                  <span class="h-3 w-3 rounded-full bg-moss-500 ring-4 ring-white dark:bg-moss-300 dark:ring-black" />
                 </span>
                 {year}
               </h3>
@@ -149,8 +149,8 @@ const chipClasses =
       <div class="grid gap-4 sm:grid-cols-3">
         {
           museums.map((m) => (
-            <div class="rounded-3xl border border-moss-900/10 bg-white p-5 dark:border-moss-100/10 dark:bg-moss-950/60">
-              <h3 class="font-semibold text-moss-800 dark:text-moss-100">
+            <div class="rounded-3xl border border-forest-900/10 bg-white p-5 dark:border-forest-100/10 dark:bg-forest-950/60">
+              <h3 class="font-semibold text-forest-800 dark:text-forest-100">
                 {m.country}{" "}
                 <span aria-hidden="true">{m.flag}</span>
               </h3>

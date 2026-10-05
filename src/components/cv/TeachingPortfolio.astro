@@ -1,9 +1,6 @@
 ---
 import cntl from "cntl";
-import PageTitle from "../../components/PageTitle.astro";
 import PageSubtitle from "../../components/PageSubtitle.astro";
-import CardLayout from "../../layouts/CardLayout.astro";
-import Card from "../../components/Card.astro";
 import teachingIcon from "../../assets/icons/teaching.svg";
 import Background from "../../components/Background.astro";
 import tamboraGh from "../../assets/img/tambora-gh.webp";
@@ -11,23 +8,56 @@ import tamboraGhFlyer from "../../assets/img/tambora-gh-flyer.webp";
 import { Image } from "astro:assets";
 import SectionHead from "../SectionHead.astro";
 
-const cardTitleClasses = cntl`
-  text-sunrise-950
-  dark:text-sunrise-50
-  text-xl
-`;
-
-const courseScheduleClasses = cntl`
-  font-serif
-  text-lg
-  text-sunrise-800
-`;
-
-const cardDescriptonClasses = cntl`
-  mt-2
-  text-sunrise-950
-  text-md
-`;
+const courseGroups = [
+  {
+    institution: "Louisiana State University, USA",
+    courses: [
+      {
+        code: "BIOL 1209",
+        title: "Introduction to Biology",
+        role: "Teaching assistant",
+        term: "Spring 2021, 2025",
+        description:
+          "This course is an introduction to the principles of biology that covers topics on ecology, evolution, and diversity. I taught lab section and assisted with grading. My class size was about 50 students.",
+      },
+      {
+        code: "BIOL 2153",
+        title: "Principles of Genetics",
+        role: "Teaching assistant",
+        term: "Fall 2024",
+        description:
+          "This course covers several topics, including Mendelian inheritance, gene mapping, population genetics, and genomics. I taught recitation sections and assisted with homework, exam preparation, and grading. My class size was about 60 students divided into two sections.",
+      },
+      {
+        code: "BIOL 4141",
+        title: "Mammalogy",
+        role: "Teaching assistant",
+        term: "Fall 2021",
+        description:
+          "This course covers the evolution and systematics of mammals. I taught lab section using specimens from the museum collection. My class size was 16 students.",
+      },
+    ],
+  },
+  {
+    institution: "Andalas University, Indonesia",
+    courses: [
+      {
+        code: "PAB 125",
+        title: "Computer Application for Biology",
+        role: "Instructor",
+        term: "Fall 2012",
+        description:
+          "This course introduces students to computer applications in biology that covers topics on basic computational statistics, geographic information system (GIS), and scientific photography. I developed the syllabus, taught lectures, and graded assignments. My class size was 70 students.",
+      },
+      {
+        code: "PAB 505",
+        title: "Taxonomy of Vertebrates",
+        role: "Teaching assistant",
+        term: "2011–2012",
+      },
+    ],
+  },
+];
 
 const workshopImages = [
   {
@@ -40,231 +70,317 @@ const workshopImages = [
   },
 ];
 
-const imgClass = "rounded-lg shadow-lg h-80 w-auto object-contain";
+const workshops = [
+  {
+    date: "May 2025",
+    title:
+      "Efficient and reproducible avian and mammalian specimen data acquisition: from fieldwork to museum database",
+    organizer: "The Society for the Preservation of Natural History Collections (SPNHC)",
+    description:
+      "This workshop covers recording avian and mammalian specimen data efficiently and reproducibly, from the field catalog to the museum database.",
+  },
+  {
+    date: "May 2024",
+    title: "Molecular Analyses of Indonesian Mammals",
+    organizer: "Generasi Biologi Indonesia",
+    description:
+      "This workshop covers an introduction to mammalian phylogenetics, multi-locus DNA sequencing analyses, and genomic analyses using current methods and software. The workshop was tailored with data from Indonesian mammals, but the methodologies are applicable to studies utilizing both Sanger and short-read sequencing data.",
+  },
+  {
+    date: "April 2023",
+    title: "Coding for Conservation: Integrating GitHub to Your Workflow",
+    organizer:
+      "Tambora Muda, RLadies Jakarta, and RLadies Bogor, with logistical support from the University of Indonesia",
+    description:
+      "This workshop introduced students to version control and collaborative coding using GitHub. I taught the basics of Git and GitHub, including creating a repository, staging, making commits, and creating pull requests. I also introduced an advanced approach to R dependency management and writing cross-platform code.",
+    images: workshopImages,
+  },
+  {
+    date: "January 2022",
+    title: "Introduction to Phylogenetics",
+    organizer: "Andalas University, Indonesia",
+    description:
+      "This workshop covers the fundamental concepts of phylogenetics, including phylogenetic tree construction and interpretation. It also introduces students to multi-locus DNA sequencing analyses using IQ-TREE.",
+  },
+];
+
+interface Mentee {
+  name: string;
+  program: string;
+  institution: string;
+  period: string;
+  note?: string;
+}
+
+const gatech = "Georgia Institute of Technology";
+const uf = "University of Florida";
+const lsu = "Louisiana State University";
+
+const menteeGroups: { title: string; mentees: Mentee[] }[] = [
+  {
+    title: "Fieldwork, survey design, scientific, and/or grant writing",
+    mentees: [
+      {
+        name: "Fatimah",
+        program: "BS, Biology",
+        institution: "Andalas University, Indonesia",
+        period: "2014–2017",
+        note: "Received $5,300 from the Mohammed Bin Zayed Conservation Fund to study the Mentawai Langurs.",
+      },
+      { name: "Ahmad Mursyid", program: "BS, Biology", institution: "Andalas University, Indonesia", period: "2012–2018" },
+      { name: "Zulkurnia Irsaf", program: "BS, Biology", institution: "Tadulako University, Indonesia", period: "2018–2020" },
+      { name: "Tri S. Harapan", program: "BS, Biology", institution: "Andalas University, Indonesia", period: "2020" },
+      { name: "Fajar Alfitrian", program: "BS, Biology", institution: "Soedirman University, Indonesia", period: "2023–2025" },
+      {
+        name: "Alfath Fanidya",
+        program: "MS, Biology",
+        institution: "Bogor Agricultural University, Indonesia",
+        period: "2023–2024",
+        note: "Received $13,000 from the Fonseca Species Conservation Fund to study the Javan bamboo rats.",
+      },
+      { name: "Lutfi S. Maulidiyah", program: "BS, Biology", institution: "University of Lampung, Indonesia", period: "2023–2025" },
+      { name: "Akbar F. Hilmi", program: "BS, Biology", institution: "University of Lampung, Indonesia", period: "2023–2025" },
+    ],
+  },
+  {
+    title: "Specimen curation",
+    mentees: [
+      { name: "Ericka Boyden", program: "BS, Biology", institution: lsu, period: "Fall 2019–Spring 2020" },
+      { name: "Brittany E. Thames", program: "BS, Biology", institution: lsu, period: "Spring 2019" },
+      { name: "Emily A. Bowers", program: "BS, Biology", institution: lsu, period: "Fall 2020–Spring 2021" },
+    ],
+  },
+  {
+    title: "Genomic analyses",
+    mentees: [
+      {
+        name: "Murky Mutchler",
+        program: "BS, Biology",
+        institution: `${lsu} / PhD, the University of Chicago`,
+        period: "2021",
+        note: "Won a poster award at the 2021 Wilson Ornithological Society Meeting.",
+      },
+      { name: "Ryan Zucker", program: "BS, Biology", institution: "Cornell University", period: "2024" },
+      { name: "Indri Lestari", program: "BS, Biology", institution: "Andalas University, Indonesia", period: "Fall 2025" },
+    ],
+  },
+  {
+    title: "Interdisciplinary research and software development",
+    mentees: [
+      { name: "Filipe Delgado", program: "MS, Computer Science", institution: gatech, period: "Fall 2025" },
+      { name: "Cody Henderson", program: "MS, Computer Science", institution: gatech, period: "Fall 2025–now" },
+      { name: "Lawrence B. Gan", program: "MS, Computer Science", institution: gatech, period: "Fall 2025–now" },
+      { name: "Aakanksha Jaiswal", program: "MS, Computer Science", institution: gatech, period: "Fall 2025–Spring 2026" },
+      {
+        name: "Kira L. Nichtawitz",
+        program: "BS, Computer Science",
+        institution: uf,
+        period: "Fall 2025–now",
+        note: "Florida Museum Undergraduate Internship Program awardee for Fall 2026.",
+      },
+      { name: "Julian D. Perez", program: "BS, Computer Engineering", institution: uf, period: "Fall 2025" },
+      { name: "Ethan E. Wolfe", program: "BS, Data Science", institution: uf, period: "Fall 2025" },
+      { name: "Zahara M. Shuemaker", program: "BS, Computer Science", institution: uf, period: "Fall 2025" },
+      {
+        name: "Justin K. Sobayo",
+        program: "BS, Computer Science",
+        institution: uf,
+        period: "Fall 2026–now",
+        note: "Florida Museum Undergraduate Internship Program awardee for Fall 2026.",
+      },
+      { name: "Shyaam Shanmugam", program: "BS, Computer Science", institution: uf, period: "Spring 2026–now" },
+      { name: "Danna Lee", program: "MS, Computer Science", institution: gatech, period: "Summer 2026–now" },
+      { name: "Jia Yu", program: "MS, Computer Science", institution: gatech, period: "Summer 2026–now" },
+      { name: "Phillip Kim", program: "MS, Computer Science", institution: gatech, period: "Fall 2026–now" },
+      { name: "Eric Wan", program: "MS, Computer Science", institution: gatech, period: "Fall 2026–now" },
+      { name: "Daniel Y. Cheng", program: "BS, Computer Science", institution: uf, period: "Fall 2026–now" },
+    ],
+  },
+];
+
+const allMentees = menteeGroups.flatMap((g) => g.mentees);
+const isCurrent = (m: Mentee) => m.period.endsWith("now");
+const menteeStats = [
+  { value: allMentees.length, label: "students mentored" },
+  { value: allMentees.filter(isCurrent).length, label: "current mentees" },
+  { value: allMentees.filter((m) => m.note).length, label: "awards and grants" },
+];
+// Running number across groups, as in the CV.
+const groupStart = menteeGroups.map((_, i) =>
+  menteeGroups.slice(0, i).reduce((n, g) => n + g.mentees.length, 1),
+);
+
+const panelClasses = cntl`
+  rounded-3xl
+  border
+  border-forest-900/10
+  bg-white
+  p-5
+  dark:border-forest-100/10
+  dark:bg-forest-950/60
+  sm:p-6
+`;
 ---
 
 <div>
   <Background backgroundImage={teachingIcon} />
   <PageSubtitle subtitle="Teaching, Mentoring, & Workshops" />
   <SectionHead text="Courses Taught" />
-  <h3 class={cardTitleClasses}>Lousiana State University, USA</h3>
-  <CardLayout>
-    <Card
-      title="BIOL 2153 Principles of Genetics"
-      subtitle="Teaching assistant · Fall 2024"
-    >
-      <p class={cardDescriptonClasses}>
-        This course covers several topics, including Mendelian inheritance, gene
-        mapping, population genetics, and genomics. I taught recitation sections
-        and assisted with homework, exam preparation, and grading. My class size
-        was about 60 students divided into two sections.
-      </p>
-    </Card>
-    <Card title="BIOL 4141 Mammalogy" subtitle="Teaching assistant · Fall 2021">
-      <p class={cardDescriptonClasses}>
-        This course covers the evolution and systematics of mammals. I taught
-        lab section using specimens from the museum collection. My class size
-        was 16 students.
-      </p>
-    </Card>
-    <Card
-      title="BIOL 1209 Introduction to Biology"
-      subtitle="Teaching assistant · Spring 2021, 2025"
-      isLast={true}
-    >
-      <p class={cardDescriptonClasses}>
-        This course is an introduction to the principles of biology that covers
-        topics on ecology, evolution, and diversity. I taught lab section and
-        assisted with grading. My class size was about 50 students.
-      </p>
-    </Card>
-  </CardLayout>
-  <div class="mt-4">
-    <h3 class={cardTitleClasses}>Andalas University, Indonesia</h3>
-    <CardLayout>
-      <Card title="PAB125 Computer Application for Biology" isLast={true}>
-        <p class={courseScheduleClasses}>
-          Instructor &middot; 2<span class="align-super text-sm">nd</span>
-          semester 2012
-        </p>
-        <p class={cardDescriptonClasses}>
-          This course introduces students to computer applications in biology
-          that covers topics on basic computational statistics, geographic
-          information system (GIS), and scientific photography. I developed the
-          syllabus, taught lectures, and graded assignments. My class size was
-          70 students.
-        </p>
-      </Card>
-    </CardLayout>
+  <div class="space-y-6">
+    {
+      courseGroups.map((group) => (
+        <section>
+          <h3 class="mb-3 font-semibold text-forest-800 dark:text-forest-100">
+            {group.institution}
+          </h3>
+          <ol class="space-y-4">
+            {group.courses.map((c) => (
+              <li class={panelClasses}>
+                <div class="flex flex-col gap-3 sm:flex-row sm:gap-6">
+                  <p class="shrink-0 font-serif text-lg text-moss-800 dark:text-moss-200 sm:w-32">
+                    {c.term}
+                  </p>
+                  <div class="min-w-0">
+                    <h4 class="font-semibold text-forest-950 dark:text-forest-50">
+                      <span class="font-mono text-sm text-forest-600 dark:text-forest-400">
+                        {c.code}
+                      </span>{" "}
+                      {c.title}
+                    </h4>
+                    <p class="mt-0.5 text-sm text-forest-700 dark:text-forest-300">
+                      {c.role}
+                    </p>
+                    {c.description && (
+                      <p class="mt-2 text-sm text-slate-700 dark:text-slate-300">
+                        {c.description}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ))
+    }
   </div>
-  <SectionHead text="Workshops Taught" />
 
-  <CardLayout>
-    <div class="flex-wrap mb-4 flex gap-4">
-      {
-        workshopImages.map((image) => (
-          <Image
-            src={image.src}
-            alt={image.alt}
-            class={imgClass}
-            loading="lazy"
-          />
-        ))
-      }
-    </div>
-    <Card
-      title="Molecular Analyses of Indonesian Mammals"
-      subtitle="Instructor · 18, 19, 25, and 26 May 2023"
-      description="Organized by Generasi Biologi Indonesia"
-    >
-      <p class={cardDescriptonClasses}>
-        This workshop covers an introduction to mammalian phylogenetics,
-        multi-locus DNA sequencing analyses, and genomic analyses using current
-        methods and software. The workshop was tailored with data from
-        Indonesian mammals, but the methodologies are applicable to studies
-        utilizing both Sanger and short-read sequencing data.
-      </p>
-    </Card>
-    <Card
-      title="Coding for Conservation: Integrating GitHub to Your Workflow"
-      subtitle="Instructor · 8-9 April 2023"
-      description="Organized by Tambora Muda, RLadies Jakarta, and RLadies Bogor"
-    >
-      <p class={cardDescriptonClasses}>
-        This workshop was designed to introduce students to version control and
-        collaborative coding using GitHub. I taught the basics of Git and
-        GitHub, including creating a repository, staging, making commits, and
-        creating pull requests. I also introduced students to advanced approach
-        to R dependency management and writing cross-platform code.
-      </p>
-    </Card>
-    <Card
-      title="Introduction to Phylogenetics"
-      subtitle="Instructor · 15 January 2020"
-      description="Organized by Graduate Student Association at Andalas University, Indonesia"
-      isLast={true}
-    >
-      <p class={cardDescriptonClasses}>
-        This workshop covers the fundamental concepts of phylogenetics,
-        including phylogenetic tree construction and interpretation. It also
-        introduces students to multi-locus DNA sequencing analyses using
-        IQ-TREE.
-      </p>
-    </Card>
-  </CardLayout>
+  <SectionHead text="Workshops Taught" />
+  <ol class="space-y-4">
+    {
+      workshops.map((w) => (
+        <li class={panelClasses}>
+          <div class="flex flex-col gap-3 sm:flex-row sm:gap-6">
+            <p class="shrink-0 font-serif text-lg text-moss-800 dark:text-moss-200 sm:w-32">
+              {w.date}
+            </p>
+            <div class="min-w-0">
+              <h3 class="font-semibold text-forest-950 dark:text-forest-50">
+                {w.title}
+              </h3>
+              <p class="mt-0.5 text-sm text-forest-700 dark:text-forest-300">
+                Instructor · {w.organizer}
+              </p>
+              <p class="mt-2 text-sm text-slate-700 dark:text-slate-300">
+                {w.description}
+              </p>
+              {w.images && (
+                <div class="mt-4 flex gap-3 overflow-x-auto pb-1">
+                  {w.images.map((image) => (
+                    <Image
+                      src={image.src}
+                      alt={image.alt}
+                      class="h-56 w-auto rounded-xl border border-forest-900/10 object-contain dark:border-forest-100/10"
+                      loading="lazy"
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+
   <SectionHead text="Student Mentees" />
-  <CardLayout>
-    <Card title="Fieldwork, survey design, scientific, and/or grant writing">
-      <ol class={cardDescriptonClasses}>
-        <li>
-          <strong>Fatimah</strong> (BS student in Biology, Andalas University, Indonesia).
-          2014–2017.
-          <p class="italic pb-2">
-            Received $5,300 from the Mohammed Bin Zayed Conservation Fund to
-            study the Mentawai Langurs.
-          </p>
-        </li>
-        <li>
-          <strong>Ahmad Mursyid</strong> (BS student in Biology, Andalas University,
-          Indonesia). 2012–2018.
-        </li>
-        <li>
-          <strong>Zulkurnia Irsaf</strong> (BS student in Biology, Tadulako University,
-          Indonesia). 2018–2020.
-        </li>
-        <li>
-          <strong>Tri S. Harapan</strong> (BS student in Biology, Andalas University,
-          Indonesia). 2020.
-        </li>
-        <li>
-          <strong>Fajar Alfitrian</strong> (BS student in Biology, Soedirman University,
-          Indonesia). 2023–2025.
-        </li>
-        <li>
-          <strong>Alfath Fanidya</strong> (MS student in Biology, Bogor Agricultural
-          University, Indonesia). 2023–now.
-          <p class="italic pb-2">
-            Received $13,000 from the Fonseca Species Conservation Fund to study
-            the Javan bamboo rats.
-          </p>
-        </li>
-        <li>
-          <strong>Lutfi S. Maulidiyah</strong> (BS student in Biology, University
-          of Lampung, Indonesia). 2023–2025.
-        </li>
-        <li>
-          <strong>Akbar F. Hilmi</strong> (BS student in Biology, University of Lampung,
-          Indonesia). 2023–2025.
-        </li>
-      </ol>
-    </Card>
-    <Card title="Specimen curation">
-      <ol class={cardDescriptonClasses}>
-        <li>
-          <strong>Ericka Boyden</strong> (BS student in Biology, Louisiana State University).
-          Fall 2019–Spring 2020.
-        </li>
-        <li>
-          <strong>Brittany E. Thames</strong> (BS student in Biology, Louisiana State
-          University). Spring 2019.
-        </li>
-        <li>
-          <strong>Emily A. Bowers</strong> (BS student in Biology, Louisiana State
-          University). Fall 2020–Spring 2021.
-        </li>
-      </ol>
-    </Card>
-    <Card title="Genomic Analyses">
-      <ol start="12" class={cardDescriptonClasses}>
-        <li>
-          <strong>Murky Mutchler</strong> (BS student in Biology, Louisiana State
-          University / PhD, the University of Chicago). 2021.
-          <p class="italic pb-2">
-            Won a poster award at the 2021 Wilson Ornithological Society
-            Meeting.
-          </p>
-        </li>
-        <li>
-          <strong>Ryan Zucker</strong> (BS student in Biology, Cornell University).
-          2024.
-        </li>
-      </ol>
-    </Card>
-    <Card title="Software Development">
-      <ol start="15" class={cardDescriptonClasses}>
-        <li>
-          <strong>Filipe Delgado</strong> (MS student in Computer Science, Georgia
-          Institute of Technology). Fall 2025.
-        </li>
-        <li>
-          <strong>Cody Henderson</strong> (MS student in Computer Science, Georgia
-          Institute of Technology). Fall 2025–now.
-        </li>
-        <li>
-          <strong>Lawrence Bohan Gan</strong> (MS student in Computer Science, Georgia
-          Institute of Technology). Fall 2025–now.
-        </li>
-        <li>
-          <strong>Aakanksha Jaiswal</strong> (MS student in Computer Science, Georgia
-          Institute of Technology). Fall 2025–now.
-        </li>
-        <li>
-          <strong>Kira L. Nichtawitz</strong> (BS student in Computer Science, University
-          of Florida). Fall 2025–now.
-        </li>
-        <li>
-          <strong>Julian D. Perez</strong> (BS student in Computer Engineering, University
-          of Florida). Fall 2025–now.
-        </li>
-        <li>
-          <strong>Ethan E. Wolfe</strong> (BS student in Data Science, University
-          of Florida). Fall 2025–now.
-        </li>
-        <li>
-          <strong>Zahara M. Shuemaker</strong> (BS student in Computer Science, University
-          of Florida). Fall 2025–now.
-        </li>
-      </ol>
-    </Card>
-  </CardLayout>
+  <dl class="grid grid-cols-3 gap-3 sm:gap-4">
+    {
+      menteeStats.map((s) => (
+        <div class={panelClasses}>
+          <dt class="sr-only">{s.label}</dt>
+          <dd>
+            <span class="block text-2xl font-semibold tabular-nums text-forest-950 dark:text-forest-50 sm:text-3xl">
+              {s.value}
+            </span>
+            <span class="text-xs text-forest-700 dark:text-forest-300 sm:text-sm">
+              {s.label}
+            </span>
+          </dd>
+        </div>
+      ))
+    }
+  </dl>
+  <div class="mt-4 space-y-4">
+    {
+      menteeGroups.map((group, gi) => (
+        <section class={panelClasses}>
+          <h3 class="flex items-baseline justify-between gap-4 font-semibold text-moss-800 dark:text-moss-200">
+            {group.title}
+            <span class="shrink-0 text-sm font-normal tabular-nums text-forest-700 dark:text-forest-300">
+              {group.mentees.length}
+            </span>
+          </h3>
+          <ol
+            start={groupStart[gi]}
+            class="mt-3 divide-y divide-forest-900/10 dark:divide-forest-100/10"
+          >
+            {group.mentees.map((m, mi) => (
+              <li class="flex gap-3 py-3 first:pt-0 last:pb-0">
+                <span class="w-6 shrink-0 pt-0.5 text-right font-mono text-xs text-forest-700 dark:text-forest-400">
+                  {groupStart[gi] + mi}
+                </span>
+                <div class="min-w-0 flex-1 sm:flex sm:items-start sm:justify-between sm:gap-4">
+                  <div class="min-w-0">
+                    <p class="font-semibold text-forest-950 dark:text-forest-50">
+                      {m.name}
+                      {isCurrent(m) && (
+                        <span class="ml-2 rounded-full bg-forest-100 px-2 py-0.5 align-middle text-xs font-medium text-forest-800 dark:bg-forest-900/60 dark:text-forest-100">
+                          Current
+                        </span>
+                      )}
+                    </p>
+                    <p class="text-sm text-slate-700 dark:text-slate-300">
+                      {m.program} · {m.institution}
+                    </p>
+                    {m.note && (
+                      <p class="mt-1 flex items-start gap-1.5 text-sm text-moss-800 dark:text-moss-200">
+                        <svg
+                          viewBox="0 0 24 24"
+                          class="mt-0.5 h-4 w-4 shrink-0"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                        >
+                          <circle cx="12" cy="9" r="6" />
+                          <path d="m8.5 14-1.5 8 5-3 5 3-1.5-8" />
+                        </svg>
+                        {m.note}
+                      </p>
+                    )}
+                  </div>
+                  <p class="mt-1 shrink-0 text-sm tabular-nums text-forest-700 dark:text-forest-300 sm:mt-0">
+                    {m.period}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ))
+    }
+  </div>
 </div>

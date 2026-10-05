@@ -18,16 +18,16 @@ const { kind } = expedition;
 // Same palette as the field-site pins on the Indonesia map.
 const kindStyles = {
   collecting: {
-    icon: "bg-sunrise-400 text-sunrise-950",
-    badge: "bg-sunrise-100 text-sunrise-900 dark:bg-sunrise-900/50 dark:text-sunrise-100",
+    icon: "bg-moss-400 text-moss-950",
+    badge: "bg-moss-100 text-moss-900 dark:bg-moss-900/50 dark:text-moss-100",
   },
   limited: {
-    icon: "bg-crater-300 text-crater-950",
-    badge: "bg-crater-100 text-crater-900 dark:bg-crater-900/60 dark:text-crater-100",
+    icon: "bg-mist-300 text-mist-950",
+    badge: "bg-mist-100 text-mist-900 dark:bg-mist-900/60 dark:text-mist-100",
   },
   survey: {
-    icon: "bg-moss-200 text-moss-900",
-    badge: "bg-moss-100 text-moss-900 dark:bg-moss-900/60 dark:text-moss-100",
+    icon: "bg-forest-200 text-forest-900",
+    badge: "bg-forest-100 text-forest-900 dark:bg-forest-900/60 dark:text-forest-100",
   },
 }[kind];
 
@@ -50,15 +50,15 @@ const iconClasses = cntl`
 const cardClasses = cntl`
   rounded-2xl
   border
-  border-moss-900/10
+  border-forest-900/10
   bg-white
   px-5
   py-4
   transition
-  hover:border-sunrise-400/60
+  hover:border-moss-400/60
   hover:shadow-sm
-  dark:border-moss-100/10
-  dark:bg-moss-950/60
+  dark:border-forest-100/10
+  dark:bg-forest-950/60
   sm:flex
   sm:items-start
   sm:justify-between
@@ -72,7 +72,7 @@ const cardClasses = cntl`
   </span>
   <div class={cardClasses}>
     <div>
-      <h4 class="font-semibold text-moss-950 dark:text-moss-50">
+      <h4 class="font-semibold text-forest-950 dark:text-forest-50">
         {expedition.title}
       </h4>
       <p class="text-sm text-slate-700 dark:text-slate-300">
@@ -81,14 +81,14 @@ const cardClasses = cntl`
       </p>
       {
         expedition.sites.length > 1 && (
-          <p class="mt-1 text-xs text-moss-700 dark:text-moss-300">
+          <p class="mt-1 text-xs text-forest-700 dark:text-forest-300">
             {expedition.sites.length} localities
           </p>
         )
       }
     </div>
     <div class="mt-2 flex flex-wrap items-center gap-2 sm:mt-0 sm:flex-col sm:items-end">
-      <p class="font-serif text-sunrise-800 dark:text-sunrise-200">
+      <p class="font-serif text-moss-800 dark:text-moss-200">
         {formatSeason(expedition)}
       </p>
       <span class={`rounded-full px-2.5 py-0.5 text-xs font-medium ${kindStyles.badge}`}>

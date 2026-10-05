@@ -13,13 +13,20 @@ const buttonClasses = cntl`
     btn-sm
     btn
     btn-outline  
+    text-forest-950
+    hover:bg-forest-900
+    hover:text-forest-50
+    dark:text-forest-50
+    dark:hover:bg-forest-50
+    dark:hover:text-forest-950
     ${extendClass} 
 `;
 ---
 
-<button class={buttonClasses}>
+<a href={url} class={buttonClasses} target="_blank" rel="noopener noreferrer">
   <svg
     id="fi_9314363"
+    aria-hidden="true"
     width="16"
     viewBox="0 0 64 64"
     xmlns="http://www.w3.org/2000/svg"
@@ -41,5 +48,5 @@ const buttonClasses = cntl`
       d="m37.14063 51.31348-4.10352 4.96582a.99986.99986 0 1 0 1.541 1.27441l4.10351-4.96582a1 1 0 0 0 -1.54099-1.27441z"
     ></path></svg
   >
-  <a href={url} target="_blank" rel="noopener noreferrer">{text}</a>
-</button>
+  {text}
+</a>

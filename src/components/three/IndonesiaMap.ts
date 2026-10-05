@@ -47,18 +47,18 @@ export interface IndonesiaMapHandle {
 
 // Talamau palette (see tailwind.config.mjs).
 const C = {
-  deep: new THREE.Color("#1f263a"),
-  shelfSea: new THREE.Color("#3f5487"),
-  exposedShelf: new THREE.Color("#f2c455"), // emerged Sundaland, gold so it stands out
-  sand: new THREE.Color("#f7dd8f"),
+  deep: new THREE.Color("#10203a"),
+  shelfSea: new THREE.Color("#1d4b82"),
+  exposedShelf: new THREE.Color("#f9bb4e"), // emerged Sundaland, gold so it stands out
+  sand: new THREE.Color("#fcd68a"),
   lowland: new THREE.Color("#788d36"),
   forest: new THREE.Color("#475622"),
   montane: new THREE.Color("#313b1e"),
-  ember: new THREE.Color("#a24a16"),
+  ember: new THREE.Color("#a44212"),
   summit: new THREE.Color("#e9edd6"),
-  water: new THREE.Color("#4a66a6"),
-  sky: new THREE.Color("#1f263a"),
-  coast: new THREE.Color("#fbefc9"),
+  water: new THREE.Color("#2a5c9a"),
+  sky: new THREE.Color("#10203a"),
+  coast: new THREE.Color("#feecc7"),
 };
 
 const LAND_SCALE = 0.00028; // ≈ ×30 vertical exaggeration
@@ -126,8 +126,8 @@ export async function mountIndonesia(
   const target = new THREE.Vector3(0, 0, 1);
   const camBase = new THREE.Vector3(0, 22, 30);
 
-  scene.add(new THREE.HemisphereLight(0x9abbde, 0x191f0c, 1.3));
-  const sun = new THREE.DirectionalLight(0xf2c455, 2.4); // sunrise from the east
+  scene.add(new THREE.HemisphereLight(0x8ab3dd, 0x191f0c, 1.3));
+  const sun = new THREE.DirectionalLight(0xf9bb4e, 2.4); // sunrise from the east
   sun.position.set(30, 18, -10);
   scene.add(sun);
 
@@ -211,7 +211,7 @@ export async function mountIndonesia(
   scene.add(linesGroup);
 
   // ---- Field-site pins
-  const pinColors = { full: 0xeeab30, semi: 0x9abbde, none: 0xe9edd6 };
+  const pinColors = { full: 0xf5a028, semi: 0x8ab3dd, none: 0xe9edd6 };
   const anchors: { id: string; v: THREE.Vector3 }[] = [];
   const pinGroup = new THREE.Group();
   const head = new THREE.SphereGeometry(0.14, 12, 8);

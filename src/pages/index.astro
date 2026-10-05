@@ -11,13 +11,13 @@ import SocialMediaIcons from "../components/SocialMediaIcons.astro";
 import PillarIcon from "../components/svg/PillarIcon.astro";
 import GithubProfileCard from "../components/github/GithubProfileCard.astro";
 import LiveStat from "../components/github/LiveStat.astro";
+import { expeditions } from "../scripts/fieldwork";
 
 const keywordClasses = cntl`
-  border-2
-  border-moss-300
-  dark:border-moss-400
-  text-moss-700
-  dark:text-moss-300
+  bg-forest-100
+  dark:bg-forest-900/60
+  text-forest-800
+  dark:text-forest-200
   rounded-full
   py-1
   px-4
@@ -36,15 +36,18 @@ const primaryButtonClasses = cntl`
   items-center
   gap-2
   rounded-xl
-  bg-moss-600
+  bg-moss-500
   px-5
   py-3
   font-semibold
-  text-moss-50
+  text-forest-950
   shadow-lg
   transition
   hover:scale-105
-  hover:bg-moss-800
+  hover:bg-moss-400
+  dark:bg-moss-400
+  dark:text-forest-950
+  dark:hover:bg-moss-300
 `;
 
 const secondaryButtonClasses = cntl`
@@ -53,31 +56,31 @@ const secondaryButtonClasses = cntl`
   gap-2
   rounded-xl
   border-2
-  border-moss-600
+  border-forest-600
   px-5
   py-2.5
   font-semibold
-  text-moss-800
+  text-forest-800
   transition
-  hover:bg-moss-50
-  dark:border-moss-300
-  dark:text-moss-100
-  dark:hover:bg-moss-900
+  hover:bg-forest-50
+  dark:border-forest-300
+  dark:text-forest-100
+  dark:hover:bg-forest-900
 `;
 
 const sectionTitleClasses = cntl`
   font-serif
   text-4xl
-  text-moss-950
-  dark:text-moss-50
+  text-forest-950
+  dark:text-forest-50
 `;
 
 const iconClasses = cntl`
   h-10
   w-10
   shrink-0
-  text-moss-600
-  dark:text-moss-300
+  text-forest-600
+  dark:text-forest-300
 `;
 
 const cardClasses = cntl`
@@ -87,15 +90,15 @@ const cardClasses = cntl`
   overflow-hidden
   rounded-3xl
   border
-  border-moss-900/10
+  border-forest-900/10
   bg-white
   shadow-sm
   transition
   duration-300
   hover:-translate-y-1
   hover:shadow-xl
-  dark:border-moss-100/10
-  dark:bg-moss-950/60
+  dark:border-forest-100/10
+  dark:bg-forest-950/60
 `;
 
 const highlights = [
@@ -139,31 +142,42 @@ const highlights = [
     text: "SEGUL, NAHPU, ULLAR, and the MDD app bring cutting-edge phylogenomics and collection data to app stores and the command line alike.",
     liveStat: "code_changes.totals.additions",
     statLabel: "lines of code added across public repositories",
+    note: "SEGUL received the 2024 Ernst Mayr Award (SSB)",
     image: nahpuDesktop,
     alt: "NAHPU field catalog media gallery on desktop",
     href: "/software",
     span: "lg:col-span-4",
   },
 ];
+const heroStats = [
+  { value: String(expeditions.length), label: "field expeditions" },
+  { value: "8,000+", label: "voucher specimens" },
+  { value: "30,000+", label: "specimen parts" },
+];
+
 const approachSteps = [
   {
     icon: "island",
     title: "Fieldwork",
+    tone: "bg-forest-600",
     text: "13 years of expeditions to more than 20 remote mountain systems in Southeast Asia, often their first modern biological surveys.",
   },
   {
     icon: "collections",
     title: "Collections",
+    tone: "bg-moss-700",
     text: "More than 8,000 vouchers and 30,000 specimen parts in museums. That decade on complex islands shaped NAHPU, the digital field catalog our teams now use on recent expeditions.",
   },
   {
     icon: "phenomics",
     title: "Genomes & phenomes",
+    tone: "bg-mist-600",
     text: "Phylogenomics and population genomics alongside AI image embeddings that measure complex traits across entire collections.",
   },
   {
     icon: "software",
     title: "Software",
+    tone: "bg-mist-800",
     text: "SEGUL, ULLAR, and apps that install in one click from the app stores or one command in the terminal, from phones to HPC clusters.",
   },
 ] as const;
@@ -212,12 +226,12 @@ const researchQuestions = [
             alt="Handika's profile"
           />
           <h1
-            class="mt-4 font-serif text-5xl text-moss-950 dark:text-moss-50 sm:text-6xl"
+            class="mt-4 font-serif text-5xl text-forest-950 dark:text-forest-50 sm:text-6xl"
           >
-            Hi, I'm <strong>Heru Handika</strong>
+            Hi, I'm <strong class="text-moss-700 dark:text-moss-300">Heru Handika</strong>
           </h1>
           <p
-            class="mt-3 text-lg font-medium text-moss-800 dark:text-moss-200"
+            class="mt-3 text-lg font-medium text-forest-800 dark:text-forest-200"
           >
             Postdoctoral Researcher · AI Biodiversity Informatics, Florida
             Museum of Natural History, University of Florida
@@ -249,11 +263,35 @@ const researchQuestions = [
             <a href="/software" class={secondaryButtonClasses}>Software</a>
           </div>
         </div>
-        <GithubProfileCard />
+        <div class="flex flex-col gap-4">
+          <GithubProfileCard />
+          <a
+            href="/fieldwork"
+            class="group block rounded-3xl border border-forest-900/10 bg-white/80 p-5 shadow-xl shadow-forest-900/5 backdrop-blur transition hover:border-moss-400/60 dark:border-forest-100/10 dark:bg-forest-950/60 sm:p-6"
+          >
+            <dl class="grid grid-cols-3 divide-x divide-forest-900/10 dark:divide-forest-100/10">
+              {
+                heroStats.map((s) => (
+                  <div class="flex flex-col px-3 first:pl-0 last:pr-0 sm:px-4">
+                    <dt class="text-xs text-forest-700 dark:text-forest-300 sm:text-sm">
+                      {s.label}
+                    </dt>
+                    <dd class="order-first text-xl font-semibold tabular-nums text-moss-800 dark:text-moss-200 sm:text-2xl">
+                      {s.value}
+                    </dd>
+                  </div>
+                ))
+              }
+            </dl>
+            <span class="mt-3 block text-sm font-semibold text-forest-700 group-hover:underline dark:text-forest-300">
+              Explore my fieldwork →
+            </span>
+          </a>
+        </div>
       </div>
       <a
         href="#highlights"
-        class="absolute bottom-4 left-1/2 hidden -translate-x-1/2 animate-bounce text-moss-600 dark:text-moss-300 sm:block"
+        class="absolute bottom-4 left-1/2 hidden -translate-x-1/2 animate-bounce text-forest-600 dark:text-forest-300 sm:block"
         aria-label="Scroll to research highlights"
       >
         <svg
@@ -272,7 +310,7 @@ const researchQuestions = [
     <section id="highlights" class="scroll-mt-16 py-16">
       <div class="text-center">
         <p
-          class="text-sm font-semibold uppercase tracking-widest text-sunrise-600 dark:text-sunrise-400"
+          class="text-sm font-semibold uppercase tracking-widest text-moss-700 dark:text-moss-300"
         >
           Research highlights
         </p>
@@ -284,7 +322,7 @@ const researchQuestions = [
         {
           highlights.map((h) => (
             <a href={h.href} class={`${cardClasses} ${h.span}`}>
-              <div class="h-56 overflow-hidden bg-moss-100 dark:bg-moss-900 sm:h-64">
+              <div class="h-56 overflow-hidden bg-forest-100 dark:bg-forest-900 sm:h-64">
                 <Image
                   src={h.image}
                   alt={h.alt}
@@ -293,17 +331,17 @@ const researchQuestions = [
                 />
               </div>
               <div class="flex flex-1 flex-col p-6">
-                <p class="text-xs font-semibold uppercase tracking-widest text-sunrise-600 dark:text-sunrise-400">
+                <p class="text-xs font-semibold uppercase tracking-widest text-moss-700 dark:text-moss-300">
                   {h.eyebrow}
                 </p>
-                <h3 class="mt-1 font-serif text-2xl text-moss-950 dark:text-moss-50">
+                <h3 class="mt-1 font-serif text-2xl text-forest-950 dark:text-forest-50">
                   {h.title}
                 </h3>
                 <p class="mt-2 text-pretty text-slate-700 dark:text-slate-300">
                   {h.text}
                 </p>
                 <div class="mt-auto pt-5">
-                  <p class="text-moss-950 dark:text-moss-50">
+                  <p class="text-forest-950 dark:text-forest-50">
                     <strong class="text-3xl font-semibold tabular-nums">
                       {h.liveStat ? (
                         <LiveStat path={h.liveStat} format="compact" />
@@ -311,16 +349,16 @@ const researchQuestions = [
                         h.stat
                       )}
                     </strong>{" "}
-                    <span class="text-sm text-moss-700 dark:text-moss-300">
+                    <span class="text-sm text-forest-700 dark:text-forest-300">
                       {h.statLabel}
                     </span>
                   </p>
                   {h.note && (
-                    <p class="mt-1 text-sm text-sunrise-700 dark:text-sunrise-300">
+                    <p class="mt-1 text-sm text-moss-700 dark:text-moss-300">
                       {h.note}
                     </p>
                   )}
-                  <span class="mt-3 inline-block text-sm font-semibold text-moss-700 group-hover:underline dark:text-moss-300">
+                  <span class="mt-3 inline-block text-sm font-semibold text-forest-700 group-hover:underline dark:text-forest-300">
                     Explore →
                   </span>
                 </div>
@@ -334,7 +372,7 @@ const researchQuestions = [
     <section class="pb-24">
       <div class="mx-auto max-w-3xl text-center">
         <p
-          class="text-sm font-semibold uppercase tracking-widest text-sunrise-600 dark:text-sunrise-400"
+          class="text-sm font-semibold uppercase tracking-widest text-moss-700 dark:text-moss-300"
         >
           My approach
         </p>
@@ -351,17 +389,17 @@ const researchQuestions = [
       <ol class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {
           approachSteps.map((step, i) => (
-            <li class="relative rounded-3xl border border-moss-900/10 bg-white p-5 dark:border-moss-100/10 dark:bg-moss-950/60">
+            <li class={`relative rounded-3xl p-5 text-white ${step.tone}`}>
               <div class="flex items-center gap-3">
-                <PillarIcon name={step.icon} class={iconClasses} />
-                <span class="font-mono text-sm text-sunrise-600 dark:text-sunrise-400">
+                <PillarIcon name={step.icon} class="h-10 w-10 shrink-0 text-white" />
+                <span class="font-mono text-sm text-white">
                   0{i + 1}
                 </span>
               </div>
-              <h3 class="mt-3 font-semibold text-moss-950 dark:text-moss-50">
+              <h3 class="mt-3 font-semibold">
                 {step.title}
               </h3>
-              <p class="mt-1 text-sm text-slate-700 dark:text-slate-300">
+              <p class="mt-1 text-sm text-white">
                 {step.text}
               </p>
             </li>
@@ -370,18 +408,18 @@ const researchQuestions = [
       </ol>
 
       <h2
-        class="mt-20 text-center text-2xl font-semibold text-moss-950 dark:text-moss-50"
+        class="mt-20 text-center text-2xl font-semibold text-forest-950 dark:text-forest-50"
       >
         Research questions
       </h2>
-      <ul class="mx-auto mt-6 max-w-3xl divide-y divide-moss-900/10 dark:divide-moss-100/10">
+      <ul class="mx-auto mt-6 max-w-3xl divide-y divide-forest-900/10 dark:divide-forest-100/10">
         {
           researchQuestions.map((q) => (
             <li>
               <a href={q.href} class="group flex items-start gap-4 py-5">
                 <PillarIcon name={q.icon} class={`${iconClasses} mt-1`} />
                 <span>
-                  <span class="block text-xl text-sunrise-950 group-hover:underline dark:text-sunrise-50">
+                  <span class="block text-xl text-moss-950 group-hover:underline dark:text-moss-50">
                     {q.question}
                   </span>
                   <span class="mt-1 block text-slate-700 dark:text-slate-300">{q.detail}</span>

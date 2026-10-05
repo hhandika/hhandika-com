@@ -64,7 +64,7 @@ const shots = [
   {
     shots.map((shot) => (
       <figure
-        class={`group flex flex-col overflow-hidden rounded-2xl border border-moss-900/10 bg-moss-50 p-1.5 transition duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-moss-100/10 dark:bg-moss-900/40 ${shot.class}`}
+        class={`group flex flex-col overflow-hidden rounded-2xl border border-forest-900/10 bg-forest-50 p-1.5 transition duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-forest-100/10 dark:bg-forest-900/40 ${shot.class}`}
       >
         <div class="min-h-0 flex-1 overflow-hidden rounded-xl">
           <Image
@@ -76,8 +76,8 @@ const shots = [
           />
         </div>
         <figcaption class="flex flex-wrap items-baseline justify-between gap-x-2 px-2 pb-0.5 pt-1.5 text-xs">
-          <span class="font-semibold text-moss-900 dark:text-moss-100">{shot.caption}</span>
-          <span class="font-mono text-[0.7rem] text-moss-600 dark:text-moss-400">{shot.device}</span>
+          <span class="font-semibold text-forest-900 dark:text-forest-100">{shot.caption}</span>
+          <span class="font-mono text-[0.7rem] text-forest-600 dark:text-forest-400">{shot.device}</span>
         </figcaption>
       </figure>
     ))
