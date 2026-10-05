@@ -1,13 +1,30 @@
 ---
-import Image from "astro/components/Image.astro";
 import Content from "../Content.astro";
 import SectionHead from "../SectionHead.astro";
 import cntl from "cntl";
 import ProjectPubs from "../../layouts/ProjectPubs.astro";
 import PubButton from "../buttons/PubButton.astro";
-import nahpu from "../../assets/img/nahpu-preview.jpg";
 import Link from "../Link.astro";
 import PageSubtitle from "../PageSubtitle.astro";
+import Phenomics from "./Phenomics.astro";
+import NahpuArchitecture from "./software/NahpuArchitecture.astro";
+import NahpuGallery from "./software/NahpuGallery.astro";
+import { Image } from "astro:assets";
+import mddHome from "../../assets/img/mdd/mdd-home.jpg";
+import mddTaxon from "../../assets/img/mdd/mdd-taxon.jpg";
+import mddAppTree from "../../assets/img/mdd/app-taxonomy-tree.webp";
+import mddAppGallery from "../../assets/img/mdd/app-image-gallery.webp";
+import mddAppTaxon from "../../assets/img/mdd/app-taxon-info.webp";
+import mddAppMap from "../../assets/img/mdd/app-occurrence-map.webp";
+import mddAppStats from "../../assets/img/mdd/app-statistics.webp";
+
+const mddAppShots = [
+  { src: mddAppTree, alt: "MDD app taxonomy tree showing monotremes from order to species with thumbnails", caption: "Taxonomy tree" },
+  { src: mddAppGallery, alt: "MDD app gallery of 8,084 ASM Mammal Images Library photos", caption: "Image gallery" },
+  { src: mddAppTaxon, alt: "MDD app taxon page for the short-beaked echidna, Tachyglossus aculeatus, with photo and distribution", caption: "Taxon page" },
+  { src: mddAppMap, alt: "MDD app GBIF occurrence hexbin map for the short-beaked echidna with MDD country outlines", caption: "Occurrence map" },
+  { src: mddAppStats, alt: "MDD app statistics showing species descriptions by decade", caption: "Statistics" },
+];
 
 const firstParagraphClasses = cntl`
   first-letter:text-7xl
@@ -16,31 +33,89 @@ const firstParagraphClasses = cntl`
   first-letter:float-left
 `;
 
+const tools = [
+  { name: "NAHPU", role: "Digital field catalog", stack: "Flutter · Rust", url: "https://nahpu.app" },
+  { name: "SEGUL", role: "Phylogenomic data toolkit", stack: "Rust · Flutter", url: "https://segul.app" },
+  { name: "ULLAR", role: "Phylogenomic pipeline", stack: "Rust", url: "https://github.com/hhandika/ullar" },
+  { name: "BioCosmos", role: "AI collection explorer", stack: "Python · Next.js", url: "https://lepiverse.com" },
+  { name: "MDD", role: "Mammal Diversity Database", stack: "Flutter · Rust · Astro", url: "https://mammaldiversity.org" },
+];
+
+const stats = [
+  { value: "740k+", label: "lines of code" },
+  { value: "5", label: "open-source tools" },
+  { value: "5", label: "platforms from one codebase" },
+  { value: "Ernst Mayr", label: "Award, SSB (SEGUL)" },
+];
+
+// Condensed from the nahpu-docs architecture "Design principles".
+const principles = [
+  {
+    title: "Offline first",
+    text: "Field stations rarely have internet. Everything runs and stores locally, and behaves deterministically.",
+  },
+  {
+    title: "Thin screens",
+    text: "UI only renders state. Workflows live in providers and services, so they are testable and reusable.",
+  },
+  {
+    title: "One source of truth",
+    text: "A Drift/SQLite database owns every record; reproducible settings live in versioned configs, not the UI.",
+  },
+  {
+    title: "Rust where it counts",
+    text: "Archives, Darwin Core export, PDFs, and GIS run in small reusable Rust crates behind a thin bridge.",
+  },
+];
+
 const spaceClasses = cntl`
   mr-1
 `;
 ---
 
 <div>
-  <PageSubtitle subtitle="Cross-platform, Open, and Accessible Software" />
+  <PageSubtitle subtitle="Open, Cross-platform Software" />
+  <dl class="mx-auto grid max-w-4xl grid-cols-2 gap-3 text-center sm:grid-cols-4">
+    {
+      stats.map((s) => (
+        <div class="rounded-2xl border border-moss-900/10 px-3 py-4 dark:border-moss-100/10">
+          <dt class="sr-only">{s.label}</dt>
+          <dd class="font-serif text-2xl font-semibold text-sunrise-700 dark:text-sunrise-300">{s.value}</dd>
+          <dd class="mt-1 text-xs text-moss-700 dark:text-moss-300">{s.label}</dd>
+        </div>
+      ))
+    }
+  </dl>
+  <ul class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      tools.map((t) => (
+        <li>
+          <a
+            href={t.url}
+            class="group flex h-full items-center justify-between gap-3 rounded-xl border border-moss-900/15 px-4 py-3 transition hover:-translate-y-0.5 hover:border-sunrise-400 hover:bg-sunrise-50 dark:border-moss-100/15 dark:hover:bg-white/5"
+          >
+            <span>
+              <span class="block font-mono font-semibold text-moss-800 dark:text-sunrise-200">{t.name}</span>
+              <span class="block text-xs text-moss-700 dark:text-moss-300">{t.role}</span>
+            </span>
+            {t.stack && <span class="whitespace-nowrap rounded-full bg-moss-100 px-2 py-0.5 font-mono text-[0.7rem] text-moss-800 dark:bg-moss-900 dark:text-moss-200">
+              {t.stack}
+            </span>}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
   <SectionHead
     text="Developing digital tools empowering new learners in evolutionary studies"
   />
   <Content>
-    <Image
-      src={nahpu}
-      alt="SEGUL app preview"
-      width={200}
-      class="rounded-xl float-right ml-4"
-    />
     <p class={firstParagraphClasses}>
       My software project spans a broad spectrum of collection-based
       evolutionary studies, from data collection in the field (<Link
         text="NAHPU"
         url="https://nahpu.app"
-      />), species identification through innovative digital field guide (<Link
-        text="RINJA"
-        url="https://github.com/hhandika/rinja"
       />), a phylogenomic pipeline (<Link
         text="ULLAR"
         url="https://github.com/hhandika/ullar"
@@ -50,7 +125,10 @@ const spaceClasses = cntl`
       />), to taxonomic database (<Link
         text="MDD app, website, and tooling"
         url="https://github.com/mammaldiversity/mdd_app"
-      />). My goal for this project is to develop software to improve the
+      />) and AI-enabled exploration of specimen images (<Link
+        text="BioCosmos"
+        url="https://lepiverse.com"
+      />). Together, these projects span more than 740,000 lines of code. My goal for this project is to develop software to improve the
       efficiency, data integration, and accessibility of biodiversity research.
       Additionally, I aim to reduce the ecological footprint of genomic studies
       while allowing underfunded labs to benefit from the decreasing cost of
@@ -63,11 +141,108 @@ const spaceClasses = cntl`
         url="https://en.wikipedia.org/wiki/CI/CD"
       />
       ). Especially for genomic studies, I take advantage of advancements in CPU technology
-      and <Link
+      and <Link
         text="heterogenous computing"
         url="https://en.wikipedia.org/wiki/Heterogeneous_computing"
       /> to accelerate data processing and minimize reliance on expensive and power-hungry
       High-Performance Computing Clusters.
+    </p>
+  </Content>
+
+  <SectionHead text="How I design software: NAHPU as an example" />
+  <Content>
+    <p>
+      <Link text="NAHPU" url="https://nahpu.app" /> is a field cataloging app
+      for collection-based research. It has to work on a phone at a remote field
+      camp, on a tablet at the prep table, and on a laptop back at the museum,
+      with or without internet. I build it in layers: a Flutter interface on
+      top, application state and domain workflows in the middle, a canonical
+      SQLite database for records, and performance-critical, reusable code in
+      Rust crates reached through a generated bridge. Each layer has one job,
+      which keeps the app fast, testable, and easy for new contributors to
+      learn. The full design is documented in the <Link
+        text="NAHPU developer docs"
+        url="https://nahpu.app/en/contributing/code/architecture/"
+      />.
+    </p>
+  </Content>
+  <NahpuArchitecture />
+  <ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+    {
+      principles.map((p, i) => (
+        <li class="rounded-2xl border border-moss-900/10 bg-moss-50/60 p-4 dark:border-moss-100/10 dark:bg-moss-900/30">
+          <span class="font-mono text-xs text-sunrise-700 dark:text-sunrise-300">0{i + 1}</span>
+          <h3 class="mt-1 font-semibold text-moss-900 dark:text-moss-50">{p.title}</h3>
+          <p class="mt-1 text-sm text-moss-800 dark:text-moss-200">{p.text}</p>
+        </li>
+      ))
+    }
+  </ul>
+  <NahpuGallery />
+
+  <SectionHead text="Mammal Diversity Database: website, app, and tooling" />
+  <Content>
+    <p>
+      I develop the website, cross-platform app, and data tooling for the <Link
+        text="Mammal Diversity Database"
+        url="https://www.mammaldiversity.org"
+      />
+      of the American Society of Mammalogists, which tracks taxonomic changes to
+      every living and recently extinct mammal species. Version 2.5 recognizes
+      6,904 species, each with names, synonyms, distribution, and images.
+    </p>
+  </Content>
+  <div class="my-6 grid gap-3 md:grid-cols-2">
+    {
+      [
+        { src: mddHome, alt: "Mammal Diversity Database home page with species search and summary counts", caption: "Search and release summary", url: "https://www.mammaldiversity.org" },
+        { src: mddTaxon, alt: "Mammal Diversity Database species page for the aardvark, Orycteropus afer, with photo and country distribution map", caption: "Species page", url: "https://www.mammaldiversity.org/taxon/1000520" },
+      ].map((shot) => (
+        <a
+          href={shot.url}
+          class="group overflow-hidden rounded-2xl border border-moss-900/10 bg-moss-50 p-1.5 transition duration-500 hover:-translate-y-0.5 hover:shadow-lg dark:border-moss-100/10 dark:bg-moss-900/40"
+        >
+          <Image src={shot.src} alt={shot.alt} width={900} loading="lazy" class="rounded-xl" />
+          <p class="flex justify-between px-2 pt-1.5 text-xs">
+            <span class="font-semibold text-moss-900 dark:text-moss-100">{shot.caption}</span>
+            <span class="font-mono text-moss-600 dark:text-moss-400">mammaldiversity.org</span>
+          </p>
+        </a>
+      ))
+    }
+  </div>
+  <p class="mb-3 text-sm text-moss-800 dark:text-moss-200">
+    The <Link text="MDD app" url="https://apps.apple.com/us/app/mammal-diversity/id6504446627" /> brings
+    the database offline, with a browsable taxonomy tree, the ASM Mammal Images Library, GBIF
+    occurrence maps, and description statistics.
+  </p>
+  <div class="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 md:mx-0 md:grid md:grid-cols-5 md:overflow-visible md:px-0">
+    {
+      mddAppShots.map((shot) => (
+        <figure class="w-[42%] shrink-0 snap-start overflow-hidden rounded-[1.4rem] border border-moss-900/10 bg-moss-50 p-1.5 transition duration-500 hover:-translate-y-0.5 hover:shadow-lg dark:border-moss-100/10 dark:bg-moss-900/40 sm:w-[30%] md:w-auto">
+          <Image src={shot.src} alt={shot.alt} width={360} densities={[1, 2]} loading="lazy" class="rounded-[1.1rem]" />
+          <figcaption class="flex flex-wrap items-baseline justify-between gap-x-2 px-1.5 pt-1.5 text-xs">
+            <span class="font-semibold text-moss-900 dark:text-moss-100">{shot.caption}</span>
+            <span class="font-mono text-[0.7rem] text-moss-600 dark:text-moss-400">iPhone</span>
+          </figcaption>
+        </figure>
+      ))
+    }
+  </div>
+
+  <Content>
+    <p class="mt-2">
+      I build modular, cross-platform applications in Rust and Flutter, with
+      on-device AI inference using the <Link
+        text="Burn"
+        url="https://burn.dev/"
+      /> framework, and distribute them through official app stores for
+      straightforward installation in resource-limited settings. SEGUL received
+      the Society of Systematic Biologists' Ernst Mayr Award. Next, I am adding
+      on-device deep learning to NAHPU so specimen morphospace can be explored
+      on a phone in the field, and automated detection of anomalous alignments
+      and clearer diagnostics to SEGUL and ULLAR. NAHPU is developed with the
+      Human-Augmented Analytics Group at Georgia Tech.
     </p>
     <div class="mt-4 mb-2 text-semibold">Publications:</div>
     <ProjectPubs author="Handika et al.">
@@ -109,4 +284,7 @@ const spaceClasses = cntl`
       />
     </ProjectPubs>
   </Content>
+
+  <PageSubtitle subtitle="AI for Collection-based Evolutionary Studies" />
+  <Phenomics />
 </div>

@@ -2,12 +2,14 @@
 import Image from "astro/components/Image.astro";
 import Content from "../Content.astro";
 import SectionHead from "../SectionHead.astro";
+import Link from "../Link.astro";
 import cntl from "cntl";
 import lenomys from "../../assets/img/lenomys-meyeri.jpg";
 import ProjectPubs from "../../layouts/ProjectPubs.astro";
 import PubButton from "../buttons/PubButton.astro";
 import PageSubtitle from "../PageSubtitle.astro";
-import iaa from "../../assets/graphics/iaa-map.svg";
+import indonesiaMap from "../../assets/graphics/indonesia.svg";
+import SkyIslandDiagram from "../svg/SkyIslandDiagram.astro";
 
 const firstParagraphClasses = cntl`
   first-letter:text-7xl
@@ -22,54 +24,107 @@ const spaceClasses = cntl`
 ---
 
 <div>
-  <PageSubtitle subtitle="Small Mammal Diversity & Speciation" /><Content />
+  <PageSubtitle subtitle="Island Speciation" />
 
-  <SectionHead text="Fieldwork" />
-  <p>
-    A complex, fascinating island system for studying speciation and testing
-    evolutionary hypotheses.
-  </p>
-  <Image
-    src={iaa}
-    alt="Map of the Indo-Australian Archipelago"
-    width={600}
-    class="rounded-xl mt-2"
-  /><div>
-    <SectionHead text="Research Focus: Speciation on Sulawesi" />
+  <SectionHead text="Islands as natural laboratories" />
+  <Content>
+    <p class={firstParagraphClasses}>
+      The Indo-Australian Archipelago (IAA) combines marine barriers, ancient
+      paleo-islands, and steep mountains, a system where isolation has
+      repeatedly driven diversification. During Pleistocene sea-level lows,
+      Sumatra, Java, and Borneo joined mainland Asia as Sundaland, while
+      Sulawesi, the Moluccas, and the Lesser Sundas stayed isolated by deep
+      water. Within islands, mountains act as sky islands. Many of these
+      regions remain poorly surveyed. I ask how geographic isolation shapes
+      genomic divergence, ecological interactions, and phenotypic evolution.
+    </p>
+  </Content>
+  <figure class="mt-4">
+    <Image
+      src={indonesiaMap}
+      alt="Map of the Indonesian archipelago with Wallace's line (orange) and Lydekker's line (blue)"
+      width={960}
+      class="w-full rounded-xl bg-crater-950 p-2"
+    />
+    <figcaption class="mt-2 text-sm text-moss-700 dark:text-moss-300">
+      Wallace's line (orange) and Lydekker's line (blue) bound Wallacea, the
+      islands never connected to the Asian or Australian continental shelves.
+      Lines are approximate.
+    </figcaption>
+  </figure>
+
+  <SectionHead text="In situ diversification of the Bunomys clade on Sulawesi" />
+  <Content>
     <Image
       src={lenomys}
-      alt="Lenomys meyeri"
+      alt="Lenomys meyeri, an endemic rat of Sulawesi"
       width={340}
-      class="rounded-xl float-left mr-4 mt-2"
+      class="float-left mr-4 mt-2 rounded-xl"
     />
-
-    <p class={firstParagraphClasses}>
-      The Indo-Australian Archipelago (IAA) has been recognized as a complex,
-      fascinating island system for studying speciation and testing evolutionary
-      hypotheses. During the Pleistocene, the islands on the Sunda Shelf—such as
-      Sumatra, Java, and Borneo— were connected as a continuous landmass. In
-      contrast, Sulawesi were formed from separate islands. The isolated
-      mountains on these islands promote other opportunities for speciation. We
-      conduct extensive fieldwork, perform genomic studies, and describe
-      undocumented species as necessary.
-    </p>
     <p>
-      Collaborators and I conducted over 30 field expeditions, 20+ of which were
-      field-collecting expeditions contributing over 8,000 specimens to natural
-      history collections in Indonesia, Australia, and the United States.
+      My main study system is the most speciose rodent clade on Sulawesi:
+      the <i>Bunomys</i> clade. I study its systematics and in situ
+      diversification.
+      Integrating morphology, multi-marker Sanger sequencing, and
+      ultra-conserved elements, we revealed taxonomic problems in the group and
+      a complex interplay between paleo-islands, tectonic plates, and mountain
+      formation in promoting its diversification, with mixed support for the
+      Area of Endemism paradigm on Sulawesi.
     </p>
     <p class="mt-2">
-      I primarily focus on the in-situ diversification of rodents (the <i
-        >Bunomys</i
-      > species group) in Sulawesi. I aim to improve phylogenetic resolution and understand
-      how the island's geological history has shaped the group's diversity. Ultimately,
-      I aim to deepen our understanding of speciation on a large, isolated island
-      like Sulawesi and aid conservation efforts by improving our knowledge of species
-      diversity and endemism.
+      This work rests on 13 years of collaborative field expeditions across
+      more than 20 remote mountain systems in Southeast Asia: over 20
+      field-collecting expeditions contributing more than 8,000 voucher
+      specimens and 30,000 specimen parts to natural history collections.
+      Together with collaborators, this fieldwork has contributed to the
+      description or revision of more than 24 mammal species. Beyond
+      <i>Bunomys</i>, I support collaborative studies of shrew diversification
+      on Sulawesi, Java, and Sumatra. I received the 2023 Murie Family
+      Conservation Award from the American Society of Mammalogists for the
+      significance of this work in conserving mammals and their habitats.
     </p>
+  </Content>
+
+  <SectionHead text="An island of islands" />
+  <Content>
+    <p>
+      On Sulawesi, ancient paleo-islands, colliding tectonic plates, and young
+      mountains together shaped the <i>Bunomys</i> radiation. Above the cloud
+      line, each summit isolates its own populations, while lowland forests
+      connect them.
+    </p>
+  </Content>
+  <div class="clear-both mt-4 rounded-2xl bg-white p-4 shadow-sm dark:bg-[#141810]">
+    <SkyIslandDiagram />
   </div>
+
+  <SectionHead text="Parasites and microbiomes: collaborations and next steps" />
+  <Content>
+    <p>
+      The evolutionary history of the <i>Bunomys</i> clade also provides a
+      framework for asking whether parasites co-evolve with their hosts or
+      cross species boundaries. Work led by <Link
+        text="Kevin Rowe's lab at Museums Victoria"
+        url="https://museumsvictoria.com.au/about-us/board-and-staff/staff/dr-kevin-rowe/"
+      />, Australia, on which I am a co-author, documented native and introduced <i>Trypanosoma</i> lineages
+      in Sulawesi rodents, with high prevalence in several <i>Bunomys</i>
+      species and infections from village edges to remote montane forests,
+      peaking above 2,000 m. The Esselstyn lab studies the gut microbial
+      communities of Sulawesi shrews and rodents.
+    </p>
+    <p class="mt-2">
+      Building on these collaborations, parasite evolution is a direction I
+      hope to pursue: integrating host population genomics, parasite
+      phylogenies, and environmental data to test whether parasite
+      diversification parallels host history or reflects host switching and
+      local adaptation. To lay the groundwork, I am building parasite records
+      into <Link text="NAHPU" url="https://nahpu.app" />, so parasites
+      collected in the field are easier to track and stay associated with
+      their host specimens.
+    </p>
+  </Content>
 </div>
-<div class="mt-4 mb-2 text-semibold text-lg">Publications:</div>
+<div class="mt-8 mb-2 text-semibold text-lg">Speciation and systematics:</div>
 <ProjectPubs author="Handika et. al.">
   <PubButton
     title="An island of islands: complex gene tree discordance and local endemism on a recent, rapid rodent radiation on Sulawesi"
@@ -149,6 +204,43 @@ const spaceClasses = cntl`
     title="Three new species of shrew (Soricidae: Crocidura) from West Sumatra, Indonesia: elevational and morphological divergence in syntopic sister taxa"
     doi="https://doi.org/10.1093/jmammal/gyad126"
     pdfUrl="https://www.researchgate.net/publication/377726198_Three_new_shrews_Soricidae_Crocidura_from_West_Sumatra_Indonesia_elevational_and_morphological_divergence_in_syntopic_sister_taxa"
+  />
+</ProjectPubs>
+  <div class="mt-4 mb-2 text-semibold">Host–parasite and microbiome (collaborations):</div>
+<ProjectPubs author="Adams et al.">
+  <PubButton
+    author="Adams, A.L., Achmadi, A.S., Mursyid, A., Handika, H., Nurdin, M.R.T., Esselstyn, J.A., Perkins, S.L., Rowe, K.M., and Rowe, K.C."
+    year="2025"
+    title="Wildlife disease surveillance from village to peak: Trypanosome infections of mammals on Sulawesi revealed higher prevalence in intact montane forests"
+    doi="https://mastozoologiamexicana.com/therya/index.php/THERYA/article/view/6154"
+    pdfUrl="https://mastozoologiamexicana.com/therya/index.php/THERYA/article/view/6154/1475"
+  />
+</ProjectPubs>
+<ProjectPubs author="Mursyid et. al.">
+  <PubButton
+    author="Mursyid, A., Achmadi, A.S., Novarino, W., Handika, H., Nugroho, H.A., Anita, S., Adams, A.L., Rowe, K.M.C., and Rowe, K.C"
+    year="2023"
+    title="Trypanosoma (Euglenozoa: Kinetoplastea) infections in rodents, bats, and shrews along an elevation and disturbance gradient in Central Sulawesi, Indonesia"
+    doi="http://dx.doi.org/10.3853/j.2201-4349.75.2023.1786"
+    pdfUrl="https://journals.australian.museum/media/dd/documents/1786_complete.62f64af.pdf"
+  />
+</ProjectPubs>
+<ProjectPubs author="Swanson et. al.">
+  <PubButton
+    author="Swanson, M.T., Henson, M.W., Handika, H., Achmadi, A.S., Anita, S., Rowe, K.C., and Esselstyn, J.A"
+    year="2023"
+    title="Mycoplasmataceae dominate microbial community differences between gut regions in mammals with a simple gut architecture"
+    doi="https://doi.org/10.1093/jmammal/gyac098"
+    pdfUrl="https://academic.oup.com/jmammal/article/104/1/146/6823667"
+  />
+</ProjectPubs>
+<ProjectPubs author="Winterhoff et. al.">
+  <PubButton
+    author="Winterhoff, M.L., Achmadi, A.S., Roycroft, E.J., Handika, H., Putra, R.T.J., Rowe, K.M.C., Perkins, S., and Rowe, K.C"
+    year="2020"
+    title="Native and introduced trypanosome parasites in endemic and introduced murine rodents of Sulawesi"
+    doi="https://doi.org/10.1645/19-136"
+    pdfUrl="https://bioone.org/journalArticle/Download?urlId=10.1645%2F19-136"
   />
 </ProjectPubs>
 <div

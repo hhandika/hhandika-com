@@ -1,0 +1,86 @@
+---
+import {
+  languageBarHtml,
+  loadStats,
+  STATS_SOURCE_URL,
+  topLanguages,
+} from "../../scripts/github-stats";
+import LiveStat from "./LiveStat.astro";
+import LiveStatsScript from "./LiveStatsScript.astro";
+
+const stats = await loadStats();
+
+const metrics = [
+  { path: "overview.total_contributions", label: "Contributions" },
+  { path: "code_changes.totals.commits", label: "Commits" },
+  { path: "overview.total_repositories", label: "Repositories" },
+  { path: "overview.streak_days", label: "Day streak" },
+];
+---
+
+<div
+  class="w-full rounded-3xl border border-moss-900/10 bg-white/80 p-5 text-left shadow-xl shadow-moss-900/5 backdrop-blur dark:border-moss-100/10 dark:bg-moss-950/60 sm:p-6"
+>
+  <div class="flex items-center justify-between gap-3">
+    <a
+      href="https://github.com/hhandika"
+      target="_blank"
+      rel="noopener"
+      class="font-mono text-sm text-moss-800 hover:underline dark:text-moss-200"
+      >github.com/hhandika</a
+    >
+    <span
+      class="inline-flex items-center gap-1.5 rounded-full bg-moss-100 px-2.5 py-0.5 text-xs font-medium text-moss-800 dark:bg-moss-800 dark:text-moss-100"
+    >
+      <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-moss-500"></span>
+      Live
+    </span>
+  </div>
+
+  <p
+    class="mt-4 font-mono text-sm text-sunrise-800 dark:text-sunrise-300"
+    aria-label="Hello in English and Indonesian"
+  >
+    b"Hello" | b"Halo..." 👋
+  </p>
+  <p class="mt-2 text-sm text-slate-700 dark:text-slate-300">
+    High-performance, memory-efficient tools that scale from phones to HPC
+    clusters, installable in one click from the app stores or one command
+    from the terminal.
+  </p>
+
+  <dl class="mt-5 grid grid-cols-2 gap-3">
+    {
+      metrics.map((m) => (
+        <div class="rounded-2xl bg-moss-50 p-3 dark:bg-moss-900/50">
+          <dt class="text-xs uppercase tracking-wide text-moss-700 dark:text-moss-300">
+            {m.label}
+          </dt>
+          <dd class="text-2xl font-semibold tabular-nums text-moss-950 dark:text-moss-50">
+            <LiveStat path={m.path} />
+          </dd>
+        </div>
+      ))
+    }
+  </dl>
+
+  <div class="mt-5 text-sm text-moss-950 dark:text-moss-50">
+    <div class="mb-2 flex items-baseline justify-between">
+      <span class="font-medium">Languages</span>
+      <span class="text-xs tabular-nums text-moss-700 dark:text-moss-300">
+        <LiveStat path="overview.code_additions" format="compact" /> lines added
+      </span>
+    </div>
+    <div data-gh-languages="5" set:html={languageBarHtml(topLanguages(stats, 5))} />
+  </div>
+
+  <p class="mt-4 text-xs text-slate-500 dark:text-slate-400">
+    Public repositories · updated <LiveStat
+      path="generated_at"
+      format="date"
+    /> · <a class="underline" href={STATS_SOURCE_URL} target="_blank" rel="noopener"
+      >data</a
+    >
+  </p>
+</div>
+<LiveStatsScript />

@@ -1,0 +1,216 @@
+---
+/**
+ * Reusable three.js slot. Drop a .glb in public/models/ and pass `modelUrl`.
+ * Without a model it renders a placeholder "scan" mesh so the slot is visibly wired.
+ * three.js is only downloaded when the viewer scrolls into view.
+ */
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
+interface Props {
+  fallbackImage: ImageMetadata;
+  fallbackAlt: string;
+  modelUrl?: string;
+  autoRotate?: boolean;
+  label?: string;
+  tone?: "light" | "dark";
+  class?: string;
+}
+
+const {
+  fallbackImage,
+  fallbackAlt,
+  modelUrl,
+  autoRotate = true,
+  label = "3D specimen",
+  tone = "dark",
+  class: className = "",
+} = Astro.props;
+---
+
+<div
+  class={`model-viewer relative overflow-hidden ${className}`}
+  data-model-viewer
+  data-model-url={modelUrl ?? ""}
+  data-auto-rotate={String(autoRotate)}
+  data-tone={tone}
+>
+  <Image
+    src={fallbackImage}
+    alt={fallbackAlt}
+    class="mv-fallback absolute inset-0 h-full w-full object-cover transition-opacity duration-700"
+    widths={[480, 960]}
+    sizes="(min-width: 1024px) 50vw, 100vw"
+  />
+  <canvas
+    class="mv-canvas absolute inset-0 h-full w-full opacity-0 transition-opacity duration-700 cursor-grab active:cursor-grabbing"
+    aria-label={label}></canvas>
+  <div
+    class="pointer-events-none absolute bottom-3 left-3 flex items-center gap-2 rounded-full bg-black/50 px-3 py-1 text-xs font-medium text-white backdrop-blur"
+  >
+    <span class="mv-dot inline-block h-2 w-2 rounded-full bg-sunrise-400"></span>
+    <span class="mv-status">{label} · drag to rotate</span>
+  </div>
+</div>
+
+<script>
+  type Viewer = HTMLElement & { _started?: boolean };
+
+  async function start(el: Viewer) {
+    if (el._started) return;
+    el._started = true;
+
+    const canvas = el.querySelector<HTMLCanvasElement>(".mv-canvas")!;
+    const fallback = el.querySelector<HTMLElement>(".mv-fallback")!;
+    const status = el.querySelector<HTMLElement>(".mv-status")!;
+    const modelUrl = el.dataset.modelUrl;
+    const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const autoRotate = el.dataset.autoRotate === "true" && !reduceMotion;
+    const dark = el.dataset.tone !== "light";
+
+    const THREE = await import("three");
+    const { OrbitControls } = await import(
+      "three/examples/jsm/controls/OrbitControls.js"
+    );
+
+    let renderer: InstanceType<typeof THREE.WebGLRenderer>;
+    try {
+      renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    } catch {
+      return; // No WebGL: keep the fallback photo.
+    }
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(dark ? 0x191f0c : 0xfbefc9);
+    const camera = new THREE.PerspectiveCamera(35, 1, 0.01, 100);
+    camera.position.set(0, 0.4, 3.2);
+
+    scene.add(new THREE.HemisphereLight(0xe9edd6, 0x3e170a, 1.2));
+    const key = new THREE.DirectionalLight(0xffe2bd, 2.2);
+    key.position.set(2, 3, 2);
+    scene.add(key);
+    const rim = new THREE.DirectionalLight(0x788d36, 1.5);
+    rim.position.set(-3, 1, -2);
+    scene.add(rim);
+
+    const controls = new OrbitControls(camera, canvas);
+    controls.enableDamping = true;
+    controls.enablePan = false;
+    controls.minDistance = 1.5;
+    controls.maxDistance = 6;
+    controls.autoRotate = autoRotate;
+    controls.autoRotateSpeed = 1.2;
+
+    const root = new THREE.Group();
+    scene.add(root);
+
+    if (modelUrl) {
+      const { GLTFLoader } = await import(
+        "three/examples/jsm/loaders/GLTFLoader.js"
+      );
+      status.textContent = "Loading model…";
+      try {
+        const gltf = await new GLTFLoader().loadAsync(modelUrl);
+        const model = gltf.scene;
+        // Normalize to a ~2 unit bounding box centered at the origin.
+        const box = new THREE.Box3().setFromObject(model);
+        const size = box.getSize(new THREE.Vector3()).length();
+        const center = box.getCenter(new THREE.Vector3());
+        model.position.sub(center);
+        model.scale.setScalar(2 / size);
+        root.add(model);
+        status.textContent = "Drag to rotate · scroll to zoom";
+      } catch {
+        status.textContent = "Model failed to load";
+        return;
+      }
+    } else {
+      // Placeholder: a wireframe "scan" with a point cloud shell.
+      const geo = new THREE.IcosahedronGeometry(0.9, 3);
+      const pos = geo.attributes.position;
+      for (let i = 0; i < pos.count; i++) {
+        const v = new THREE.Vector3().fromBufferAttribute(pos, i);
+        // Elongate into a skull-ish ovoid.
+        v.set(v.x * 0.8, v.y * 0.65, v.z * 1.25);
+        v.multiplyScalar(1 + 0.05 * Math.sin(v.x * 6) * Math.cos(v.z * 5));
+        pos.setXYZ(i, v.x, v.y, v.z);
+      }
+      geo.computeVertexNormals();
+      root.add(
+        new THREE.Mesh(
+          geo,
+          new THREE.MeshStandardMaterial({
+            color: 0xeeab30,
+            roughness: 0.55,
+            metalness: 0.1,
+            flatShading: true,
+          }),
+        ),
+      );
+      root.add(
+        new THREE.LineSegments(
+          new THREE.WireframeGeometry(geo),
+          new THREE.LineBasicMaterial({
+            color: 0xb5c47c,
+            transparent: true,
+            opacity: 0.25,
+          }),
+        ),
+      );
+      const pts = new THREE.Points(
+        geo.clone().scale(1.12, 1.12, 1.12),
+        new THREE.PointsMaterial({ color: 0xd3dcae, size: 0.012 }),
+      );
+      root.add(pts);
+      status.textContent = "3D model coming soon · drag to rotate";
+    }
+
+    const resize = () => {
+      const { clientWidth: w, clientHeight: h } = el;
+      if (!w || !h) return;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    };
+    new ResizeObserver(resize).observe(el);
+    resize();
+
+    let visible = true;
+    new IntersectionObserver(([e]) => (visible = e.isIntersecting)).observe(el);
+
+    renderer.setAnimationLoop(() => {
+      if (!visible) return;
+      controls.update();
+      renderer.render(scene, camera);
+    });
+
+    canvas.classList.remove("opacity-0");
+    fallback.classList.add("opacity-0");
+
+    document.addEventListener(
+      "astro:before-swap",
+      () => {
+        renderer.setAnimationLoop(null);
+        renderer.dispose();
+      },
+      { once: true },
+    );
+  }
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) {
+          io.unobserve(e.target);
+          start(e.target as Viewer);
+        }
+      }
+    },
+    { rootMargin: "200px" },
+  );
+  document
+    .querySelectorAll<HTMLElement>("[data-model-viewer]")
+    .forEach((el) => io.observe(el));
+</script>

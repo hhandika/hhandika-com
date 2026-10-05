@@ -1,0 +1,129 @@
+---
+/**
+ * 3D relief map of Indonesia with field-site pins and a sea-level toggle
+ * (today ↔ −120 m, Last Glacial Maximum). three.js loads lazily; the static
+ * SVG map is the fallback.
+ */
+import { Image } from "astro:assets";
+import indonesiaSvg from "../assets/graphics/indonesia.svg";
+import meta from "../data/indonesia-meta.json";
+import { fieldworkLocalities } from "../scripts/fieldwork";
+
+const rank = { full: 2, semi: 1, none: 0 } as const;
+// One pin per locality, keeping the highest collecting effort.
+const pins = Object.values(
+  fieldworkLocalities.reduce<Record<string, (typeof fieldworkLocalities)[number]>>(
+    (acc, l) => {
+      const prev = acc[l.localityName];
+      if (!prev || rank[l.collectingEffort] > rank[prev.collectingEffort]) {
+        acc[l.localityName] = l;
+      }
+      return acc;
+    },
+    {},
+  ),
+).map((l) => ({
+  id: l.localityName,
+  lon: l.longitude,
+  lat: l.latitude,
+  effort: l.collectingEffort,
+}));
+
+const config = { bbox: meta.bbox, lines: meta.biogeoLines, pins, hotspotIds: [] };
+---
+
+<figure id="indonesia-map" class="relative">
+  <div class="relative h-[300px] overflow-hidden rounded-3xl bg-crater-950 shadow-xl sm:h-[440px]">
+    <Image
+      src={indonesiaSvg}
+      alt="Map of the Indonesian archipelago"
+      class="map-fallback absolute inset-0 h-full w-full object-contain p-4 transition-opacity duration-700"
+      loading="eager"
+    />
+    <canvas
+      id="indonesia-canvas"
+      class="absolute inset-0 h-full w-full opacity-0 transition-opacity duration-1000"
+      aria-label="3D relief map of Indonesia showing field sites"
+      data-height-url="/data/indonesia-height.png"
+      data-coast-url="/data/indonesia-land.json"></canvas>
+    <script is:inline type="application/json" id="indonesia-config" set:html={JSON.stringify(config)} />
+
+    <button
+      id="sea-toggle"
+      type="button"
+      aria-pressed="false"
+      class="absolute right-3 top-3 z-10 rounded-full border border-white/25 bg-crater-950/75 px-4 py-2 text-sm font-semibold text-moss-50 backdrop-blur transition hover:border-sunrise-300 aria-pressed:border-sunrise-300 aria-pressed:bg-sunrise-400 aria-pressed:text-sunrise-950"
+    >
+      <span class="sea-off">Lower sea level −120 m</span>
+      <span class="sea-on hidden">Back to today</span>
+    </button>
+    <p
+      id="sea-badge"
+      class="pointer-events-none absolute left-3 top-3 z-10 rounded-full bg-crater-950/75 px-3 py-1 font-mono text-xs text-moss-100 backdrop-blur"
+    >
+      Sea level: today
+    </p>
+  </div>
+  <figcaption class="mt-3 text-pretty text-center text-sm text-moss-700 dark:text-moss-300">
+    During the last ice age (~20,000 years ago) sea level was about 120 m
+    lower: Sumatra, Java, and Borneo joined Asia as
+    <span class="font-semibold text-sunrise-700 dark:text-sunrise-300">Sundaland</span>,
+    while Sulawesi stayed isolated between Wallace's line
+    (<span class="text-sunrise-600">orange</span>) and Lydekker's line
+    (<span class="text-crater-500">blue</span>). Pins mark field sites.
+  </figcaption>
+</figure>
+
+<script>
+  import type { IndonesiaMapHandle } from "./three/IndonesiaMap";
+
+  const root = document.getElementById("indonesia-map")!;
+  const canvas = document.getElementById("indonesia-canvas") as HTMLCanvasElement;
+  const fallback = root.querySelector<HTMLElement>(".map-fallback")!;
+  const config = JSON.parse(document.getElementById("indonesia-config")!.textContent!);
+  const toggle = document.getElementById("sea-toggle")!;
+  const badge = document.getElementById("sea-badge")!;
+
+  let map: IndonesiaMapHandle | undefined;
+  let low = false;
+
+  toggle.addEventListener("click", () => {
+    low = !low;
+    toggle.setAttribute("aria-pressed", String(low));
+    toggle.querySelector(".sea-off")!.classList.toggle("hidden", low);
+    toggle.querySelector(".sea-on")!.classList.toggle("hidden", !low);
+    badge.textContent = low ? "Sea level: −120 m · ~20,000 years ago" : "Sea level: today";
+    map?.setSeaLevel(low ? -120 : 0);
+  });
+
+  const start = async () => {
+    try {
+      const { mountIndonesia } = await import("./three/IndonesiaMap");
+      map = await mountIndonesia(canvas, {
+        heightUrl: canvas.dataset.heightUrl!,
+        coastUrl: canvas.dataset.coastUrl!,
+        ...config,
+      });
+      map.setSeaLevel(low ? -120 : 0);
+      canvas.classList.remove("opacity-0");
+      fallback.classList.add("opacity-0");
+      document.addEventListener("astro:before-swap", () => map?.dispose(), { once: true });
+    } catch (err) {
+      console.warn("3D map unavailable, showing static map", err);
+      toggle.remove();
+      badge.remove();
+    }
+  };
+
+  // Load three.js only once the map is near the viewport.
+  const io = new IntersectionObserver(
+    ([e]) => {
+      if (e.isIntersecting) {
+        io.disconnect();
+        start();
+      }
+    },
+    { rootMargin: "200px" },
+  );
+  io.observe(root);
+</script>

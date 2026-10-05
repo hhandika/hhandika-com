@@ -20,6 +20,26 @@ const { title } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <script is:inline>
+      // Apply the saved theme (or the system one) before first paint.
+      (() => {
+        let saved = null;
+        try {
+          saved = localStorage.getItem("theme");
+        } catch {}
+        const system = matchMedia("(prefers-color-scheme: dark)");
+        const apply = (dark) =>
+          document.documentElement.classList.toggle("dark", dark);
+        apply(saved ? saved === "dark" : system.matches);
+        system.addEventListener("change", (e) => {
+          let current = null;
+          try {
+            current = localStorage.getItem("theme");
+          } catch {}
+          if (!current) apply(e.matches);
+        });
+      })();
+    </script>
     <!-- Google tag (gtag.js) -->
     <script
       type="text/partytown"

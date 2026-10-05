@@ -1,0 +1,18 @@
+---
+import { formatStat, loadStats, type Format } from "../../scripts/github-stats";
+import LiveStatsScript from "./LiveStatsScript.astro";
+
+interface Props {
+  path: string;
+  format?: Format;
+  class?: string;
+}
+
+const { path, format = "number", class: className } = Astro.props;
+const stats = await loadStats();
+---
+
+<span class={className} data-gh-stat={path} data-gh-format={format}
+  >{formatStat(stats, path, format)}</span
+>
+<LiveStatsScript />
