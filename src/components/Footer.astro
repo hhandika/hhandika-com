@@ -1,0 +1,41 @@
+---
+import SocialMediaIcons from "./SocialMediaIcons.astro";
+
+const year = new Date().getFullYear();
+const sourceUrl = "https://github.com/hhandika/hhandika-com";
+---
+
+<footer
+  class="mx-auto mt-24 max-w-4xl border-t border-forest-900/10 pb-28 pt-8 text-center text-sm text-forest-700 dark:border-forest-100/10 dark:text-forest-300"
+>
+  <SocialMediaIcons />
+  <p class="mt-6 flex flex-wrap items-center justify-center gap-x-1.5">
+    <span class="inline-flex items-center gap-1">
+      {/* Copyleft: a mirrored copyright mark */}
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        class="h-4 w-4"
+        role="img"
+        aria-label="Copyleft"
+      >
+        <circle cx="12" cy="12" r="9.5" />
+        <path d="M9.5 8.6 A4.2 4.2 0 1 1 9.5 15.4" />
+      </svg>
+      {year} Heru Handika.
+    </span>
+    <span>
+      Source code on
+      <a
+        href={sourceUrl}
+        target="_blank"
+        rel="noopener"
+        class="underline decoration-moss-400 underline-offset-2 transition hover:text-moss-700 dark:hover:text-moss-300"
+        >GitHub</a
+      >.
+    </span>
+  </p>
+</footer>
