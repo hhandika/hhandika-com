@@ -7,21 +7,21 @@ import { tones, wrapChips, arrowHead, lineClass, seeded, type Tone } from "./dia
 // Specimen groups: two butterfly morphs and a rodent.
 const groups = [
   {
-    thumb: "fill-sunrise-100 dark:fill-sunrise-900",
-    mark: "fill-sunrise-500 dark:fill-sunrise-400",
-    stroke: "stroke-sunrise-500 dark:stroke-sunrise-400",
-    glyph: "butterfly",
-  },
-  {
-    thumb: "fill-crater-100 dark:fill-crater-900",
-    mark: "fill-crater-500 dark:fill-crater-400",
-    stroke: "stroke-crater-500 dark:stroke-crater-400",
-    glyph: "butterfly",
-  },
-  {
     thumb: "fill-moss-100 dark:fill-moss-900",
     mark: "fill-moss-500 dark:fill-moss-400",
     stroke: "stroke-moss-500 dark:stroke-moss-400",
+    glyph: "butterfly",
+  },
+  {
+    thumb: "fill-mist-100 dark:fill-mist-900",
+    mark: "fill-mist-500 dark:fill-mist-400",
+    stroke: "stroke-mist-500 dark:stroke-mist-400",
+    glyph: "butterfly",
+  },
+  {
+    thumb: "fill-forest-100 dark:fill-forest-900",
+    mark: "fill-forest-500 dark:fill-forest-400",
+    stroke: "stroke-forest-500 dark:stroke-forest-400",
     glyph: "rodent",
   },
 ] as const;
@@ -177,7 +177,7 @@ const butterfly = [
 
 <figure class="not-prose my-6">
   <div
-    class="rounded-2xl border border-moss-900/10 bg-white/70 p-3 shadow-sm dark:border-moss-100/10 dark:bg-moss-950/40 sm:p-5"
+    class="rounded-2xl border border-forest-900/10 bg-white/70 p-3 shadow-sm dark:border-forest-100/10 dark:bg-forest-950/40 sm:p-5"
   >
     {
       layouts.map((layout) => (
@@ -191,7 +191,7 @@ const butterfly = [
             {layout.edges.map(([x1, y1, x2, y2]) => (
               <g>
                 <line x1={x1} y1={y1} x2={x2} y2={y2} class={`flow ${lineClass}`} stroke-width="1.75" />
-                <polygon points={arrowHead(x1, y1, x2, y2)} class="fill-moss-400 dark:fill-moss-500" />
+                <polygon points={arrowHead(x1, y1, x2, y2)} class="fill-forest-400 dark:fill-forest-500" />
               </g>
             ))}
             {layout.edges.map(([x1, y1, x2, y2], k) => {
@@ -263,41 +263,41 @@ const butterfly = [
                               {butterfly.map((d) => (
                                 <path d={d} opacity="0.9" />
                               ))}
-                              <line x1="26" y1="18" x2="26" y2="40" stroke-width="2.4" stroke-linecap="round" class="stroke-moss-900 dark:stroke-moss-100" />
-                              <path d="M26 19 Q 23 12 20 11 M26 19 Q 29 12 32 11" fill="none" stroke-width="1" class="stroke-moss-900 dark:stroke-moss-100" />
+                              <line x1="26" y1="18" x2="26" y2="40" stroke-width="2.4" stroke-linecap="round" class="stroke-forest-900 dark:stroke-forest-100" />
+                              <path d="M26 19 Q 23 12 20 11 M26 19 Q 29 12 32 11" fill="none" stroke-width="1" class="stroke-forest-900 dark:stroke-forest-100" />
                             </g>
                           ) : (
                             <g class={groups[th.g].mark}>
                               <ellipse cx="29" cy="30" rx="13" ry="8.5" />
                               <circle cx="16" cy="26" r="6.5" />
                               <circle cx="18" cy="19.5" r="3.2" />
-                              <circle cx="13.5" cy="25" r="1.1" class="fill-moss-950 dark:fill-moss-50" />
+                              <circle cx="13.5" cy="25" r="1.1" class="fill-forest-950 dark:fill-forest-50" />
                               <path d="M41 33 C 49 35, 48 42, 41 43" fill="none" stroke-width="1.8" stroke-linecap="round" class={groups[th.g].stroke} />
                             </g>
                           )}
                         </g>
                       ))}
-                      <rect class="scan fill-sunrise-300 dark:fill-sunrise-500" x="-4" y="0" width="180" height="10" rx="5" opacity="0.35" />
+                      <rect class="scan fill-moss-300 dark:fill-moss-500" x="-4" y="0" width="180" height="10" rx="5" opacity="0.35" />
                     </g>
                   )}
 
                   {s.id === "encoder" && (
                     <g>
-                      <polygon points="2,10 170,52 170,128 2,170" class="fill-sunrise-100/70 stroke-sunrise-200 dark:fill-sunrise-900/50 dark:stroke-sunrise-800" stroke-width="1" />
+                      <polygon points="2,10 170,52 170,128 2,170" class="fill-moss-100/70 stroke-moss-200 dark:fill-moss-900/50 dark:stroke-moss-800" stroke-width="1" />
                       {synapses.map((l) => (
-                        <line {...l} stroke-width="0.6" class="stroke-sunrise-400/60 dark:stroke-sunrise-600/60" />
+                        <line {...l} stroke-width="0.6" class="stroke-moss-400/60 dark:stroke-moss-600/60" />
                       ))}
                       {layers.flat().map((n) => (
                         <circle
                           cx={n.x}
                           cy={n.y}
                           r="5.5"
-                          class="neuron fill-sunrise-500 stroke-white dark:fill-sunrise-400 dark:stroke-sunrise-950"
+                          class="neuron fill-moss-500 stroke-white dark:fill-moss-400 dark:stroke-moss-950"
                           stroke-width="1.5"
                           style={`--d:${n.c * 0.75}s`}
                         />
                       ))}
-                      <text x="86" y="182" text-anchor="middle" font-size="10.5" class="font-mono fill-sunrise-800 dark:fill-sunrise-200">
+                      <text x="86" y="182" text-anchor="middle" font-size="10.5" class="font-mono fill-moss-800 dark:fill-moss-200">
                         image → vector
                       </text>
                     </g>
@@ -322,7 +322,7 @@ const butterfly = [
                           ))}
                         </g>
                       ))}
-                      <text x="86" y="182" text-anchor="middle" font-size="10.5" class="font-mono fill-sunrise-800 dark:fill-sunrise-200">
+                      <text x="86" y="182" text-anchor="middle" font-size="10.5" class="font-mono fill-moss-800 dark:fill-moss-200">
                         [0.82, −0.14, 0.57, …]
                       </text>
                     </g>
@@ -330,17 +330,17 @@ const butterfly = [
 
                   {s.id === "morphospace" && (
                     <g>
-                      <path d="M10 4 V160 H170" fill="none" stroke-width="1.25" class="stroke-crater-300 dark:stroke-crater-700" />
-                      <text x="170" y="174" text-anchor="end" font-size="10" class="font-mono fill-crater-700 dark:fill-crater-300">axis 1</text>
-                      <text x="0" y="0" transform="translate(4 4) rotate(90)" font-size="10" class="font-mono fill-crater-700 dark:fill-crater-300">axis 2</text>
+                      <path d="M10 4 V160 H170" fill="none" stroke-width="1.25" class="stroke-mist-300 dark:stroke-mist-700" />
+                      <text x="170" y="174" text-anchor="end" font-size="10" class="font-mono fill-mist-700 dark:fill-mist-300">axis 1</text>
+                      <text x="0" y="0" transform="translate(4 4) rotate(90)" font-size="10" class="font-mono fill-mist-700 dark:fill-mist-300">axis 2</text>
                       {neighbours.map((p) => (
-                        <line x1={query.x} y1={query.y} x2={p.x} y2={p.y} stroke-width="1.25" stroke-dasharray="2 3" class="stroke-crater-500 dark:stroke-crater-300" />
+                        <line x1={query.x} y1={query.y} x2={p.x} y2={p.y} stroke-width="1.25" stroke-dasharray="2 3" class="stroke-mist-500 dark:stroke-mist-300" />
                       ))}
                       {points.map((p, k) => (
                         <circle cx={p.x} cy={p.y} r="4" class={`dot ${groups[p.g].mark}`} style={`--d:${(k * 0.05).toFixed(2)}s`} />
                       ))}
-                      <circle cx={query.x} cy={query.y} r="6" fill="none" stroke-width="2" class="stroke-crater-700 dark:stroke-crater-100" />
-                      <circle cx={query.x} cy={query.y} r="6" fill="none" stroke-width="1.5" class="ring stroke-crater-500 dark:stroke-crater-300" />
+                      <circle cx={query.x} cy={query.y} r="6" fill="none" stroke-width="2" class="stroke-mist-700 dark:stroke-mist-100" />
+                      <circle cx={query.x} cy={query.y} r="6" fill="none" stroke-width="1.5" class="ring stroke-mist-500 dark:stroke-mist-300" />
                     </g>
                   )}
                 </g>
@@ -385,7 +385,7 @@ const butterfly = [
       ))
     }
   </div>
-  <figcaption class="mx-auto mt-3 max-w-3xl px-4 text-center text-sm text-moss-800 dark:text-moss-200">
+  <figcaption class="mx-auto mt-3 max-w-3xl px-4 text-center text-sm text-forest-800 dark:text-forest-200">
     Each specimen image becomes a vector. Distances between vectors measure
     phenotypic similarity, so color patterns can be compared across hundreds of
     thousands of specimens and tested against genomes and geography.

@@ -4,9 +4,11 @@ import cntl from "cntl";
 const { text, url } = Astro.props;
 
 const linkClasses = cntl`
-  text-moss-700
+  text-mist-700
   underline
-  hover:text-moss-900
+  hover:text-mist-900
+  dark:text-mist-300
+  dark:hover:text-mist-100
 `;
 ---
 

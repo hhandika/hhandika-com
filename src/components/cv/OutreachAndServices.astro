@@ -1,7 +1,6 @@
 ---
+import cntl from "cntl";
 import PageSubtitle from "../../components/PageSubtitle.astro";
-import PopularArticle from "../../components/pubs/PopularArticle.astro";
-import Events from "../../components/Events.astro";
 import outreachIcon from "../../assets/icons/outreach.svg";
 import Background from "../../components/Background.astro";
 import { Image } from "astro:assets";
@@ -21,162 +20,371 @@ const outreachImages = [
   },
 ];
 
-const interviewImages = [
+const outreach = [
   {
-    src: kompasHogNosedRat,
-    alt: "Heru Handika interview in Kompas.com about Hog-nosed Rat discovery",
+    title: "Mammalian collection tours",
+    organizer: "LSU Museum of Natural History, USA",
+    date: "2018–2025",
+  },
+  {
+    title: "Research Talk Show",
+    organizer: "Gita Bangsa Middle School, Indonesia",
+    date: "23 August 2021",
+  },
+  {
+    title: "Personal Development Talk Show",
+    organizer: "KCA-LH Rafflesia FMIPA Unand Conservation Club, Indonesia",
+    date: "18 October 2020",
+  },
+  {
+    title: "Getting to know neglected flora and fauna in Indonesia",
+    organizer: "Tambora Muda, Indonesia",
+    date: "22 May 2020",
+  },
+  {
+    title: "Night at the Museum",
+    organizer: "LSU Museum of Natural History, USA",
+    date: "14 November 2019",
+  },
+  {
+    title: "Night at the Museum",
+    organizer: "LSU Museum of Natural History, USA",
+    date: "11 August 2018",
+  },
+  {
+    title: "Meet the Scientists",
+    organizer: "Museums Victoria, Australia",
+    date: "22 August 2015",
+  },
+  {
+    title: "Earth Day Celebration",
+    organizer: "KCA-LH Rafflesia FMIPA Unand Conservation Club, Indonesia",
+    date: "2009–2020",
   },
 ];
 
-const imgClass = "rounded-lg shadow-lg h-80 w-auto object-contain";
+interface MediaItem {
+  publisher: string;
+  title?: string;
+  translation?: string;
+  date: string;
+  url?: string;
+  pdfUrl?: string;
+}
+
+const mediaGroups: { title: string; items: MediaItem[] }[] = [
+  {
+    title: "News media profiles",
+    items: [
+      {
+        publisher: "The Indonesian Ministry of Finance Magazine, Media Keuangan",
+        title: "Berniat Terus Meneliti Tikus",
+        translation: "Intending to Keep Researching Rats",
+        date: "June 2017",
+        pdfUrl:
+          "https://mediakeuangan.kemenkeu.go.id/document/download/media-keuangan-edisi-juli-2017",
+      },
+      { publisher: "DetikNews-ABC Australia Plus", date: "16 January 2017" },
+    ],
+  },
+  {
+    title: "Media interviews",
+    items: [
+      {
+        publisher: "Science Next",
+        title: "What Could Recovery Look Like for Blazing Australia?",
+        date: "27 January 2020",
+        pdfUrl: "https://hhandika.com/dl/interview-lsuscience.pdf",
+      },
+      {
+        publisher: "Kompas.Com-ABC Australia Plus",
+        title: "Kisah Mahasiswa Indonesia Terlibat Penemuan Tikus Hidung Babi",
+        translation:
+          "The Story of an Indonesian Student Involved in the Discovery of the Hog-Nosed Rat",
+        date: "26 November 2015",
+        url: "https://sains.kompas.com/read/2015/10/26/18070041/Kisah.Mahasiswa.Indonesia.Terlibat.Penemuan.Tikus.Hidung.Babi?page=all",
+        pdfUrl: "https://hhandika.com/dl/interview-tikus-hidung-babi-kompas.pdf",
+      },
+    ],
+  },
+];
+
+const articles: MediaItem[] = [
+  {
+    publisher: "Republika-ABC AustraliaPlus",
+    title: "Hal yang Perlu Dilakukan agar Kuliah S2 di Luar Negeri",
+    translation: "Things to Do to Study for a Master's Degree Abroad",
+    date: "16 February 2017",
+    pdfUrl: "https://hhandika.com/dl/republika-kuliah-s2-LN.pdf",
+  },
+  {
+    publisher: "DetikNews-ABC AustraliaPlus",
+    title: "Langkah-Langkah Kuliah ke Luar Negeri: Dari A-Z",
+    translation: "Steps to Study Abroad: From A-Z",
+    date: "7 June 2016",
+    url: "https://news.detik.com/abc-australia/d-3227170/langkah-langkah-kuliah-ke-luar-negeri-dari-a-z",
+    pdfUrl: "https://hhandika.com/dl/detik-langkah-langkah-kuliah-LN.pdf",
+  },
+  {
+    publisher: "Republika-ABC AustraliaPlus",
+    title:
+      "Menentukan Topik Penelitian: Dilema Kecepatan Tamat dan Kualitas Penelitian",
+    translation:
+      "Determining a Research Topic: The Dilemma of Graduating Quickly vs. Research Quality",
+    date: "10 May 2016",
+    url: "https://internasional.republika.co.id/berita/internasional/abc-australia-network/o6xrf3/menentukan-topik-penelitian-dilema-kecepatan-tamat-dan-kualitas-penelitian",
+  },
+  {
+    publisher: "TribunNews-ABC AustraliaPlus",
+    title: "Pengalaman Heru Handika Menyikapi Kerja Sama dengan Peneliti Asing",
+    translation: "Heru Handika's Experience Collaborating with Foreign Researchers",
+    date: "8 May 2016",
+    url: "https://www.tribunnews.com/australia-plus/2017/05/08/pengalaman-heru-handika-menyikapi-kerja-sama-dengan-peneliti-asing?page=all",
+    pdfUrl: "https://hhandika.com/dl/tribun-kerjasama-penelitian.pdf",
+  },
+  {
+    publisher: "DetikNews-ABC AustraliaPlus",
+    title: "Jurus Kuliah ke Luar Negeri Berkat Jaringan Pertemanan",
+    translation: "Tips for Studying Abroad Thanks to Friendship Networks",
+    date: "15 April 2016",
+    url: "https://news.detik.com/abc-australia/d-3189123/jurus-kuliah-ke-luar-negeri-berkat-jaringan-pertemanan",
+    pdfUrl: "https://hhandika.com/dl/detik-kuliah-ln-lewat-pertemanan.pdf",
+  },
+  {
+    publisher: "Republika-ABC AustraliaPlus",
+    title: "Kiat Meningkatkan TOEFL Melebihi 550",
+    translation: "Tips for Increasing a TOEFL Score Above 550",
+    date: "7 March 2016",
+    pdfUrl: "https://hhandika.com/dl/republika-toefl550.pdf",
+  },
+  {
+    publisher: "DetikNews-ABC AustraliaPlus",
+    title: "Mengenal LoA dan Cara Mendapatkan 'Surat Sakti' S2/S3 di Luar Negeri",
+    translation:
+      "Getting to Know the LoA and How to Get the 'Magic Letter' for Master's/PhD Studies Abroad",
+    date: "3 February 2016",
+    url: "https://news.detik.com/abc-australia/d-3133938/mengenal-loa-dan-cara-mendapatkan-surat-sakti-s2s3-di-luar-negeri",
+    pdfUrl: "https://hhandika.com/dl/detik-mengenal-loa.pdf",
+  },
+  {
+    publisher: "Republika-ABC AustraliaPlus",
+    title: "Bagaimana Menulis Esai Untuk Mendapatkan Beasiswa LPDP",
+    translation: "How to Write an Essay to Get an LPDP Scholarship",
+    date: "11 January 2016",
+    pdfUrl: "https://hhandika.com/dl/republika-menulis-essay.pdf",
+  },
+];
+
+const memberships = [
+  {
+    organization: "IUCN SSC Small Mammal Specialist Group",
+    period: "2017–present",
+    roles: [
+      "Contributed to the IUCN Red List assessments of 76 small mammal species native to Sulawesi, Indonesia",
+    ],
+  },
+  {
+    organization: "The American Society of Mammalogists",
+    period: "2016–present",
+    roles: [
+      "Biodiversity committee (2024–present)",
+      "Mammal Diversity Database curation team (2024–present)",
+    ],
+  },
+  {
+    organization: "The Society of Systematic Biologists",
+    period: "2020–present",
+    roles: ["Ernst Mayr Award judge (2025)"],
+  },
+  {
+    organization: "KCA-LH Rafflesia Nature Conservation Club, Andalas University",
+    period: "Permanent member since 2009",
+    roles: [
+      "Secretary (2011–2012)",
+      "Training undergraduate student members on jungle survival, land navigation, search and rescue, and tropical forest ecology",
+      "Led and participated in mountain and cave expeditions across Sumatra, Indonesia",
+      "Led and participated in organizing conservation training and seminars for students, faculty, and the public",
+    ],
+  },
+  {
+    organization:
+      "Student Association of the Indonesian Endowment Fund in Victoria, Australia",
+    period: "2015–2017",
+    roles: [
+      "Mentorship programs for new Indonesian students studying in Melbourne, Australia",
+      "Developing guidelines for Indonesian students to study in Melbourne, Australia",
+    ],
+  },
+];
+
+const panelClasses = cntl`
+  rounded-3xl
+  border
+  border-forest-900/10
+  bg-white
+  p-5
+  dark:border-forest-100/10
+  dark:bg-forest-950/60
+  sm:p-6
+`;
+
+const linkClasses = cntl`
+  inline-flex
+  items-center
+  gap-1.5
+  rounded-full
+  border
+  border-forest-900/15
+  px-3
+  py-1
+  text-xs
+  font-semibold
+  text-forest-800
+  transition
+  hover:border-moss-400
+  hover:text-moss-800
+  dark:border-forest-100/15
+  dark:text-forest-100
+  dark:hover:text-moss-200
+`;
+
+const imgClass =
+  "h-64 w-auto rounded-xl border border-forest-900/10 object-contain dark:border-forest-100/10";
 ---
 
 <div>
   <Background backgroundImage={outreachIcon} />
   <PageSubtitle subtitle="Outreach & Services" />
+
   <SectionHead text="Outreach" />
-  <div class="flex-wrap mb-4 flex gap-4">
+  <div class="mb-4 flex gap-3 overflow-x-auto pb-1">
     {
       outreachImages.map((image) => (
-        <Image
-          src={image.src}
-          alt={image.alt}
-          class={imgClass}
-          loading="lazy"
-        />
+        <Image src={image.src} alt={image.alt} class={imgClass} loading="lazy" />
       ))
     }
   </div>
-  <Events
-    organizer="KCA-LH Rafflesia FMIPA Unand Conservation Club, Indonesia"
-    title="Manusia Hebat Tidak Hanya Terlahir dari Bakat (Great People Are Not Only Born from Talents)"
-    date="18 October 2020"
-  />
-  <Events
-    organizer="Tambora Muda Indonesia"
-    title="Bincang Hari Keanekaragaman Hayati (Biodiversity Day Talk)"
-    date="22 May 2020"
-  />
-  <Events
-    organizer="LSU Museum of Natural History, USA"
-    title="Night at the Museum"
-    date="14 November 2019"
-  />
-  <Events
-    organizer="LSU Museum of Natural History, USA"
-    title="Night at the Museum"
-    date="11 August 2018"
-  />
-  <Events
-    organizer="Museums Victoria, Australia"
-    title="Meet the Scientists"
-    date="22 August 2015"
-  />
-  <Events
-    organizer="KCA-LH Rafflesia FMIPA Unand Conservation Club, Indonesia"
-    title="Peringatan Hari Bumi (Earth Day Celebration)"
-    date="2009-2012"
-  />
-  <SectionHead text="Interviews" />
-  <div class="flex-wrap mb-4 flex gap-4">
+  <ol class={`${panelClasses} divide-y divide-forest-900/10 dark:divide-forest-100/10`}>
     {
-      interviewImages.map((image) => (
-        <Image
-          src={image.src}
-          alt={image.alt}
-          class={imgClass}
-          loading="lazy"
-        />
+      outreach.map((o) => (
+        <li class="py-3 first:pt-0 last:pb-0 sm:flex sm:items-baseline sm:justify-between sm:gap-6">
+          <div class="min-w-0">
+            <p class="font-semibold text-forest-950 dark:text-forest-50">{o.title}</p>
+            <p class="text-sm text-slate-700 dark:text-slate-300">{o.organizer}</p>
+          </div>
+          <p class="mt-1 shrink-0 font-serif text-moss-800 dark:text-moss-200 sm:mt-0">
+            {o.date}
+          </p>
+        </li>
+      ))
+    }
+  </ol>
+
+  <SectionHead text="In the Media" />
+  <div class="mb-4 flex gap-3 overflow-x-auto pb-1">
+    <Image
+      src={kompasHogNosedRat}
+      alt="Heru Handika interview in Kompas.com about Hog-nosed Rat discovery"
+      class={imgClass}
+      loading="lazy"
+    />
+  </div>
+  <div class="grid gap-4 md:grid-cols-2">
+    {
+      mediaGroups.map((group) => (
+        <section class={panelClasses}>
+          <h3 class="font-semibold text-moss-800 dark:text-moss-200">
+            {group.title}
+          </h3>
+          <ul class="mt-3 divide-y divide-forest-900/10 dark:divide-forest-100/10">
+            {group.items.map((m) => (
+              <li class="py-3 first:pt-0 last:pb-0">
+                <p class="text-sm text-forest-700 dark:text-forest-300">
+                  {m.publisher} · {m.date}
+                </p>
+                {m.title && (
+                  <p class="mt-0.5 font-semibold text-forest-950 dark:text-forest-50">
+                    <i>{m.title}</i>
+                  </p>
+                )}
+                {m.translation && (
+                  <p class="text-sm text-slate-700 dark:text-slate-300">
+                    {m.translation}
+                  </p>
+                )}
+                {(m.url || m.pdfUrl) && (
+                  <div class="mt-2 flex flex-wrap gap-2">
+                    {m.url && (
+                      <a href={m.url} target="_blank" rel="noopener" class={linkClasses}>
+                        Read online
+                      </a>
+                    )}
+                    {m.pdfUrl && (
+                      <a href={m.pdfUrl} target="_blank" rel="noopener" class={linkClasses}>
+                        PDF
+                      </a>
+                    )}
+                  </div>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
       ))
     }
   </div>
-  <PopularArticle
-    publisher="Science Next"
-    title="What Could Recovery Look Like for Blazing Australia?"
-    dateVolume="27 January 2020"
-    pdfUrl="https://hhandika.com/dl/interview-lsuscience.pdf"
-  />
-  <PopularArticle
-    publisher="The Indonesian Ministry of Finance Magazine, Media Keuangan"
-    title="Berniat Terus Meneliti Tikus (Intending to Keep Researching Rats)"
-    dateVolume="Volume XII / NO. 118 / July 2017"
-    pdfUrl="https://mediakeuangan.kemenkeu.go.id/document/download/media-keuangan-edisi-juli-2017"
-  />
-  <PopularArticle
-    publisher="Kompas.Com-ABC Australia Plus"
-    title="Kisah Mahasiswa Indonesia Terlibat Penemuan Tikus Hidung Babi (The Story of Indonesian Students Involved in the Discovery of the Hog-Nosed Rat)"
-    dateVolume="26 November 2015"
-    url="https://sains.kompas.com/read/2015/10/26/18070041/Kisah.Mahasiswa.Indonesia.Terlibat.Penemuan.Tikus.Hidung.Babi?page=all"
-    pdfUrl="https://hhandika.com/dl/interview-tikus-hidung-babi-kompas.pdf"
-  />
+
   <SectionHead text="Popular Articles" />
-  <PopularArticle
-    publisher="Republika-ABC AustraliaPlus"
-    title="Hal yang Perlu Dilakukan agar Kuliah S2 di Luar Negeri (What You Need to Do to Study Abroad for a Master's Degree)"
-    dateVolume="16 February 2017"
-    pdfUrl="https://hhandika.com/dl/republika-kuliah-s2-LN.pdf"
-  />
-  <PopularArticle
-    publisher="DetikNews-ABC AustraliaPlus"
-    title="Langkah-Langkah Kuliah ke Luar Negeri: Dari A-Z (Steps to Study Abroad: From A-Z)"
-    dateVolume="7 June 2016"
-    url="https://news.detik.com/abc-australia/d-3227170/langkah-langkah-kuliah-ke-luar-negeri-dari-a-z"
-    pdfUrl="https://hhandika.com/dl/detik-langkah-langkah-kuliah-LN.pdf"
-  />
-  <PopularArticle
-    publisher="Republika-ABC AustraliaPlus"
-    title="Menentukan Topik Penelitian: Dilema Kecepatan Tamat dan Kualitas Penelitian (Determining Research Topics: The Dilemma of Graduating Quickly and Research Quality)"
-    dateVolume="10 May 2016"
-    url="https://internasional.republika.co.id/berita/internasional/abc-australia-network/o6xrf3/menentukan-topik-penelitian-dilema-kecepatan-tamat-dan-kualitas-penelitian"
-    pdfUrl="https://hhandika.com/dl/detik-langkah-langkah-kuliah-LN.pdf"
-  />
-  <PopularArticle
-    publisher="TribunNews-ABC AustraliaPlus"
-    title="Pengalaman Heru Handika Menyikapi Kerja Sama dengan Peneliti Asing (Heru Handika's Experience in Dealing with Cooperation with Foreign Researchers)"
-    dateVolume="8 May 2016"
-    url="https://www.tribunnews.com/australia-plus/2017/05/08/pengalaman-heru-handika-menyikapi-kerja-sama-dengan-peneliti-asing?page=all"
-    pdfUrl="https://hhandika.com/dl/tribun-kerjasama-penelitian.pdf"
-  />
-  <PopularArticle
-    publisher="DetikNews-ABC AustraliaPlus"
-    title="Jurus Kuliah ke Luar Negeri Berkat Jaringan Pertemanan (Study Abroad Tips, Thanks to Friendship and Networks)"
-    dateVolume="15 April 2016"
-    url="https://news.detik.com/abc-australia/d-3189123/jurus-kuliah-ke-luar-negeri-berkat-jaringan-pertemanan"
-    pdfUrl="https://hhandika.com/dl/detik-kuliah-ln-lewat-pertemanan.pdf"
-  />
-  <PopularArticle
-    publisher="Republika-ABC AustraliaPlus"
-    title="Kiat Meningkatkan TOEFL Melebihi 550 (Tips to Improve TOEFL Scores Beyond 550)"
-    dateVolume="7 March 2016"
-    pdfUrl="https://hhandika.com/dl/republika-toefl550.pdf"
-  />
-  <PopularArticle
-    publisher="DetikNews-ABC AustraliaPlus"
-    title="Mengenal LoA dan Cara Mendapatkan 'Surat Sakti' S2/S3 di Luar Negeri (Getting to Know LoA and How to Get a 'Magic Letter' for Master's/PhD Abroad)"
-    dateVolume="3 February 2016"
-    url="https://news.detik.com/abc-australia/d-3133938/mengenal-loa-dan-cara-mendapatkan-surat-sakti-s2s3-di-luar-negeri"
-    pdfUrl="https://hhandika.com/dl/detik-mengenal-loa.pdf"
-  />
-  <PopularArticle
-    publisher="Republika-ABC AustraliaPlus"
-    title="Bagaimana Menulis Esai Untuk Mendapatkan Beasiswa LPDP (How to Write an Essay to Get an LPDP Scholarship)"
-    dateVolume="11 January 2016"
-    pdfUrl="https://hhandika.com/dl/republika-menulis-essay.pdf"
-  />
-  <SectionHead text="Services to Scientific Societies" />
-  <Events
-    organizer="The American Society of Mammalogists"
-    title="Biodiversity Committee member and the Mammal Diversity Database (MDD) curation team member (2024-present)"
-    date="2016-present"
-  />
-  <Events
-    organizer="The IUCN SSC Small Mammal Specialist Group"
-    title="The IUCN Red List Assessor"
-    date="2017-present"
-  />
-  <Events
-    organizer="The Society of Systematic Biologists"
-    title="the Ernst Mayr Award judge (2024)"
-    date="2020-present"
-  />
+  <ol class={`${panelClasses} divide-y divide-forest-900/10 dark:divide-forest-100/10`}>
+    {
+      articles.map((a) => (
+        <li class="py-3 first:pt-0 last:pb-0 sm:flex sm:items-start sm:justify-between sm:gap-6">
+          <div class="min-w-0">
+            <p class="font-semibold text-forest-950 dark:text-forest-50">
+              <i>{a.title}</i>
+            </p>
+            <p class="text-sm text-slate-700 dark:text-slate-300">
+              {a.translation}
+            </p>
+            <p class="mt-0.5 text-sm text-forest-700 dark:text-forest-300">
+              {a.publisher} · {a.date}
+            </p>
+          </div>
+          <div class="mt-2 flex shrink-0 flex-wrap gap-2 sm:mt-0">
+            {a.url && (
+              <a href={a.url} target="_blank" rel="noopener" class={linkClasses}>
+                Read online
+              </a>
+            )}
+            {a.pdfUrl && (
+              <a href={a.pdfUrl} target="_blank" rel="noopener" class={linkClasses}>
+                PDF
+              </a>
+            )}
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+
+  <SectionHead text="Memberships & Service" />
+  <div class="grid gap-4 md:grid-cols-2">
+    {
+      memberships.map((m) => (
+        <section class={panelClasses}>
+          <h3 class="font-semibold text-forest-950 dark:text-forest-50">
+            {m.organization}
+          </h3>
+          <p class="font-serif text-moss-800 dark:text-moss-200">
+            {m.period}
+          </p>
+          <ul class="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-700 marker:text-forest-400 dark:text-slate-300">
+            {m.roles.map((role) => (
+              <li>{role}</li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+  </div>
 </div>

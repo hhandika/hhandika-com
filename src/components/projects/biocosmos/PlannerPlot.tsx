@@ -14,8 +14,8 @@ const VIEWS: { id: View; label: string }[] = [
   { id: "cases", label: "By query type" },
 ];
 
-const PROD = "#e08b1b"; // sunrise-500
-const OTHER = "#788d36"; // moss-500
+const PROD = "#688a2c"; // moss-600
+const OTHER = "#8199a2"; // mist-400
 
 const models = [...planner.models].sort((a, b) => b.accuracy - a.accuracy);
 const order = models.map((m) => m.model);
@@ -122,14 +122,14 @@ export default function PlannerPlot() {
         padding: 0.06,
         x: { domain: planner.cases.map(caseLabel), tickRotate: -45, label: null },
         y: { domain: order, label: null },
-        color: { domain: [0, 1], range: ["#fbefc9", "#475622"], interpolate: "rgb" },
+        color: { domain: [0, 1], range: ["#e8f1d2", "#415522"], interpolate: "rgb" },
         marks: [
           Plot.cell(cells, { x: "case", y: "model", fill: "accuracy", rx: 3, title: (d) => `${d.model}\n${d.case}: ${Math.round(d.accuracy * 100)}% correct (${Math.round(d.accuracy * planner.repeats)}/${planner.repeats} runs)` }),
           Plot.text(cells, {
             x: "case",
             y: "model",
             text: (d) => `${Math.round(d.accuracy * 100)}%`,
-            fill: (d) => (d.accuracy > 0.55 ? "white" : "#3a4520"),
+            fill: (d) => (d.accuracy > 0.55 ? "white" : "#283a2e"),
             fontSize: 9.5,
           }),
         ],
@@ -158,7 +158,7 @@ export default function PlannerPlot() {
   return (
     <div class="bc-plot">
       <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
-        <div class="inline-flex flex-wrap rounded-full border border-moss-900/15 p-1 dark:border-moss-100/15" role="tablist" aria-label="Benchmark view">
+        <div class="inline-flex flex-wrap rounded-full border border-forest-900/15 p-1 dark:border-forest-100/15" role="tablist" aria-label="Benchmark view">
           {VIEWS.map((v) => (
             <button
               type="button"
@@ -167,21 +167,21 @@ export default function PlannerPlot() {
               onClick={() => setView(v.id)}
               class={`rounded-full px-3 py-1 text-sm transition-colors duration-500 ${
                 view === v.id
-                  ? "bg-moss-600 text-white dark:bg-moss-300 dark:text-moss-950"
-                  : "text-moss-800 hover:bg-moss-100 dark:text-moss-200 dark:hover:bg-moss-900"
+                  ? "bg-forest-600 text-white dark:bg-forest-300 dark:text-forest-950"
+                  : "text-forest-800 hover:bg-forest-100 dark:text-forest-200 dark:hover:bg-forest-900"
               }`}
             >
               {v.label}
             </button>
           ))}
         </div>
-        <p class="flex items-center gap-3 text-xs text-moss-700 dark:text-moss-300">
+        <p class="flex items-center gap-3 text-xs text-forest-700 dark:text-forest-300">
           <span class="inline-flex items-center gap-1"><span class="h-2.5 w-2.5 rounded-full" style={{ background: PROD }} /> in production</span>
           <span class="inline-flex items-center gap-1"><span class="h-2.5 w-2.5 rounded-full" style={{ background: OTHER }} /> evaluated</span>
         </p>
       </div>
-      <div ref={ref} class="w-full overflow-x-auto text-moss-900 dark:text-moss-100" role="img" aria-label={`LLM planner benchmark, ${view} view`} />
-      <p class="mt-2 text-xs text-moss-700 dark:text-moss-300">
+      <div ref={ref} class="w-full overflow-x-auto text-forest-900 dark:text-forest-100" role="img" aria-label={`LLM planner benchmark, ${view} view`} />
+      <p class="mt-2 text-xs text-forest-700 dark:text-forest-300">
         {view === "accuracy" &&
           `Share of correct tool calls over ${planner.cases.length} query types × ${planner.repeats} repeats per model. ${prod.model} answered all ${prod.trials} correctly and stayed consistent on ${prod.consistentCases} of ${planner.cases.length} query types.`}
         {view === "speed" &&

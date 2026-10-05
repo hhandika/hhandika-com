@@ -55,15 +55,15 @@ const hasMetrics = metricRepos.length > 0 || languageRepo;
 const titleClasses = cntl`
   font-serif
   text-3xl
-  text-sunrise-950
-  dark:text-sunrise-50
+  text-moss-950
+  dark:text-moss-50
 `;
 
 const subtitleClasses = cntl`
   mt-1
   text-lg
-  text-sunrise-800
-  dark:text-sunrise-200
+  text-moss-800
+  dark:text-moss-200
 `;
 
 const shotClasses = cntl`
@@ -73,7 +73,7 @@ const shotClasses = cntl`
   snap-start
   rounded-xl
   border
-  border-sunrise-900/10
+  border-moss-900/10
   object-contain
   shadow-sm
   sm:h-72
@@ -81,13 +81,13 @@ const shotClasses = cntl`
 
 const platformClasses = cntl`
   rounded-full
-  bg-sunrise-100
+  bg-moss-100
   px-2.5
   py-1
   text-sm
-  text-sunrise-800
-  dark:bg-sunrise-900
-  dark:text-sunrise-100
+  text-moss-800
+  dark:bg-moss-900
+  dark:text-moss-100
 `;
 ---
 
@@ -95,7 +95,7 @@ const platformClasses = cntl`
   {
     screenshots.length > 0 && (
       <div
-        class="flex snap-x gap-3 overflow-x-auto bg-sunrise-100/70 p-3 dark:bg-sunrise-950/60"
+        class="flex snap-x gap-3 overflow-x-auto bg-moss-100/70 p-3 dark:bg-moss-950/60"
         tabindex="0"
         aria-label={`${title} screenshots`}
       >
@@ -132,8 +132,8 @@ const platformClasses = cntl`
     </div>
     {
       hasMetrics && (
-        <aside class="self-start rounded-2xl bg-white/80 p-4 text-sunrise-950 dark:bg-black/30 dark:text-sunrise-50">
-          <p class="text-xs font-semibold uppercase tracking-widest text-sunrise-700 dark:text-sunrise-300">
+        <aside class="self-start rounded-2xl bg-white/80 p-4 text-moss-950 dark:bg-black/30 dark:text-moss-50">
+          <p class="text-xs font-semibold uppercase tracking-widest text-moss-700 dark:text-moss-300">
             On GitHub
           </p>
           {metricRepos.length > 0 && (

@@ -4,14 +4,45 @@ import Publication from "../../layouts/Publication.astro";
 import Forthcoming from "../../components/pubs/Forthcoming.astro";
 import cvIcon from "../../assets/icons/cv.svg";
 import Background from "../../components/Background.astro";
-import PageTitle from "../PageTitle.astro";
 import PageSubtitle from "../PageSubtitle.astro";
+import myCv from "../../assets/docs/hhandika-cv.pdf";
 ---
 
 <div>
   <Background backgroundImage={cvIcon} />
   <PageSubtitle subtitle="Publications" />
-  <!-- <Publication year="Forthcoming" /> -->
+  <Publication year="Upcoming manuscripts">
+    <Forthcoming
+      authors={[
+        "Del-Rio, G.",
+        "Rego, M. A.",
+        "Baumgart, S.L.",
+        "Randall, Z.S.",
+        "Kratter, A.W.",
+        "Keriazes, M.",
+        "Doyle, Z.",
+        "Marcelino, R. S.",
+        "Handika, H.",
+        "Truong, H. C.",
+        "Schachner, E.R",
+      ]}
+      year="In revision"
+      title="Integrating specimens’ internal anatomy with external morphology in modern ornithological collections"
+      journal="Ibis"
+    />
+    <Forthcoming
+      authors={[
+        "Chipps, S. A.",
+        "Handika, H.",
+        "Achmadi, S. A.",
+        "Rowe, K. C.",
+        "Esselstyn, J. A",
+      ]}
+      year="In review"
+      title="The rapid radiation of Sulawesi shrews (Soricidae: Crocidura) is characterized by convergent evolution and low levels of gene flow"
+      journal="Systematic Biology"
+    />
+  </Publication>
   <Publication year="2025">
     <Published
       authors={[
@@ -119,7 +150,7 @@ import PageSubtitle from "../PageSubtitle.astro";
         "Esselstyn, J. A",
       ]}
       year={2024}
-      title="Three new species of shrew (Soricidae: Crocidura) from West Sumatra, Indonesia: elevational and morphological divergence in syntopic sister taxa"
+      title="Three new species of shrew (Soricidae: Crocidura) from West Sumatra, Indonesia: elevational and morphological divergence in syntopic, sister taxa"
       journal="Journal of Mammalogy"
       pageVol="105 (2), 372-389"
       doi="https://doi.org/10.1093/jmammal/gyad126"
@@ -141,7 +172,7 @@ import PageSubtitle from "../PageSubtitle.astro";
       ]}
       year={2023}
       title="Trypanosoma (Euglenozoa: Kinetoplastea) infections in rodents, bats, and shrews along an elevation and disturbance gradient in Central Sulawesi, Indonesia"
-      journal="Contributions to Mammalogy and Zooarchaeology of Wallacea"
+      journal="Records of the Australian Museum"
       pageVol="pp.663-671"
       doi="http://dx.doi.org/10.3853/j.2201-4349.75.2023.1786"
       pdfUrl="https://journals.australian.museum/media/dd/documents/1786_complete.62f64af.pdf"
@@ -156,15 +187,15 @@ import PageSubtitle from "../PageSubtitle.astro";
         "Kennerley, R. J.",
         "Lanusi, A. A.",
         "Nangoy, M.",
-        "Nurdin, M. R.",
+        "Nurdin, M. R. T. J. P.",
         "Rowe, K. C.",
         "Sheherazade",
       ]}
       year={2023}
       title="Conservation status and priorities for Sulawesi's unique small mammal fauna"
-      journal="Journal of Mammalogy"
-      pageVol="104 (3), 1-12"
-      doi="https://doi.org/10.1093/jmammal/gyad126"
+      journal="Oryx"
+      pageVol="57(6), pp.690-691"
+      doi="https://doi.org/10.1017/S0030605323001059"
       pdfUrl="https://www.researchgate.net/publication/376432985_Conservation_status_and_priorities_for_Sulawesi's_unique_small_mammal_fauna"
     />
     <Published
@@ -217,10 +248,9 @@ import PageSubtitle from "../PageSubtitle.astro";
       authors={[
         "Nations, J.A.",
         "Mursyid, A.",
-        "Darma Busta, R.",
+        "Busta, R.D.",
         "Adrian, S.P.",
         "Handika, H.",
-        "Apandi",
         "Achmadi, A.S.",
         "Esselstyn, J.A",
       ]}
@@ -244,7 +274,7 @@ import PageSubtitle from "../PageSubtitle.astro";
       ]}
       year={2020}
       title="New records and potential geographic distribution of Elongated Caecilian, Ichthyophis elongatus Taylor, 1965 (Amphibia, Gymnophiona, Ichthyophiidae), endemic to West Sumatra, Indonesia"
-      journal="Check List, "
+      journal="Check List"
       pageVol="16(6), pp. 1695-1701"
       doi="https://doi.org/10.15560/16.6.1695"
       pdfUrl="https://www.researchgate.net/publication/347398819_New_records_and_potential_geographic_distribution_of_Elongated_Caecilian_Ichthyophis_elongatus_Taylor_1965_Amphibia_Gymnophiona_Ichthyophiidae_endemic_to_West_Sumatra_Indonesia#fullTextFileContent"
@@ -262,7 +292,7 @@ import PageSubtitle from "../PageSubtitle.astro";
       ]}
       year={2020}
       title="Native and introduced trypanosome parasites in endemic and introduced murine rodents of Sulawesi"
-      journal="Journal of Parasitology"
+      journal="The Journal of Parasitology"
       pageVol="106(5), pp.523-536"
       doi="https://doi.org/10.1645/19-136"
       pdfUrl="https://bioone.org/journalArticle/Download?urlId=10.1645%2F19-136"
@@ -351,13 +381,30 @@ import PageSubtitle from "../PageSubtitle.astro";
       pdfUrl="https://www.researchgate.net/publication/280605376_Komunitas_Mamalia_Kecil_Terestrial_di_Gunung_Singgalang_Sumatera_Barat"
     />
   </Publication>
-  <Publication year="Manuscript in prep">
+  <Publication year="Manuscripts in prep">
+    <Forthcoming
+      authors={[
+        "Handika, H.",
+        "Lürig, M. D.",
+        "Nichtawitz, K. L.",
+        "Dobon, O. M.",
+        "Yarava, V. S.",
+        "Shi, B. D.",
+        "Elliott, M. J.",
+        "Fortes, J. A. B.",
+        "Porto, A",
+      ]}
+      year="In prep"
+      title="BioCosmos: computer vision and large-language models for large-scale image-based biodiversity exploration and trait discovery"
+      codeUrl="https://github.com/BioVisionLab/BioCosmos"
+    />
     <Forthcoming
       authors={[
         "Handika, H.",
         "Moncrieff, A. E.",
         "Del-Rio, G.",
         "Canton, R.",
+        "Delgado, F.",
         "Jaiswal, A.",
         "Gan, J. B.",
         "Henderson, C.",
@@ -373,16 +420,20 @@ import PageSubtitle from "../PageSubtitle.astro";
         "Esselstyn, J. A",
       ]}
       year="In prep"
-      title="NAHPU: A field cataloging application for efficient, repeatable, and inclusive collection-based evolutionary studies"
-      journal=""
+      title="NAHPU: An integrated approach to natural history data collection, disease surveillance, and teaching the next generation of naturalists"
       url="https://nahpu.app"
       codeUrl="https://github.com/nahpu/nahpu"
     />
     <Forthcoming
-      authors={["Handika, H.", "Del-Rio, G. D.", "Esselstyn, J. A"]}
+      authors={[
+        "Handika, H.",
+        "Rowe, K.C.",
+        "Achmadi, A.S.",
+        "Swanson, M. T.",
+        "Esselstyn, J.A",
+      ]}
       year="In prep"
-      title="ULLAR: An ULtrafast, scaLable, Accessible, and Reproducible phylogenomic pipeline"
-      codeUrl="https://github.com/hhandika/ullar"
+      title="A new species of Frateromys from the Northern Peninsula of Sulawesi, Indonesia"
     />
     <Forthcoming
       authors={[
@@ -395,19 +446,48 @@ import PageSubtitle from "../PageSubtitle.astro";
       ]}
       year="In prep"
       title="An island of islands: complex gene tree discordance and local endemism on a recent, rapid rodent radiation on Sulawesi"
-      journal=""
     />
     <Forthcoming
-      authors={[
-        "Handika, H.",
-        "Rowe, K.C.",
-        "Achmadi, A.S.",
-        "Swanson, M. T.",
-        "Esselstyn, J.A",
-      ]}
+      authors={["Handika, H.", "Del-Rio, G. D.", "Esselstyn, J. A"]}
       year="In prep"
-      title="A new species of Frateromys from the Northern Peninsula of Sulawesi, Indonesia"
-      journal=""
+      title="ULLAR: An Ultrafast, scalable, Accessible, and Reproducible phylogenomic pipeline"
+      codeUrl="https://github.com/hhandika/ullar"
     />
   </Publication>
+  <Publication year="Book chapter">
+    <Forthcoming
+      authors={[
+        "Snider, M.",
+        "Hernández, L. A.",
+        "Mweetw, T.",
+        "Handika, H.",
+        "Ou, S.",
+        "Zulian, V",
+      ]}
+      year="In revision"
+      title="Decolonizing the Field: International Perspectives on Equity, Belonging, and Nature in Conservation Science"
+      journal="In “Inclusive Nature” (L. Parr, ed.). Johns Hopkins University Press"
+    />
+  </Publication>
+  <div class="mt-12 flex justify-center">
+    <a
+      href={myCv}
+      download="hhandika-cv.pdf"
+      class="inline-flex items-center gap-2 rounded-xl bg-forest-600 px-5 py-3 font-semibold text-forest-50 shadow-lg transition hover:scale-105 hover:bg-forest-800"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        class="h-5 w-5"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+        ><path d="M12 4v11"></path><path d="m7 10 5 5 5-5"></path><path
+          d="M5 20h14"></path></svg
+      >
+      Download full CV (PDF)
+    </a>
+  </div>
 </div>
