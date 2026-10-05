@@ -1,0 +1,312 @@
+---
+/**
+ * Pleistocene low sea-level boundaries of the Indo-Australian Archipelago.
+ * Base land layer is the Illustrator map (src/assets/graphics/IAA_ForBLack.svg),
+ * re-coloured for the site themes. Exposed shelves at −40, −80, and −120 m
+ * come from ETOPO1 (scripts/build-iaa.R). Biogeographic lines can be toggled.
+ */
+import iaaRaw from "../../assets/graphics/IAA_ForBLack.svg?raw";
+import shelvesData from "../../data/iaa-shelves.json";
+
+// Plate carrée fit of the base map (see scripts/build-iaa.R).
+const px = (lon: number) => 33 + 11.647 * (lon - 95.2);
+const py = (lat: number) => 175.3 + 11.6 * (5.65 - lat);
+const pathOf = (pts: number[][]) =>
+  "M" + pts.map(([lon, lat]) => `${px(lon).toFixed(1)} ${py(lat).toFixed(1)}`).join("L");
+
+// Keep the land, shadow, and scale-bar shapes; drop linked rasters and
+// invisible helpers; swap hard-coded fills for themeable classes.
+const inner = iaaRaw
+  .replace(/^[\s\S]*?<svg[^>]*>/, "")
+  .replace(/<\/svg>\s*$/, "")
+  .replace(/<!--[\s\S]*?-->/g, "")
+  .replace(/<image\b[^>]*\/>/g, "")
+  .replace(/<(path|polygon)\b[^>]*fill="none"[^>]*\/>/g, "")
+  .replace(/fill="#018570"/g, 'class="iaa-land"')
+  .replace(/<(path|polygon)\s+((?:d|points)="[^"]*")\s*\/>/g, '<$1 class="iaa-shade" $2/>')
+  .replace(/fill="#fff"/g, 'class="iaa-ink"')
+  .replace(/\s+id="Layer_\d+"/g, "")
+  .replace(/font-family="[^"]*"/g, "");
+
+type Level = { level: number; label: string; note: string };
+const levels: Level[] = [
+  { level: 0, label: "Today", note: "Present-day coastline" },
+  { level: -40, label: "−40 m", note: "Shelves begin to emerge" },
+  { level: -80, label: "−80 m", note: "Sumatra, Java, and Borneo join" },
+  { level: -120, label: "−120 m", note: "Last Glacial Maximum, ~20,000 years ago" },
+];
+const shelves = shelvesData.shelves;
+
+// Approximate placements, after Wallace (1863), Huxley (1868), Weber (1902),
+// and Lydekker (1896). Wallace's line through the Makassar Strait and
+// Lydekker's line off NW Australia follow the −120 m shelf edges in ETOPO1.
+const lines = [
+  {
+    id: "wallace",
+    name: "Wallace's line",
+    color: "#e67e14",
+    note: "Wallace (1863): between Bali and Lombok, Borneo and Sulawesi.",
+    points: [[115.8, -10.5], [115.75, -8.7], [116.4, -6.8], [117.25, -5.2], [117.8, -3.8], [118.35, -2.5], [118.4, -1.0], [118.7, 0.2], [119.45, 1.1], [119.5, 2.2], [119.6, 3.2], [121.5, 4.6], [124.0, 5.3], [126.2, 5.4], [127.0, 6.4], [128.0, 9.0]],
+  },
+  {
+    id: "huxley",
+    name: "Huxley's line",
+    color: "#e2b93b",
+    note: "Huxley (1868): like Wallace's, but placing the Philippines (except Palawan) east of the line.",
+    points: [[119.5, 2.2], [119.5, 4.2], [119.6, 5.0], [119.4, 6.0], [119.0, 7.3], [119.0, 8.6], [119.6, 9.6], [120.4, 10.8], [120.6, 12.0], [119.9, 13.3], [119.5, 15.0], [119.3, 17.0], [119.6, 19.0], [120.2, 21.0]],
+  },
+  {
+    id: "weber",
+    name: "Weber's line",
+    color: "#c96fd8",
+    note: "Weber (1902): the line of faunal balance between Asian and Australian animals.",
+    points: [[127.6, 5.0], [127.1, 2.5], [126.9, 0.5], [126.9, -0.6], [126.9, -1.6], [127.4, -3.0], [127.5, -4.2], [127.2, -6.0], [127.45, -8.0], [127.45, -8.6], [127.2, -9.3], [126.5, -11.0]],
+  },
+  {
+    id: "lydekker",
+    name: "Lydekker's line",
+    color: "#5f92cb",
+    note: "Lydekker (1896): the western edge of the Sahul Shelf.",
+    points: [[116.0, -19.4], [118.0, -18.8], [120.0, -17.9], [121.5, -15.8], [122.5, -14.5], [124.0, -13.4], [125.5, -11.6], [127.0, -10.4], [129.6, -8.9], [131.8, -7.8], [133.0, -6.4], [132.2, -4.8], [131.4, -3.6], [129.6, -2.3], [129.3, -0.8], [129.4, 1.0], [129.8, 2.6], [131.0, 5.0]],
+  },
+];
+
+// Region labels. `low` labels appear once the shelves are exposed.
+const regions = [
+  { name: "Sunda Shelf", lon: 110.8, lat: -4.9, low: false },
+  { name: "Wallacea", lon: 121.6, lat: -6.8, low: false },
+  { name: "Sahul Shelf", lon: 136.5, lat: -10.2, low: false },
+  { name: "Philippines", lon: 130.0, lat: 14.0, low: false },
+];
+---
+
+<figure id="iaa-map" class="iaa-map" data-level="0">
+  <div class="mb-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs">
+    <div class="flex flex-wrap items-center gap-1 rounded-full border border-forest-900/10 p-1 font-semibold dark:border-white/15" role="group" aria-label="Sea level">
+      {
+        levels.map((l) => (
+          <button type="button" class="lvl-btn" data-level-btn={l.level} aria-pressed={l.level === 0 ? "true" : "false"} title={l.note}>
+            {l.label}
+          </button>
+        ))
+      }
+      <button type="button" class="play-btn" aria-label="Animate falling sea level" title="Animate falling sea level">
+        <svg viewBox="0 0 16 16" class="h-3.5 w-3.5" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor" /></svg>
+      </button>
+    </div>
+    <div class="flex flex-wrap items-center gap-1" role="group" aria-label="Biogeographic lines">
+      {
+        lines.map((l) => (
+          <button type="button" class="line-btn" data-line-btn={l.id} aria-pressed="true" title={l.note}>
+            <span class="inline-block h-0.5 w-4 rounded" style={`background:${l.color}`} />
+            {l.name}
+          </button>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0" tabindex="0" aria-label="Map, scrolls horizontally on small screens">
+    <svg viewBox="0 0 741.1 467.6" class="block h-auto w-full min-w-[620px] rounded-xl" role="img" aria-labelledby="iaa-title iaa-desc">
+      <title id="iaa-title">Pleistocene low sea-level boundaries of the Indo-Australian Archipelago</title>
+      <desc id="iaa-desc">
+        Map of Southeast Asia and northern Australia. Lowering sea level by
+        40, 80, and 120 metres exposes the Sunda Shelf, joining Sumatra, Java,
+        and Borneo to mainland Asia as Sundaland, and the Sahul Shelf, joining
+        New Guinea to Australia. Sulawesi and the other islands of Wallacea
+        stay isolated by deep water. Wallace's, Huxley's, Weber's, and
+        Lydekker's lines can be shown or hidden.
+      </desc>
+
+      <rect width="741.1" height="467.6" class="iaa-sea" />
+
+      <g class="shelves">
+        {
+          shelves.map((s) => (
+            <path d={s.d} class="shelf" data-shelf={s.level} fill-rule="evenodd" />
+          ))
+        }
+      </g>
+
+      <g class="base" set:html={inner} />
+
+      <g class="lines" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        {
+          lines.map((l) => (
+            <g class="line" data-line={l.id}>
+              <path d={pathOf(l.points)} stroke={l.color} stroke-width="2.2" stroke-dasharray="7 5" />
+              <path d={pathOf(l.points)} stroke="transparent" stroke-width="12" class="line-hit">
+                <title>{l.name}. {l.note}</title>
+              </path>
+            </g>
+          ))
+        }
+      </g>
+
+      <g class="regions" text-anchor="middle" aria-hidden="true">
+        {
+          regions.map((r) => (
+            <text x={px(r.lon)} y={py(r.lat)} class:list={["region", r.low && "region-low"]}>
+              {r.name}
+            </text>
+          ))
+        }
+      </g>
+          ))
+        }
+      </g>
+    </svg>
+
+  </div>
+  <div class="mt-2 flex flex-wrap items-center justify-between gap-2 text-xs">
+    <p class="lvl-badge rounded-full bg-mist-950/80 px-3 py-1 font-mono text-[11px] text-forest-100" role="status">
+      Sea level: today
+    </p>
+    <span class="text-forest-600 sm:hidden dark:text-forest-400">Swipe to explore →</span>
+  </div>
+
+  <figcaption class="mt-3 text-pretty text-sm text-forest-700 dark:text-forest-300">
+    As Pleistocene ice sheets grew, sea level fell by up to ~120 m, most
+    recently at the Last Glacial Maximum about 20,000 years ago. The shallow
+    Sunda Shelf joined Sumatra, Java, and Borneo to Asia as
+    <span class="font-semibold text-forest-900 dark:text-forest-100">Sundaland</span>,
+    and the Sahul Shelf joined New Guinea to Australia, while Sulawesi and
+    the rest of <span class="font-semibold text-forest-900 dark:text-forest-100">Wallacea</span>
+    stayed surrounded by deep water. Exposed shelves from ETOPO1 bathymetry;
+    line placements are approximate.
+  </figcaption>
+</figure>
+
+<style>
+  .iaa-map {
+    --sea: #dbe7ec;
+    --land: #2f7d68;
+    --shade: rgb(14 26 18 / 0.35);
+    --shelf: #a9cdb8;
+    --ink: #33473a;
+    --region: #1c2b21;
+  }
+  :global(.dark) .iaa-map {
+    --sea: #0f1a1f;
+    --land: #2f8a72;
+    --shade: rgb(0 0 0 / 0.7);
+    --shelf: #2c4a3c;
+    --ink: #e2e9e3;
+    --region: #e8f1d2;
+  }
+
+  .iaa-sea { fill: var(--sea); }
+  .iaa-map :global(.iaa-land) { fill: var(--land); }
+  .iaa-map :global(.iaa-shade) { fill: var(--shade); }
+  .iaa-map :global(.iaa-ink) { fill: var(--ink); }
+  .iaa-map :global(text) { font-family: inherit; }
+
+  .shelf {
+    fill: var(--shelf);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+  .iaa-map[data-level="-40"] .shelf[data-shelf="-40"],
+  .iaa-map[data-level="-80"] .shelf[data-shelf="-80"],
+  .iaa-map[data-level="-120"] .shelf[data-shelf="-120"] { opacity: 1; }
+
+  .line { transition: opacity 0.3s; }
+  .line.off { opacity: 0; pointer-events: none; }
+  .line-hit { cursor: help; pointer-events: stroke; }
+
+  .region {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    fill: var(--region);
+    opacity: 0.55;
+    paint-order: stroke;
+    stroke: var(--sea);
+    stroke-width: 3px;
+    transition: opacity 0.6s;
+  }
+  .region-low { opacity: 0; transition: opacity 0.6s; }
+  .iaa-map[data-level="-80"] .region-low,
+  .iaa-map[data-level="-120"] .region-low { opacity: 0.75; }
+
+  .lvl-btn,
+  .play-btn,
+  .line-btn {
+    border-radius: 9999px;
+    padding: 0.3rem 0.7rem;
+    color: theme("colors.forest.700");
+    transition: background-color 0.2s, color 0.2s, opacity 0.2s;
+  }
+  .play-btn { padding: 0.35rem 0.55rem; }
+  .line-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border: 1px solid theme("colors.forest.900 / 0.15");
+    font-weight: 600;
+  }
+  :global(.dark) .lvl-btn,
+  :global(.dark) .play-btn,
+  :global(.dark) .line-btn { color: theme("colors.forest.100"); }
+  :global(.dark) .line-btn { border-color: rgb(255 255 255 / 0.15); }
+  .lvl-btn[aria-pressed="true"] {
+    background: theme("colors.moss.400");
+    color: theme("colors.moss.950");
+  }
+  .line-btn[aria-pressed="false"] { opacity: 0.45; text-decoration: line-through; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .shelf, .line, .region { transition: none; }
+  }
+</style>
+
+<script>
+  const root = document.getElementById("iaa-map")!;
+  const badge = root.querySelector<HTMLElement>(".lvl-badge")!;
+  const levelBtns = root.querySelectorAll<HTMLButtonElement>("[data-level-btn]");
+  const notes: Record<string, string> = {};
+  levelBtns.forEach((b) => (notes[b.dataset.levelBtn!] = b.title));
+
+  const setLevel = (level: string) => {
+    root.dataset.level = level;
+    levelBtns.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.levelBtn === level)));
+    badge.textContent =
+      level === "0" ? "Sea level: today" : `Sea level: ${level.replace("-", "−")} m · ${notes[level]}`;
+  };
+
+  let timer: number | undefined;
+  const stop = () => {
+    if (timer) window.clearInterval(timer);
+    timer = undefined;
+  };
+
+  levelBtns.forEach((b) =>
+    b.addEventListener("click", () => {
+      stop();
+      setLevel(b.dataset.levelBtn!);
+    }),
+  );
+
+  // Step from today down to the LGM.
+  root.querySelector(".play-btn")!.addEventListener("click", () => {
+    stop();
+    const seq = ["0", "-40", "-80", "-120"];
+    let i = 0;
+    setLevel(seq[0]);
+    timer = window.setInterval(() => {
+      i += 1;
+      if (i >= seq.length) return stop();
+      setLevel(seq[i]);
+    }, 1100);
+  });
+
+  // Line toggles.
+  root.querySelectorAll<HTMLButtonElement>("[data-line-btn]").forEach((b) =>
+    b.addEventListener("click", () => {
+      const on = b.getAttribute("aria-pressed") !== "true";
+      b.setAttribute("aria-pressed", String(on));
+      root.querySelector(`.line[data-line="${b.dataset.lineBtn}"]`)!.classList.toggle("off", !on);
+    }),
+  );
+</script>

@@ -8,7 +8,7 @@ import lenomys from "../../assets/img/lenomys-meyeri.jpg";
 import ProjectPubs from "../../layouts/ProjectPubs.astro";
 import PubButton from "../buttons/PubButton.astro";
 import PageSubtitle from "../PageSubtitle.astro";
-import indonesiaMap from "../../assets/graphics/indonesia.svg";
+import LowSeaLevelMap from "./LowSeaLevelMap.astro";
 import SkyIslandDiagram from "../svg/SkyIslandDiagram.astro";
 import SulawesiAncestryMap from "./SulawesiAncestryMap.astro";
 import ElevationRanges from "./ElevationRanges.astro";
@@ -51,19 +51,10 @@ const eyebrowClasses = cntl`
       genomic divergence, ecological interactions, and phenotypic evolution.
     </p>
   </Content>
-  <figure class="mt-4">
-    <Image
-      src={indonesiaMap}
-      alt="Map of the Indonesian archipelago with Wallace's line (orange) and Lydekker's line (blue)"
-      width={960}
-      class="w-full rounded-xl bg-mist-950 p-2"
-    />
-    <figcaption class="mt-2 text-sm text-forest-700 dark:text-forest-300">
-      Wallace's line (orange) and Lydekker's line (blue) bound Wallacea, the
-      islands never connected to the Asian or Australian continental shelves.
-      Lines are approximate.
-    </figcaption>
-  </figure>
+  <p class={eyebrowClasses}>Pleistocene low sea-level boundaries</p>
+  <div class="mt-2 rounded-2xl bg-white p-4 shadow-sm dark:bg-[#141810]">
+    <LowSeaLevelMap />
+  </div>
 
   <SectionHead text="In situ diversification of the Bunomys clade on Sulawesi" />
   <Content>
