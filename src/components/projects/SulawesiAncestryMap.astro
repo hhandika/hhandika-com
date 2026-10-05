@@ -1,0 +1,443 @@
+---
+/**
+ * Sulawesi relief with area-of-endemism boundary zones and per-individual
+ * ancestry pies for Taeromys dominator (PopCluster, K = 4), plus a linked
+ * STRUCTURE-style bar strip. Data comes from scripts/build-sulawesi.R.
+ */
+import { Image } from "astro:assets";
+import relief from "../../assets/graphics/sulawesi-relief.png";
+import data from "../../data/sulawesi-dominator.json";
+
+const { bbox } = data;
+const W = (bbox.xmax - bbox.xmin) * 100;
+const H = (bbox.ymax - bbox.ymin) * 100;
+const px = (lon: number) => (lon - bbox.xmin) * 100;
+const py = (lat: number) => (bbox.ymax - lat) * 100;
+const f = (n: number) => n.toFixed(2);
+
+// Dark2, as in the manuscript figures.
+const colors = ["#1b9e77", "#d95f02", "#7570b3", "#e7298a"];
+
+const locById = Object.fromEntries(data.localities.map((l) => [l.id, l]));
+
+// Spread co-located individuals on a circle around the true locality
+// (same offsets as pie_data_ind in R/admixture.Rmd).
+const PIE_R = 12;
+const SPREAD = 20;
+const rank: Record<string, number> = {};
+const nAt: Record<string, number> = {};
+data.individuals.forEach((d) => (nAt[d.locality] = (nAt[d.locality] ?? 0) + 1));
+
+const individuals = data.individuals.map((d, i) => {
+  const loc = locById[d.locality];
+  const k = (rank[d.locality] = (rank[d.locality] ?? -1) + 1);
+  const n = nAt[d.locality];
+  const angle = n > 1 ? (2 * Math.PI * k) / n : 0;
+  const spread = n > 1 ? SPREAD : 0;
+  const lx = px(loc.lon);
+  const ly = py(loc.lat);
+  return {
+    ...d,
+    i,
+    aoe: loc.aoe,
+    lx,
+    ly,
+    cx: lx + spread * Math.cos(angle),
+    cy: ly - spread * Math.sin(angle),
+    moved: n > 1,
+  };
+});
+
+// Wedges of a pie, as SVG paths; a near-pure individual is a full circle.
+const wedges = (q: number[], cx: number, cy: number, r: number) => {
+  const out: { d: string; fill: string; full?: boolean }[] = [];
+  let a0 = -Math.PI / 2;
+  q.forEach((v, c) => {
+    if (v < 0.005) return;
+    if (v > 0.995) {
+      out.push({ d: "", fill: colors[c], full: true });
+      return;
+    }
+    const a1 = a0 + v * 2 * Math.PI;
+    const large = a1 - a0 > Math.PI ? 1 : 0;
+    out.push({
+      d: `M${f(cx)} ${f(cy)} L${f(cx + r * Math.cos(a0))} ${f(cy + r * Math.sin(a0))} A${r} ${r} 0 ${large} 1 ${f(cx + r * Math.cos(a1))} ${f(cy + r * Math.sin(a1))} Z`,
+      fill: colors[c],
+    });
+    a0 = a1;
+  });
+  return out;
+};
+
+const boundaries = data.boundaries.map(
+  (b) => "M" + b.ring.map(([lon, lat]) => `${f(px(lon))} ${f(py(lat))}`).join(" L") + " Z",
+);
+
+// Bar strip order: by dominant cluster, then by Cluster 1 (as in the Rmd).
+const maxCluster = (q: number[]) => q.indexOf(Math.max(...q));
+const bars = [...individuals].sort(
+  (a, b) => maxCluster(a.q) - maxCluster(b.q) || b.q[0] - a.q[0],
+);
+const BAR_W = 10;
+const BAR_H = 60;
+
+const pct = (v: number) => `${Math.round(v * 100)}%`;
+const tip = (d: (typeof individuals)[number]) =>
+  JSON.stringify({
+    catalog: d.catalog,
+    locality: d.locality,
+    aoe: d.aoe,
+    q: d.q.map(pct),
+  });
+---
+
+<figure id="sulawesi-map" class="sulawesi-map" data-view="ancestry">
+  <div class="grid gap-6 lg:grid-cols-5">
+    <div class="relative lg:col-span-3">
+      <div class="relative z-10 mb-2 inline-flex gap-1 rounded-full lg:absolute lg:left-0 lg:top-0 lg:mb-0 border border-forest-900/10 bg-white/85 p-1 text-xs font-semibold backdrop-blur dark:border-white/15 dark:bg-mist-950/75">
+        <button type="button" data-view-btn="ancestry" aria-pressed="true" class="view-btn">
+          <i>T. dominator</i> ancestry
+        </button>
+        <button type="button" data-view-btn="aoe" aria-pressed="false" class="view-btn">
+          Areas of endemism
+        </button>
+      </div>
+
+      <div class="relative mx-auto max-w-[560px]">
+        <Image
+          src={relief}
+          alt=""
+          width={900}
+          class="block h-auto w-full select-none"
+          draggable="false"
+        />
+        <svg
+          viewBox={`0 0 ${f(W)} ${f(H)}`}
+          class="absolute inset-0 h-full w-full overflow-visible"
+          role="img"
+          aria-labelledby="sul-title sul-desc"
+        >
+          <title id="sul-title">Sulawesi: areas of endemism and Taeromys dominator ancestry</title>
+          <desc id="sul-desc">
+            Shaded relief map of Sulawesi with dark bands marking the boundary
+            zones between seven areas of endemism. Pie charts show the ancestry
+            proportions of 29 Taeromys dominator individuals from 12 mountain
+            localities across four genetic clusters.
+          </desc>
+
+          <g class="boundaries">
+            {boundaries.map((d) => <path d={d} class="boundary" />)}
+          </g>
+
+          <g class="aoe-labels" aria-hidden="true">
+            {
+              data.aoeLabels.map((l) => (
+                <g>
+                  <text x={f(px(l.lon))} y={f(py(l.lat))} text-anchor="middle" class="aoe-code">
+                    {l.aoe}
+                  </text>
+                  <text x={f(px(l.lon))} y={f(py(l.lat) + 17)} text-anchor="middle" class="aoe-name">
+                    {l.name}
+                  </text>
+                </g>
+              ))
+            }
+          </g>
+
+          <g class="leaders">
+            {
+              individuals
+                .filter((d) => d.moved)
+                .map((d) => <line x1={f(d.cx)} y1={f(d.cy)} x2={f(d.lx)} y2={f(d.ly)} />)
+            }
+          </g>
+
+          <g class="locality-dots">
+            {
+              data.localities.map((l) => (
+                <circle cx={f(px(l.lon))} cy={f(py(l.lat))} r="2.6">
+                  <title>{l.id}</title>
+                </circle>
+              ))
+            }
+          </g>
+
+          <g class="pies">
+            {
+              individuals.map((d) => (
+                <g
+                  class="pie"
+                  data-ind={d.i}
+                  data-tip={tip(d)}
+                  tabindex="0"
+                  role="button"
+                  aria-label={`${d.catalog}, ${d.locality}: ${d.q.map((v, c) => `cluster ${c + 1} ${pct(v)}`).join(", ")}`}
+                  style={`transition-delay:${(0.15 + d.i * 0.03).toFixed(2)}s`}
+                >
+                  {wedges(d.q, d.cx, d.cy, PIE_R).map((w) =>
+                    w.full ? (
+                      <circle cx={f(d.cx)} cy={f(d.cy)} r={PIE_R} fill={w.fill} />
+                    ) : (
+                      <path d={w.d} fill={w.fill} />
+                    ),
+                  )}
+                  <circle cx={f(d.cx)} cy={f(d.cy)} r={PIE_R} class="pie-ring" />
+                </g>
+              ))
+            }
+          </g>
+        </svg>
+        <div
+          class="map-tip pointer-events-none absolute z-20 hidden min-w-[9.5rem] rounded-lg border border-forest-900/10 bg-white/95 px-3 py-2 text-xs shadow-lg backdrop-blur dark:border-white/15 dark:bg-mist-950/90 dark:text-forest-100"
+          role="status"
+        >
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-4 text-sm text-forest-800 lg:col-span-2 dark:text-forest-200">
+      <div>
+        <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-forest-600 dark:text-forest-400">
+          Ancestry clusters (K = 4)
+        </p>
+        <ul class="grid grid-cols-2 gap-x-4 gap-y-1">
+          {
+            colors.map((c, i) => (
+              <li class="flex items-center gap-2">
+                <span class="inline-block h-3 w-3 rounded-sm" style={`background:${c}`} />
+                Cluster {i + 1}
+              </li>
+            ))
+          }
+        </ul>
+        <p class="mt-2 flex items-center gap-2">
+          <span class="inline-block h-2.5 w-6 rounded-sm bg-forest-950/80 dark:bg-black/80 dark:ring-1 dark:ring-white/30"></span>
+          Boundary zones between areas of endemism
+        </p>
+      </div>
+
+      <ul class="list-disc space-y-1.5 pl-4 text-pretty marker:text-moss-500">
+        <li>
+          <span class="font-semibold" style={`color:${colors[1]}`}>Cluster 2</span> occurs in
+          every area of endemism sampled, from the southwest peninsula to the
+          northeastern tip.
+        </li>
+        <li>
+          <span class="font-semibold" style={`color:${colors[3]}`}>Cluster 4</span> dominates
+          the southeast (Lawaki), with a trace in one west-central individual.
+        </li>
+        <li>
+          Clusters 1 and 3 occur at scattered sites, and several individuals are
+          admixed, some sharing a mountain with unadmixed neighbours.
+        </li>
+      </ul>
+
+      <div>
+        <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-forest-600 dark:text-forest-400">
+          Each bar is one individual
+        </p>
+        <svg
+          viewBox={`0 0 ${bars.length * BAR_W} ${BAR_H}`}
+          class="bar-strip h-auto w-full overflow-visible"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          {
+            bars.map((d, j) => {
+              let y = 0;
+              return (
+                <g class="bar" data-ind={d.i} data-tip={tip(d)}>
+                  {d.q.map((v, c) => {
+                    const h = v * BAR_H;
+                    const r = <rect x={j * BAR_W} y={f(y)} width={BAR_W} height={f(h)} fill={colors[c]} />;
+                    y += h;
+                    return r;
+                  })}
+                  <rect x={j * BAR_W} y="0" width={BAR_W} height={BAR_H} class="bar-hit" />
+                </g>
+              );
+            })
+          }
+        </svg>
+        <p class="mt-1 text-xs text-forest-600 dark:text-forest-400">
+          Hover or tap a bar or pie to see the specimen, locality, and ancestry.
+        </p>
+      </div>
+    </div>
+  </div>
+</figure>
+
+<style>
+  .view-btn {
+    border-radius: 9999px;
+    padding: 0.35rem 0.75rem;
+    color: theme("colors.forest.700");
+    transition: background-color 0.2s, color 0.2s;
+  }
+  :global(.dark) .view-btn { color: theme("colors.forest.100"); }
+  .view-btn[aria-pressed="true"] {
+    background: theme("colors.moss.400");
+    color: theme("colors.moss.950");
+  }
+
+  .boundary {
+    fill: #0e1a12;
+    fill-opacity: 0.8;
+    stroke: #0e1a12;
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+    transition: fill 0.4s, stroke 0.4s;
+  }
+  .aoe-code,
+  .aoe-name {
+    paint-order: stroke;
+    stroke: #f4f7f8;
+    stroke-width: 3px;
+    stroke-linejoin: round;
+  }
+  .aoe-code {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    fill: #283a2e;
+    opacity: 0.35;
+    transition: opacity 0.4s;
+  }
+  .aoe-name {
+    font-size: 13px;
+    font-weight: 600;
+    fill: #283a2e;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .leaders line {
+    stroke: #1c2b21;
+    stroke-width: 1;
+    opacity: 0.8;
+  }
+  .locality-dots circle {
+    fill: #0e1a12;
+    stroke: #f4f7f8;
+    stroke-width: 0.8;
+  }
+  .pie {
+    cursor: pointer;
+    outline: none;
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: scale(0);
+    transition: transform 0.5s cubic-bezier(0.3, 1.4, 0.5, 1), opacity 0.3s;
+  }
+  .sulawesi-map.in .pie { transform: scale(1); }
+  .pie-ring {
+    fill: none;
+    stroke: #0e1a12;
+    stroke-width: 1.4;
+  }
+  .pie.active .pie-ring,
+  .pie:focus-visible .pie-ring {
+    stroke: #fff;
+    stroke-width: 3;
+  }
+  .pie.active { filter: drop-shadow(0 0 4px rgb(0 0 0 / 0.6)); }
+
+  /* Areas-of-endemism view */
+  [data-view="aoe"] .boundary {
+    fill: #c95d10;
+    stroke: #c95d10;
+  }
+  [data-view="aoe"] .aoe-code { opacity: 0.9; }
+  [data-view="aoe"] .aoe-name { opacity: 0.85; }
+  [data-view="aoe"] .pie,
+  [data-view="aoe"] .leaders { opacity: 0; pointer-events: none; }
+  .leaders { transition: opacity 0.3s; }
+
+  .bar { cursor: pointer; }
+  .bar rect { shape-rendering: crispEdges; }
+  .bar-hit {
+    fill: transparent;
+    stroke: #0e1a12;
+    stroke-width: 0.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .bar.active .bar-hit {
+    stroke: #0e1a12;
+    stroke-width: 2.5;
+  }
+  :global(.dark) .bar.active .bar-hit { stroke: #fff; }
+  .bar-strip:has(.bar.active) .bar:not(.active) { opacity: 0.45; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pie, .boundary, .aoe-code, .aoe-name, .leaders { transition: none; }
+  }
+</style>
+
+<script>
+  const root = document.getElementById("sulawesi-map")!;
+  const tipEl = root.querySelector<HTMLElement>(".map-tip")!;
+  const mapBox = tipEl.parentElement!;
+  const colors = ["#1b9e77", "#d95f02", "#7570b3", "#e7298a"];
+
+  // Reveal pies on scroll into view.
+  const io = new IntersectionObserver(
+    ([e]) => {
+      if (e.isIntersecting) {
+        root.classList.add("in");
+        io.disconnect();
+      }
+    },
+    { threshold: 0.1 },
+  );
+  io.observe(root);
+
+  // View toggle.
+  const buttons = root.querySelectorAll<HTMLButtonElement>("[data-view-btn]");
+  buttons.forEach((b) =>
+    b.addEventListener("click", () => {
+      root.dataset.view = b.dataset.viewBtn;
+      buttons.forEach((o) => o.setAttribute("aria-pressed", String(o === b)));
+      if (b.dataset.viewBtn === "aoe") clear();
+    }),
+  );
+
+  // Linked highlight between pies and bars.
+  const clear = () => {
+    root.querySelectorAll(".active").forEach((el) => el.classList.remove("active"));
+    tipEl.classList.add("hidden");
+  };
+
+  const show = (i: string) => {
+    if (root.dataset.view === "aoe") return;
+    clear();
+    root.querySelectorAll(`[data-ind="${i}"]`).forEach((el) => el.classList.add("active"));
+    const pie = root.querySelector<SVGGElement>(`.pie[data-ind="${i}"]`)!;
+    const d = JSON.parse(pie.dataset.tip!);
+    tipEl.innerHTML =
+      `<p class="font-semibold">${d.catalog}</p>` +
+      `<p class="mb-1 opacity-80">${d.locality} · ${d.aoe}</p>` +
+      d.q
+        .map(
+          (v: string, c: number) =>
+            `<p class="flex items-center gap-2"><span style="background:${colors[c]}" class="inline-block h-2 w-2 rounded-sm"></span>Cluster ${c + 1}<span class="ml-auto tabular-nums">${v}</span></p>`,
+        )
+        .join("");
+    tipEl.classList.remove("hidden");
+    const box = mapBox.getBoundingClientRect();
+    const p = pie.getBoundingClientRect();
+    const x = p.left - box.left + p.width / 2;
+    const y = p.top - box.top;
+    const left = Math.min(Math.max(x - tipEl.offsetWidth / 2, 0), box.width - tipEl.offsetWidth);
+    const top = y - tipEl.offsetHeight - 8 < 0 ? p.bottom - box.top + 8 : y - tipEl.offsetHeight - 8;
+    tipEl.style.left = `${left}px`;
+    tipEl.style.top = `${top}px`;
+  };
+
+  root.querySelectorAll<SVGGElement>(".pie, .bar").forEach((el) => {
+    const i = el.dataset.ind!;
+    el.addEventListener("pointerenter", () => show(i));
+    el.addEventListener("pointerleave", clear);
+    el.addEventListener("click", () => show(i));
+    el.addEventListener("focus", () => show(i));
+    el.addEventListener("blur", clear);
+  });
+</script>

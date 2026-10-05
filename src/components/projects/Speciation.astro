@@ -10,6 +10,7 @@ import PubButton from "../buttons/PubButton.astro";
 import PageSubtitle from "../PageSubtitle.astro";
 import indonesiaMap from "../../assets/graphics/indonesia.svg";
 import SkyIslandDiagram from "../svg/SkyIslandDiagram.astro";
+import SulawesiAncestryMap from "./SulawesiAncestryMap.astro";
 
 const firstParagraphClasses = cntl`
   first-letter:text-7xl
@@ -20,6 +21,16 @@ const firstParagraphClasses = cntl`
 
 const spaceClasses = cntl`
   mr-1
+`;
+
+const eyebrowClasses = cntl`
+  mt-6
+  text-xs
+  font-semibold
+  uppercase
+  tracking-wider
+  text-moss-700
+  dark:text-moss-300
 `;
 ---
 
@@ -85,7 +96,9 @@ const spaceClasses = cntl`
     </p>
   </Content>
 
-  <SectionHead text="An island of islands" />
+  <div class="clear-both">
+    <SectionHead text="An island of islands" />
+  </div>
   <Content>
     <p>
       On Sulawesi, ancient paleo-islands, colliding tectonic plates, and young
@@ -94,8 +107,30 @@ const spaceClasses = cntl`
       connect them.
     </p>
   </Content>
-  <div class="clear-both mt-4 rounded-2xl bg-white p-4 shadow-sm dark:bg-[#141810]">
+  <p class={eyebrowClasses}>The idea</p>
+  <div class="mt-2 rounded-2xl bg-white p-4 shadow-sm dark:bg-[#141810]">
     <SkyIslandDiagram />
+  </div>
+
+  <p class={eyebrowClasses}>The real system</p>
+  <Content>
+    <p>
+      Sulawesi is often divided into seven areas of endemism separated by
+      narrow boundary zones. <i>Taeromys dominator</i>, a large montane rat
+      found across the island, shows how messy the real system is: one
+      ancestry cluster spans mountains in every area of endemism, populations
+      in the southeast carry a distinct cluster, and several individuals are
+      admixed, so the boundaries are only partly respected.
+    </p>
+  </Content>
+  <div class="mt-4 rounded-2xl bg-white p-4 shadow-sm dark:bg-[#141810]">
+    <SulawesiAncestryMap />
+    <p class="mt-4 text-pretty text-sm text-forest-700 dark:text-forest-300">
+      Ancestry of 29 <i>T. dominator</i> from 12 localities, estimated from
+      genome-wide SNPs with PopCluster (K = 4). Each pie is one individual;
+      individuals from the same locality are fanned out around it. Dark bands
+      mark the boundary zones between areas of endemism.
+    </p>
   </div>
 
   <SectionHead text="Parasites and microbiomes: collaborations and next steps" />
