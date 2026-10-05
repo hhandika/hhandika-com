@@ -8,6 +8,61 @@ import Background from "../components/Background.astro";
 import MainPage from "../components/MainPage.astro";
 import PageDescription from "../components/PageDescription.astro";
 import SectionHead from "../components/SectionHead.astro";
+import FieldworkIcon from "../components/svg/FieldworkIcon.astro";
+import {
+  countries,
+  expeditions,
+  fieldworkKinds,
+  localityCount,
+  type FieldworkKind,
+} from "../scripts/fieldwork";
+
+const kinds = Object.keys(fieldworkKinds) as FieldworkKind[];
+const countByKind = (kind: FieldworkKind) =>
+  expeditions.filter((e) => e.kind === kind).length;
+
+const years = [...new Set(expeditions.map((e) => e.start.slice(0, 4)))];
+const firstYear = years[years.length - 1];
+const lastYear = years[0];
+
+const stats = [
+  { value: expeditions.length, label: "expeditions" },
+  { value: localityCount, label: "localities" },
+  {
+    value: new Set(expeditions.map((e) => e.country)).size,
+    label: "countries",
+  },
+  {
+    value: Number(lastYear) - Number(firstYear) + 1,
+    label: `years in the field (${firstYear}–${lastYear})`,
+  },
+];
+
+const museums = [
+  {
+    country: "Indonesia",
+    flag: countries.Indonesia,
+    names: ["Museum Zoologicum Bogoriense (MZB)"],
+  },
+  {
+    country: "United States",
+    flag: countries.USA,
+    names: [
+      "Museum of Vertebrate Zoology (MVZ)",
+      "Field Museum of Natural History (FMNH)",
+      "Louisiana State University Museum of Natural Science (LSUMS)",
+      "KU Natural History Museum (KUMNH)",
+    ],
+  },
+  {
+    country: "Australia",
+    flag: countries.Australia,
+    names: ["Museums Victoria (NMV)"],
+  },
+];
+
+const chipClasses =
+  "inline-flex items-center gap-2 rounded-full border border-moss-900/15 px-3 py-1.5 text-sm text-moss-900 transition hover:border-sunrise-400 aria-pressed:border-sunrise-400 aria-pressed:bg-sunrise-100 aria-pressed:text-sunrise-950 dark:border-moss-100/15 dark:text-moss-100 dark:aria-pressed:bg-sunrise-900/50 dark:aria-pressed:text-sunrise-50";
 ---
 
 <Layout title="Fieldwork">
@@ -19,221 +74,119 @@ import SectionHead from "../components/SectionHead.astro";
         of global natural history collections.
       </PageDescription>
     </PageTitle>
-    <SectionHead text="Museums hosting our collections" />
-    <div class="space-y-6">
-      <div>
-        <h3 class="font-semibold text-moss-800 dark:text-moss-100 mb-2">
-          Australia 🇦🇺
-        </h3>
-        <ul class="list-disc list-inside space-y-2">
-          <li>Museums Victoria (NMV)</li>
-        </ul>
-      </div>
-      <div>
-        <h3 class="font-semibold text-moss-800 dark:text-moss-100 mb-2">
-          Indonesia 🇮🇩
-        </h3>
-        <ul class="list-disc list-inside space-y-2">
-          <li>Museum Zoologicum Bogoriense (MZB)</li>
-        </ul>
-      </div>
-      <div>
-        <h3 class="font-semibold text-moss-800 dark:text-moss-100 mb-2">
-          United States 🇺🇸
-        </h3>
-        <ul class="list-disc list-inside space-y-2">
-          <li>Museum of Vertebrate Zoology (MVZ)</li>
-          <li>Field Museum of Natural History (FMNH)</li>
-          <li>Louisiana State University Museum of Natural Science (LSUMS)</li>
-          <li>KU Natural History Museum (KUMNH)</li>
-        </ul>
-      </div>
-    </div>
 
-    <SectionHead text="Field expedition timeline" />
-    <Timeline>
-      <TimelineItem
-        date="August-December 2023"
-        title="Mts. Patah, Bandahara, Kemiri"
-        subtitle="Sumatra, Indonesia 🇮🇩"
+    <dl class="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4">
+      {
+        stats.map((s) => (
+          <div class="rounded-3xl border border-moss-900/10 bg-white p-5 dark:border-moss-100/10 dark:bg-moss-950/60">
+            <dt class="sr-only">{s.label}</dt>
+            <dd>
+              <span class="block text-3xl font-semibold tabular-nums text-moss-950 dark:text-moss-50">
+                {s.value}
+              </span>
+              <span class="text-sm text-moss-700 dark:text-moss-300">
+                {s.label}
+              </span>
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+
+    <section class="mx-auto mt-12 max-w-3xl">
+      <SectionHead text="Field expedition timeline" />
+      <div
+        id="fieldwork-filter"
+        class="flex flex-wrap gap-2"
+        role="group"
+        aria-label="Filter expeditions by kind"
       >
-        <p
-          class="text-sm leading-snug tracking-wide text-gray-900 text-opacity-100"
-        >
-          Details will be updated soon...
-        </p>
-      </TimelineItem>
-      <TimelineItem
-        date="February-April 2023"
-        title="Mt. Gede"
-        subtitle="West Java, Indonesia 🇮🇩"
-      >
-        <p
-          class="text-sm leading-snug tracking-wide text-gray-900 text-opacity-100"
-        >
-          Details will be updated soon...
-        </p>
-      </TimelineItem>
-      <TimelineItem
-        date="April-May 2022"
-        title="Black Gap WMA"
-        subtitle="Texas, USA 🇺🇸"
-      />
-      <TimelineItem
-        date="May 2021"
-        title="Davis Mountains"
-        subtitle="Texas, USA 🇺🇸"
-      />
-      <TimelineItem
-        date="July-August 2019"
-        title="Mt. Murud"
-        subtitle="Sarawak, Malaysia 🇲🇾"
-      />
-      <TimelineItem
-        date="July 2018"
-        title="Mt. Galang"
-        subtitle="Central Sulawesi, Indonesia 🇮🇩"
-      />
-      <TimelineItem
-        date="March-April 2018"
-        title="Mt. Talamau"
-        subtitle="West Sumatra, Indonesia 🇮🇩"
-      />
-      <TimelineItem
-        date="November-December 2017"
-        title="Mt. Torompupu"
-        subtitle="Central Sulawesi, Indonesia 🇮🇩"
-      />
-      <TimelineItem
-        date="October 2017"
-        title="Solok Selatan"
-        subtitle="West Sumatra, Indonesia 🇮🇩"
-      />
-      <TimelineItem
-        date="August-September 2017"
-        title="Mt. Katopasa, Central Sulawesi, Indonesia"
-        subtitle="Central Sulawesi, Indonesia 🇮🇩"
-      />
-      <TimelineItem
-        date="June 2017"
-        title="Wilson Promontory National Park"
-        subtitle="Victoria, Australia 🇦🇺"
-      />
-      <TimelineItem
-        date="November 2016"
-        title="Grampians National Park"
-        subtitle="Victoria, Australia 🇦🇺"
-      />
-      <TimelineItem
-        date="October-November 2016"
-        title="Mt. Bawakaraeng"
-        subtitle="South Sulawesi, Indonesia 🇮🇩"
-      />
-      <TimelineItem
-        date="July-August 2016"
-        title="Mt. Latimojong"
-        subtitle="South Sulawesi, Indonesia 🇮🇩"
-      />
-      <TimelineItem
-        date="June 2016"
-        title="Mt. Ambang"
-        subtitle="North Sulawesi, Indonesia 🇮🇩"
-      />
-      <TimelineItem
-        date="November 2015"
-        title="Grampians National Park"
-        subtitle="Victoria, Australia 🇦🇺"
-      />
-      <TimelineItem
-        date="June 2015"
-        title="Mt. Talamau"
-        subtitle="West Sumatra, Indonesia 🇮🇩"
-      />
-      <TimelineItem
-        date="December 2014"
-        title="Runtu"
-        subtitle="Central Kalimantan, Indonesia 🇮🇩"
-      />
-      <TimelineItem
-        date="September-October 2014"
-        title="Mts. Tujuh and Masurai"
-        subtitle="Jambi, Indonesia 🇮🇩"
-      />
-      <TimelineItem
-        date="June-July 2014"
-        title="San Rafael and Mt. Huraw"
-        subtitle="Samar Island, The Philippines 🇵🇭"
-      />
-      <TimelineItem
-        date="March 2014"
-        title="Cirebon"
-        subtitle="West Java, Indonesia 🇮🇩"
-      />
-      <TimelineItem
-        date="December 2013"
-        title="Mt. Maras"
-        subtitle="Banka Island, Indonesia 🇮🇩"
-      />
-      <TimelineItem
-        date="September-October 2013"
-        title="Mts. Salak, Slamet, and Ijen"
-        subtitle="Java, Indonesia 🇮🇩"
-      />
-      <TimelineItem
-        date="June 2013"
-        title="Kota Waringin Barat"
-        subtitle="Central Kalimantan, Indonesia 🇮🇩"
-      />
-      <TimelineItem
-        date="March 2013"
-        title="Mt. Dako"
-        subtitle="Central Sulawesi, Indonesia 🇮🇩"
-      />
-      <TimelineItem
-        date="January 2013"
-        title="Mts. Kerinci and Tujuh"
-        subtitle="Jambi, Indonesia 🇮🇩"
-      />
-      <TimelineItem
-        date="January 2013"
-        title="Mt. Tajam"
-        subtitle="Belitung Island, Indonesia 🇮🇩"
-      />
-      <TimelineItem
-        date="June-July 2012"
-        title="Mt. Singgalang"
-        subtitle="West Sumatra, Indonesia 🇮🇩"
-      />
-      <TimelineItem
-        date="May-June 2012"
-        title="Mt. Gandang Dewata"
-        subtitle="West Sulawesi, Indonesia 🇮🇩"
-      />
-      <TimelineItem
-        date="April 2012"
-        title="Mt. Malintang"
-        subtitle="West Sumatra, Indonesia 🇮🇩"
-      />
-      <TimelineItem
-        date="October 2010"
-        title="Siberut National Park, Mentawai Islands"
-        subtitle="West Sumatra, Indonesia 🇮🇩"
-      />
-      <TimelineItem
-        date="September 2010"
-        title="Mt. Sago"
-        subtitle="West Sumatra, Indonesia 🇮🇩"
-      />
-      <TimelineItem
-        date="June 2010"
-        title="Angkola"
-        subtitle="North Sumatra, Indonesia 🇮🇩"
-      />
-      <TimelineItem
-        date="June 2009"
-        title="Mt. Merapi"
-        subtitle=" West Sumatra, Indonesia 🇮🇩"
-      />
-    </Timeline>
+        <button type="button" class={chipClasses} data-filter="all" aria-pressed="true">
+          All <span class="tabular-nums opacity-70">{expeditions.length}</span>
+        </button>
+        {
+          kinds.map((kind) => (
+            <button
+              type="button"
+              class={chipClasses}
+              data-filter={kind}
+              aria-pressed="false"
+              title={fieldworkKinds[kind].description}
+            >
+              <FieldworkIcon name={kind} class="h-4 w-4" />
+              {fieldworkKinds[kind].label}
+              <span class="tabular-nums opacity-70">{countByKind(kind)}</span>
+            </button>
+          ))
+        }
+      </div>
+
+      <Timeline>
+        {
+          years.map((year) => (
+            <section data-year={year}>
+              <h3 class="relative flex items-center gap-4 font-serif text-2xl text-sunrise-800 dark:text-sunrise-200">
+                <span class="flex w-10 justify-center" aria-hidden="true">
+                  <span class="h-3 w-3 rounded-full bg-sunrise-500 ring-4 ring-white dark:bg-sunrise-300 dark:ring-black" />
+                </span>
+                {year}
+              </h3>
+              <ol class="mt-3 space-y-3">
+                {expeditions
+                  .filter((e) => e.start.startsWith(year))
+                  .map((e) => (
+                    <TimelineItem expedition={e} />
+                  ))}
+              </ol>
+            </section>
+          ))
+        }
+      </Timeline>
+    </section>
+
+    <section class="mx-auto mt-16 max-w-3xl">
+      <SectionHead text="Museums hosting specimens I collected" />
+      <div class="grid gap-4 sm:grid-cols-3">
+        {
+          museums.map((m) => (
+            <div class="rounded-3xl border border-moss-900/10 bg-white p-5 dark:border-moss-100/10 dark:bg-moss-950/60">
+              <h3 class="font-semibold text-moss-800 dark:text-moss-100">
+                {m.country}{" "}
+                <span aria-hidden="true">{m.flag}</span>
+              </h3>
+              <ul class="mt-2 space-y-1.5 text-sm text-slate-700 dark:text-slate-300">
+                {m.names.map((name) => (
+                  <li>{name}</li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </section>
   </MainPage>
 </Layout>
+
+<script>
+  const filter = document.getElementById("fieldwork-filter")!;
+  const buttons = filter.querySelectorAll<HTMLButtonElement>("[data-filter]");
+  const items = document.querySelectorAll<HTMLElement>("[data-kind]");
+  const years = document.querySelectorAll<HTMLElement>("[data-year]");
+
+  filter.addEventListener("click", (event) => {
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>(
+      "[data-filter]",
+    );
+    if (!button) return;
+    const kind = button.dataset.filter;
+    buttons.forEach((b) =>
+      b.setAttribute("aria-pressed", String(b === button)),
+    );
+    items.forEach((item) => {
+      item.hidden = kind !== "all" && item.dataset.kind !== kind;
+    });
+    years.forEach((year) => {
+      year.hidden = !year.querySelector("[data-kind]:not([hidden])");
+    });
+  });
+</script>
