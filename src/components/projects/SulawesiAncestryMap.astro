@@ -89,6 +89,20 @@ const tip = (d: (typeof individuals)[number]) =>
     aoe: d.aoe,
     q: d.q.map(pct),
   });
+
+// Choosing K: DLK2 (Wang 2017) per K; the peak marks the best-supported K.
+const { bestK, dlk2 } = data.chooseK;
+const K_W = 300;
+const K_H = 110;
+const K_PAD = { l: 30, r: 14, t: 14, b: 22 };
+const kMin = Math.min(...dlk2.map((d) => d.k));
+const kMax = Math.max(...dlk2.map((d) => d.k));
+const vMin = Math.min(0, ...dlk2.map((d) => d.value));
+const vMax = Math.max(...dlk2.map((d) => d.value)) * 1.1;
+const kx = (k: number) => K_PAD.l + ((k - kMin) / (kMax - kMin)) * (K_W - K_PAD.l - K_PAD.r);
+const ky = (v: number) => K_PAD.t + ((vMax - v) / (vMax - vMin)) * (K_H - K_PAD.t - K_PAD.b);
+const kLine = dlk2.map((d, i) => `${i ? "L" : "M"}${f(kx(d.k))} ${f(ky(d.value))}`).join(" ");
+const kTicks = [0, 1, 2].filter((v) => v >= vMin && v <= vMax);
 ---
 
 <figure id="sulawesi-map" class="sulawesi-map" data-view="ancestry">
@@ -263,6 +277,58 @@ const tip = (d: (typeof individuals)[number]) =>
           Hover or tap a bar or pie to see the specimen, locality, and ancestry.
         </p>
       </div>
+
+      <div>
+        <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-forest-600 dark:text-forest-400">
+          Choosing K
+        </p>
+        <svg
+          viewBox={`0 0 ${K_W} ${K_H}`}
+          class="h-auto w-full overflow-visible"
+          role="img"
+          aria-label={`DLK2 by number of clusters: ${dlk2.map((d) => `K ${d.k}: ${d.value}`).join(", ")}. DLK2 peaks at K = ${bestK}.`}
+        >
+          {
+            kTicks.map((v) => (
+              <g>
+                <line x1={K_PAD.l} x2={K_W - K_PAD.r} y1={f(ky(v))} y2={f(ky(v))} class={v === 0 ? "k-zero" : "k-grid"} />
+                <text x={K_PAD.l - 6} y={f(ky(v) + 3.5)} text-anchor="end" class="k-axis">{v}</text>
+              </g>
+            ))
+          }
+          {
+            dlk2.map((d) => (
+              <text x={f(kx(d.k))} y={K_H - 6} text-anchor="middle" class={d.k === bestK ? "k-axis k-best-text" : "k-axis"}>
+                K={d.k}
+              </text>
+            ))
+          }
+          <text x="0" y="4" class="k-axis">DLK2</text>
+          <path d={kLine} class="k-line" />
+          {
+            dlk2.map((d) =>
+              d.k === bestK ? (
+                <g>
+                  <circle cx={f(kx(d.k))} cy={f(ky(d.value))} r="7" class="k-best-ring" />
+                  <circle cx={f(kx(d.k))} cy={f(ky(d.value))} r="4" class="k-best" />
+                  <text x={f(kx(d.k) + 11)} y={f(ky(d.value) + 4)} class="k-best-text k-label">
+                    best K = {bestK}
+                  </text>
+                </g>
+              ) : (
+                <circle cx={f(kx(d.k))} cy={f(ky(d.value))} r="3.5" class="k-pt">
+                  <title>K = {d.k}: DLK2 = {d.value}</title>
+                </circle>
+              ),
+            )
+          }
+        </svg>
+        <p class="mt-1 text-pretty text-xs text-forest-600 dark:text-forest-400">
+          PopCluster's DLK2 statistic, the second-order change in likelihood
+          between successive K, peaks at K = {bestK} (K = 1–7, five replicates
+          each).
+        </p>
+      </div>
     </div>
   </div>
 </figure>
@@ -366,6 +432,42 @@ const tip = (d: (typeof individuals)[number]) =>
   }
   :global(.dark) .bar.active .bar-hit { stroke: #fff; }
   .bar-strip:has(.bar.active) .bar:not(.active) { opacity: 0.45; }
+
+  .k-axis {
+    font-size: 10px;
+    fill: theme("colors.forest.600");
+  }
+  :global(.dark) .k-axis { fill: theme("colors.forest.400"); }
+  .k-grid {
+    stroke: theme("colors.forest.900");
+    stroke-opacity: 0.1;
+  }
+  .k-zero {
+    stroke: theme("colors.forest.900");
+    stroke-opacity: 0.35;
+  }
+  :global(.dark) .k-grid { stroke: #fff; stroke-opacity: 0.1; }
+  :global(.dark) .k-zero { stroke: #fff; stroke-opacity: 0.35; }
+  .k-line {
+    fill: none;
+    stroke: theme("colors.forest.500");
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+  }
+  .k-pt { fill: theme("colors.forest.500"); }
+  .k-best { fill: theme("colors.moss.500"); }
+  .k-best-ring {
+    fill: none;
+    stroke: theme("colors.moss.500");
+    stroke-width: 1.5;
+    stroke-opacity: 0.5;
+  }
+  .k-best-text {
+    fill: theme("colors.moss.700");
+    font-weight: 700;
+  }
+  :global(.dark) .k-best-text { fill: theme("colors.moss.300"); }
+  .k-label { font-size: 11px; }
 
   @media (prefers-reduced-motion: reduce) {
     .pie, .boundary, .aoe-code, .aoe-name, .leaders { transition: none; }
