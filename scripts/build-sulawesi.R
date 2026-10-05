@@ -7,10 +7,13 @@
 #   - data/admixture/dominator/                   PopCluster K = 4 (run 5) Q-matrix
 #                                                 and K summary (DLK2 per K)
 #   - results/locality_counts.csv                 locality coordinates + AOE codes
+#   - results/bunomys_species_haplotypes_distribution.csv
+#                                                 specimen elevations (R/sampling-distribution.Rmd)
 #
 # Outputs:
 #   src/assets/graphics/sulawesi-relief.png   shaded relief, transparent sea
 #   src/data/sulawesi-dominator.json          boundaries, localities, ancestry
+#   src/data/bunomys-elevation.json           elevational ranges per species/haplogroup
 
 BUNOMYS <- path.expand("~/Codes/R/bunomys-phylogeny-ms")
 src <- function(...) file.path(BUNOMYS, ...)
@@ -124,3 +127,65 @@ jsonlite::write_json(
 )
 
 message("Wrote ", length(individuals), " individuals from ", length(locs_out), " localities")
+
+# ---- 5. Elevational ranges (same filters as R/sampling-distribution.Rmd) --
+specimens <- readr::read_csv(
+  src("results", "bunomys_species_haplotypes_distribution.csv"),
+  show_col_types = FALSE
+)
+specimens <- specimens[
+  !is.na(specimens$minimum_elevation) &
+    !is.na(specimens$locality_id) &
+    specimens$genus != "Rattus",
+]
+specimens$label <- sub(" \\(N = \\d+\\)$", "", specimens$species)
+
+records <- stats::aggregate(
+  list(n = rep(1L, nrow(specimens))),
+  by = specimens[, c("label", "locality_id", "aoe", "minimum_elevation", "max_elevation")],
+  FUN = sum
+)
+
+groups <- c("Lowland", "Widespread", "Montane")
+taxa <- unique(specimens[, c("label", "genus", "elev_distribution")])
+taxa <- lapply(seq_len(nrow(taxa)), function(i) {
+  sp <- specimens[specimens$label == taxa$label[i], ]
+  rec <- records[records$label == taxa$label[i], ]
+  rec <- rec[order(rec$minimum_elevation, rec$max_elevation), ]
+  list(
+    label = taxa$label[i],
+    genus = taxa$genus[i],
+    group = taxa$elev_distribution[i],
+    n = nrow(sp),
+    min = min(sp$minimum_elevation),
+    max = max(sp$max_elevation),
+    aoes = I(sort(unique(sp$aoe))),
+    records = lapply(seq_len(nrow(rec)), function(j) {
+      list(
+        locality = rec$locality_id[j], aoe = rec$aoe[j],
+        min = rec$minimum_elevation[j], max = rec$max_elevation[j], n = rec$n[j]
+      )
+    })
+  )
+})
+# Lowland -> widespread -> montane, then by lower range limit.
+ord <- order(
+  match(vapply(taxa, `[[`, "", "group"), groups),
+  vapply(taxa, `[[`, 0, "min"),
+  vapply(taxa, `[[`, 0, "max")
+)
+
+jsonlite::write_json(
+  list(
+    threshold = 1000,
+    groups = groups,
+    aoes = sort(unique(specimens$aoe)),
+    nSpecimens = nrow(specimens),
+    taxa = taxa[ord]
+  ),
+  "src/data/bunomys-elevation.json",
+  auto_unbox = TRUE, digits = NA, pretty = FALSE
+)
+
+message("Wrote ", length(taxa), " taxa from ", nrow(specimens), " specimens")
+

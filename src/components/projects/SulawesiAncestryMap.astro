@@ -135,7 +135,7 @@ const kTicks = [0, 1, 2].filter((v) => v >= vMin && v <= vMax);
           <desc id="sul-desc">
             Shaded relief map of Sulawesi with dark bands marking the boundary
             zones between seven areas of endemism. Pie charts show the ancestry
-            proportions of 29 Taeromys dominator individuals from 12 mountain
+            proportions of 29 Taeromys dominator individuals from 12
             localities across four genetic clusters.
           </desc>
 
@@ -185,7 +185,7 @@ const kTicks = [0, 1, 2].filter((v) => v >= vMin && v <= vMax);
                   data-tip={tip(d)}
                   tabindex="0"
                   role="button"
-                  aria-label={`${d.catalog}, ${d.locality}: ${d.q.map((v, c) => `cluster ${c + 1} ${pct(v)}`).join(", ")}`}
+                  aria-label={`${d.catalog}, ${d.locality}: ${d.q.flatMap((v, c) => (pct(v) === "0%" ? [] : [`cluster ${c + 1} ${pct(v)}`])).join(", ")}`}
                   style={`transition-delay:${(0.15 + d.i * 0.03).toFixed(2)}s`}
                 >
                   {wedges(d.q, d.cx, d.cy, PIE_R).map((w) =>
@@ -241,7 +241,9 @@ const kTicks = [0, 1, 2].filter((v) => v >= vMin && v <= vMax);
           the southeast (Lawaki), with a trace in one west-central individual.
         </li>
         <li>
-          Clusters 1 and 3 occur at scattered sites, and several individuals are
+          <span class="font-semibold" style={`color:${colors[0]}`}>Cluster 1</span> and
+          <span class="font-semibold" style={`color:${colors[2]}`}>Cluster 3</span> occur at
+          scattered sites, and several individuals are
           admixed, some sharing a mountain with unadmixed neighbours.
         </li>
       </ul>
@@ -520,7 +522,9 @@ const kTicks = [0, 1, 2].filter((v) => v >= vMin && v <= vMax);
       d.q
         .map(
           (v: string, c: number) =>
-            `<p class="flex items-center gap-2"><span style="background:${colors[c]}" class="inline-block h-2 w-2 rounded-sm"></span>Cluster ${c + 1}<span class="ml-auto tabular-nums">${v}</span></p>`,
+            v === "0%"
+              ? ""
+              : `<p class="flex items-center gap-2"><span style="background:${colors[c]}" class="inline-block h-2 w-2 rounded-sm"></span>Cluster ${c + 1}<span class="ml-auto tabular-nums">${v}</span></p>`,
         )
         .join("");
     tipEl.classList.remove("hidden");
