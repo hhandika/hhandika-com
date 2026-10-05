@@ -16,7 +16,7 @@ import SocialMediaIcons from "../components/SocialMediaIcons.astro";
 import PillarIcon from "../components/svg/PillarIcon.astro";
 import GithubProfileCard from "../components/github/GithubProfileCard.astro";
 import LiveStat from "../components/github/LiveStat.astro";
-import { expeditions } from "../scripts/fieldwork";
+import { expeditions, upcomingExpeditions } from "../scripts/fieldwork";
 
 const keywordClasses = cntl`
   bg-forest-100
@@ -132,7 +132,7 @@ const highlights = [
   },
   {
     eyebrow: "Fieldwork & collections",
-    title: "13 years in remote mountains",
+    title: "15 years in remote mountains",
     text: "Collaborative expeditions across more than 20 mountain systems in Southeast Asia, building the specimen record these questions rest on.",
     stat: "8,000+",
     statLabel: "voucher specimens and 30,000+ specimen parts",
@@ -259,7 +259,7 @@ const researchQuestions = [
           >
             You can call me Heru or Hez. I'm an evolutionary biologist working
             at the intersection of field biology, genomics, phenomics,
-            on-device deep learning, and software. I study how geographic
+            on-device deep learning, and cross-platform software. I study how geographic
             isolation shapes genomic divergence, ecological interactions, and
             phenotypic evolution in island small mammals, and build open-source
             tools so these questions can be tested at scale.
@@ -296,6 +296,16 @@ const researchQuestions = [
                 ))
               }
             </dl>
+            {
+              upcomingExpeditions.map((e) => (
+                <p class="mt-4 text-sm text-slate-700 dark:text-slate-300">
+                  <span class="font-semibold text-moss-700 dark:text-moss-300">
+                    Next:
+                  </span>{" "}
+                  {e.title}, {e.region}, {e.country} · {e.season}
+                </p>
+              ))
+            }
             <span class="mt-3 block text-sm font-semibold text-forest-700 group-hover:underline dark:text-forest-300">
               Explore my fieldwork →
             </span>

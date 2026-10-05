@@ -14,6 +14,7 @@ import {
   expeditions,
   fieldworkKinds,
   localityCount,
+  upcomingExpeditions,
   type FieldworkKind,
 } from "../scripts/fieldwork";
 
@@ -95,6 +96,31 @@ const chipClasses =
 
     <section class="mx-auto mt-12 max-w-3xl">
       <SectionHead text="Field expedition timeline" />
+      {
+        upcomingExpeditions.length > 0 && (
+          <ul class="mb-6 space-y-3">
+            {upcomingExpeditions.map((e) => (
+              <li class="flex flex-wrap items-center justify-between gap-2 rounded-2xl border-2 border-dashed border-moss-400/70 bg-moss-50/60 px-5 py-4 dark:border-moss-300/50 dark:bg-moss-900/20">
+                <div>
+                  <p class="text-xs font-semibold uppercase tracking-widest text-moss-700 dark:text-moss-300">
+                    Upcoming
+                  </p>
+                  <h4 class="font-semibold text-forest-950 dark:text-forest-50">
+                    {e.title}
+                  </h4>
+                  <p class="text-sm text-slate-700 dark:text-slate-300">
+                    {e.region}, {e.country}{" "}
+                    <span aria-hidden="true">{countries[e.country]}</span>
+                  </p>
+                </div>
+                <p class="font-serif text-moss-800 dark:text-moss-200">
+                  {e.season}
+                </p>
+              </li>
+            ))}
+          </ul>
+        )
+      }
       <div
         id="fieldwork-filter"
         class="flex flex-wrap gap-2"
