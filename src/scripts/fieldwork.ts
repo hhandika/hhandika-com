@@ -378,6 +378,27 @@ export const expeditions: Expedition[] = [
   },
 ];
 
+/**
+ * Planned expeditions. Kept apart from `expeditions` so they don't count
+ * toward the completed-fieldwork stats or the map pins.
+ */
+export interface UpcomingExpedition {
+  title: string;
+  region: string;
+  country: keyof typeof countries;
+  /** Planned field season, e.g. "Spring 2027". */
+  season: string;
+}
+
+export const upcomingExpeditions: UpcomingExpedition[] = [
+  {
+    title: "Mt. Hulu Palik",
+    region: "Sumatra",
+    country: "Indonesia",
+    season: "Spring 2027",
+  },
+];
+
 const monthFormat = new Intl.DateTimeFormat("en-US", {
   month: "long",
   timeZone: "UTC",
