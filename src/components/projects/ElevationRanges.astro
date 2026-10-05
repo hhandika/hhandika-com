@@ -1,0 +1,402 @@
+---
+/**
+ * Elevational ranges of Bunomys-clade species and haplogroups on Sulawesi.
+ * One row per taxon; each mark is a locality record (dot at the lower limit,
+ * line to the upper limit, as in fig. 2 of the manuscript), coloured by area
+ * of endemism. Chips dim everything outside a range class or an AOE.
+ * Data comes from scripts/build-sulawesi.R.
+ */
+import data from "../../data/bunomys-elevation.json";
+
+const TOP = 3000;
+const ticks = [0, 500, 1000, 1500, 2000, 2500, 3000];
+const pos = (m: number) => `${((m / TOP) * 100).toFixed(2)}%`;
+
+// Dark2, as scale_color_brewer(palette = "Dark2") in the manuscript figure.
+const dark2 = ["#1b9e77", "#d95f02", "#7570b3", "#e7298a", "#66a61e", "#e6ab02", "#a6761d"];
+const aoeColor = Object.fromEntries(data.aoes.map((a, i) => [a, dark2[i]]));
+const aoeName: Record<string, string> = {
+  EC: "East-central",
+  NC: "North-central",
+  NE: "Northeast",
+  NW: "Northwest",
+  SE: "Southeast",
+  SW: "Southwest",
+  WC: "West-central",
+};
+
+const groupNote: Record<string, string> = {
+  Lowland: "below 1,000 m",
+  Widespread: "spanning 1,000 m",
+  Montane: "above 1,000 m",
+};
+
+// Italicise the binomial only; haplogroup codes and "sp"/"spnov" stay roman.
+const parts = (label: string) =>
+  label.split(" ").map((w) => ({
+    w,
+    i: !/^(sp\d*|spnov|Genus)$/.test(w) && !/^[A-Z]{2}/.test(w),
+  }));
+
+const fmt = (m: number) => m.toLocaleString("en-US");
+const dot = (n: number) => Math.min(5 + 2 * Math.sqrt(n), 14);
+
+const counts = Object.fromEntries(
+  data.groups.map((g) => [g, data.taxa.filter((t) => t.group === g).length]),
+);
+const rows = data.groups.flatMap((g) => [
+  { kind: "head" as const, group: g },
+  ...data.taxa.filter((t) => t.group === g).map((t) => ({ kind: "taxon" as const, ...t })),
+]);
+---
+
+<figure id="elev-ranges" class="elev-ranges" data-group="all" data-aoe="all">
+  <div class="mb-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs">
+    <div class="flex flex-wrap gap-1 rounded-full border border-forest-900/10 p-1 font-semibold dark:border-white/15" role="group" aria-label="Range class">
+      {
+        ["all", ...data.groups].map((g) => (
+          <button type="button" class="chip" data-group-btn={g} aria-pressed={g === "all" ? "true" : "false"}>
+            {g === "all" ? "All" : g}
+            {g !== "all" && <span class="ml-1 opacity-60">{counts[g]}</span>}
+          </button>
+        ))
+      }
+    </div>
+    <div class="flex flex-wrap items-center gap-1" role="group" aria-label="Area of endemism">
+      <span class="mr-1 font-semibold uppercase tracking-wider text-forest-600 dark:text-forest-400">AoE</span>
+      {
+        data.aoes.map((a) => (
+          <button type="button" class="aoe-chip" data-aoe-btn={a} aria-pressed="false" title={aoeName[a]}>
+            <span class="inline-block h-2.5 w-2.5 rounded-full" style={`background:${aoeColor[a]}`} />
+            {a}
+          </button>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="relative">
+    <!-- axis -->
+    <div class="row-grid text-[10px] text-forest-600 dark:text-forest-400" aria-hidden="true">
+      <span class="text-right font-semibold uppercase tracking-wider">Elevation (m)</span>
+      <div class="relative h-4">
+        {
+          ticks.map((t) => (
+            <span class:list={["absolute -translate-x-1/2 tabular-nums", t % 1000 && "hidden sm:inline"]} style={`left:${pos(t)}`}>
+              {t === 0 ? "0" : fmt(t)}
+            </span>
+          ))
+        }
+      </div>
+      <span></span>
+    </div>
+
+    <div class="relative">
+      <!-- gridlines + threshold, behind the rows -->
+      <div class="row-grid pointer-events-none absolute inset-0" style="align-items:stretch" aria-hidden="true">
+        <span></span>
+        <div class="relative">
+          {ticks.map((t) => <span class="gridline" style={`left:${pos(t)}`} />)}
+          <span class="threshold" style={`left:${pos(data.threshold)}`}>
+            <span class="threshold-label">{fmt(data.threshold)} m</span>
+          </span>
+        </div>
+        <span></span>
+      </div>
+
+      <ul class="relative" role="list">
+        {
+          rows.map((r) =>
+            r.kind === "head" ? (
+              <li class="row-grid group-head" data-row-group={r.group}>
+                <span class="text-right">
+                  {r.group}
+                </span>
+                <span class="text-[10px] font-normal normal-case tracking-normal opacity-70">
+                  {counts[r.group]} taxa, {groupNote[r.group]}
+                </span>
+                <span></span>
+              </li>
+            ) : (
+              <li
+                class="row-grid taxon"
+                data-row-group={r.group}
+                data-aoes={r.aoes.join(" ")}
+                tabindex="0"
+                aria-label={`${r.label}: ${r.group}, ${fmt(r.min)} to ${fmt(r.max)} m, ${r.n} specimens, areas of endemism ${r.aoes.join(", ")}`}
+                data-tip={JSON.stringify({
+                  label: r.label,
+                  group: r.group,
+                  n: r.n,
+                  min: r.min,
+                  max: r.max,
+                  records: r.records,
+                })}
+              >
+                <span class="truncate text-right text-[12px] leading-none text-forest-900 dark:text-forest-100">
+                  {parts(r.label).map((p, k) => (
+                    <>
+                      {k > 0 && " "}
+                      {p.i ? <i>{p.w}</i> : <span>{p.w}</span>}
+                    </>
+                  ))}
+                </span>
+                <div class="track relative h-full">
+                  <span class="span-bar" style={`left:${pos(r.min)};width:calc(${pos(r.max - r.min)} + 2px)`} />
+                  {r.records.map((rec) => (
+                    <span class="rec" data-aoe={rec.aoe}>
+                      <span
+                        class="rec-line"
+                        style={`left:${pos(rec.min)};width:${pos(rec.max - rec.min)};background:${aoeColor[rec.aoe]}`}
+                      />
+                      <span
+                        class="rec-dot"
+                        style={`left:${pos(rec.min)};--s:${dot(rec.n).toFixed(1)}px;background:${aoeColor[rec.aoe]}`}
+                      />
+                    </span>
+                  ))}
+                </div>
+                <span class="text-[10px] tabular-nums text-forest-600 dark:text-forest-400">{r.n}</span>
+              </li>
+            ),
+          )
+        }
+      </ul>
+    </div>
+
+    <div
+      class="elev-tip pointer-events-none absolute z-20 hidden w-64 max-w-[calc(100%-1rem)] rounded-lg border border-forest-900/10 bg-white/95 px-3 py-2 text-xs shadow-lg backdrop-blur dark:border-white/15 dark:bg-mist-950/90 dark:text-forest-100"
+      role="status"
+    >
+    </div>
+  </div>
+
+  <figcaption class="mt-4 text-pretty text-sm text-forest-700 dark:text-forest-300">
+    Elevational records of {data.nSpecimens} specimens from {data.taxa.length}
+    species and haplogroups in the <i>Bunomys</i> clade. Each dot marks the
+    lower elevation of a locality record (larger dots, more specimens) and its
+    line runs to the upper elevation; colours show the area of endemism (AoE).
+    Taxa are grouped as lowland (below {fmt(data.threshold)} m), montane
+    (above it), or widespread (spanning it); the number at right is the
+    specimen count. Hover or tap a row for its localities.
+  </figcaption>
+</figure>
+
+<style>
+  .row-grid {
+    display: grid;
+    grid-template-columns: minmax(7rem, 11rem) 1fr 1.75rem;
+    column-gap: 0.75rem;
+    align-items: center;
+  }
+  @media (max-width: 480px) {
+    .row-grid { grid-template-columns: 6.5rem 1fr 1.5rem; column-gap: 0.5rem; }
+  }
+
+  .chip,
+  .aoe-chip {
+    border-radius: 9999px;
+    padding: 0.3rem 0.7rem;
+    color: theme("colors.forest.700");
+    transition: background-color 0.2s, color 0.2s, opacity 0.2s;
+  }
+  .aoe-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid transparent;
+    font-weight: 600;
+  }
+  :global(.dark) .chip,
+  :global(.dark) .aoe-chip { color: theme("colors.forest.100"); }
+  .chip[aria-pressed="true"] {
+    background: theme("colors.moss.400");
+    color: theme("colors.moss.950");
+  }
+  .aoe-chip[aria-pressed="true"] { border-color: currentColor; }
+
+  .gridline {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-left: 1px solid theme("colors.forest.900");
+    opacity: 0.07;
+  }
+  :global(.dark) .gridline { border-color: #fff; }
+  .threshold {
+    position: absolute;
+    top: -0.25rem;
+    bottom: 0;
+    border-left: 1.5px dashed theme("colors.forest.800");
+    opacity: 0.7;
+  }
+  :global(.dark) .threshold { border-color: theme("colors.forest.200"); }
+  .threshold-label {
+    position: absolute;
+    top: 100%;
+    margin-top: 2px;
+    left: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    white-space: nowrap;
+    color: theme("colors.forest.800");
+  }
+  :global(.dark) .threshold-label { color: theme("colors.forest.200"); }
+
+  .group-head {
+    margin-top: 0.9rem;
+    padding-bottom: 0.15rem;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: theme("colors.moss.700");
+    transition: opacity 0.3s;
+  }
+  :global(.dark) .group-head { color: theme("colors.moss.300"); }
+  .group-head:first-child { margin-top: 0.5rem; }
+
+  .taxon {
+    height: 20px;
+    border-radius: 4px;
+    cursor: default;
+    outline: none;
+    transition: opacity 0.3s, filter 0.3s, background-color 0.15s;
+  }
+  .taxon:hover,
+  .taxon:focus-visible,
+  .taxon.active { background: rgb(134 174 62 / 0.12); }
+
+  .span-bar {
+    position: absolute;
+    top: 50%;
+    height: 8px;
+    transform: translateY(-50%);
+    border-radius: 9999px;
+    background: theme("colors.forest.900");
+    opacity: 0.07;
+  }
+  :global(.dark) .span-bar { background: #fff; opacity: 0.1; }
+  .rec { transition: opacity 0.3s; }
+  .rec-line {
+    position: absolute;
+    top: 50%;
+    height: 2px;
+    transform: translateY(-50%);
+    opacity: 0.6;
+  }
+  .rec-dot {
+    position: absolute;
+    top: 50%;
+    width: var(--s);
+    height: var(--s);
+    transform: translate(-50%, -50%);
+    border-radius: 9999px;
+    opacity: 0.6;
+    box-shadow: 0 0 0 0.5px rgb(14 26 18 / 0.35);
+  }
+
+  /* Range-class filter: dim, as in the presentation figures. */
+  .elev-ranges:not([data-group="all"]) [data-row-group] { opacity: 0.25; filter: grayscale(1); }
+  .elev-ranges[data-group="Lowland"] [data-row-group="Lowland"],
+  .elev-ranges[data-group="Widespread"] [data-row-group="Widespread"],
+  .elev-ranges[data-group="Montane"] [data-row-group="Montane"] { opacity: 1; filter: none; }
+
+  /* AoE filter: fade records from other areas. */
+  .elev-ranges:not([data-aoe="all"]) .rec { opacity: 0.08; }
+  .elev-ranges[data-aoe="EC"] .rec[data-aoe="EC"],
+  .elev-ranges[data-aoe="NC"] .rec[data-aoe="NC"],
+  .elev-ranges[data-aoe="NE"] .rec[data-aoe="NE"],
+  .elev-ranges[data-aoe="NW"] .rec[data-aoe="NW"],
+  .elev-ranges[data-aoe="SE"] .rec[data-aoe="SE"],
+  .elev-ranges[data-aoe="SW"] .rec[data-aoe="SW"],
+  .elev-ranges[data-aoe="WC"] .rec[data-aoe="WC"] { opacity: 1; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .taxon, .rec, .group-head, .chip, .aoe-chip { transition: none; }
+  }
+</style>
+
+<script>
+  const root = document.getElementById("elev-ranges")!;
+  const tipEl = root.querySelector<HTMLElement>(".elev-tip")!;
+  const box = tipEl.parentElement!;
+  const colors: Record<string, string> = {};
+  root.querySelectorAll<HTMLElement>(".aoe-chip").forEach((c) => {
+    colors[c.dataset.aoeBtn!] = (c.querySelector("span") as HTMLElement).style.background;
+  });
+
+  const fmt = (m: number) => m.toLocaleString("en-US");
+
+  // Range-class chips (single choice).
+  const groupBtns = root.querySelectorAll<HTMLButtonElement>("[data-group-btn]");
+  groupBtns.forEach((b) =>
+    b.addEventListener("click", () => {
+      root.dataset.group = b.dataset.groupBtn;
+      groupBtns.forEach((o) => o.setAttribute("aria-pressed", String(o === b)));
+    }),
+  );
+
+  // AoE chips (toggle one at a time).
+  const aoeBtns = root.querySelectorAll<HTMLButtonElement>("[data-aoe-btn]");
+  aoeBtns.forEach((b) =>
+    b.addEventListener("click", () => {
+      const on = root.dataset.aoe !== b.dataset.aoeBtn;
+      root.dataset.aoe = on ? b.dataset.aoeBtn : "all";
+      aoeBtns.forEach((o) => o.setAttribute("aria-pressed", String(on && o === b)));
+    }),
+  );
+
+  // Row tooltip.
+  const hide = () => {
+    tipEl.classList.add("hidden");
+    root.querySelectorAll(".taxon.active").forEach((el) => el.classList.remove("active"));
+  };
+
+  const show = (row: HTMLElement) => {
+    hide();
+    row.classList.add("active");
+    const d = JSON.parse(row.dataset.tip!);
+    type Rec = { locality: string; aoe: string; min: number; max: number; n: number };
+    // One line per locality, merging its elevation records.
+    const byLoc = new Map<string, Rec>();
+    (d.records as Rec[]).forEach((r) => {
+      const p = byLoc.get(r.locality);
+      byLoc.set(
+        r.locality,
+        p ? { ...p, min: Math.min(p.min, r.min), max: Math.max(p.max, r.max), n: p.n + r.n } : { ...r },
+      );
+    });
+    const locs = [...byLoc.values()].sort((a, b) => a.min - b.min);
+    const range = (a: number, b: number) => (a === b ? `${fmt(a)} m` : `${fmt(a)}–${fmt(b)} m`);
+    tipEl.innerHTML =
+      `<p class="font-semibold">${d.label}</p>` +
+      `<p class="mb-1.5 opacity-80">${d.group} · ${range(d.min, d.max)} · N = ${d.n}</p>` +
+      locs
+        .slice(0, 8)
+        .map(
+          (l) =>
+            `<p class="flex items-center gap-2"><span class="inline-block h-2 w-2 shrink-0 rounded-full" style="background:${colors[l.aoe]}"></span>${l.locality} <span class="opacity-60">${l.aoe}</span><span class="ml-auto whitespace-nowrap tabular-nums">${range(l.min, l.max)}</span></p>`,
+        )
+        .join("") +
+      (locs.length > 8 ? `<p class="mt-1 opacity-60">+${locs.length - 8} more localities</p>` : "");
+    tipEl.classList.remove("hidden");
+    const b = box.getBoundingClientRect();
+    const r = row.getBoundingClientRect();
+    const top = r.bottom - b.top + 6;
+    const fitsBelow = r.bottom + tipEl.offsetHeight + 12 < window.innerHeight;
+    tipEl.style.top = `${fitsBelow ? top : r.top - b.top - tipEl.offsetHeight - 6}px`;
+    tipEl.style.left = `${Math.max(0, b.width - tipEl.offsetWidth - 8)}px`;
+  };
+
+  window.addEventListener("resize", hide);
+
+  root.querySelectorAll<HTMLElement>(".taxon").forEach((row) => {
+    row.addEventListener("pointerenter", () => show(row));
+    row.addEventListener("pointerleave", hide);
+    row.addEventListener("click", () => show(row));
+    row.addEventListener("focus", () => show(row));
+    row.addEventListener("blur", hide);
+  });
+</script>

@@ -11,6 +11,7 @@ import PageSubtitle from "../PageSubtitle.astro";
 import indonesiaMap from "../../assets/graphics/indonesia.svg";
 import SkyIslandDiagram from "../svg/SkyIslandDiagram.astro";
 import SulawesiAncestryMap from "./SulawesiAncestryMap.astro";
+import ElevationRanges from "./ElevationRanges.astro";
 
 const firstParagraphClasses = cntl`
   first-letter:text-7xl
@@ -102,22 +103,37 @@ const eyebrowClasses = cntl`
   <Content>
     <p>
       On Sulawesi, ancient paleo-islands, colliding tectonic plates, and young
-      mountains together shaped the <i>Bunomys</i> radiation. Above the cloud
-      line, each summit isolates its own populations, while lowland forests
-      connect them.
+      mountains together shaped the <i>Bunomys</i> radiation. Above about
+      1,000 m, many species are confined to a single mountain, while others
+      range from the lowlands to the summits and connect them.
     </p>
   </Content>
-  <p class={eyebrowClasses}>The idea</p>
+  <p class={eyebrowClasses}>Four sky islands in the central core</p>
   <div class="mt-2 rounded-2xl bg-white p-4 shadow-sm dark:bg-[#141810]">
     <SkyIslandDiagram />
   </div>
 
-  <p class={eyebrowClasses}>The real system</p>
+  <p class={eyebrowClasses}>Across elevations</p>
+  <Content>
+    <p>
+      Across the whole clade the pattern holds. More than half of the
+      species and haplogroups we sampled are montane, most known from a single
+      mountain. Widespread taxa cross the 1,000 m threshold, and a few, such
+      as <i>T. dominator</i> and <i>B. penitus</i> WC-A, span nearly the whole
+      gradient.
+      Filter by range class or area of endemism to explore them.
+    </p>
+  </Content>
+  <div class="mt-4 rounded-2xl bg-white p-4 shadow-sm dark:bg-[#141810]">
+    <ElevationRanges />
+  </div>
+
+  <p class={eyebrowClasses}>Across the island</p>
   <Content>
     <p>
       Sulawesi is often divided into seven areas of endemism separated by
-      narrow boundary zones. <i>Taeromys dominator</i>, a large montane rat
-      found across the island, shows how messy the real system is: one
+      narrow boundary zones. <i>Taeromys dominator</i>, a large endemic rat
+      found across the island and from lowlands to high elevations, shows how messy the real system is: one
       ancestry cluster spans mountains in every area of endemism, populations
       in the southeast carry a distinct cluster, and several individuals are
       admixed, so the boundaries are only partly respected.
