@@ -5,6 +5,7 @@
 #   - data/mapping/sulawesi_srtm_light.tif        SRTM GL3 relief
 #   - data/mapping/sulawesi_aoe_boundaries.kml    area-of-endemism boundary zones
 #   - data/admixture/dominator/                   PopCluster K = 4 (run 5) Q-matrix
+#                                                 and K summary (DLK2 per K)
 #   - results/locality_counts.csv                 locality coordinates + AOE codes
 #
 # Outputs:
@@ -77,6 +78,19 @@ locs_out <- lapply(seq_len(nrow(used)), function(i) {
   list(id = used$locality_id[i], lon = used$longitude[i], lat = used$latitude[i], aoe = used$aoe[i])
 })
 
+# ---- 3b. Choosing K: DLK2 per K from the PopCluster summary --------------
+k_lines <- readr::read_lines(src("data", "admixture", "dominator", "dominator_redo.K"))
+k_end <- which(k_lines == "")[1] - 1
+k_tab <- utils::read.table(
+  text = k_lines[2:k_end], na.strings = "-",
+  col.names = c("K", "BestRun", "LogL_Mean", "LogL_Min", "LogL_Max", "DLK1", "DLK2", "FST_FIS")
+)
+best_k <- as.integer(sub(".*DLK2\\s+", "", grep("^\\s*DLK2\\s+\\d+", k_lines, value = TRUE)))
+choose_k <- list(
+  bestK = best_k,
+  dlk2 = lapply(which(!is.na(k_tab$DLK2)), function(i) list(k = k_tab$K[i], value = round(k_tab$DLK2[i], 3)))
+)
+
 # ---- 4. AOE boundary zones and label anchors ------------------------------
 aoe <- sf::st_read(src("data", "mapping", "sulawesi_aoe_boundaries.kml"), quiet = TRUE)
 boundaries <- lapply(seq_len(nrow(aoe)), function(i) {
@@ -102,7 +116,8 @@ jsonlite::write_json(
     boundaries = boundaries,
     aoeLabels = aoe_labels,
     localities = locs_out,
-    individuals = individuals
+    individuals = individuals,
+    chooseK = choose_k
   ),
   "src/data/sulawesi-dominator.json",
   auto_unbox = TRUE, digits = NA, pretty = FALSE
