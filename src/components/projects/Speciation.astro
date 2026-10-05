@@ -11,7 +11,7 @@ import PageSubtitle from "../PageSubtitle.astro";
 import LowSeaLevelMap from "./LowSeaLevelMap.astro";
 import SkyIslandDiagram from "../svg/SkyIslandDiagram.astro";
 import SulawesiAncestryMap from "./SulawesiAncestryMap.astro";
-import ElevationRanges from "./ElevationRanges.astro";
+// import ElevationRanges from "./ElevationRanges.astro";
 
 const firstParagraphClasses = cntl`
   first-letter:text-7xl
@@ -104,6 +104,7 @@ const eyebrowClasses = cntl`
     <SkyIslandDiagram />
   </div>
 
+  {/* Elevational distribution plot hidden for now.
   <p class={eyebrowClasses}>Across elevations</p>
   <Content>
     <p>
@@ -118,6 +119,7 @@ const eyebrowClasses = cntl`
   <div class="mt-4 rounded-2xl bg-white p-4 shadow-sm dark:bg-[#141810]">
     <ElevationRanges />
   </div>
+  */}
 
   <p class={eyebrowClasses}>Across the island</p>
   <Content>
