@@ -1,77 +1,99 @@
 ---
-import RodentIcon from "../components/svg/RodentIcon.astro";
+import FieldworkIcon from "../components/svg/FieldworkIcon.astro";
+import {
+  countries,
+  fieldworkKinds,
+  formatSeason,
+  type Expedition,
+} from "../scripts/fieldwork";
 import cntl from "cntl";
 
-const { date, title, subtitle } = Astro.props;
+interface Props {
+  expedition: Expedition;
+}
 
-const IconDateClasses = cntl`
-  flex
-  items-center
-  space-x-4
-  md:space-x-2
-  md:space-x-reverse
-`;
+const { expedition } = Astro.props;
+const { kind } = expedition;
 
-const IconClasses = cntl`
+// Same palette as the field-site pins on the Indonesia map.
+const kindStyles = {
+  collecting: {
+    icon: "bg-sunrise-400 text-sunrise-950",
+    badge: "bg-sunrise-100 text-sunrise-900 dark:bg-sunrise-900/50 dark:text-sunrise-100",
+  },
+  limited: {
+    icon: "bg-crater-300 text-crater-950",
+    badge: "bg-crater-100 text-crater-900 dark:bg-crater-900/60 dark:text-crater-100",
+  },
+  survey: {
+    icon: "bg-moss-200 text-moss-900",
+    badge: "bg-moss-100 text-moss-900 dark:bg-moss-900/60 dark:text-moss-100",
+  },
+}[kind];
+
+const iconClasses = cntl`
+  absolute
+  left-0
+  top-2
   flex
+  h-10
+  w-10
   items-center
   justify-center
-  w-12
-  h-12
   rounded-full
-  bg-sunrise-200
-  md:order-1
-`;
-
-const dateClasses = cntl`
-  font-serif
-  text-lg
-  text-sunrise-800
-  dark:text-sunrise-100
-  md:w-28
+  ring-4
+  ring-white
+  dark:ring-black
+  ${kindStyles.icon}
 `;
 
 const cardClasses = cntl`
-  order-1
-  bg-sunrise-200
-  rounded-xl
-  px-6
+  rounded-2xl
+  border
+  border-moss-900/10
+  bg-white
+  px-5
   py-4
-  ml-14
-  md:ml-44
-`;
-
-const titleClasses = cntl`
-  font-bold
-  text-sunrise-950
-  text-xl
-`;
-
-const subtitleClasses = cntl`
-  mb-2
-  text-sunrise-950
-  text-md
+  transition
+  hover:border-sunrise-400/60
+  hover:shadow-sm
+  dark:border-moss-100/10
+  dark:bg-moss-950/60
+  sm:flex
+  sm:items-start
+  sm:justify-between
+  sm:gap-6
 `;
 ---
 
-<div class="relative">
-  <div class="md:flex items-center md:space-x-4">
-    <div class={IconDateClasses}>
-      <div class={IconClasses}>
-        <RodentIcon fill="#391d11" />
-      </div>
-      <p class={dateClasses}>
-        {date}
+<li class="relative pl-14" data-kind={kind}>
+  <span class={iconClasses}>
+    <FieldworkIcon name={kind} class="h-5 w-5" />
+  </span>
+  <div class={cardClasses}>
+    <div>
+      <h4 class="font-semibold text-moss-950 dark:text-moss-50">
+        {expedition.title}
+      </h4>
+      <p class="text-sm text-slate-700 dark:text-slate-300">
+        {expedition.region}, {expedition.country}
+        <span aria-hidden="true">{countries[expedition.country]}</span>
       </p>
+      {
+        expedition.sites.length > 1 && (
+          <p class="mt-1 text-xs text-moss-700 dark:text-moss-300">
+            {expedition.sites.length} localities
+          </p>
+        )
+      }
+    </div>
+    <div class="mt-2 flex flex-wrap items-center gap-2 sm:mt-0 sm:flex-col sm:items-end">
+      <p class="font-serif text-sunrise-800 dark:text-sunrise-200">
+        {formatSeason(expedition)}
+      </p>
+      <span class={`rounded-full px-2.5 py-0.5 text-xs font-medium ${kindStyles.badge}`}>
+        {fieldworkKinds[kind].label}
+      </span>
     </div>
   </div>
-  <div class={cardClasses}>
-    <h3 class={titleClasses}>
-      {title}
-    </h3>
-    <h2 class={subtitleClasses}>
-      {subtitle}
-    </h2>
-    <slot />
-  </div>
-</div>
+</li>

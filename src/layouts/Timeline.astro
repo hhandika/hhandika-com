@@ -2,24 +2,21 @@
 import cntl from "cntl";
 
 const lineClasses = cntl`
-  space-y-2
-  mt-4
   relative
+  mt-6
+  space-y-8
   before:absolute
-  before:inset-0
-  before:ml-5
-  before:-translate-x-px
-  md:before:ml-[8.75rem]
-  md:before:translate-x-0
-  before:h-full
+  before:left-5
+  before:top-2
+  before:bottom-0
   before:w-0.5
+  before:-translate-x-1/2
   before:bg-gradient-to-b
-  before:from-transparent
-  before:from-1%
-  before:via-sunrise-600
-  before:via-80%
-  dark:before:via-sunrise-300
+  before:from-sunrise-400
+  before:via-moss-300
   before:to-transparent
+  dark:before:from-sunrise-300
+  dark:before:via-moss-700
 `;
 ---
 
