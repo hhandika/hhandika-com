@@ -10,6 +10,10 @@ import Phenomics from "./Phenomics.astro";
 import NahpuArchitecture from "./software/NahpuArchitecture.astro";
 import NahpuGallery from "./software/NahpuGallery.astro";
 import { Image } from "astro:assets";
+import SegulBenchPlot from "./software/SegulBenchPlot.tsx";
+import bench from "../../data/segul/bench.json";
+import seguiIosGenomics from "../../assets/img/segul/segui-ios-genomics.jpg";
+import seguiIosAlignments from "../../assets/img/segul/segui-ios-alignments.jpg";
 import mddHome from "../../assets/img/mdd/mdd-home.jpg";
 import mddTaxon from "../../assets/img/mdd/mdd-taxon.jpg";
 import mddAppTree from "../../assets/img/mdd/app-taxonomy-tree.webp";
@@ -25,6 +29,49 @@ const mddAppShots = [
   { src: mddAppMap, alt: "MDD app GBIF occurrence hexbin map for the short-beaked echidna with MDD country outlines", caption: "Occurrence map" },
   { src: mddAppStats, alt: "MDD app statistics showing species descriptions by decade", caption: "Statistics" },
 ];
+
+// SEGUL CLI vs AMAS on every task, format, and dataset both were run on.
+const benchKey = (r: (typeof bench.rows)[number]) => `${r.task}|${r.format}|${r.dataset}`;
+const segulRuns = new Map(bench.rows.filter((r) => r.app === "SEGUL CLI").map((r) => [benchKey(r), r]));
+const vsAmas = bench.rows.flatMap((r) => {
+  const s = r.app === "AMAS" ? segulRuns.get(benchKey(r)) : undefined;
+  return s ? [{ ...r, speedup: r.time! / s.time!, memory: r.ram! / s.ram! }] : [];
+});
+const median = (xs: number[]) => [...xs].sort((a, b) => a - b)[Math.floor(xs.length / 2)];
+const benchRun = (app: string, task: string, dataset: string) =>
+  bench.rows.find((r) => r.app === app && r.task === task && r.format === "NEXUS" && r.dataset === dataset)!;
+const largest = bench.datasets[0];
+const androidSummary = benchRun("SEGUL GUI (Android)", "Alignment Summary", largest.id);
+const amasSummary = benchRun("AMAS", "Alignment Summary", largest.id);
+// SEGUL GUI vs CLI on the same Linux desktop: the GUI calls the same Rust core.
+const guiRuns = bench.rows.flatMap((r) => {
+  const c = r.app === "SEGUL GUI (Linux)" ? segulRuns.get(benchKey(r)) : undefined;
+  const a = r.app === "SEGUL GUI (Linux)" ? bench.rows.find((x) => x.app === "AMAS" && benchKey(x) === benchKey(r)) : undefined;
+  // Number() rather than a non-null `!` before `/`: the Astro checker misreads `! /` as a regex.
+  return c && a ? [{ vsCli: Number(r.time) / Number(c.time), beatsAmas: Number(a.time) > Number(r.time) }] : [];
+});
+const guiMax = Math.max(...guiRuns.map((r) => r.vsCli));
+const segulStats = [
+  {
+    value: `${median(guiRuns.map((r) => r.vsCli)).toFixed(1)}×`,
+    label: `median GUI runtime relative to the command line on the same desktop (at most ${guiMax.toFixed(1)}×)`,
+  },
+  {
+    value: `${guiRuns.filter((r) => r.beatsAmas).length} of ${guiRuns.length}`,
+    label: "tasks where the desktop GUI finished faster than the AMAS command line",
+  },
+  { value: `${median(vsAmas.map((r) => r.speedup)).toFixed(1)}×`, label: `median speedup over AMAS across ${vsAmas.length} task, format, and dataset runs` },
+  {
+    value: `${androidSummary.time!.toFixed(1)} s`,
+    label: `to summarize ${largest.mbases} Mb of alignments on an Android device, vs ${Math.round(amasSummary.time!)} s for AMAS on a desktop`,
+  },
+];
+const segulShots = [
+  { src: seguiIosGenomics, alt: "SEGUL iPhone app, Genomic Sequence Tools screen set up to summarize raw genomic reads", caption: "Read summary" },
+  { src: seguiIosAlignments, alt: "SEGUL iPhone app, Alignment Tools screen with input, output format, and partition options for concatenation", caption: "Alignment concatenation" },
+];
+const figureClasses =
+  "rounded-2xl border border-forest-900/10 bg-white/70 p-3 shadow-sm dark:border-forest-100/10 dark:bg-forest-950/40 sm:p-5";
 
 const firstParagraphClasses = cntl`
   first-letter:text-7xl
@@ -179,6 +226,63 @@ const spaceClasses = cntl`
     }
   </ul>
   <NahpuGallery />
+
+  <SectionHead text="SEGUL: a GUI with command-line performance" />
+  <Content>
+    <p>
+      Graphical apps for genomic data are usually convenient but slow, so
+      large analyses get pushed to the command line. I built
+      <Link text="SEGUL" url="https://segul.app" /> to show that this
+      trade-off is not necessary. Its desktop and mobile apps call the same Rust core as the command-line tool through a thin
+      Flutter interface, so a point-and-click user gets command-line speed,
+      with only the interface's modest memory overhead on top. SEGUL concatenates, converts,
+      splits, filters, and summarizes phylogenomic alignments. I benchmarked it
+      against widely used tools on six published datasets of {bench.datasets.at(-1)!.mbases}–{largest.mbases}
+      million bases, each run {bench.replicates} times on a desktop ({bench.machine}),
+      and timed the same tasks in the SEGUL app on an iPad and an Android device,
+      as reported in <Link text="Handika & Esselstyn 2024" url="https://doi.org/10.1111/1755-0998.13964" />.
+      Start with the GUI and command line side by side, then pick a task,
+      input format, and dataset to compare SEGUL with other tools.
+    </p>
+  </Content>
+  <figure class={`not-prose my-6 ${figureClasses}`}>
+    <SegulBenchPlot client:visible />
+  </figure>
+  <div class="grid items-start gap-4 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
+    <div class="grid grid-cols-2 gap-3">
+      {
+        segulShots.map((shot) => (
+          <figure class="overflow-hidden rounded-[1.4rem] border border-forest-900/10 bg-forest-50 p-1.5 transition duration-500 hover:-translate-y-0.5 hover:shadow-lg dark:border-forest-100/10 dark:bg-forest-900/40">
+            <Image src={shot.src} alt={shot.alt} width={360} densities={[1, 2]} loading="lazy" class="rounded-[1.1rem]" />
+            <figcaption class="flex flex-wrap items-baseline justify-between gap-x-2 px-1.5 pt-1.5 text-xs">
+              <span class="font-semibold text-forest-900 dark:text-forest-100">{shot.caption}</span>
+              <span class="font-mono text-[0.7rem] text-forest-600 dark:text-forest-400">iPhone</span>
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+    <div>
+      <dl class="grid grid-cols-2 gap-3">
+        {
+          segulStats.map((s) => (
+            <div class="rounded-2xl border border-forest-900/10 px-3 py-3 dark:border-forest-100/10">
+              <dt class="sr-only">{s.label}</dt>
+              <dd class="font-serif text-xl font-semibold text-moss-700 dark:text-moss-300">{s.value}</dd>
+              <dd class="mt-1 text-xs text-forest-700 dark:text-forest-300">{s.label}</dd>
+            </div>
+          ))
+        }
+      </dl>
+      <p class="mt-3 text-sm text-forest-800 dark:text-forest-200">
+        On the same machine, the GUI finishes within about a second of the
+        command line and still outpaces most command-line alternatives. The same core runs in the phone and tablet app, so a
+        laptop-free field station or a classroom can process full
+        phylogenomic datasets; the slower mobile times reflect the hardware,
+        not the interface.
+      </p>
+    </div>
+  </div>
 
   <SectionHead text="Mammal Diversity Database: website, app, and tooling" />
   <Content>

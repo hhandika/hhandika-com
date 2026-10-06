@@ -40,3 +40,9 @@
     animation: none !important;
   }
 }
+
+/* Observable Plot tips default to a white box; match the dark theme. */
+.dark .bc-anim g[aria-label="tip"] path {
+  fill: #0e1a12;
+  stroke: rgb(255 255 255 / 0.2);
+}
