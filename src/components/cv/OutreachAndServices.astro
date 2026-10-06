@@ -256,7 +256,7 @@ const imgClass =
   <Background backgroundImage={outreachIcon} />
   <PageSubtitle subtitle="Outreach & Services" />
 
-  <SectionHead text="Outreach" />
+  <SectionHead text="Outreach" level={3} />
   <div class="mb-4 flex gap-3 overflow-x-auto pb-1">
     {
       outreachImages.map((image) => (
@@ -280,7 +280,7 @@ const imgClass =
     }
   </ol>
 
-  <SectionHead text="In the Media" />
+  <SectionHead text="In the Media" level={3} />
   <div class="mb-4 flex gap-3 overflow-x-auto pb-1">
     <Image
       src={kompasHogNosedRat}
@@ -293,9 +293,9 @@ const imgClass =
     {
       mediaGroups.map((group) => (
         <section class={panelClasses}>
-          <h3 class="font-semibold text-moss-800 dark:text-moss-200">
+          <h4 class="font-semibold text-moss-800 dark:text-moss-200">
             {group.title}
-          </h3>
+          </h4>
           <ul class="mt-3 divide-y divide-forest-900/10 dark:divide-forest-100/10">
             {group.items.map((m) => (
               <li class="py-3 first:pt-0 last:pb-0">
@@ -303,7 +303,7 @@ const imgClass =
                   {m.publisher} · {m.date}
                 </p>
                 {m.title && (
-                  <p class="mt-0.5 font-semibold text-forest-950 dark:text-forest-50">
+                  <p class="mt-0.5 font-semibold text-forest-950 dark:text-forest-50" lang={m.translation ? "id" : undefined}>
                     <i>{m.title}</i>
                   </p>
                 )}
@@ -316,12 +316,12 @@ const imgClass =
                   <div class="mt-2 flex flex-wrap gap-2">
                     {m.url && (
                       <a href={m.url} target="_blank" rel="noopener" class={linkClasses}>
-                        Read online
+                        Read online<span class="sr-only">: {m.translation ?? m.title ?? m.publisher} (opens in new tab)</span>
                       </a>
                     )}
                     {m.pdfUrl && (
                       <a href={m.pdfUrl} target="_blank" rel="noopener" class={linkClasses}>
-                        PDF
+                        PDF<span class="sr-only">: {m.translation ?? m.title ?? m.publisher} (opens in new tab)</span>
                       </a>
                     )}
                   </div>
@@ -334,13 +334,13 @@ const imgClass =
     }
   </div>
 
-  <SectionHead text="Popular Articles" />
+  <SectionHead text="Popular Articles" level={3} />
   <ol class={`${panelClasses} divide-y divide-forest-900/10 dark:divide-forest-100/10`}>
     {
       articles.map((a) => (
         <li class="py-3 first:pt-0 last:pb-0 sm:flex sm:items-start sm:justify-between sm:gap-6">
           <div class="min-w-0">
-            <p class="font-semibold text-forest-950 dark:text-forest-50">
+            <p class="font-semibold text-forest-950 dark:text-forest-50" lang={a.translation ? "id" : undefined}>
               <i>{a.title}</i>
             </p>
             <p class="text-sm text-slate-700 dark:text-slate-300">
@@ -353,13 +353,13 @@ const imgClass =
           <div class="mt-2 flex shrink-0 flex-wrap gap-2 sm:mt-0">
             {a.url && (
               <a href={a.url} target="_blank" rel="noopener" class={linkClasses}>
-                Read online
-              </a>
+                        Read online<span class="sr-only">: {a.translation ?? a.title} (opens in new tab)</span>
+                      </a>
             )}
             {a.pdfUrl && (
               <a href={a.pdfUrl} target="_blank" rel="noopener" class={linkClasses}>
-                PDF
-              </a>
+                        PDF<span class="sr-only">: {a.translation ?? a.title} (opens in new tab)</span>
+                      </a>
             )}
           </div>
         </li>
@@ -367,14 +367,14 @@ const imgClass =
     }
   </ol>
 
-  <SectionHead text="Memberships & Service" />
+  <SectionHead text="Memberships & Service" level={3} />
   <div class="grid gap-4 md:grid-cols-2">
     {
       memberships.map((m) => (
         <section class={panelClasses}>
-          <h3 class="font-semibold text-forest-950 dark:text-forest-50">
+          <h4 class="font-semibold text-forest-950 dark:text-forest-50">
             {m.organization}
-          </h3>
+          </h4>
           <p class="font-serif text-moss-800 dark:text-moss-200">
             {m.period}
           </p>

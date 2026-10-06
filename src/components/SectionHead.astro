@@ -3,6 +3,8 @@ import cntl from "cntl";
 
 interface SectionHead {
   text: string;
+  // Heading level; sections nested under a page subtitle use 3.
+  level?: 2 | 3;
 }
 
 const sectionHeadClasses = cntl`
@@ -14,11 +16,12 @@ const sectionHeadClasses = cntl`
   mb-2
 `;
 
-const { text } = Astro.props as SectionHead;
+const { text, level = 2 } = Astro.props as SectionHead;
+const Heading = `h${level}`;
 ---
 
 <div class={sectionHeadClasses}>
-  <h2>
+  <Heading>
     {text}
-  </h2>
+  </Heading>
 </div>

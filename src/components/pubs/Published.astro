@@ -40,20 +40,20 @@ const {
   {
     (doi || altUrl) && (
       <WrapButton>
-        <DownloadButton text="View Article" url={doi ? doi : altUrl} />
+        <DownloadButton context={title} text="View Article" url={doi ? doi : altUrl} />
         {pdfUrl && isRequest ? (
-          <SendMessageButton
+          <SendMessageButton context={title}
             text="Request PDF"
             url={pdfUrl}
-            extendClass="btn-active"
+            primary
           />
         ) : (
           pdfUrl && (
-            <DownloadButton
+            <DownloadButton context={title}
               text="Download PDF"
               url={pdfUrl}
               isDownload="true"
-              extendClass="btn-active"
+              primary
             />
           )
         )}

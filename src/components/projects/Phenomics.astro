@@ -3,8 +3,6 @@ import { Image } from "astro:assets";
 import Content from "../Content.astro";
 import SectionHead from "../SectionHead.astro";
 import Link from "../Link.astro";
-import ProjectPubs from "../../layouts/ProjectPubs.astro";
-import PubButton from "../buttons/PubButton.astro";
 import EmbeddingPipeline from "./software/EmbeddingPipeline.astro";
 import MorphospacePlot from "./biocosmos/MorphospacePlot.tsx";
 import PlannerPlot from "./biocosmos/PlannerPlot.tsx";
@@ -32,7 +30,6 @@ const collection = [
 
 const random = mimicry.permutations.filter((p) => p.null === "Random");
 const mimicryStats = [
-  { value: `${mimicry.counts.testedPairs}/${mimicry.counts.publishedPairs}`, label: "published mimicry pairs with images of both species" },
   { value: `${mimicry.pairs.filter((p) => p.recovered).length}/${mimicry.counts.testedPairs}`, label: "pairs mutually in the top 10 of 8,409 species on at least one wing side" },
   { value: random.map((p) => p.observed.toFixed(3)).join(" · "), label: "mean partner percentile, dorsal · ventral (chance = 0.50)" },
   { value: "p ≤ 0.0001", label: "against random and congener nulls (10,000 permutations)" },
@@ -176,7 +173,7 @@ const shotClasses =
 <figure class={`not-prose my-6 ${figureClasses}`}>
   <MimicryPlot client:visible />
 </figure>
-<dl class="grid grid-cols-2 gap-3 lg:grid-cols-4">
+<dl class="grid gap-3 sm:grid-cols-3">
   {
     mimicryStats.map((s) => (
       <div class="rounded-2xl border border-forest-900/10 px-3 py-3 dark:border-forest-100/10">
@@ -201,15 +198,3 @@ const shotClasses =
 <figure class={`not-prose my-6 ${figureClasses}`}>
   <PlannerPlot client:visible />
 </figure>
-<Content>
-  <div class="mt-4 mb-2 text-semibold">Publications:</div>
-  <ProjectPubs author="Handika et al.">
-    <PubButton
-      author="Handika, H., Lürig, M. D., Nichtawitz, K. L., Dobon, O. M., Yarava, V. S., Shi, B. D., Elliott, M. J., Fortes, J. A. B., Porto, A"
-      year="In prep"
-      title="BioCosmos: computer vision and large-language models for large-scale image-based biodiversity exploration and trait discovery"
-      url="https://lepiverse.com"
-      codeUrl="https://github.com/BioVisionLab/BioCosmos"
-    />
-  </ProjectPubs>
-</Content>

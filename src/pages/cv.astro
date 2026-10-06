@@ -42,34 +42,42 @@ const tabContainerClasses = cntl`
   scrollbar-hide
 `;
 
-const activeClass = cntl`
-  bg-forest-600
-  dark:bg-forest-300
-  text-white
-  dark:text-moss-950
-  font-semibold
-`;
-
-const inactiveClass = cntl`
-  text-moss-950
-  dark:text-moss-50
-  hover:bg-forest-300
-  dark:hover:bg-forest-800
+// Pressed state drives the styling, so the visual and announced state agree.
+const tabButtonClasses = cntl`
+  tab-button
+  rounded-full
+  px-4
+  py-2
+  text-sm
   font-normal
+  text-moss-950
+  transition-colors
+  duration-300
+  hover:bg-forest-300
+  dark:text-moss-50
+  dark:hover:bg-forest-800
+  aria-pressed:bg-forest-600
+  aria-pressed:font-semibold
+  aria-pressed:text-white
+  aria-pressed:hover:bg-forest-600
+  dark:aria-pressed:bg-forest-300
+  dark:aria-pressed:text-moss-950
+  dark:aria-pressed:hover:bg-forest-300
 `;
 ---
 
 <Layout title="Curriculum Vitae">
   <MainPage
     ><PageTitle title="Curriculum Vitae" />
-    <div class={tabContainerClasses}>
+    <div class={tabContainerClasses} role="group" aria-label="CV section">
       {
         tabData.map(({ id, label }) => (
           <button
-            class={`py-2 text-sm px-4 rounded-full transition-colors duration-300 tab-button ${
-              id === "publications" ? activeClass : inactiveClass
-            }`}
+            type="button"
+            class={tabButtonClasses}
             data-section={id}
+            aria-controls={`${id}-section`}
+            aria-pressed={id === "publications" ? "true" : "false"}
           >
             {label}
           </button>
@@ -89,77 +97,17 @@ const inactiveClass = cntl`
 </Layout>
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    console.log("Script loaded");
+  const buttons = document.querySelectorAll<HTMLButtonElement>(".tab-button");
 
-    function showSection(section: string) {
-      console.log("showSection called with:", section);
-
-      const sections = ["publications", "teaching", "outreach"];
-
-      sections.forEach((sec) => {
-        const element = document.querySelector(`#${sec}-section`);
-        console.log(`Section ${sec}:`, element);
-        if (element) {
-          element.classList.add("hidden");
-        }
-      });
-
-      const activeSection = document.querySelector(`#${section}-section`);
-      console.log("Active section:", activeSection);
-      if (activeSection) {
-        activeSection.classList.remove("hidden");
-      }
-
-      // Update button styles
-      document.querySelectorAll(".tab-button").forEach((btn) => {
-        btn.classList.remove(
-          "bg-forest-600",
-          "dark:bg-forest-300",
-          "text-white",
-          "dark:text-moss-950",
-          "font-semibold",
-        );
-        btn.classList.add(
-          "text-moss-950",
-          "dark:text-moss-50",
-          "hover:bg-forest-300",
-          "dark:hover:bg-forest-800",
-          "font-normal",
-        );
-      });
-
-      const activeButton = document.querySelector(
-        `[data-section="${section}"]`,
-      );
-      if (activeButton) {
-        activeButton.classList.remove(
-          "text-forest-950",
-          "dark:text-moss-50",
-          "hover:bg-forest-300",
-          "dark:hover:bg-forest-800",
-          "font-normal",
-        );
-        activeButton.classList.add(
-          "bg-forest-600",
-          "dark:bg-forest-300",
-          "text-white",
-          "dark:text-moss-950",
-          "font-semibold",
-        );
-      }
-    }
-
-    // Add event listeners to all tab buttons
-    const buttons = document.querySelectorAll(".tab-button");
-    console.log("Found buttons:", buttons.length);
-
-    buttons.forEach((button) => {
-      button.addEventListener("click", () => {
-        const section = button.getAttribute("data-section");
-        console.log("Button clicked, section:", section);
-        if (section) showSection(section);
-      });
+  const showSection = (section: string) => {
+    buttons.forEach((btn) => {
+      const active = btn.dataset.section === section;
+      btn.setAttribute("aria-pressed", String(active));
+      document.getElementById(`${btn.dataset.section}-section`)?.classList.toggle("hidden", !active);
     });
-  });
+  };
+
+  buttons.forEach((button) =>
+    button.addEventListener("click", () => showSection(button.dataset.section!)),
+  );
 </script>

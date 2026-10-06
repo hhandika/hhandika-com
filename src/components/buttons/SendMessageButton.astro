@@ -5,27 +5,45 @@ interface OpenTabProps {
   text: string;
   url: string;
   extendClass?: string;
+  primary?: boolean;
+  // What the link is for, read after its visible text (WCAG 2.4.4).
+  context?: string;
 }
 
-const { text, url, extendClass } = Astro.props as OpenTabProps;
+const { text, url, extendClass = "", primary = false, context } = Astro.props as OpenTabProps;
+// Primary action: the site's moss accent (as the active navigation pill)
+// instead of daisyUI's gray `btn-active`.
+const primaryClasses = cntl`
+    !border-moss-400
+    !bg-moss-400
+    !text-moss-950
+    hover:!border-moss-500
+    hover:!bg-moss-500
+`;
+
 
 const buttonClasses = cntl`
-    btn-sm
     btn
-    btn-outline  
+    btn-outline
+    h-auto
+    min-h-0
+    px-3
+    py-1.5
+    text-sm
+    leading-5  
     text-forest-950
     hover:bg-forest-900
     hover:text-forest-50
     dark:text-forest-50
     dark:hover:bg-forest-50
     dark:hover:text-forest-950
-    ${extendClass} 
+    ${primary ? primaryClasses : ""}
+    ${extendClass}
 `;
 ---
 
 <a href={url} class={buttonClasses} target="_blank" rel="noopener noreferrer">
   <svg
-    id="fi_9314363"
     aria-hidden="true"
     width="16"
     viewBox="0 0 64 64"
@@ -48,5 +66,6 @@ const buttonClasses = cntl`
       d="m37.14063 51.31348-4.10352 4.96582a.99986.99986 0 1 0 1.541 1.27441l4.10351-4.96582a1 1 0 0 0 -1.54099-1.27441z"
     ></path></svg
   >
-  {text}
+  {/* One span, so the flex gap sits only between icon and label. */}
+  <span>{text}{context && <span class="sr-only">: {context}</span>}<span class="sr-only"> (opens in new tab)</span></span>
 </a>

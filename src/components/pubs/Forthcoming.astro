@@ -26,13 +26,13 @@ const { authors, year, title, journal, doi, pdfUrl, url, codeUrl } =
   {
     doi && (
       <WrapButton>
-        <DownloadButton text="View Preprint" url={doi} />
+        <DownloadButton context={title} text="View Preprint" url={doi} />
         {pdfUrl && (
-          <DownloadButton
+          <DownloadButton context={title}
             text="Download PDF"
             url={pdfUrl}
             isDownload="true"
-            extendClass="btn-active"
+            primary
           />
         )}
       </WrapButton>
@@ -41,12 +41,12 @@ const { authors, year, title, journal, doi, pdfUrl, url, codeUrl } =
   {
     url && (
       <WrapButton>
-        <DownloadButton text="Learn More" url={url} />
+        <DownloadButton context={title} text="Learn More" url={url} />
         {codeUrl && (
-          <DownloadButton
+          <DownloadButton context={title}
             text="View Code"
             url={codeUrl}
-            extendClass="btn-active"
+            primary
           />
         )}
       </WrapButton>
@@ -55,10 +55,10 @@ const { authors, year, title, journal, doi, pdfUrl, url, codeUrl } =
   {
     codeUrl && !url && (
       <WrapButton>
-        <DownloadButton
+        <DownloadButton context={title}
           text="View Code"
           url={codeUrl}
-          extendClass="btn-active"
+          primary
         />
       </WrapButton>
     )

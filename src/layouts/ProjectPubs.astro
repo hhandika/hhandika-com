@@ -2,6 +2,8 @@
 const { author } = Astro.props;
 ---
 
-<div class="-mt-4">
-  {author} (<slot />)
+<!-- inline-flex drops the source whitespace between year buttons and their
+     commas, so the list reads "(2019, 2021)" rather than "(2019 , 2021 )". -->
+<div class="mt-1">
+  {author} (<span class="inline-flex flex-wrap items-baseline"><slot /></span>)
 </div>

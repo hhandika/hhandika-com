@@ -1,5 +1,4 @@
 ---
-import WrapButton from "../../layouts/WrapButton.astro";
 import DownloadButton from "./DownloadButton.astro";
 import SendMessageButton from "./SendMessageButton.astro";
 import leadingIcon from "../../assets/icons/paper.svg";
@@ -19,14 +18,19 @@ interface PubButton {
 const { title, author, year, doi, pdfUrl, isRequest, url, codeUrl } =
   Astro.props as PubButton;
 
+// Each instance needs its own ids for aria-controls and aria-labelledby.
+const id = `pub-${`${year}-${title}`.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 60)}`;
+
 const openBtnClasses = cntl`
-  btn 
-  btn-active 
-  btn-link 
-  btn-md 
+  font-medium
   text-mist-700
+  underline
+  decoration-mist-400/60
+  underline-offset-2
+  hover:text-moss-700
+  hover:decoration-moss-500
   dark:text-mist-300
-  -mx-5
+  dark:hover:text-moss-300
 `;
 
 const closeBtnClasses = cntl`
@@ -38,48 +42,63 @@ const closeBtnClasses = cntl`
 
 const snackbarClasses = cntl`
   hidden
-  alert
-  bg-forest-50
-  text-forest-950
-  border-forest-900/15
-  dark:bg-forest-900
-  dark:text-forest-50
-  dark:border-forest-100/15
+  flex
   fixed
   bottom-4
-  max-w-xs
-  md:max-w-md
-  xl:max-w-4xl
+  left-4
+  right-4
+  z-50
+  sm:right-auto
+  sm:max-w-xl
+  items-start
+  gap-3
   rounded-2xl
+  border
+  border-moss-200
+  bg-white
+  p-4
+  text-forest-950
+  shadow-xl
+  shadow-forest-950/10
+  dark:border-forest-700
+  dark:bg-forest-900
+  dark:text-forest-50
 `;
+
 ---
 
-<button id="open-snackbar" class={openBtnClasses}>
-  {year}
+<button
+  type="button"
+  class={`pub-open ${openBtnClasses}`}
+  aria-expanded="false"
+  aria-controls={id}
+>
+  {year}<span class="sr-only">: {title}, show links</span>
 </button>
 
-<div id="snackbar" role="alert" class={snackbarClasses}>
-  <img
-    src={leadingIcon.src}
-    alt="Analysis icon"
-    class="h-8 w-8 mx-auto"
-    aria-hidden="true"
-  />
-  <div class="text-start">
-    <h3 class="font-bold">{title}</h3>
-    <div class="text-xs">{author}. {year}</div>
+<div
+  id={id}
+  role="dialog"
+  aria-labelledby={`${id}-title`}
+  tabindex="-1"
+  class={`pub-panel ${snackbarClasses}`}
+>
+  <img src={leadingIcon.src} alt="" class="mt-0.5 h-8 w-8 shrink-0" />
+  <div class="min-w-0 flex-1 text-start">
+    <h3 id={`${id}-title`} class="font-semibold leading-snug">{title}</h3>
+    <div class="mt-1 text-xs text-forest-700 dark:text-forest-300">{author}. {year}</div>
     {
       (() => {
         let activeGiven = false;
         const active = () => {
-          if (activeGiven) return "";
+          if (activeGiven) return false;
           activeGiven = true;
-          return "btn-active";
+          return true;
         };
 
         return (
           (doi || url || codeUrl) && (
-            <WrapButton>
+            <div class="mt-3 flex flex-wrap gap-2">
               {doi && (
                 <>
                   {pdfUrl &&
@@ -87,20 +106,20 @@ const snackbarClasses = cntl`
                       <SendMessageButton
                         text="Request PDF"
                         url={pdfUrl}
-                        extendClass={active()}
+                        primary={active()}
                       />
                     ) : (
                       <DownloadButton
                         text="Download PDF"
                         url={pdfUrl}
                         isDownload="true"
-                        extendClass={active()}
+                        primary={active()}
                       />
                     ))}
                   <DownloadButton
                     text="Article"
                     url={doi}
-                    extendClass={!pdfUrl ? active() : ""}
+                    primary={!pdfUrl && active()}
                   />
                 </>
               )}
@@ -109,15 +128,13 @@ const snackbarClasses = cntl`
                   <DownloadButton
                     text="Website"
                     url={url}
-                    extendClass={!isRequest && !doi && !pdfUrl ? active() : ""}
+                    primary={!isRequest && !doi && !pdfUrl && active()}
                   />
                   {codeUrl && (
                     <DownloadButton
                       text="Code"
                       url={codeUrl}
-                      extendClass={
-                        !isRequest && !doi && !pdfUrl && !url ? active() : ""
-                      }
+                      primary={!isRequest && !doi && !pdfUrl && !url && active()}
                     />
                   )}
                 </>
@@ -126,19 +143,20 @@ const snackbarClasses = cntl`
                 <DownloadButton
                   text="Code"
                   url={codeUrl}
-                  extendClass={!isRequest && !doi && !pdfUrl ? active() : ""}
+                  primary={!isRequest && !doi && !pdfUrl && active()}
                 />
               )}
-            </WrapButton>
+            </div>
           )
         );
       })()
     }
   </div>
-  <button id="close-snackbar" class={closeBtnClasses}>
+  <button type="button" class={`pub-close ${closeBtnClasses}`} aria-label="Close">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       class="h-6 w-6"
+      aria-hidden="true"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -153,30 +171,35 @@ const snackbarClasses = cntl`
 </div>
 
 <script>
-  document.querySelectorAll("#open-snackbar").forEach((button) => {
-    button.addEventListener("click", () => {
-      const snackbar = button.nextElementSibling;
-      // if snackbar is not hidden, then hide it
-      document
-        .querySelectorAll("#snackbar:not(.hidden)")
-        .forEach((snackbar) => {
-          snackbar.classList.add("hidden");
-        });
-      snackbar?.classList.toggle("hidden");
-      // set time 10 seconds
-      setTimeout(() => {
-        snackbar?.classList.add("hidden");
-      }, 15000);
-    });
-  });
+  // A non-modal popup: it stays open until closed (no time limit), Escape or the
+  // close button returns focus to its trigger, and it closes when focus moves
+  // on so the fixed panel never covers the next focused element.
+  const close = (panel: HTMLElement, restoreFocus = false) => {
+    if (panel.classList.contains("hidden")) return;
+    panel.classList.add("hidden");
+    const trigger = panel.previousElementSibling as HTMLButtonElement | null;
+    trigger?.setAttribute("aria-expanded", "false");
+    if (restoreFocus) trigger?.focus();
+  };
+  const closeAll = () => document.querySelectorAll<HTMLElement>(".pub-panel").forEach((p) => close(p));
 
-  document.querySelectorAll("#close-snackbar").forEach((closeButton) => {
-    closeButton.addEventListener("click", () => {
-      document
-        .querySelectorAll("#snackbar:not(.hidden)")
-        .forEach((snackbar) => {
-          snackbar.classList.add("hidden");
-        });
+  document.querySelectorAll<HTMLButtonElement>(".pub-open").forEach((button) => {
+    const panel = button.nextElementSibling as HTMLElement;
+    button.addEventListener("click", () => {
+      const opening = panel.classList.contains("hidden");
+      closeAll();
+      if (!opening) return;
+      panel.classList.remove("hidden");
+      button.setAttribute("aria-expanded", "true");
+      panel.focus();
+    });
+    panel.querySelector(".pub-close")!.addEventListener("click", () => close(panel, true));
+    panel.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") close(panel, true);
+    });
+    panel.addEventListener("focusout", (e) => {
+      const next = e.relatedTarget as Node | null;
+      if (next && !panel.contains(next) && next !== button) close(panel);
     });
   });
 </script>
