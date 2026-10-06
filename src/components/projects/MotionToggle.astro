@@ -1,0 +1,62 @@
+---
+// Pause/play for looping figure animations (WCAG 2.2.2). One toggle pauses
+// every animated figure on the page, and the choice is remembered per browser.
+// Figures opt in with the `motion` class on their root.
+interface Props {
+  class?: string;
+}
+const { class: className = "" } = Astro.props;
+---
+
+<button
+  type="button"
+  class={`motion-toggle inline-flex items-center gap-1.5 rounded-full border border-forest-900/15 px-2.5 py-1 text-xs font-semibold text-forest-800 transition-colors hover:bg-forest-100 dark:border-forest-100/20 dark:text-forest-100 dark:hover:bg-forest-900 ${className}`}
+  aria-pressed="false"
+>
+  <svg viewBox="0 0 16 16" class="icon-pause h-3 w-3" aria-hidden="true"><path d="M4 2.5h3v11H4zM9 2.5h3v11H9z" fill="currentColor" /></svg>
+  <svg viewBox="0 0 16 16" class="icon-play hidden h-3 w-3" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor" /></svg>
+  <span class="label">Pause animation</span>
+</button>
+
+<style is:global>
+  html[data-motion="paused"] .motion,
+  html[data-motion="paused"] .motion * {
+    animation-play-state: paused !important;
+  }
+</style>
+
+<script>
+  const KEY = "figure-motion";
+  const root = document.documentElement;
+
+  const apply = (paused: boolean) => {
+    root.dataset.motion = paused ? "paused" : "playing";
+    document.querySelectorAll<SVGSVGElement>(".motion svg").forEach((svg) => {
+      if (typeof svg.pauseAnimations !== "function") return;
+      paused ? svg.pauseAnimations() : svg.unpauseAnimations();
+    });
+    document.querySelectorAll<HTMLButtonElement>(".motion-toggle").forEach((b) => {
+      b.setAttribute("aria-pressed", String(paused));
+      b.querySelector(".label")!.textContent = paused ? "Play animation" : "Pause animation";
+      b.querySelector(".icon-pause")!.classList.toggle("hidden", paused);
+      b.querySelector(".icon-play")!.classList.toggle("hidden", !paused);
+    });
+  };
+
+  let stored: string | null = null;
+  try {
+    stored = localStorage.getItem(KEY);
+  } catch {}
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  apply(stored ? stored === "paused" : reduced);
+
+  document.querySelectorAll<HTMLButtonElement>(".motion-toggle").forEach((b) =>
+    b.addEventListener("click", () => {
+      const paused = root.dataset.motion !== "paused";
+      apply(paused);
+      try {
+        localStorage.setItem(KEY, paused ? "paused" : "playing");
+      } catch {}
+    }),
+  );
+</script>

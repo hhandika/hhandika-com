@@ -128,8 +128,9 @@ const kTicks = [0, 1, 2].filter((v) => v >= vMin && v <= vMax);
         <svg
           viewBox={`0 0 ${f(W)} ${f(H)}`}
           class="absolute inset-0 h-full w-full overflow-visible"
-          role="img"
-          aria-labelledby="sul-title sul-desc"
+          role="group"
+          aria-labelledby="sul-title"
+          aria-describedby="sul-desc"
         >
           <title id="sul-title">Sulawesi: areas of endemism and Taeromys dominator ancestry</title>
           <desc id="sul-desc">
@@ -202,7 +203,7 @@ const kTicks = [0, 1, 2].filter((v) => v >= vMin && v <= vMax);
           </g>
         </svg>
         <div
-          class="map-tip pointer-events-none absolute z-20 hidden min-w-[9.5rem] rounded-lg border border-forest-900/10 bg-white/95 px-3 py-2 text-xs shadow-lg backdrop-blur dark:border-white/15 dark:bg-mist-950/90 dark:text-forest-100"
+          class="map-tip absolute z-20 hidden min-w-[9.5rem] rounded-lg border border-forest-900/10 bg-white/95 px-3 py-2 text-xs shadow-lg backdrop-blur dark:border-white/15 dark:bg-mist-950/90 dark:text-forest-100"
           role="status"
         >
         </div>
@@ -232,17 +233,17 @@ const kTicks = [0, 1, 2].filter((v) => v >= vMin && v <= vMax);
 
       <ul class="list-disc space-y-1.5 pl-4 text-pretty marker:text-moss-500">
         <li>
-          <span class="font-semibold" style={`color:${colors[1]}`}>Cluster 2</span> occurs in
+          <span class="whitespace-nowrap font-semibold text-forest-900 dark:text-forest-50"><span class="mr-1 inline-block h-2.5 w-2.5 rounded-sm align-baseline" style={`background:${colors[1]}`} aria-hidden="true"></span>Cluster 2</span> occurs in
           every area of endemism sampled, from the southwest peninsula to the
           northeastern tip.
         </li>
         <li>
-          <span class="font-semibold" style={`color:${colors[3]}`}>Cluster 4</span> dominates
+          <span class="whitespace-nowrap font-semibold text-forest-900 dark:text-forest-50"><span class="mr-1 inline-block h-2.5 w-2.5 rounded-sm align-baseline" style={`background:${colors[3]}`} aria-hidden="true"></span>Cluster 4</span> dominates
           the southeast (Lawaki), with a trace in one west-central individual.
         </li>
         <li>
-          <span class="font-semibold" style={`color:${colors[0]}`}>Cluster 1</span> and
-          <span class="font-semibold" style={`color:${colors[2]}`}>Cluster 3</span> occur at
+          <span class="whitespace-nowrap font-semibold text-forest-900 dark:text-forest-50"><span class="mr-1 inline-block h-2.5 w-2.5 rounded-sm align-baseline" style={`background:${colors[0]}`} aria-hidden="true"></span>Cluster 1</span> and
+          <span class="whitespace-nowrap font-semibold text-forest-900 dark:text-forest-50"><span class="mr-1 inline-block h-2.5 w-2.5 rounded-sm align-baseline" style={`background:${colors[2]}`} aria-hidden="true"></span>Cluster 3</span> occur at
           scattered sites, and several individuals are
           admixed, some sharing a mountain with unadmixed neighbours.
         </li>
@@ -276,7 +277,7 @@ const kTicks = [0, 1, 2].filter((v) => v >= vMin && v <= vMax);
           }
         </svg>
         <p class="mt-1 text-xs text-forest-600 dark:text-forest-400">
-          Hover or tap a bar or pie to see the specimen, locality, and ancestry.
+          Hover or tap a bar or pie, or tab to a pie, to see the specimen, locality, and ancestry.
         </p>
       </div>
 
@@ -538,12 +539,28 @@ const kTicks = [0, 1, 2].filter((v) => v >= vMin && v <= vMax);
     tipEl.style.top = `${top}px`;
   };
 
+  // The tip stays while the pointer moves onto it (WCAG 1.4.13) and Escape dismisses it.
+  let hideTimer: number | undefined;
+  const hideSoon = () => {
+    window.clearTimeout(hideTimer);
+    hideTimer = window.setTimeout(clear, 250);
+  };
+  const showNow = (i: string) => {
+    window.clearTimeout(hideTimer);
+    show(i);
+  };
+  tipEl.addEventListener("pointerenter", () => window.clearTimeout(hideTimer));
+  tipEl.addEventListener("pointerleave", hideSoon);
+  root.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") clear();
+  });
+
   root.querySelectorAll<SVGGElement>(".pie, .bar").forEach((el) => {
     const i = el.dataset.ind!;
-    el.addEventListener("pointerenter", () => show(i));
-    el.addEventListener("pointerleave", clear);
-    el.addEventListener("click", () => show(i));
-    el.addEventListener("focus", () => show(i));
+    el.addEventListener("pointerenter", () => showNow(i));
+    el.addEventListener("pointerleave", hideSoon);
+    el.addEventListener("click", () => showNow(i));
+    el.addEventListener("focus", () => showNow(i));
     el.addEventListener("blur", clear);
   });
 </script>

@@ -3,6 +3,7 @@
 // NAHPU architecture's visual language (tones, rounded cards, flowing
 // connectors, packets) so the two diagrams read as one system.
 import { tones, wrapChips, arrowHead, lineClass, seeded, type Tone } from "./diagram";
+import MotionToggle from "../MotionToggle.astro";
 
 // Specimen groups: two butterfly morphs and a rodent.
 const groups = [
@@ -175,10 +176,11 @@ const butterfly = [
 ];
 ---
 
-<figure class="not-prose my-6">
+<figure class="motion not-prose my-6">
   <div
     class="rounded-2xl border border-forest-900/10 bg-white/70 p-3 shadow-sm dark:border-forest-100/10 dark:bg-forest-950/40 sm:p-5"
   >
+    <div class="mb-2 flex justify-end"><MotionToggle /></div>
     {
       layouts.map((layout) => (
         <svg

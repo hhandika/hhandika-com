@@ -15,7 +15,11 @@ interface Data {
 type Mode = "dorsal" | "ventral" | "both";
 
 // ColorBrewer Dark2, in the same family order as the publication figure.
-const PALETTE = ["#1b9e77", "#d95f02", "#7570b3", "#e7298a", "#66a61e", "#e6ab02", "#9a9a9a"];
+// On the light background, green, yellow, and gray are darkened to reach
+// 3:1 (WCAG 1.4.11); the dark background keeps the original hues.
+const PALETTE_DARK = ["#1b9e77", "#d95f02", "#7570b3", "#e7298a", "#66a61e", "#e6ab02", "#9a9a9a"];
+const PALETTE_LIGHT = ["#1b9e77", "#d95f02", "#7570b3", "#e7298a", "#5d8a1a", "#a67c00", "#767676"];
+const isDark = () => document.documentElement.classList.contains("dark");
 const DURATION = 1800; // slow, gentle transitions
 const RADIUS = 2.4;
 
@@ -43,6 +47,8 @@ export default function MorphospacePlot() {
   const [family, setFamily] = useState<number | null>(null);
   const [width, setWidth] = useState(0);
   const [tip, setTip] = useState<{ x: number; y: number; text: string; sub: string } | null>(null);
+  const [dark, setDark] = useState(false);
+  const PALETTE = dark ? PALETTE_DARK : PALETTE_LIGHT;
 
   const frame = useRef<Frame | null>(null);
   const scales = useRef<{ x: (v: number) => number; y: (v: number) => number } | null>(null);
@@ -51,6 +57,11 @@ export default function MorphospacePlot() {
 
   useEffect(() => {
     reduced.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setDark(isDark());
+    const themeObserver = new MutationObserver(() => setDark(isDark()));
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setTip(null);
+    window.addEventListener("keydown", onKey);
     fetch("/data/biocosmos/morphospace.json")
       .then((r) => r.json())
       .then(setData)
@@ -59,6 +70,8 @@ export default function MorphospacePlot() {
     if (wrapRef.current) ro.observe(wrapRef.current);
     return () => {
       ro.disconnect();
+      themeObserver.disconnect();
+      window.removeEventListener("keydown", onKey);
       cancelAnimationFrame(raf.current);
     };
   }, []);
@@ -204,6 +217,11 @@ export default function MorphospacePlot() {
     if (data && scales.current) animate(data, target(data, mode, family));
   }, [mode, family]);
 
+  // Repaint in the other palette when the site theme changes.
+  useEffect(() => {
+    if (data && frame.current) draw(data, frame.current, 1);
+  }, [dark]);
+
   function onMove(e: MouseEvent) {
     const f = frame.current;
     if (!data || !f) return;
@@ -236,12 +254,11 @@ export default function MorphospacePlot() {
   return (
     <div class="bc-plot">
       <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
-        <div class="inline-flex rounded-full border border-forest-900/15 p-1 dark:border-forest-100/15" role="tablist" aria-label="Wing surface">
+        <div class="inline-flex rounded-full border border-forest-900/15 p-1 dark:border-forest-100/15" role="group" aria-label="Wing surface">
           {MODES.map((m) => (
             <button
               type="button"
-              role="tab"
-              aria-selected={mode === m.id}
+              aria-pressed={mode === m.id}
               onClick={() => setMode(m.id)}
               class={`rounded-full px-3 py-1 text-sm transition-colors duration-500 ${
                 mode === m.id
@@ -265,7 +282,7 @@ export default function MorphospacePlot() {
           ref={canvasRef}
           class="absolute left-0 top-0"
           role="img"
-          aria-label="Scatter plot of butterfly species in a two-dimensional principal component space of image embeddings, colored by family"
+          aria-label="Scatter plot of butterfly species in a two-dimensional principal component space of image embeddings, colored by family. Species counts per family are in the table below."
         />
         {tip && (
           <div
@@ -294,6 +311,38 @@ export default function MorphospacePlot() {
             </button>
           ))}
         </div>
+      )}
+      {data && (
+        <details class="mt-3 text-xs text-forest-800 dark:text-forest-200">
+          <summary class="cursor-pointer font-semibold text-forest-700 dark:text-forest-300">Data table</summary>
+          <table class="mt-2 tabular-nums">
+            <caption class="sr-only">Species centroids per family and wing side</caption>
+            <thead>
+              <tr class="border-b border-forest-900/15 dark:border-forest-100/15">
+                <th scope="col" class="py-1 pr-4 text-left">Family</th>
+                <th scope="col" class="py-1 pr-4 text-right">Dorsal species</th>
+                <th scope="col" class="py-1 pr-4 text-right">Ventral species</th>
+                <th scope="col" class="py-1 text-right">Both sides</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.families.map((name, i) => {
+                const rows = data.species.filter((sp) => sp[1] === i);
+                const d = rows.filter((sp) => sp[2] !== null).length;
+                const v = rows.filter((sp) => sp[4] !== null).length;
+                const b = rows.filter((sp) => sp[2] !== null && sp[4] !== null).length;
+                return (
+                  <tr class="border-b border-forest-900/5 dark:border-forest-100/5">
+                    <th scope="row" class="py-1 pr-4 text-left font-normal">{name}</th>
+                    <td class="py-1 pr-4 text-right">{d.toLocaleString()}</td>
+                    <td class="py-1 pr-4 text-right">{v.toLocaleString()}</td>
+                    <td class="py-1 text-right">{b.toLocaleString()}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </details>
       )}
     </div>
   );

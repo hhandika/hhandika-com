@@ -106,7 +106,7 @@ const regions = [
     </div>
   </div>
 
-  <div class="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0" tabindex="0" aria-label="Map, scrolls horizontally on small screens">
+  <div class="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0" tabindex="0" role="region" aria-label="Map, scrolls horizontally on small screens">
     <svg viewBox="0 0 741.1 467.6" class="block h-auto w-full min-w-[620px] rounded-xl" role="img" aria-labelledby="iaa-title iaa-desc">
       <title id="iaa-title">Pleistocene low sea-level boundaries of the Indo-Australian Archipelago</title>
       <desc id="iaa-desc">
@@ -134,6 +134,8 @@ const regions = [
         {
           lines.map((l) => (
             <g class="line" data-line={l.id}>
+              {/* A dark casing keeps light line colors at 3:1 against sea and land (WCAG 1.4.11). */}
+              <path d={pathOf(l.points)} class="line-casing" stroke-width="4.6" stroke-dasharray="7 5" />
               <path d={pathOf(l.points)} stroke={l.color} stroke-width="2.2" stroke-dasharray="7 5" />
               <path d={pathOf(l.points)} stroke="transparent" stroke-width="12" class="line-hit">
                 <title>{l.name}. {l.note}</title>
@@ -149,9 +151,6 @@ const regions = [
             <text x={px(r.lon)} y={py(r.lat)} class:list={["region", r.low && "region-low"]}>
               {r.name}
             </text>
-          ))
-        }
-      </g>
           ))
         }
       </g>
@@ -185,6 +184,7 @@ const regions = [
     --shelf: #a9cdb8;
     --ink: #33473a;
     --region: #1c2b21;
+    --casing: #1c2b21;
   }
   :global(.dark) .iaa-map {
     --sea: #0f1a1f;
@@ -193,6 +193,7 @@ const regions = [
     --shelf: #2c4a3c;
     --ink: #e2e9e3;
     --region: #e8f1d2;
+    --casing: #05090a;
   }
 
   .iaa-sea { fill: var(--sea); }
@@ -211,6 +212,7 @@ const regions = [
   .iaa-map[data-level="-120"] .shelf[data-shelf="-120"] { opacity: 1; }
 
   .line { transition: opacity 0.3s; }
+  .line-casing { stroke: var(--casing); }
   .line.off { opacity: 0; pointer-events: none; }
   .line-hit { cursor: help; pointer-events: stroke; }
 
@@ -220,7 +222,7 @@ const regions = [
     letter-spacing: 0.12em;
     text-transform: uppercase;
     fill: var(--region);
-    opacity: 0.55;
+    opacity: 0.8;
     paint-order: stroke;
     stroke: var(--sea);
     stroke-width: 3px;
@@ -228,7 +230,7 @@ const regions = [
   }
   .region-low { opacity: 0; transition: opacity 0.6s; }
   .iaa-map[data-level="-80"] .region-low,
-  .iaa-map[data-level="-120"] .region-low { opacity: 0.75; }
+  .iaa-map[data-level="-120"] .region-low { opacity: 0.8; }
 
   .lvl-btn,
   .play-btn,

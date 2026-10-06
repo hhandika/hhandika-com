@@ -122,14 +122,15 @@ export default function PlannerPlot() {
         padding: 0.06,
         x: { domain: planner.cases.map(caseLabel), tickRotate: -45, label: null },
         y: { domain: order, label: null },
-        color: { domain: [0, 1], range: ["#e8f1d2", "#415522"], interpolate: "rgb" },
+        // Piecewise so every cell's label reaches 4.5:1 (scores are multiples of 20%).
+        color: { type: "linear", domain: [0, 0.65, 0.7, 1], range: ["#f3f8e8", "#c3d897", "#5a7a2e", "#2f3f18"], interpolate: "rgb" },
         marks: [
           Plot.cell(cells, { x: "case", y: "model", fill: "accuracy", rx: 3, title: (d) => `${d.model}\n${d.case}: ${Math.round(d.accuracy * 100)}% correct (${Math.round(d.accuracy * planner.repeats)}/${planner.repeats} runs)` }),
           Plot.text(cells, {
             x: "case",
             y: "model",
             text: (d) => `${Math.round(d.accuracy * 100)}%`,
-            fill: (d) => (d.accuracy > 0.55 ? "white" : "#283a2e"),
+            fill: (d) => (d.accuracy > 0.65 ? "white" : "#283a2e"),
             fontSize: 9.5,
           }),
         ],
@@ -137,6 +138,8 @@ export default function PlannerPlot() {
     }
 
     plot.classList.add("bc-anim", `bc-${view}`);
+    // The container carries the accessible name; the table below has the values.
+    plot.setAttribute("aria-hidden", "true");
     // Keep the heatmap readable on phones: scroll sideways instead of shrinking.
     if (view === "cases") plot.style.maxWidth = "none";
     // Stagger the entrance: bars and dots by row, heatmap cells by column.
@@ -158,12 +161,11 @@ export default function PlannerPlot() {
   return (
     <div class="bc-plot">
       <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
-        <div class="inline-flex flex-wrap rounded-full border border-forest-900/15 p-1 dark:border-forest-100/15" role="tablist" aria-label="Benchmark view">
+        <div class="inline-flex flex-wrap rounded-full border border-forest-900/15 p-1 dark:border-forest-100/15" role="group" aria-label="Benchmark view">
           {VIEWS.map((v) => (
             <button
               type="button"
-              role="tab"
-              aria-selected={view === v.id}
+              aria-pressed={view === v.id}
               onClick={() => setView(v.id)}
               class={`rounded-full px-3 py-1 text-sm transition-colors duration-500 ${
                 view === v.id
@@ -180,7 +182,7 @@ export default function PlannerPlot() {
           <span class="inline-flex items-center gap-1"><span class="h-2.5 w-2.5 rounded-full" style={{ background: OTHER }} /> evaluated</span>
         </p>
       </div>
-      <div ref={ref} class="w-full overflow-x-auto text-forest-900 dark:text-forest-100" role="img" aria-label={`LLM planner benchmark, ${view} view`} />
+      <div ref={ref} class="w-full overflow-x-auto text-forest-900 dark:text-forest-100" role="img" aria-label={`LLM planner benchmark, ${VIEWS.find((v) => v.id === view)!.label.toLowerCase()} view. Values are in the data table below.`} />
       <p class="mt-2 text-xs text-forest-700 dark:text-forest-300">
         {view === "accuracy" &&
           `Share of correct tool calls over ${planner.cases.length} query types × ${planner.repeats} repeats per model. ${prod.model} answered all ${prod.trials} correctly and stayed consistent on ${prod.consistentCases} of ${planner.cases.length} query types.`}
@@ -188,6 +190,43 @@ export default function PlannerPlot() {
           `Dot = median latency, line = 95th percentile, dot size = tokens per call. ${prod.model}: median ${prod.latencyP50} s, ${prod.tokensPerCall.toLocaleString()} tokens per call, the fastest and most accurate model tested.`}
         {view === "cases" && `Share of correct runs per query type (${planner.repeats} repeats each). Weaker models fail mostly on combined queries such as color + country, usually by answering without calling a search tool.`}
       </p>
+      <details class="mt-2 text-xs text-forest-800 dark:text-forest-200">
+        <summary class="cursor-pointer font-semibold text-forest-700 dark:text-forest-300">Data table</summary>
+        <div class="mt-2 overflow-x-auto" tabIndex={0} role="region" aria-label="Planner benchmark data">
+          <table class="w-full min-w-[34rem] text-left tabular-nums">
+            <caption class="sr-only">Accuracy, latency, and tokens per model, and accuracy per query type</caption>
+            <thead>
+              <tr class="border-b border-forest-900/15 dark:border-forest-100/15">
+                <th scope="col" class="py-1 pr-3">Model</th>
+                <th scope="col" class="py-1 pr-3">Accuracy</th>
+                <th scope="col" class="py-1 pr-3">Median latency (s)</th>
+                <th scope="col" class="py-1 pr-3">95th pct. latency (s)</th>
+                <th scope="col" class="py-1 pr-3">Tokens per call</th>
+                <th scope="col" class="py-1">Weakest query types</th>
+              </tr>
+            </thead>
+            <tbody>
+              {models.map((m) => {
+                const per = m.perCase as Record<string, number>;
+                const weak = planner.cases.filter((c) => per[c] < 1).map((c) => `${caseLabel(c)} ${Math.round(per[c] * 100)}%`);
+                return (
+                  <tr class="border-b border-forest-900/5 align-top dark:border-forest-100/5">
+                    <th scope="row" class="py-1 pr-3 font-mono font-normal">
+                      {m.model}
+                      {m.model === planner.productionModel && " (production)"}
+                    </th>
+                    <td class="py-1 pr-3">{Math.round(m.accuracy * 100)}%</td>
+                    <td class="py-1 pr-3">{m.latencyP50}</td>
+                    <td class="py-1 pr-3">{m.latencyP95}</td>
+                    <td class="py-1 pr-3">{m.tokensPerCall.toLocaleString()}</td>
+                    <td class="py-1">{weak.length ? weak.join(", ") : "all 100%"}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </details>
     </div>
   );
 }

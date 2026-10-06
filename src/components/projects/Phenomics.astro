@@ -8,6 +8,8 @@ import PubButton from "../buttons/PubButton.astro";
 import EmbeddingPipeline from "./software/EmbeddingPipeline.astro";
 import MorphospacePlot from "./biocosmos/MorphospacePlot.tsx";
 import PlannerPlot from "./biocosmos/PlannerPlot.tsx";
+import MimicryPlot from "./biocosmos/MimicryPlot.tsx";
+import mimicry from "../../data/biocosmos/mimicry.json";
 import stats from "../../data/biocosmos/morphospace-stats.json";
 import lepiverseHome from "../../assets/img/biocosmos/lepiverse-home.jpg";
 import lepiverseSpecies from "../../assets/img/biocosmos/lepiverse-species.jpg";
@@ -26,6 +28,14 @@ const collection = [
   { value: "9,342", label: "species" },
   { value: "196", label: "countries" },
   { value: "8", label: "validated families" },
+];
+
+const random = mimicry.permutations.filter((p) => p.null === "Random");
+const mimicryStats = [
+  { value: `${mimicry.counts.testedPairs}/${mimicry.counts.publishedPairs}`, label: "published mimicry pairs with images of both species" },
+  { value: `${mimicry.pairs.filter((p) => p.recovered).length}/${mimicry.counts.testedPairs}`, label: "pairs mutually in the top 10 of 8,409 species on at least one wing side" },
+  { value: random.map((p) => p.observed.toFixed(3)).join(" · "), label: "mean partner percentile, dorsal · ventral (chance = 0.50)" },
+  { value: "p ≤ 0.0001", label: "against random and congener nulls (10,000 permutations)" },
 ];
 
 const figureClasses =
@@ -146,6 +156,37 @@ const shotClasses =
     upper/under contrast the morphospace shows.
   </figcaption>
 </figure>
+
+<SectionHead text="Does visual similarity recover butterfly mimicry?" />
+<Content>
+  <p>
+    Mimicry is a direct test of whether image embeddings capture what
+    predators see. I compiled published Müllerian and Batesian butterfly
+    mimicry pairs and asked where each partner ranks when either species
+    queries every other species in the collection by the similarity of its
+    dorsal or ventral images. Partners rank far above chance, and above the
+    congeners that resemble each other through shared ancestry alone. The
+    misses are informative: in <i>Papilio polytes</i> and <i>P. glaucus</i>
+    only some females mimic, and <i>Heliconius timareta</i> varies across its
+    range, so a single species centroid dilutes the mimetic form. Switch wing
+    sides to watch the ranks move, hover a dot for its rank, or click a pair
+    for its notes and references.
+  </p>
+</Content>
+<figure class={`not-prose my-6 ${figureClasses}`}>
+  <MimicryPlot client:visible />
+</figure>
+<dl class="grid grid-cols-2 gap-3 lg:grid-cols-4">
+  {
+    mimicryStats.map((s) => (
+      <div class="rounded-2xl border border-forest-900/10 px-3 py-3 dark:border-forest-100/10">
+        <dt class="sr-only">{s.label}</dt>
+        <dd class="font-serif text-xl font-semibold text-moss-700 dark:text-moss-300">{s.value}</dd>
+        <dd class="mt-1 text-xs text-forest-700 dark:text-forest-300">{s.label}</dd>
+      </div>
+    ))
+  }
+</dl>
 
 <SectionHead text="Choosing an open-weight LLM for natural-language search" />
 <Content>
