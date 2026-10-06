@@ -157,6 +157,14 @@ export default function PlannerPlot() {
   }, [view, width]);
 
   const prod = models.find((m) => m.model === planner.productionModel)!;
+  // Text alternative carrying the values the chart shows (WCAG 1.1.1).
+  const summary = `LLM planner benchmark, ${VIEWS.find((v) => v.id === view)!.label.toLowerCase()} view. ${models
+    .map((m) => {
+      const per = m.perCase as Record<string, number>;
+      const weak = planner.cases.filter((c) => per[c] < 1).map((c) => `${caseLabel(c)} ${Math.round(per[c] * 100)}%`);
+      return `${m.model}${m.model === planner.productionModel ? " (production)" : ""}: ${Math.round(m.accuracy * 100)}% accuracy, median latency ${m.latencyP50} s, 95th percentile ${m.latencyP95} s, ${m.tokensPerCall.toLocaleString()} tokens per call, ${weak.length ? `below 100% on ${weak.join(", ")}` : "100% on every query type"}`;
+    })
+    .join("; ")}.`;
 
   return (
     <div class="bc-plot">
@@ -182,7 +190,7 @@ export default function PlannerPlot() {
           <span class="inline-flex items-center gap-1"><span class="h-2.5 w-2.5 rounded-full" style={{ background: OTHER }} /> evaluated</span>
         </p>
       </div>
-      <div ref={ref} class="w-full overflow-x-auto text-forest-900 dark:text-forest-100" role="img" aria-label={`LLM planner benchmark, ${VIEWS.find((v) => v.id === view)!.label.toLowerCase()} view. Values are in the data table below.`} />
+      <div ref={ref} class="w-full overflow-x-auto text-forest-900 dark:text-forest-100" role="img" aria-label={summary} />
       <p class="mt-2 text-xs text-forest-700 dark:text-forest-300">
         {view === "accuracy" &&
           `Share of correct tool calls over ${planner.cases.length} query types × ${planner.repeats} repeats per model. ${prod.model} answered all ${prod.trials} correctly and stayed consistent on ${prod.consistentCases} of ${planner.cases.length} query types.`}
@@ -190,43 +198,6 @@ export default function PlannerPlot() {
           `Dot = median latency, line = 95th percentile, dot size = tokens per call. ${prod.model}: median ${prod.latencyP50} s, ${prod.tokensPerCall.toLocaleString()} tokens per call, the fastest and most accurate model tested.`}
         {view === "cases" && `Share of correct runs per query type (${planner.repeats} repeats each). Weaker models fail mostly on combined queries such as color + country, usually by answering without calling a search tool.`}
       </p>
-      <details class="mt-2 text-xs text-forest-800 dark:text-forest-200">
-        <summary class="cursor-pointer font-semibold text-forest-700 dark:text-forest-300">Data table</summary>
-        <div class="mt-2 overflow-x-auto" tabIndex={0} role="region" aria-label="Planner benchmark data">
-          <table class="w-full min-w-[34rem] text-left tabular-nums">
-            <caption class="sr-only">Accuracy, latency, and tokens per model, and accuracy per query type</caption>
-            <thead>
-              <tr class="border-b border-forest-900/15 dark:border-forest-100/15">
-                <th scope="col" class="py-1 pr-3">Model</th>
-                <th scope="col" class="py-1 pr-3">Accuracy</th>
-                <th scope="col" class="py-1 pr-3">Median latency (s)</th>
-                <th scope="col" class="py-1 pr-3">95th pct. latency (s)</th>
-                <th scope="col" class="py-1 pr-3">Tokens per call</th>
-                <th scope="col" class="py-1">Weakest query types</th>
-              </tr>
-            </thead>
-            <tbody>
-              {models.map((m) => {
-                const per = m.perCase as Record<string, number>;
-                const weak = planner.cases.filter((c) => per[c] < 1).map((c) => `${caseLabel(c)} ${Math.round(per[c] * 100)}%`);
-                return (
-                  <tr class="border-b border-forest-900/5 align-top dark:border-forest-100/5">
-                    <th scope="row" class="py-1 pr-3 font-mono font-normal">
-                      {m.model}
-                      {m.model === planner.productionModel && " (production)"}
-                    </th>
-                    <td class="py-1 pr-3">{Math.round(m.accuracy * 100)}%</td>
-                    <td class="py-1 pr-3">{m.latencyP50}</td>
-                    <td class="py-1 pr-3">{m.latencyP95}</td>
-                    <td class="py-1 pr-3">{m.tokensPerCall.toLocaleString()}</td>
-                    <td class="py-1">{weak.length ? weak.join(", ") : "all 100%"}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </details>
     </div>
   );
 }

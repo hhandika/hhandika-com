@@ -49,14 +49,20 @@ const desktopLinkClasses = cntl`
   -m-1.5
   p-1.5
   font-semibold
-  hover:text-moss-700
-  dark:hover:text-moss-300
+  rounded-full
+  transition-colors
+  duration-200
 `;
 
+// Hover applies only to inactive links, so the active pill keeps its contrast.
 const inactiveLinkClasses = cntl`
   text-moss-900
   dark:text-moss-50
   px-4
+  hover:bg-moss-200
+  hover:text-moss-950
+  dark:hover:bg-mist-800
+  dark:hover:text-moss-50
 `;
 
 const mobileMenuClasses = cntl`
@@ -67,8 +73,9 @@ const mobileLinkClasses = cntl`
   block
   px-4
   py-2
-  hover:text-moss-700
-  dark:hover:text-moss-300
+  rounded-full
+  transition-colors
+  duration-200
   text-base/7
 `;
 

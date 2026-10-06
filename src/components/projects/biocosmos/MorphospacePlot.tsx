@@ -282,7 +282,16 @@ export default function MorphospacePlot() {
           ref={canvasRef}
           class="absolute left-0 top-0"
           role="img"
-          aria-label="Scatter plot of butterfly species in a two-dimensional principal component space of image embeddings, colored by family. Species counts per family are in the table below."
+          aria-label={`Scatter plot of butterfly species in a two-dimensional principal component space of image embeddings, colored by family.${
+            data
+              ? ` ${data.families
+                  .map((name, i) => {
+                    const rows = data.species.filter((sp) => sp[1] === i);
+                    return `${name}: ${rows.filter((sp) => sp[2] !== null).length} dorsal, ${rows.filter((sp) => sp[4] !== null).length} ventral species`;
+                  })
+                  .join("; ")}.`
+              : ""
+          }`}
         />
         {tip && (
           <div
@@ -311,38 +320,6 @@ export default function MorphospacePlot() {
             </button>
           ))}
         </div>
-      )}
-      {data && (
-        <details class="mt-3 text-xs text-forest-800 dark:text-forest-200">
-          <summary class="cursor-pointer font-semibold text-forest-700 dark:text-forest-300">Data table</summary>
-          <table class="mt-2 tabular-nums">
-            <caption class="sr-only">Species centroids per family and wing side</caption>
-            <thead>
-              <tr class="border-b border-forest-900/15 dark:border-forest-100/15">
-                <th scope="col" class="py-1 pr-4 text-left">Family</th>
-                <th scope="col" class="py-1 pr-4 text-right">Dorsal species</th>
-                <th scope="col" class="py-1 pr-4 text-right">Ventral species</th>
-                <th scope="col" class="py-1 text-right">Both sides</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.families.map((name, i) => {
-                const rows = data.species.filter((sp) => sp[1] === i);
-                const d = rows.filter((sp) => sp[2] !== null).length;
-                const v = rows.filter((sp) => sp[4] !== null).length;
-                const b = rows.filter((sp) => sp[2] !== null && sp[4] !== null).length;
-                return (
-                  <tr class="border-b border-forest-900/5 dark:border-forest-100/5">
-                    <th scope="row" class="py-1 pr-4 text-left font-normal">{name}</th>
-                    <td class="py-1 pr-4 text-right">{d.toLocaleString()}</td>
-                    <td class="py-1 pr-4 text-right">{v.toLocaleString()}</td>
-                    <td class="py-1 text-right">{b.toLocaleString()}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </details>
       )}
     </div>
   );
