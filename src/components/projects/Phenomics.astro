@@ -37,8 +37,7 @@ const random = mimicry.permutations.find((p) => p.null === "Random")!;
 const mimicryStats = [
   {
     value: `${mimicry.pairs.filter((p) => p.recovered).length}/${mimicry.counts.testedPairs}`,
-    label:
-      "pairs mutually in the top 10 of 8,409 species on the dorsal side",
+    label: "pairs mutually in the top 10 of 8,409 species on the dorsal side",
   },
   {
     value: random.observed.toFixed(3),
@@ -122,9 +121,9 @@ const figureClasses =
   <p>
     Mimicry is a direct test of whether image embeddings capture what predators
     perceive. I compiled published Müllerian and Batesian butterfly mimicry
-    pairs and, using dorsal wings, ranked how similar each
-    partner is to the other among all species in the collection. Mimicry pairs
-    rank far above chance, and above congeners. The misses are informative: in <i
+    pairs and, using dorsal wings, ranked how similar each partner is to the
+    other among all species in the collection. Mimicry pairs rank far above
+    chance, and above congeners. The misses are informative: in <i
       >Papilio polytes</i
     > and <i>P. glaucus</i> only some females mimic, and <i
       >Heliconius timareta</i
@@ -164,7 +163,9 @@ const figureClasses =
     open-weight models on the same set of queries, comparing accuracy,
     consistency, latency, and token cost. Open-weight models keep the search
     reproducible and let any institution with limited resources, run it on its
-    own server.
+    own server. It protects sensitive data, and allows for fine-tuning on
+    domain-specific text. See the interactive plot below to explore the results
+    of the benchmark.
   </p>
 </Content>
 <figure class={`not-prose my-6 ${figureClasses}`}>
