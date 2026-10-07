@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1108 680" aria-hidden="true">
+  <!-- Research: a phylogeny beside a DNA helix. -->
+  <path fill="none" stroke="#53705b" stroke-width="40" stroke-linecap="round" d="M190 120c0 90 160 130 160 220s-160 130-160 220"/>
+  <path fill="none" stroke="#9bbf4f" stroke-width="40" stroke-linecap="round" d="M350 120c0 90-160 130-160 220s160 130 160 220"/>
+  <g stroke="#a9bcc2" stroke-width="22" stroke-linecap="round">
+    <path d="M215 190h110M235 260h70M235 420h70M215 490h110"/>
+  </g>
+  <!-- Rectangular cladogram: root at left, five tips at right. -->
+  <g fill="none" stroke="#33473a" stroke-width="32" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M480 360h80"/>
+    <path d="M560 190v340"/>
+    <path d="M560 190h120M680 130v120M680 130h260M680 250h260"/>
+    <path d="M560 530h80M640 430v200M640 630h300"/>
+    <path d="M640 430h120M760 370v120M760 370h180M760 490h180"/>
+  </g>
+  <g>
+    <circle cx="960" cy="130" r="34" fill="#9bbf4f"/>
+    <circle cx="960" cy="250" r="34" fill="#688a2c"/>
+    <circle cx="960" cy="370" r="34" fill="#a9bcc2"/>
+    <circle cx="960" cy="490" r="34" fill="#d3e4a9"/>
+    <circle cx="960" cy="630" r="34" fill="#718e78"/>
+  </g>
+</svg>

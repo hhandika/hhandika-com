@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 # private working notes (job package, briefs)
 notes/
+
+# local agent settings (instructions for agents live in AGENTS.md)
+.claude/

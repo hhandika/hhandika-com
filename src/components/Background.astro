@@ -1,6 +1,7 @@
 ---
 import cntl from "cntl";
 
+
 const { backgroundImage } = Astro.props;
 
 const backgroundClasses = cntl`
@@ -11,15 +12,11 @@ const backgroundClasses = cntl`
     transform-gpu
     overflow-hidden
     blur-xl
-    opacity-20
+    opacity-10
     mt-16
 `;
 ---
 
 <div class={backgroundClasses} aria-hidden="true">
-  <img
-    src={backgroundImage.src}
-    alt="Rodent illustration"
-    class="block mx-auto sm:w-2/3"
-  />
+  <img src={backgroundImage.src} alt="" class="block mx-auto sm:w-2/3" />
 </div>
