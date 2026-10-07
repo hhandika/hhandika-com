@@ -1,8 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import PageTitle from "../components/PageTitle.astro";
-import researchIcon from "../assets/icons/research.svg";
 import Background from "../components/Background.astro";
+import researchBg from "../assets/graphics/backgrounds/research.svg";
 import MainPage from "../components/MainPage.astro";
 import PageDescription from "../components/PageDescription.astro";
 import cntl from "cntl";
@@ -60,7 +60,7 @@ const inactiveClass = cntl`
 
 <Layout title="Research Projects">
   <MainPage>
-    <Background backgroundImage={researchIcon} />
+    <Background backgroundImage={researchBg} />
     <PageTitle title="Research Projects">
       <PageDescription>
         How does geographic isolation shape genomic divergence, ecological

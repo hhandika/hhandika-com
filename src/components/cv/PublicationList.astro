@@ -2,14 +2,14 @@
 import Published from "../../components/pubs/Published.astro";
 import Publication from "../../layouts/Publication.astro";
 import Forthcoming from "../../components/pubs/Forthcoming.astro";
-import cvIcon from "../../assets/icons/cv.svg";
 import Background from "../../components/Background.astro";
+import publicationsBg from "../../assets/graphics/backgrounds/publications.svg";
 import PageSubtitle from "../PageSubtitle.astro";
 import myCv from "../../assets/docs/hhandika-cv.pdf";
 ---
 
 <div>
-  <Background backgroundImage={cvIcon} />
+  <Background backgroundImage={publicationsBg} />
   <PageSubtitle subtitle="Publications" />
   <Publication year="Upcoming manuscripts">
     <Forthcoming

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1108 680" aria-hidden="true">
+  <!-- Research: an archipelago of mountainous islands in a misty sea. -->
+  <ellipse cx="554" cy="430" rx="500" ry="190" fill="#a9bcc2"/>
+  <path fill="#53705b" d="M150 470c30-90 80-150 120-190 40 40 70 90 110 120 30-30 60-40 90-30 30 40 40 70 50 100Z"/>
+  <path fill="#33473a" d="M440 480c40-120 90-230 150-290 50 60 90 140 120 200 30-30 60-30 90 0 20 30 30 60 40 90Z"/>
+  <path fill="#9bbf4f" d="M800 470c20-60 50-110 90-140 40 30 70 80 90 140Z"/>
+  <ellipse cx="330" cy="560" rx="70" ry="24" fill="#688a2c"/>
+  <ellipse cx="760" cy="570" rx="110" ry="30" fill="#718e78"/>
+  <circle cx="860" cy="170" r="70" fill="#d3e4a9"/>
+</svg>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1108 680" aria-hidden="true">
+  <!-- Defense: an island murine rodent among the leaf litter. -->
+  <path fill="none" stroke="#718e78" stroke-width="22" stroke-linecap="round" d="M330 470c-120 20-200-10-240-90"/>
+  <ellipse cx="520" cy="410" rx="220" ry="130" fill="#53705b"/>
+  <ellipse cx="740" cy="360" rx="120" ry="90" fill="#53705b"/>
+  <path fill="#53705b" d="M820 330l120 50-110 40Z"/>
+  <circle cx="690" cy="270" r="62" fill="#718e78"/>
+  <circle cx="690" cy="270" r="34" fill="#d3e4a9"/>
+  <circle cx="790" cy="340" r="14" fill="#1c2b21"/>
+  <ellipse cx="450" cy="545" rx="50" ry="20" fill="#33473a"/>
+  <ellipse cx="660" cy="530" rx="50" ry="20" fill="#33473a"/>
+  <ellipse cx="300" cy="590" rx="160" ry="34" fill="#9bbf4f"/>
+  <ellipse cx="820" cy="590" rx="180" ry="34" fill="#688a2c"/>
+</svg>

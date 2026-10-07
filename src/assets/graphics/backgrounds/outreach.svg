@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1108 680" aria-hidden="true">
+  <!-- Outreach and service: people in conversation around shared ideas. -->
+  <path fill="#a9bcc2" d="M300 120h260a60 60 0 0 1 60 60v100a60 60 0 0 1-60 60H420l-80 60v-60h-40a60 60 0 0 1-60-60V180a60 60 0 0 1 60-60Z"/>
+  <path fill="#9bbf4f" d="M640 200h200a56 56 0 0 1 56 56v80a56 56 0 0 1-56 56h-20v54l-70-54h-110a56 56 0 0 1-56-56v-80a56 56 0 0 1 56-56Z"/>
+  <circle cx="300" cy="430" r="56" fill="#53705b"/>
+  <path fill="#53705b" d="M200 620c0-70 45-110 100-110s100 40 100 110Z"/>
+  <circle cx="554" cy="450" r="56" fill="#33473a"/>
+  <path fill="#33473a" d="M454 630c0-70 45-110 100-110s100 40 100 110Z"/>
+  <circle cx="808" cy="460" r="56" fill="#718e78"/>
+  <path fill="#718e78" d="M708 640c0-70 45-110 100-110s100 40 100 110Z"/>
+</svg>

@@ -3,8 +3,8 @@ import PageTitle from "../components/PageTitle.astro";
 import Layout from "../layouts/Layout.astro";
 import Timeline from "../layouts/Timeline.astro";
 import TimelineItem from "../layouts/TimelineItem.astro";
-import fieldIcon from "../assets/icons/fieldwork.svg";
 import Background from "../components/Background.astro";
+import fieldworkBg from "../assets/graphics/backgrounds/fieldwork.svg";
 import MainPage from "../components/MainPage.astro";
 import PageDescription from "../components/PageDescription.astro";
 import SectionHead from "../components/SectionHead.astro";
@@ -68,7 +68,7 @@ const chipClasses =
 
 <Layout title="Fieldwork">
   <MainPage>
-    <Background backgroundImage={fieldIcon} />
+    <Background backgroundImage={fieldworkBg} />
     <PageTitle title="Fieldwork">
       <PageDescription>
         Documenting the unknown through collaborative fieldwork and the growth

@@ -1,8 +1,8 @@
 ---
 import cntl from "cntl";
 import PageSubtitle from "../../components/PageSubtitle.astro";
-import teachingIcon from "../../assets/icons/teaching.svg";
 import Background from "../../components/Background.astro";
+import teachingBg from "../../assets/graphics/backgrounds/teaching.svg";
 import tamboraGh from "../../assets/img/tambora-gh.webp";
 import tamboraGhFlyer from "../../assets/img/tambora-gh-flyer.webp";
 import { Image } from "astro:assets";
@@ -223,7 +223,7 @@ const panelClasses = cntl`
 ---
 
 <div>
-  <Background backgroundImage={teachingIcon} />
+  <Background backgroundImage={teachingBg} />
   <PageSubtitle subtitle="Teaching, Mentoring, & Workshops" />
   <SectionHead text="Courses Taught" level={3} />
   <div class="space-y-6">

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1108 680" aria-hidden="true">
+  <!-- Software: a code window with brackets and lines of code. -->
+  <rect x="214" y="110" width="680" height="460" rx="44" fill="#33473a"/>
+  <rect x="214" y="110" width="680" height="80" rx="40" fill="#53705b"/>
+  <circle cx="270" cy="150" r="16" fill="#d3e4a9"/>
+  <circle cx="320" cy="150" r="16" fill="#9bbf4f"/>
+  <circle cx="370" cy="150" r="16" fill="#a9bcc2"/>
+  <path fill="#9bbf4f" d="M330 380l90-90 34 34-56 56 56 56-34 34Z"/>
+  <path fill="#9bbf4f" d="M778 380l-90-90-34 34 56 56-56 56 34 34Z"/>
+  <path fill="#cdd9dd" d="M590 250l40 12-76 260-40-12Z"/>
+  <rect x="300" y="500" width="260" height="26" rx="13" fill="#718e78"/>
+  <rect x="590" y="500" width="160" height="26" rx="13" fill="#a9bcc2"/>
+</svg>

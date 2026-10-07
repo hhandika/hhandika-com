@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1108 680" aria-hidden="true">
+  <!-- Publications: a stack of papers with a journal page on top. -->
+  <rect x="380" y="150" width="400" height="460" rx="28" fill="#718e78" transform="rotate(-8 580 380)"/>
+  <rect x="380" y="140" width="400" height="460" rx="28" fill="#a9bcc2" transform="rotate(5 580 370)"/>
+  <rect x="360" y="110" width="400" height="460" rx="28" fill="#e2e9e3"/>
+  <rect x="410" y="170" width="300" height="40" rx="20" fill="#33473a"/>
+  <rect x="410" y="250" width="140" height="120" rx="16" fill="#9bbf4f"/>
+  <rect x="580" y="260" width="130" height="22" rx="11" fill="#53705b"/>
+  <rect x="580" y="310" width="130" height="22" rx="11" fill="#53705b"/>
+  <rect x="410" y="410" width="300" height="22" rx="11" fill="#718e78"/>
+  <rect x="410" y="460" width="300" height="22" rx="11" fill="#718e78"/>
+  <rect x="410" y="510" width="200" height="22" rx="11" fill="#718e78"/>
+</svg>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1108 680" aria-hidden="true">
+  <!-- Fieldwork: montane forest with a waterfall and a camp tent. -->
+  <circle cx="820" cy="150" r="80" fill="#d3e4a9"/>
+  <path fill="#718e78" d="M60 560l260-340 160 200 140-160 380 300Z"/>
+  <path fill="#cdd9dd" d="M520 270c30 0 40 20 40 60v230h-80V330c0-40 10-60 40-60Z"/>
+  <path fill="#33473a" d="M120 600l80-190 80 190Z"/>
+  <path fill="#33473a" d="M230 600l70-160 70 160Z"/>
+  <path fill="#53705b" d="M820 600l80-200 80 200Z"/>
+  <path fill="#53705b" d="M930 600l60-150 60 150Z"/>
+  <path fill="#9bbf4f" d="M620 600l90-130 90 130Z"/>
+  <rect x="40" y="590" width="1028" height="50" rx="25" fill="#688a2c"/>
+</svg>
