@@ -15,6 +15,15 @@ const px = (lon: number) => (lon - bbox.xmin) * 100;
 const py = (lat: number) => (bbox.ymax - lat) * 100;
 const f = (n: number) => n.toFixed(2);
 
+// Scale bar in the open sea off the southeast. The map is plate carrée at
+// 100 units per degree, so 1° of longitude spans 111.32 km × cos(latitude);
+// across this map's latitudes that varies by under 1%.
+const scaleLat = bbox.ymin + 0.45;
+const kmToX = (km: number) => (km / (111.32 * Math.cos((scaleLat * Math.PI) / 180))) * 100;
+const scaleTicks = [0, 100, 200];
+const scaleX = W - 30 - kmToX(scaleTicks.at(-1)!);
+const scaleY = py(scaleLat);
+
 // Dark2, as in the manuscript figures.
 const colors = ["#1b9e77", "#d95f02", "#7570b3", "#e7298a"];
 
@@ -177,6 +186,34 @@ const kTicks = [0, 1, 2].filter((v) => v >= vMin && v <= vMax);
             }
           </g>
 
+          <g role="img" aria-label={`Scale bar, ${scaleTicks.at(-1)} kilometres`}>
+            {
+              scaleTicks.slice(1).map((km, k) => (
+                <rect
+                  x={f(scaleX + kmToX(scaleTicks[k]))}
+                  y={f(scaleY - 8)}
+                  width={f(kmToX(km - scaleTicks[k]))}
+                  height="8"
+                  class={`stroke-forest-900 dark:stroke-forest-100 ${k % 2 ? "fill-white dark:fill-forest-950" : "fill-forest-900 dark:fill-forest-100"}`}
+                  stroke-width="1.2"
+                />
+              ))
+            }
+            {
+              scaleTicks.map((km, k) => (
+                <text
+                  x={f(scaleX + kmToX(km))}
+                  y={f(scaleY + 18)}
+                  text-anchor="middle"
+                  font-size="18"
+                  class="fill-forest-900 dark:fill-forest-100"
+                >
+                  {k === scaleTicks.length - 1 ? `${km} km` : km}
+                </text>
+              ))
+            }
+          </g>
+
           <g class="pies">
             {
               individuals.map((d) => (
@@ -285,6 +322,7 @@ const kTicks = [0, 1, 2].filter((v) => v >= vMin && v <= vMax);
         <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-forest-600 dark:text-forest-400">
           Choosing K
         </p>
+        <p class="text-[0.7rem] text-forest-600 dark:text-forest-400" aria-hidden="true">DLK2</p>
         <svg
           viewBox={`0 0 ${K_W} ${K_H}`}
           class="h-auto w-full overflow-visible"
@@ -306,7 +344,6 @@ const kTicks = [0, 1, 2].filter((v) => v >= vMin && v <= vMax);
               </text>
             ))
           }
-          <text x="0" y="4" class="k-axis">DLK2</text>
           <path d={kLine} class="k-line" />
           {
             dlk2.map((d) =>

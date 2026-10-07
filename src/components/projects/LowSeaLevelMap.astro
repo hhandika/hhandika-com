@@ -14,12 +14,14 @@ const py = (lat: number) => 175.3 + 11.6 * (5.65 - lat);
 const pathOf = (pts: number[][]) =>
   "M" + pts.map(([lon, lat]) => `${px(lon).toFixed(1)} ${py(lat).toFixed(1)}`).join("L");
 
-// Keep the land, shadow, and scale-bar shapes; drop linked rasters and
-// invisible helpers; swap hard-coded fills for themeable classes.
+// Keep the land and shadow shapes; drop linked rasters, invisible helpers,
+// and the Illustrator scale bar (redrawn below); swap hard-coded fills for
+// themeable classes.
 const inner = iaaRaw
   .replace(/^[\s\S]*?<svg[^>]*>/, "")
   .replace(/<\/svg>\s*$/, "")
   .replace(/<!--[\s\S]*?-->/g, "")
+  .replace(/<g>\s*<path d="M-25\.3-72[\s\S]*?750 km<\/tspan><\/text>/, "")
   .replace(/<image\b[^>]*\/>/g, "")
   .replace(/<(path|polygon)\b[^>]*fill="none"[^>]*\/>/g, "")
   .replace(/fill="#018570"/g, 'class="iaa-land"')
@@ -27,6 +29,16 @@ const inner = iaaRaw
   .replace(/fill="#fff"/g, 'class="iaa-ink"')
   .replace(/\s+id="Layer_\d+"/g, "")
   .replace(/font-family="[^"]*"/g, "");
+
+// Scale bar, styled like the Sulawesi map's. The fit is plate carrée at
+// 11.647 units per degree of longitude, so lengths are true at the bar's own
+// latitude (1° = 111.32 km × cos(latitude)).
+const scaleLon = 95.5;
+const scaleLat = -17.6;
+const kmToX = (km: number) => (km / (111.32 * Math.cos((scaleLat * Math.PI) / 180))) * 11.647;
+const scaleTicks = [0, 400, 800];
+const scaleX = px(scaleLon);
+const scaleY = py(scaleLat);
 
 type Level = { level: number; label: string; note: string };
 const levels: Level[] = [
@@ -40,34 +52,40 @@ const shelves = shelvesData.shelves;
 // Approximate placements, after Wallace (1863), Huxley (1868), Weber (1902),
 // and Lydekker (1896). Wallace's line through the Makassar Strait and
 // Lydekker's line off NW Australia follow the −120 m shelf edges in ETOPO1.
+// Shapes follow the Encyclopaedia Britannica map "Faunal boundaries in the
+// Indonesian Archipelago": Weber's line hooks west and south of Buru, leaving
+// Buru on its eastern side, then swings into the Banda Sea before passing
+// south of Timor. Lydekker's line passes
+// between the Kai Islands (Kai Kecil, Kai Besar) and Aru, leaving Kai in
+// Wallacea and Aru on the Sahul Shelf.
 const lines = [
   {
     id: "wallace",
     name: "Wallace's line",
     color: "#e67e14",
     note: "Wallace (1863): between Bali and Lombok, Borneo and Sulawesi.",
-    points: [[115.8, -10.5], [115.75, -8.7], [116.4, -6.8], [117.25, -5.2], [117.8, -3.8], [118.35, -2.5], [118.4, -1.0], [118.7, 0.2], [119.45, 1.1], [119.5, 2.2], [119.6, 3.2], [121.5, 4.6], [124.0, 5.3], [126.2, 5.4], [127.0, 6.4], [128.0, 9.0]],
+    points: [[115.8, -10.5], [115.75, -8.7], [116.4, -6.8], [117.25, -5.2], [117.8, -3.8], [118.35, -2.5], [118.4, -1.0], [118.7, 0.2], [119.45, 1.1], [119.5, 2.2], [119.6, 3.2], [121.5, 4.6], [124.0, 5.3], [126.2, 5.4], [127.3, 5.9], [128.8, 6.6]],
   },
   {
     id: "huxley",
     name: "Huxley's line",
     color: "#e2b93b",
     note: "Huxley (1868): like Wallace's, but placing the Philippines (except Palawan) east of the line.",
-    points: [[119.5, 2.2], [119.5, 4.2], [119.6, 5.0], [119.4, 6.0], [119.0, 7.3], [119.0, 8.6], [119.6, 9.6], [120.4, 10.8], [120.6, 12.0], [119.9, 13.3], [119.5, 15.0], [119.3, 17.0], [119.6, 19.0], [120.2, 21.0]],
+    points: [[119.5, 2.2], [119.5, 4.2], [119.6, 5.0], [119.4, 6.0], [119.0, 7.3], [119.0, 8.6], [119.6, 9.6], [120.4, 10.8], [120.6, 12.0], [119.9, 13.3], [119.5, 15.0], [119.3, 17.0], [119.6, 19.0], [120.5, 20.0], [122.0, 20.4], [124.0, 20.2]],
   },
   {
     id: "weber",
     name: "Weber's line",
     color: "#c96fd8",
     note: "Weber (1902): the line of faunal balance between Asian and Australian animals.",
-    points: [[127.6, 5.0], [127.1, 2.5], [126.9, 0.5], [126.9, -0.6], [126.9, -1.6], [127.4, -3.0], [127.5, -4.2], [127.2, -6.0], [127.45, -8.0], [127.45, -8.6], [127.2, -9.3], [126.5, -11.0]],
+    points: [[129.2, 5.8], [127.8, 4.0], [127.1, 2.5], [126.9, 0.5], [126.9, -0.6], [126.8, -1.8], [126.3, -2.8], [125.75, -3.3], [125.8, -4.1], [126.6, -4.3], [127.7, -4.3], [128.8, -5.2], [129.6, -6.3], [129.5, -7.4], [129.2, -8.6], [128.0, -9.2], [126.5, -10.2], [124.8, -11.2]],
   },
   {
     id: "lydekker",
     name: "Lydekker's line",
     color: "#5f92cb",
     note: "Lydekker (1896): the western edge of the Sahul Shelf.",
-    points: [[116.0, -19.4], [118.0, -18.8], [120.0, -17.9], [121.5, -15.8], [122.5, -14.5], [124.0, -13.4], [125.5, -11.6], [127.0, -10.4], [129.6, -8.9], [131.8, -7.8], [133.0, -6.4], [132.2, -4.8], [131.4, -3.6], [129.6, -2.3], [129.3, -0.8], [129.4, 1.0], [129.8, 2.6], [131.0, 5.0]],
+    points: [[116.0, -19.4], [118.0, -18.8], [120.0, -17.9], [121.5, -15.8], [122.5, -14.5], [124.0, -13.4], [125.5, -11.6], [127.0, -10.4], [129.6, -9.2], [131.6, -8.7], [132.2, -7.5], [133.3, -6.6], [133.7, -5.9], [133.65, -5.1], [132.2, -4.8], [131.4, -3.6], [129.6, -2.3], [129.3, -0.8], [129.5, 0.6], [130.5, 1.0], [131.8, 1.4]],
   },
 ];
 
@@ -150,6 +168,34 @@ const regions = [
           regions.map((r) => (
             <text x={px(r.lon)} y={py(r.lat)} class:list={["region", r.low && "region-low"]}>
               {r.name}
+            </text>
+          ))
+        }
+      </g>
+
+      <g role="img" aria-label={`Scale bar, ${scaleTicks.at(-1)} kilometres`}>
+        {
+          scaleTicks.slice(1).map((km, k) => (
+            <rect
+              x={(scaleX + kmToX(scaleTicks[k])).toFixed(1)}
+              y={(scaleY - 5.5).toFixed(1)}
+              width={kmToX(km - scaleTicks[k]).toFixed(1)}
+              height="5.5"
+              class={`stroke-forest-900 dark:stroke-forest-100 ${k % 2 ? "fill-white dark:fill-forest-950" : "fill-forest-900 dark:fill-forest-100"}`}
+              stroke-width="0.85"
+            />
+          ))
+        }
+        {
+          scaleTicks.map((km, k) => (
+            <text
+              x={(scaleX + kmToX(km)).toFixed(1)}
+              y={(scaleY + 12).toFixed(1)}
+              text-anchor="middle"
+              font-size="12.5"
+              class="fill-forest-900 dark:fill-forest-100"
+            >
+              {k === scaleTicks.length - 1 ? `${km} km` : km}
             </text>
           ))
         }
