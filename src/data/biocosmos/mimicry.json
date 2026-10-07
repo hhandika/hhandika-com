@@ -23,24 +23,17 @@
     "published": "Heliconius melpomene",
     "accepted": "Heliconius melpomene",
     "image": "/images/biocosmos/mimicry/heliconius-melpomene.webp",
-    "dorsalImages": 243,
-    "ventralImages": 24
+    "dorsalImages": 243
    },
    "b": {
     "published": "Heliconius erato",
     "accepted": "Heliconius erato",
     "image": "/images/biocosmos/mimicry/heliconius-erato.webp",
-    "dorsalImages": 299,
-    "ventralImages": 28
-   },
-   "mutual": {
-    "dorsal": true,
-    "ventral": true
+    "dorsalImages": 299
    },
    "recovered": true,
    "ranks": [
     {
-     "side": "dorsal",
      "direction": "A→B",
      "query": "Heliconius melpomene",
      "partner": "Heliconius erato",
@@ -50,33 +43,12 @@
      "siteListed": true
     },
     {
-     "side": "dorsal",
      "direction": "B→A",
      "query": "Heliconius erato",
      "partner": "Heliconius melpomene",
      "rank": 1,
      "percentile": 1,
      "score": 0.9853,
-     "siteListed": true
-    },
-    {
-     "side": "ventral",
-     "direction": "A→B",
-     "query": "Heliconius melpomene",
-     "partner": "Heliconius erato",
-     "rank": 3,
-     "percentile": 0.99976,
-     "score": 0.9662,
-     "siteListed": true
-    },
-    {
-     "side": "ventral",
-     "direction": "B→A",
-     "query": "Heliconius erato",
-     "partner": "Heliconius melpomene",
-     "rank": 9,
-     "percentile": 0.99905,
-     "score": 0.9666,
      "siteListed": true
     }
    ]
@@ -94,24 +66,17 @@
     "published": "Heliconius cydno",
     "accepted": "Heliconius cydno",
     "image": "/images/biocosmos/mimicry/heliconius-cydno.webp",
-    "dorsalImages": 87,
-    "ventralImages": 8
+    "dorsalImages": 87
    },
    "b": {
     "published": "Heliconius sapho",
     "accepted": "Heliconius sapho",
     "image": "/images/biocosmos/mimicry/heliconius-sapho.webp",
-    "dorsalImages": 47,
-    "ventralImages": 13
-   },
-   "mutual": {
-    "dorsal": true,
-    "ventral": true
+    "dorsalImages": 47
    },
    "recovered": true,
    "ranks": [
     {
-     "side": "dorsal",
      "direction": "A→B",
      "query": "Heliconius cydno",
      "partner": "Heliconius sapho",
@@ -121,33 +86,12 @@
      "siteListed": false
     },
     {
-     "side": "dorsal",
      "direction": "B→A",
      "query": "Heliconius sapho",
      "partner": "Heliconius cydno",
      "rank": 1,
      "percentile": 1,
      "score": 0.9837,
-     "siteListed": true
-    },
-    {
-     "side": "ventral",
-     "direction": "A→B",
-     "query": "Heliconius cydno",
-     "partner": "Heliconius sapho",
-     "rank": 2,
-     "percentile": 0.99988,
-     "score": 0.968,
-     "siteListed": true
-    },
-    {
-     "side": "ventral",
-     "direction": "B→A",
-     "query": "Heliconius sapho",
-     "partner": "Heliconius cydno",
-     "rank": 3,
-     "percentile": 0.99976,
-     "score": 0.9707,
      "siteListed": true
     }
    ]
@@ -164,24 +108,17 @@
     "published": "Heliconius cydno",
     "accepted": "Heliconius cydno",
     "image": "/images/biocosmos/mimicry/heliconius-cydno.webp",
-    "dorsalImages": 87,
-    "ventralImages": 8
+    "dorsalImages": 87
    },
    "b": {
     "published": "Heliconius eleuchia",
     "accepted": "Heliconius primularis",
     "image": "/images/biocosmos/mimicry/heliconius-primularis.webp",
-    "dorsalImages": 19,
-    "ventralImages": 2
-   },
-   "mutual": {
-    "dorsal": true,
-    "ventral": false
+    "dorsalImages": 19
    },
    "recovered": true,
    "ranks": [
     {
-     "side": "dorsal",
      "direction": "A→B",
      "query": "Heliconius cydno",
      "partner": "Heliconius primularis",
@@ -191,33 +128,12 @@
      "siteListed": false
     },
     {
-     "side": "dorsal",
      "direction": "B→A",
      "query": "Heliconius primularis",
      "partner": "Heliconius cydno",
      "rank": 2,
      "percentile": 0.99988,
      "score": 0.9764,
-     "siteListed": true
-    },
-    {
-     "side": "ventral",
-     "direction": "A→B",
-     "query": "Heliconius cydno",
-     "partner": "Heliconius primularis",
-     "rank": 41,
-     "percentile": 0.99524,
-     "score": 0.9578,
-     "siteListed": false
-    },
-    {
-     "side": "ventral",
-     "direction": "B→A",
-     "query": "Heliconius primularis",
-     "partner": "Heliconius cydno",
-     "rank": 1,
-     "percentile": 1,
-     "score": 0.9663,
      "siteListed": true
     }
    ]
@@ -235,24 +151,17 @@
     "published": "Heliconius timareta",
     "accepted": "Heliconius timareta",
     "image": "/images/biocosmos/mimicry/heliconius-timareta.webp",
-    "dorsalImages": 20,
-    "ventralImages": 13
+    "dorsalImages": 20
    },
    "b": {
     "published": "Heliconius melpomene",
     "accepted": "Heliconius melpomene",
     "image": "/images/biocosmos/mimicry/heliconius-melpomene.webp",
-    "dorsalImages": 243,
-    "ventralImages": 24
-   },
-   "mutual": {
-    "dorsal": false,
-    "ventral": false
+    "dorsalImages": 243
    },
    "recovered": false,
    "ranks": [
     {
-     "side": "dorsal",
      "direction": "A→B",
      "query": "Heliconius timareta",
      "partner": "Heliconius melpomene",
@@ -262,7 +171,6 @@
      "siteListed": true
     },
     {
-     "side": "dorsal",
      "direction": "B→A",
      "query": "Heliconius melpomene",
      "partner": "Heliconius timareta",
@@ -270,26 +178,6 @@
      "percentile": 0.99964,
      "score": 0.9787,
      "siteListed": true
-    },
-    {
-     "side": "ventral",
-     "direction": "A→B",
-     "query": "Heliconius timareta",
-     "partner": "Heliconius melpomene",
-     "rank": 3415,
-     "percentile": 0.59396,
-     "score": 0.9042,
-     "siteListed": false
-    },
-    {
-     "side": "ventral",
-     "direction": "B→A",
-     "query": "Heliconius melpomene",
-     "partner": "Heliconius timareta",
-     "rank": 13,
-     "percentile": 0.99857,
-     "score": 0.9625,
-     "siteListed": false
     }
    ]
   },
@@ -305,24 +193,17 @@
     "published": "Papilio polytes",
     "accepted": "Papilio polytes",
     "image": "/images/biocosmos/mimicry/papilio-polytes.webp",
-    "dorsalImages": 702,
-    "ventralImages": 443
+    "dorsalImages": 702
    },
    "b": {
     "published": "Pachliopta aristolochiae",
     "accepted": "Pachliopta aristolochiae",
     "image": "/images/biocosmos/mimicry/pachliopta-aristolochiae.webp",
-    "dorsalImages": 72,
-    "ventralImages": 54
-   },
-   "mutual": {
-    "dorsal": false,
-    "ventral": false
+    "dorsalImages": 72
    },
    "recovered": false,
    "ranks": [
     {
-     "side": "dorsal",
      "direction": "A→B",
      "query": "Papilio polytes",
      "partner": "Pachliopta aristolochiae",
@@ -332,33 +213,12 @@
      "siteListed": false
     },
     {
-     "side": "dorsal",
      "direction": "B→A",
      "query": "Pachliopta aristolochiae",
      "partner": "Papilio polytes",
      "rank": 7,
      "percentile": 0.99929,
      "score": 0.9836,
-     "siteListed": true
-    },
-    {
-     "side": "ventral",
-     "direction": "A→B",
-     "query": "Papilio polytes",
-     "partner": "Pachliopta aristolochiae",
-     "rank": 18,
-     "percentile": 0.99798,
-     "score": 0.9724,
-     "siteListed": false
-    },
-    {
-     "side": "ventral",
-     "direction": "B→A",
-     "query": "Pachliopta aristolochiae",
-     "partner": "Papilio polytes",
-     "rank": 8,
-     "percentile": 0.99917,
-     "score": 0.9815,
      "siteListed": true
     }
    ]
@@ -376,24 +236,17 @@
     "published": "Hypolimnas misippus",
     "accepted": "Hypolimnas misippus",
     "image": "/images/biocosmos/mimicry/hypolimnas-misippus.webp",
-    "dorsalImages": 142,
-    "ventralImages": 23
+    "dorsalImages": 142
    },
    "b": {
     "published": "Danaus chrysippus",
     "accepted": "Danaus chrysippus",
     "image": "/images/biocosmos/mimicry/danaus-chrysippus.webp",
-    "dorsalImages": 406,
-    "ventralImages": 55
-   },
-   "mutual": {
-    "dorsal": true,
-    "ventral": true
+    "dorsalImages": 406
    },
    "recovered": true,
    "ranks": [
     {
-     "side": "dorsal",
      "direction": "A→B",
      "query": "Hypolimnas misippus",
      "partner": "Danaus chrysippus",
@@ -403,33 +256,12 @@
      "siteListed": true
     },
     {
-     "side": "dorsal",
      "direction": "B→A",
      "query": "Danaus chrysippus",
      "partner": "Hypolimnas misippus",
      "rank": 2,
      "percentile": 0.99988,
      "score": 0.9793,
-     "siteListed": true
-    },
-    {
-     "side": "ventral",
-     "direction": "A→B",
-     "query": "Hypolimnas misippus",
-     "partner": "Danaus chrysippus",
-     "rank": 3,
-     "percentile": 0.99976,
-     "score": 0.9678,
-     "siteListed": true
-    },
-    {
-     "side": "ventral",
-     "direction": "B→A",
-     "query": "Danaus chrysippus",
-     "partner": "Hypolimnas misippus",
-     "rank": 2,
-     "percentile": 0.99988,
-     "score": 0.9686,
      "siteListed": true
     }
    ]
@@ -447,24 +279,17 @@
     "published": "Papilio glaucus",
     "accepted": "Papilio glaucus",
     "image": "/images/biocosmos/mimicry/papilio-glaucus.webp",
-    "dorsalImages": 266,
-    "ventralImages": 63
+    "dorsalImages": 266
    },
    "b": {
     "published": "Battus philenor",
     "accepted": "Battus philenor",
     "image": "/images/biocosmos/mimicry/battus-philenor.webp",
-    "dorsalImages": 702,
-    "ventralImages": 537
-   },
-   "mutual": {
-    "dorsal": false,
-    "ventral": false
+    "dorsalImages": 702
    },
    "recovered": false,
    "ranks": [
     {
-     "side": "dorsal",
      "direction": "A→B",
      "query": "Papilio glaucus",
      "partner": "Battus philenor",
@@ -474,33 +299,12 @@
      "siteListed": false
     },
     {
-     "side": "dorsal",
      "direction": "B→A",
      "query": "Battus philenor",
      "partner": "Papilio glaucus",
      "rank": 6,
      "percentile": 0.99941,
      "score": 0.9715,
-     "siteListed": true
-    },
-    {
-     "side": "ventral",
-     "direction": "A→B",
-     "query": "Papilio glaucus",
-     "partner": "Battus philenor",
-     "rank": 118,
-     "percentile": 0.98608,
-     "score": 0.9242,
-     "siteListed": false
-    },
-    {
-     "side": "ventral",
-     "direction": "B→A",
-     "query": "Battus philenor",
-     "partner": "Papilio glaucus",
-     "rank": 5,
-     "percentile": 0.99952,
-     "score": 0.9663,
      "siteListed": true
     }
    ]
@@ -517,24 +321,17 @@
     "published": "Papilio polyxenes",
     "accepted": "Papilio polyxenes",
     "image": "/images/biocosmos/mimicry/papilio-polyxenes.webp",
-    "dorsalImages": 334,
-    "ventralImages": 65
+    "dorsalImages": 334
    },
    "b": {
     "published": "Battus philenor",
     "accepted": "Battus philenor",
     "image": "/images/biocosmos/mimicry/battus-philenor.webp",
-    "dorsalImages": 702,
-    "ventralImages": 537
+    "dorsalImages": 702
    },
-   "mutual": {
-    "dorsal": false,
-    "ventral": true
-   },
-   "recovered": true,
+   "recovered": false,
    "ranks": [
     {
-     "side": "dorsal",
      "direction": "A→B",
      "query": "Papilio polyxenes",
      "partner": "Battus philenor",
@@ -544,7 +341,6 @@
      "siteListed": false
     },
     {
-     "side": "dorsal",
      "direction": "B→A",
      "query": "Battus philenor",
      "partner": "Papilio polyxenes",
@@ -552,26 +348,6 @@
      "percentile": 0.99608,
      "score": 0.9637,
      "siteListed": false
-    },
-    {
-     "side": "ventral",
-     "direction": "A→B",
-     "query": "Papilio polyxenes",
-     "partner": "Battus philenor",
-     "rank": 6,
-     "percentile": 0.99941,
-     "score": 0.9751,
-     "siteListed": true
-    },
-    {
-     "side": "ventral",
-     "direction": "B→A",
-     "query": "Battus philenor",
-     "partner": "Papilio polyxenes",
-     "rank": 2,
-     "percentile": 0.99988,
-     "score": 0.9748,
-     "siteListed": true
     }
    ]
   },
@@ -587,24 +363,17 @@
     "published": "Limenitis lorquini",
     "accepted": "Limenitis lorquini",
     "image": "/images/biocosmos/mimicry/limenitis-lorquini.webp",
-    "dorsalImages": 108,
-    "ventralImages": 29
+    "dorsalImages": 108
    },
    "b": {
     "published": "Adelpha bredowii",
     "accepted": "Limenitis bredowii",
     "image": "/images/biocosmos/mimicry/limenitis-bredowii.webp",
-    "dorsalImages": 65,
-    "ventralImages": 22
-   },
-   "mutual": {
-    "dorsal": false,
-    "ventral": false
+    "dorsalImages": 65
    },
    "recovered": false,
    "ranks": [
     {
-     "side": "dorsal",
      "direction": "A→B",
      "query": "Limenitis lorquini",
      "partner": "Limenitis bredowii",
@@ -614,7 +383,6 @@
      "siteListed": false
     },
     {
-     "side": "dorsal",
      "direction": "B→A",
      "query": "Limenitis bredowii",
      "partner": "Limenitis lorquini",
@@ -622,26 +390,6 @@
      "percentile": 0.99941,
      "score": 0.9719,
      "siteListed": true
-    },
-    {
-     "side": "ventral",
-     "direction": "A→B",
-     "query": "Limenitis lorquini",
-     "partner": "Limenitis bredowii",
-     "rank": 17,
-     "percentile": 0.9981,
-     "score": 0.9407,
-     "siteListed": false
-    },
-    {
-     "side": "ventral",
-     "direction": "B→A",
-     "query": "Limenitis bredowii",
-     "partner": "Limenitis lorquini",
-     "rank": 17,
-     "percentile": 0.9981,
-     "score": 0.952,
-     "siteListed": false
     }
    ]
   },
@@ -657,24 +405,17 @@
     "published": "Limenitis archippus",
     "accepted": "Limenitis archippus",
     "image": "/images/biocosmos/mimicry/limenitis-archippus.webp",
-    "dorsalImages": 199,
-    "ventralImages": 66
+    "dorsalImages": 199
    },
    "b": {
     "published": "Danaus plexippus",
     "accepted": "Danaus plexippus",
     "image": "/images/biocosmos/mimicry/danaus-plexippus.webp",
-    "dorsalImages": 3488,
-    "ventralImages": 2837
-   },
-   "mutual": {
-    "dorsal": true,
-    "ventral": true
+    "dorsalImages": 3488
    },
    "recovered": true,
    "ranks": [
     {
-     "side": "dorsal",
      "direction": "A→B",
      "query": "Limenitis archippus",
      "partner": "Danaus plexippus",
@@ -684,33 +425,12 @@
      "siteListed": true
     },
     {
-     "side": "dorsal",
      "direction": "B→A",
      "query": "Danaus plexippus",
      "partner": "Limenitis archippus",
      "rank": 1,
      "percentile": 1,
      "score": 0.9835,
-     "siteListed": false
-    },
-    {
-     "side": "ventral",
-     "direction": "A→B",
-     "query": "Limenitis archippus",
-     "partner": "Danaus plexippus",
-     "rank": 1,
-     "percentile": 1,
-     "score": 0.9738,
-     "siteListed": true
-    },
-    {
-     "side": "ventral",
-     "direction": "B→A",
-     "query": "Danaus plexippus",
-     "partner": "Limenitis archippus",
-     "rank": 3,
-     "percentile": 0.99976,
-     "score": 0.9727,
      "siteListed": false
     }
    ]
@@ -727,24 +447,17 @@
     "published": "Papilio troilus",
     "accepted": "Papilio troilus",
     "image": "/images/biocosmos/mimicry/papilio-troilus.webp",
-    "dorsalImages": 215,
-    "ventralImages": 91
+    "dorsalImages": 215
    },
    "b": {
     "published": "Battus philenor",
     "accepted": "Battus philenor",
     "image": "/images/biocosmos/mimicry/battus-philenor.webp",
-    "dorsalImages": 702,
-    "ventralImages": 537
-   },
-   "mutual": {
-    "dorsal": true,
-    "ventral": true
+    "dorsalImages": 702
    },
    "recovered": true,
    "ranks": [
     {
-     "side": "dorsal",
      "direction": "A→B",
      "query": "Papilio troilus",
      "partner": "Battus philenor",
@@ -754,7 +467,6 @@
      "siteListed": true
     },
     {
-     "side": "dorsal",
      "direction": "B→A",
      "query": "Battus philenor",
      "partner": "Papilio troilus",
@@ -762,33 +474,12 @@
      "percentile": 0.99952,
      "score": 0.972,
      "siteListed": true
-    },
-    {
-     "side": "ventral",
-     "direction": "A→B",
-     "query": "Papilio troilus",
-     "partner": "Battus philenor",
-     "rank": 3,
-     "percentile": 0.99976,
-     "score": 0.9735,
-     "siteListed": true
-    },
-    {
-     "side": "ventral",
-     "direction": "B→A",
-     "query": "Battus philenor",
-     "partner": "Papilio troilus",
-     "rank": 3,
-     "percentile": 0.99976,
-     "score": 0.9719,
-     "siteListed": true
     }
    ]
   }
  ],
  "permutations": [
   {
-   "side": "dorsal",
    "null": "Random",
    "queries": 22,
    "observed": 0.9973,
@@ -799,35 +490,12 @@
    "permutations": 10000
   },
   {
-   "side": "dorsal",
    "null": "Congeners",
    "queries": 22,
    "observed": 0.9973,
    "mean": 0.6952,
    "low": 0.6018,
    "high": 0.7875,
-   "p": 0.00009999000099990002,
-   "permutations": 10000
-  },
-  {
-   "side": "ventral",
-   "null": "Random",
-   "queries": 22,
-   "observed": 0.9802,
-   "mean": 0.4994,
-   "low": 0.3798,
-   "high": 0.6182,
-   "p": 0.00009999000099990002,
-   "permutations": 10000
-  },
-  {
-   "side": "ventral",
-   "null": "Congeners",
-   "queries": 22,
-   "observed": 0.9802,
-   "mean": 0.6859,
-   "low": 0.5948,
-   "high": 0.7777,
    "p": 0.00009999000099990002,
    "permutations": 10000
   }

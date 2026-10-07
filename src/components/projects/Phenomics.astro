@@ -33,16 +33,16 @@ const morphoStats = [
   },
 ];
 
-const random = mimicry.permutations.filter((p) => p.null === "Random");
+const random = mimicry.permutations.find((p) => p.null === "Random")!;
 const mimicryStats = [
   {
     value: `${mimicry.pairs.filter((p) => p.recovered).length}/${mimicry.counts.testedPairs}`,
     label:
-      "pairs mutually in the top 10 of 8,409 species on at least one wing side",
+      "pairs mutually in the top 10 of 8,409 species on the dorsal side",
   },
   {
-    value: random.map((p) => p.observed.toFixed(3)).join(" · "),
-    label: "mean partner percentile, dorsal · ventral (chance = 0.50)",
+    value: random.observed.toFixed(3),
+    label: "mean dorsal partner percentile (chance = 0.50)",
   },
   {
     value: "p ≤ 0.0001",
@@ -122,7 +122,7 @@ const figureClasses =
   <p>
     Mimicry is a direct test of whether image embeddings capture what predators
     perceive. I compiled published Müllerian and Batesian butterfly mimicry
-    pairs and, for dorsal and ventral wings separately, ranked how similar each
+    pairs and, using dorsal wings, ranked how similar each
     partner is to the other among all species in the collection. Mimicry pairs
     rank far above chance, and above congeners. The misses are informative: in <i
       >Papilio polytes</i

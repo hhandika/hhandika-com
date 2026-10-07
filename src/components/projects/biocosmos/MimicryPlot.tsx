@@ -1,7 +1,8 @@
 // Mimicry recovery from the BioCosmos analyses (notebooks/mimicry.ipynb,
 // copied to src/data/biocosmos/mimicry.json by scripts/build-mimicry.mjs).
 // Each published pair is queried in both directions: where does the partner
-// rank among all species by visual similarity of dorsal or ventral centroids?
+// rank among all species by visual similarity of dorsal centroids? Mimicry is a
+// dorsal signal, so ventral wings are left out.
 // The rank view is HTML so dots slide between sides; Observable Plot draws the
 // permutation tests and plots.css animates them in.
 import * as Plot from "@observablehq/plot";
@@ -10,22 +11,13 @@ import mimicry from "../../../data/biocosmos/mimicry.json";
 import "./plots.css";
 
 type View = "ranks" | "tests";
-type Side = "dorsal" | "ventral" | "both";
-type Pair = (typeof mimicry.pairs)[number];
-type Rank = Pair["ranks"][number];
 
 const VIEWS: { id: View; label: string }[] = [
   { id: "ranks", label: "Mimicry pairs" },
   { id: "tests", label: "Permutation tests" },
 ];
-const SIDES: { id: Side; label: string }[] = [
-  { id: "dorsal", label: "Dorsal" },
-  { id: "ventral", label: "Ventral" },
-  { id: "both", label: "Both sides" },
-];
-
-// ColorBrewer Dark2, as in the publication figure and the morphospace.
-const COLOR = { dorsal: "#1b9e77", ventral: "#d95f02" };
+// ColorBrewer Dark2 dorsal, as in the publication figure and the morphospace.
+const COLOR = "#1b9e77";
 const NULL_COLOR = "#8199a2"; // mist-400
 
 const species = mimicry.counts.speciesRanked - 1; // species compared per query
@@ -39,20 +31,9 @@ const pos = (rank: number) =>
 
 const short = (name: string) => name.replace(/^(\w)\w+ /, "$1. ");
 
-function mutual(p: Pair, side: Side) {
-  return side === "both" ? p.recovered : p.mutual[side];
-}
-
-// Vertical position of a dot inside its row, in percent.
-function lane(r: Rank, side: Side) {
-  if (side === "both") return r.side === "dorsal" ? 32 : 68;
-  return 50;
-}
-
 export default function MimicryPlot() {
   const testsRef = useRef<HTMLDivElement>(null);
   const [view, setView] = useState<View>("ranks");
-  const [side, setSide] = useState<Side>("both");
   const [open, setOpen] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
   const [width, setWidth] = useState(0);
@@ -77,14 +58,11 @@ export default function MimicryPlot() {
   useEffect(() => {
     if (view !== "tests" || !testsRef.current || !width) return;
     const narrow = width < 560;
-    const rows = mimicry.permutations.map((p) => ({
-      ...p,
-      row: `${p.side === "dorsal" ? "Dorsal" : "Ventral"} · ${p.null}`,
-    }));
+    const rows = mimicry.permutations.map((p) => ({ ...p, row: p.null }));
     const plot = Plot.plot({
       width,
-      height: 260,
-      marginLeft: narrow ? 120 : 150,
+      height: 160,
+      marginLeft: narrow ? 80 : 96,
       marginRight: narrow ? 64 : 80,
       marginBottom: 40,
       style: {
@@ -122,7 +100,7 @@ export default function MimicryPlot() {
           y: "row",
           r: 7,
           symbol: "diamond",
-          fill: (d) => COLOR[d.side as "dorsal" | "ventral"],
+          fill: COLOR,
           stroke: "currentColor",
           strokeOpacity: 0.3,
           title: (d) =>
@@ -159,15 +137,9 @@ export default function MimicryPlot() {
     testsRef.current.replaceChildren(plot);
   }, [view, width]);
 
-  const shown = (r: Rank) => side === "both" || r.side === side;
-  const recovered = mimicry.pairs.filter((p) => mutual(p, side)).length;
-  const dorsal = mimicry.permutations.find(
-    (p) => p.side === "dorsal" && p.null === "Random",
-  )!;
-  const ventral = mimicry.permutations.find(
-    (p) => p.side === "ventral" && p.null === "Random",
-  )!;
-  const congeners = mimicry.permutations.filter((p) => p.null === "Congeners");
+  const recovered = mimicry.pairs.filter((p) => p.recovered).length;
+  const random = mimicry.permutations.find((p) => p.null === "Random")!;
+  const congeners = mimicry.permutations.find((p) => p.null === "Congeners")!;
 
   const tabClasses = (active: boolean) =>
     `rounded-full px-3 py-1 text-sm transition-colors duration-500 ${
@@ -195,24 +167,6 @@ export default function MimicryPlot() {
             </button>
           ))}
         </div>
-        {view === "ranks" && (
-          <div
-            class="inline-flex flex-wrap rounded-full border border-forest-900/15 p-1 dark:border-forest-100/15"
-            role="group"
-            aria-label="Wing surface"
-          >
-            {SIDES.map((s) => (
-              <button
-                type="button"
-                aria-pressed={side === s.id}
-                onClick={() => setSide(s.id)}
-                class={tabClasses(side === s.id)}
-              >
-                {s.label}
-              </button>
-            ))}
-          </div>
-        )}
       </div>
 
       {/* Keys stop Preact from reusing one div for both views, which would
@@ -220,20 +174,6 @@ export default function MimicryPlot() {
       {view === "ranks" ? (
         <div key="ranks" class="text-forest-900 dark:text-forest-100">
           <p class="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-forest-700 dark:text-forest-300">
-            <span class="inline-flex items-center gap-1">
-              <span
-                class="h-2.5 w-2.5 rounded-full"
-                style={{ background: COLOR.dorsal }}
-              />{" "}
-              dorsal
-            </span>
-            <span class="inline-flex items-center gap-1">
-              <span
-                class="h-2.5 w-2.5 rounded-full"
-                style={{ background: COLOR.ventral }}
-              />{" "}
-              ventral
-            </span>
             <span>● first species queries · ○ second species queries</span>
             <span class="inline-flex items-center gap-1">
               <span class="h-2.5 w-4 rounded-sm bg-amber-200/70 dark:bg-amber-400/25" />{" "}
@@ -247,7 +187,7 @@ export default function MimicryPlot() {
           >
             {mimicry.pairs.map((p, i) => {
               const isOpen = open === p.pair;
-              const hit = mutual(p, side);
+              const hit = p.recovered;
               return (
                 <li
                   class={`transition-colors duration-700 ${hit ? "bg-amber-100/70 dark:bg-amber-400/10" : ""}`}
@@ -300,27 +240,23 @@ export default function MimicryPlot() {
                         aria-hidden="true"
                       />
                       {p.ranks.map((r, k) => {
-                        const color = COLOR[r.side as "dorsal" | "ventral"];
-                        const visible = shown(r);
-                        const label = `${short(r.query)} → ${short(r.partner)}, ${r.side}: rank ${r.rank.toLocaleString()} of ${species.toLocaleString()}`;
+                        const label = `${short(r.query)} → ${short(r.partner)}: rank ${r.rank.toLocaleString()} of ${species.toLocaleString()}`;
                         return (
                           <span
                             class="absolute -ml-[6px] -mt-[6px] h-3 w-3 rounded-full border-2 transition-all duration-1000 ease-out motion-reduce:transition-none"
                             style={{
                               left: `${ready ? pos(r.rank) : 0}%`,
-                              top: `${lane(r, side)}%`,
-                              borderColor: color,
+                              top: "50%",
+                              borderColor: COLOR,
                               background:
-                                r.direction === "A→B" ? color : "transparent",
-                              opacity: ready && visible ? 1 : 0,
+                                r.direction === "A→B" ? COLOR : "transparent",
+                              opacity: ready ? 1 : 0,
                               transitionDelay: ready
                                 ? `${i * 60 + k * 30}ms`
                                 : "0ms",
-                              pointerEvents: visible ? "auto" : "none",
                             }}
                             role="img"
                             aria-label={label}
-                            aria-hidden={!visible}
                             title={`${label}${r.siteListed ? ", listed on the species page" : ""}`}
                           />
                         );
@@ -345,12 +281,6 @@ export default function MimicryPlot() {
                             </th>
                             <th
                               scope="col"
-                              class="pr-3 text-left font-semibold"
-                            >
-                              Side
-                            </th>
-                            <th
-                              scope="col"
                               class="pr-3 text-right font-semibold"
                             >
                               Rank
@@ -367,7 +297,6 @@ export default function MimicryPlot() {
                                 <i>{short(r.query)}</i> →{" "}
                                 <i>{short(r.partner)}</i>
                               </td>
-                              <td class="pr-3">{r.side}</td>
                               <td class="pr-3 text-right">
                                 {r.rank.toLocaleString()}
                               </td>
@@ -387,8 +316,7 @@ export default function MimicryPlot() {
                                 (published as <i>{m.published}</i>)
                               </>
                             )}
-                            : {m.dorsalImages.toLocaleString()} dorsal,{" "}
-                            {m.ventralImages.toLocaleString()} ventral images
+                            : {m.dorsalImages.toLocaleString()} dorsal images
                           </span>
                         ))}
                       </p>
@@ -440,14 +368,14 @@ export default function MimicryPlot() {
           ref={testsRef}
           class="w-full text-forest-900 dark:text-forest-100"
           role="img"
-          aria-label={`Permutation tests. ${mimicry.permutations.map((p) => `${p.side} side, ${p.null} null: observed mean partner percentile ${p.observed.toFixed(3)}, null mean ${p.mean.toFixed(2)} (95% ${p.low.toFixed(2)} to ${p.high.toFixed(2)})`).join("; ")}. All p ≤ 0.0001.`}
+          aria-label={`Permutation tests on dorsal wings. ${mimicry.permutations.map((p) => `${p.null} null: observed mean partner percentile ${p.observed.toFixed(3)}, null mean ${p.mean.toFixed(2)} (95% ${p.low.toFixed(2)} to ${p.high.toFixed(2)})`).join("; ")}. All p ≤ 0.0001.`}
         />
       )}
 
       <p class="mt-2 text-xs text-forest-700 dark:text-forest-300">
         {view === "ranks"
-          ? `Rank of each mimicry pair among ${species.toLocaleString()} species when either member queries the collection (1 = most similar; dashed green = the top 10 shown on species pages, dotted = chance). In ${recovered} of ${mimicry.pairs.length} pairs, both partners place each other in their top 10 ${side === "both" ? "on at least one wing side" : `on the ${side} side`} (highlighted). Hover a dot for its rank, or open a pair for its ranks, notes, and references.`
-          : `Observed mean partner percentile (◆) against null distributions (mean and 95% interval) that redraw each partner from any species (Random) or, for pairs within a genus, from the query's congeners. Dorsal ${dorsal.observed.toFixed(3)} and ventral ${ventral.observed.toFixed(3)}, against ${dorsal.mean.toFixed(2)} at random and ${congeners.map((c) => c.mean.toFixed(2)).join(" and ")} among congeners.`}
+          ? `Dorsal rank of each mimicry pair among ${species.toLocaleString()} species when either member queries the collection (1 = most similar; dashed green = the top 10 shown on species pages, dotted = chance). In ${recovered} of ${mimicry.pairs.length} pairs, both partners place each other in their top 10 on the dorsal side (highlighted). Hover a dot for its rank, or open a pair for its ranks, notes, and references.`
+          : `Observed mean partner percentile (◆) against null distributions (mean and 95% interval) that redraw each partner from any species (Random) or, for pairs within a genus, from the query's congeners. Dorsal ${random.observed.toFixed(3)}, against ${random.mean.toFixed(2)} at random and ${congeners.mean.toFixed(2)} among congeners.`}
       </p>
     </div>
   );

@@ -1,4 +1,5 @@
 // One-time builder for the BioCosmos mimicry figure on the software page.
+// Mimicry is a dorsal signal, so only dorsal ranks and tests are kept.
 // Run manually: `node scripts/build-mimicry.mjs [path/to/BioCosmos]` — outputs
 // are committed. Defaults to a BioCosmos checkout next to this repository.
 //
@@ -56,7 +57,7 @@ const representatives = csv("representatives");
 const counts = Object.fromEntries(csv("counts").map((r) => [r.count, Number(r.value)]));
 
 const slug = (name) => name.toLowerCase().replace(/\s+/g, "-");
-const sideOf = (mode) => (mode.includes("ventral") ? "ventral" : "dorsal");
+const isDorsal = (row) => !row.mode.includes("ventral");
 
 mkdirSync(OUT_IMAGES, { recursive: true });
 for (const { species, img_id } of representatives) {
@@ -75,7 +76,6 @@ const pairs = recovery.map((r) => {
       accepted: m.accepted_species,
       image: `/images/biocosmos/mimicry/${slug(m.accepted_species)}.webp`,
       dorsalImages: Number(m.dorsal_images),
-      ventralImages: Number(m.ventral_images),
     };
   };
   const a = member("A");
@@ -89,12 +89,10 @@ const pairs = recovery.map((r) => {
     dois: source["DOI(s)"].split(";").map((d) => d.trim()),
     a,
     b,
-    mutual: { dorsal: r.mutual_top10_dorsal === "True", ventral: r.mutual_top10_ventral === "True" },
-    recovered: r.recovered === "True",
+    recovered: r.mutual_top10_dorsal === "True",
     ranks: ranks
-      .filter((k) => k.pair === r.pair)
+      .filter((k) => k.pair === r.pair && isDorsal(k))
       .map((k) => ({
-        side: sideOf(k.mode),
         direction: k.direction,
         query: k.query,
         partner: k.partner,
@@ -118,8 +116,7 @@ const out = {
     imagesRanked: counts["Images ranked"],
   },
   pairs,
-  permutations: permutations.map((p) => ({
-    side: sideOf(p.mode),
+  permutations: permutations.filter(isDorsal).map((p) => ({
     null: p.null,
     queries: Number(p.query_rows),
     observed: Number(Number(p.observed_mean_percentile).toFixed(4)),
