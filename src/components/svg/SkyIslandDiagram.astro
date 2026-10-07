@@ -5,7 +5,9 @@
  * elevation data (src/data/bunomys-elevation.json): the widespread
  * T. dominator occurs on all four, while montane haplogroups are confined to
  * one or two summits. On scroll into view, montane dots take on their
- * lineage colours. Scrolls horizontally on small screens.
+ * lineage colours. Selecting a taxon (a legend chip or one of its dots)
+ * highlights its populations, draws its recorded elevation range on each
+ * mountain, and describes it below. Scrolls horizontally on small screens.
  */
 import relief from "../../assets/graphics/sulawesi-relief.png";
 import elevation from "../../data/bunomys-elevation.json";
@@ -138,41 +140,100 @@ const lineages = [
   { label: "B. torajae WC-A", color: "#ef6fa8" },
   { label: "B. torajae WC-B", color: "#f2cf4a" },
   { label: "B. penitus WC-B", color: "#e9edd6" },
-].map((l) => ({ ...l, taxon: taxon(l.label) }));
+];
+const OTHER = "#8199a2";
+const SHARED = "#f5a028";
+const WIDE = "T. dominator EC-SE-SW-WC";
+const wide = taxon(WIDE);
 
-// Spell out each genus at its first mention in the legend.
+// Names: "B. torajae WC-A" -> Bunomys torajae WC-A, with the binomial italic.
 const genera: Record<string, string> = {
   "B.": "Bunomys",
   "E.": "Eropeplus",
   "T.": "Taeromys",
 };
-const seen = new Set(["T."]);
-const legendName = (label: string) => {
-  const [g, ...rest] = label.split(" ");
-  const full = seen.has(g) ? g : (genera[g] ?? g);
-  seen.add(g);
-  return { binomial: `${full} ${rest[0]}`, suffix: rest.slice(1).join(" ") };
+const nameParts = (label: string, full: boolean) => {
+  if (label === "Genus spnov") return { name: "Undescribed genus", suffix: "" };
+  const [g, sp, ...rest] = label.split(" ");
+  const genus = full ? (genera[g] ?? g) : g;
+  if (sp.startsWith("sp"))
+    return {
+      name: `<i>${genus}</i> ${sp === "spnov" ? "sp. nov." : `sp. ${sp.slice(2)}`}`,
+      suffix: "",
+    };
+  return { name: `<i>${genus} ${sp}</i>`, suffix: rest.join(" ") };
 };
-const legend = lineages.map((l) => ({ ...l, name: legendName(l.label) }));
-const OTHER = "#8199a2";
-const SHARED = "#f5a028";
-const wide = taxon("T. dominator EC-SE-SW-WC");
+const html = (label: string, full: boolean) => {
+  const { name, suffix } = nameParts(label, full);
+  return suffix ? `${name} ${suffix}` : name;
+};
 
-type Dot = { x: number; y: number; color: string; delay: number };
-const montaneDots: Dot[] = [];
-const wideDots: { x: number; y: number }[] = [];
-mountains.forEach((m, mi) => {
-  const delay = 0.3 + mi * 0.3;
-  wideDots.push(...scatter(m, 6, wide.min, wide.max, 2.1 + mi * 0.9));
-  m.montane.forEach((label, li) => {
-    const lin = lineages.find((l) => l.label === label);
-    const t = taxon(label);
-    const n = lin ? 6 : 3;
-    scatter(m, n, t.min, t.max, 5.3 + mi * 1.7 + li * 0.61).forEach((d) =>
-      montaneDots.push({ ...d, color: lin?.color ?? OTHER, delay }),
-    );
+// Every taxon recorded on the four mountains, with its records per mountain.
+const names = mountains.map((m) => m.name);
+const rank = (label: string) =>
+  label === WIDE ? 0 : lineages.some((l) => l.label === label) ? 1 : 2;
+const taxa = elevation.taxa
+  .filter((t) => t.records.some((r) => names.includes(r.locality)))
+  .sort((a, b) => rank(a.label) - rank(b.label))
+  .map((t, ti) => {
+    const ranges = mountains.flatMap((m, mi) => {
+      const recs = t.records.filter((r) => r.locality === m.name);
+      return recs.length
+        ? [
+            {
+              mi,
+              min: Math.min(...recs.map((r) => r.min)),
+              max: Math.max(...recs.map((r) => r.max)),
+              n: recs.reduce((sum, r) => sum + r.n, 0),
+            },
+          ]
+        : [];
+    });
+    const color =
+      t.label === WIDE
+        ? SHARED
+        : (lineages.find((l) => l.label === t.label)?.color ?? OTHER);
+    const lo = Math.min(...ranges.map((r) => r.min));
+    const hi = Math.max(...ranges.map((r) => r.max));
+    const n = ranges.reduce((sum, r) => sum + r.n, 0);
+    const where = ranges.map((r) => mountains[r.mi].name);
+    const zone =
+      t.min >= elevation.threshold
+        ? `montane, recorded only above ${fmt(elevation.threshold)} m`
+        : t.max < elevation.threshold
+          ? `lowland, recorded only below ${fmt(elevation.threshold)} m`
+          : `widespread, recorded below and above ${fmt(elevation.threshold)} m`;
+    return {
+      id: `t${ti}`,
+      label: t.label,
+      group: t.group,
+      color,
+      // Drawn before any selection: T. dominator and the montane taxa.
+      shown: t.label === WIDE || t.group === "Montane",
+      chip: html(t.label, false),
+      summary: `${html(t.label, true)} is ${zone}. On these mountains: ${where.length > 1 ? `${where.slice(0, -1).join(", ")} and ${where.at(-1)}` : where[0]}, ${fmt(lo)}–${fmt(hi)} m, ${n} specimen${n === 1 ? "" : "s"}.`,
+      ranges,
+    };
   });
-});
+
+// Dots for every taxon, placed within its recorded elevations on each
+// mountain. Featured lineages and T. dominator get more dots than the rest.
+const dots = taxa.flatMap((t, ti) =>
+  t.ranges.flatMap((r) => {
+    const n = t.color === OTHER ? 3 : 6;
+    const seed = 2.1 + r.mi * 1.7 + ti * 0.61;
+    return scatter(mountains[r.mi], n, r.min, r.max, seed).map((d) => ({
+      ...d,
+      t,
+      delay: 0.3 + r.mi * 0.3,
+    }));
+  }),
+);
+
+const groups = ["Montane", "Widespread"].map((g) => ({
+  name: g,
+  taxa: taxa.filter((t) => t.group === g),
+}));
 
 // ---- Locator inset ----------------------------------------------------
 const bb = sulawesi.bbox;
@@ -311,8 +372,8 @@ const yThreshold = y(elevation.threshold);
 
       <!-- mountain names -->
       {
-        mountains.map((m) => (
-          <g text-anchor="middle">
+        mountains.map((m, mi) => (
+          <g text-anchor="middle" class="peak-label" data-mountain={mi}>
             <text
               x={m.x}
               y={y(m.h) - 34}
@@ -342,26 +403,52 @@ const yThreshold = y(elevation.threshold);
         ))
       }
 
-      <!-- populations -->
+      <!-- populations; dots of widespread taxa other than T. dominator appear only when selected -->
       {
-        wideDots.map((d) => (
+        dots.map((d) => (
           <circle
             cx={d.x.toFixed(1)}
             cy={d.y.toFixed(1)}
             r="3.6"
-            class="dot-wide"
+            class={`dot ${d.t.label === WIDE ? "dot-wide" : d.t.shown ? "dot-peak" : "dot-extra"}`}
+            data-taxon={d.t.id}
+            style={`--c:${d.t.color};transition-delay:${d.delay.toFixed(2)}s`}
           />
         ))
       }
+
+      <!-- recorded elevation range of the selected taxon on each mountain -->
       {
-        montaneDots.map((d) => (
-          <circle
-            cx={d.x.toFixed(1)}
-            cy={d.y.toFixed(1)}
-            r="3.6"
-            class="dot-peak"
-            style={`--c:${d.color};transition-delay:${d.delay.toFixed(2)}s`}
-          />
+        taxa.map((t) => (
+          <g class="range hidden" data-range={t.id} aria-hidden="true">
+            {t.ranges.map((r) => {
+              const x = mountains[r.mi].x;
+              const y1 = y(r.max);
+              const y2 = y(r.min);
+              // Label beside the bar, on the left near the right edge.
+              const left = x > W - 200;
+              const lx = left ? x - 10 : x + 10;
+              return (
+                <g>
+                  <line x1={x} x2={x} y1={y1} y2={y2} class="range-halo" />
+                  <line x1={x} x2={x} y1={y1} y2={y2} class="range-bar" style={`--c:${t.color}`} />
+                  <line x1={x - 6} x2={x + 6} y1={y1} y2={y1} class="range-bar" style={`--c:${t.color}`} />
+                  <line x1={x - 6} x2={x + 6} y1={y2} y2={y2} class="range-bar" style={`--c:${t.color}`} />
+                  <text
+                    x={lx}
+                    y={(y1 + y2) / 2 - 2}
+                    text-anchor={left ? "end" : "start"}
+                    font-size="11.5"
+                    font-weight="700"
+                    class="range-text"
+                  >
+                    <tspan x={lx}>{r.min === r.max ? `${fmt(r.min)} m` : `${fmt(r.min)}–${fmt(r.max)} m`}</tspan>
+                    <tspan x={lx} dy="13" font-weight="500">{r.n} specimen{r.n === 1 ? "" : "s"}</tspan>
+                  </text>
+                </g>
+              );
+            })}
+          </g>
         ))
       }
 
@@ -416,43 +503,52 @@ const yThreshold = y(elevation.threshold);
   </p>
 
   <figcaption class="mt-3 text-sm text-forest-800 dark:text-forest-200">
-    <ul class="grid gap-x-4 gap-y-1.5 sm:grid-cols-2 lg:grid-cols-3">
-      <li class="flex items-center gap-2">
-        <span
-          class="inline-block h-2.5 w-2.5 shrink-0 rounded-full"
-          style={`background:${SHARED}`}></span>
-        <span
-          ><i>Taeromys dominator</i>, widespread ({fmt(wide.min)}–{
-            fmt(wide.max)
-          } m), on all four</span
-        >
-      </li>
-      {
-        legend.map((l) => (
-          <li class="flex items-center gap-2">
-            <span
-              class="inline-block h-2.5 w-2.5 shrink-0 rounded-full"
-              style={`background:${l.color};box-shadow:0 0 0 1px rgb(14 26 18 / 0.25)`}
-            />
-            <span>
-              <i>{l.name.binomial}</i> {l.name.suffix}
-              <span class="opacity-70">
-                ·{" "}
-                {[...new Set(l.taxon.records.map((r) => r.locality))].join(
-                  ", ",
-                )}
-              </span>
-            </span>
-          </li>
-        ))
-      }
-      <li class="flex items-center gap-2">
-        <span
-          class="inline-block h-2.5 w-2.5 shrink-0 rounded-full"
-          style={`background:${OTHER}`}></span>
-        <span>Other montane taxa</span>
-      </li>
-    </ul>
+    <div class="flex flex-wrap items-baseline justify-between gap-2">
+      <p class="font-semibold text-forest-900 dark:text-forest-50">
+        Select a taxon to see where it lives
+      </p>
+      <button
+        type="button"
+        class="sky-clear hidden rounded-full px-2.5 py-1 text-xs font-semibold text-forest-700 underline hover:text-forest-950 dark:text-forest-300 dark:hover:text-forest-50"
+      >
+        Show all
+      </button>
+    </div>
+    {
+      groups.map((g) => (
+        <div class="mt-2" role="group" aria-label={`${g.name} taxa`}>
+          <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-forest-700 dark:text-forest-300">
+            {g.name}
+          </p>
+          <ul class="flex flex-wrap gap-1.5">
+            {g.taxa.map((t) => (
+              <li>
+                <button
+                  type="button"
+                  class="sky-chip flex items-center gap-1.5 rounded-full border border-forest-900/15 px-2.5 py-1 text-xs text-forest-800 transition-colors hover:bg-forest-100 aria-pressed:border-forest-700 aria-pressed:bg-forest-700 aria-pressed:text-white dark:border-forest-100/20 dark:text-forest-100 dark:hover:bg-forest-900 dark:aria-pressed:border-forest-200 dark:aria-pressed:bg-forest-200 dark:aria-pressed:text-forest-950"
+                  data-select={t.id}
+                  data-mountains={t.ranges.map((r) => r.mi).join(" ")}
+                  data-detail={t.summary}
+                  aria-pressed="false"
+                >
+                  <span
+                    class="inline-block h-2.5 w-2.5 shrink-0 rounded-full"
+                    style={`background:${t.color};box-shadow:0 0 0 1px rgb(14 26 18 / 0.3)`}
+                  />
+                  <span set:html={t.chip} />
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+    <p class="sky-detail mt-3 min-h-[2.5rem] rounded-xl bg-forest-50 px-3 py-2 text-forest-800 dark:bg-forest-900/60 dark:text-forest-100" aria-live="polite">
+      Highlight a taxon's populations and its recorded elevation range on each
+      mountain. Grey dots are other montane taxa; widespread taxa other than <i
+        >T. dominator</i
+      > appear when selected.
+    </p>
     <p class="mt-3 text-pretty text-forest-700 dark:text-forest-300">
       Distance alone does not predict shared ancestry. Rorekatimbo and
       Torompupu,
@@ -472,6 +568,7 @@ const yThreshold = y(elevation.threshold);
   }
   .dot-wide {
     fill: #f5a028;
+    cursor: pointer;
     stroke: #3b2a10;
     stroke-width: 0.6;
   }
@@ -479,10 +576,62 @@ const yThreshold = y(elevation.threshold);
     fill: #a9bcc2;
     stroke: #1c2b21;
     stroke-width: 0.6;
-    transition: fill 1.2s ease;
+    transition:
+      fill 1.2s ease,
+      opacity 0.3s ease;
   }
   .sky-island.in .dot-peak {
     fill: var(--c);
+  }
+  .dot {
+    cursor: pointer;
+  }
+  .dot-wide {
+    transition: opacity 0.3s ease;
+  }
+  .dot-extra {
+    display: none;
+    fill: var(--c);
+    stroke: #1c2b21;
+    stroke-width: 0.6;
+  }
+  /* A selection fades every other population and outlines its own. */
+  .has-sel .dot:not(.sel) {
+    opacity: 0.15;
+  }
+  .dot.sel {
+    display: inline;
+    stroke: #fff;
+    stroke-width: 1.4;
+    transition-delay: 0s !important;
+  }
+  .dot-extra.sel,
+  .dot-peak.sel {
+    fill: var(--c);
+  }
+  .peak-label {
+    transition: opacity 0.3s ease;
+  }
+  .has-sel .peak-label:not(.sel) {
+    opacity: 0.35;
+  }
+  .range-halo {
+    stroke: #0e1a12;
+    stroke-width: 6;
+    stroke-linecap: round;
+    opacity: 0.55;
+  }
+  .range-bar {
+    stroke: var(--c);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+  }
+  .range-text {
+    fill: #fff;
+    stroke: #0e1a12;
+    stroke-width: 2.5;
+    stroke-linejoin: round;
+    paint-order: stroke;
   }
   @media (prefers-reduced-motion: reduce) {
     .dot-peak {
@@ -498,4 +647,45 @@ const yThreshold = y(elevation.threshold);
     { threshold: 0.3 },
   );
   document.querySelectorAll(".sky-island").forEach((el) => io.observe(el));
+
+  // Select one taxon at a time from the chips or by clicking one of its dots.
+  document.querySelectorAll<HTMLElement>(".sky-island").forEach((root) => {
+    const svg = root.querySelector("svg")!;
+    const chips = root.querySelectorAll<HTMLButtonElement>(".sky-chip");
+    const detail = root.querySelector<HTMLElement>(".sky-detail")!;
+    const intro = detail.innerHTML;
+    const clear = root.querySelector<HTMLButtonElement>(".sky-clear")!;
+
+    const select = (id: string | null) => {
+      const chip = [...chips].find((c) => c.dataset.select === id);
+      const peaks = (chip?.dataset.mountains ?? "").split(" ");
+      chips.forEach((c) => c.setAttribute("aria-pressed", String(c === chip)));
+      svg.classList.toggle("has-sel", id !== null);
+      svg.querySelectorAll<SVGElement>(".dot").forEach((d) =>
+        d.classList.toggle("sel", d.dataset.taxon === id),
+      );
+      svg.querySelectorAll<SVGElement>(".range").forEach((g) =>
+        g.classList.toggle("hidden", g.dataset.range !== id),
+      );
+      svg.querySelectorAll<SVGElement>(".peak-label").forEach((g) =>
+        g.classList.toggle("sel", peaks.includes(g.dataset.mountain!)),
+      );
+      // Summaries are built from the data file at build time; they carry <i>.
+      detail.innerHTML = chip?.dataset.detail ?? intro;
+      clear.classList.toggle("hidden", id === null);
+    };
+
+    chips.forEach((c) =>
+      c.addEventListener("click", () =>
+        select(c.getAttribute("aria-pressed") === "true" ? null : c.dataset.select!),
+      ),
+    );
+    svg.querySelectorAll<SVGElement>(".dot").forEach((d) =>
+      d.addEventListener("click", () => select(d.dataset.taxon!)),
+    );
+    clear.addEventListener("click", () => select(null));
+    root.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") select(null);
+    });
+  });
 </script>
