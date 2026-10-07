@@ -63,12 +63,17 @@ const socialMediaData = [
     icon: "cv",
   },
 ] as const;
+
+// The outer tips align to their icon's edge so they stay on screen when the
+// row sits against the page edge.
+const tipAlign = (i: number) =>
+  i === 0 ? "left-0" : i === socialMediaData.length - 1 ? "right-0" : "left-1/2 -translate-x-1/2";
 ---
 
 <div class={socialMediaClasses}>
   {
-    socialMediaData.map((item) => (
-      <div class="tooltip tooltip-bottom" data-tip={item.alt}>
+    socialMediaData.map((item, i) => (
+      <div class="group relative">
         <a
           href={item.url}
           target="_blank"
@@ -78,6 +83,13 @@ const socialMediaData = [
         >
           <LinkIcons name={item.icon} />
         </a>
+        {/* The link already has an aria-label, so the visual tip is hidden from screen readers. */}
+        <span
+          class={`pointer-events-none absolute top-full z-10 mt-2 whitespace-nowrap ${tipAlign(i)} rounded-md bg-forest-900 px-2 py-1 text-xs text-forest-50 opacity-0 shadow-md transition-opacity duration-200 group-focus-within:opacity-100 group-hover:opacity-100 motion-reduce:transition-none dark:bg-forest-100 dark:text-forest-950`}
+          aria-hidden="true"
+        >
+          {item.alt}
+        </span>
       </div>
     ))
   }

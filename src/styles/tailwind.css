@@ -1,0 +1,4 @@
+/* Tailwind entry point, processed by PostCSS (postcss.config.mjs). */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
