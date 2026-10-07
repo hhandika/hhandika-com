@@ -33,7 +33,6 @@ const morphoStats = [
   },
 ];
 
-
 const random = mimicry.permutations.filter((p) => p.null === "Random");
 const mimicryStats = [
   {
@@ -71,17 +70,17 @@ const figureClasses =
 <Content>
   <p>
     Coloration is a complex, multidimensional phenotype that is difficult to
-    compare consistently across large numbers of species. Its variation can
+    compare consistently across large numbers of samples. Its variation can
     reflect shared ancestry, convergence, and environmental selection. Image
     embeddings provide a scalable way to quantify this variation: a vision model
-    converts each specimen photograph into a numerical representation, placing
-    visually similar specimens near one another in trait space. This makes
-    appearance measurable across hundreds of thousands of digitized specimens.
-    I use these embeddings to identify visually similar species, map the morphospace of
-    butterfly wing patterns, and test whether phenotypic similarity recovers
-    known mimicry relationships. Combined with language models for
-    natural-language search, this work shows how I use emerging AI tools to
-    extract evolutionary information from natural history collections.
+    converts each specimen photograph into a numerical representation. These
+    embeddings place visually similar specimens near one another in trait space.
+    This makes appearance measurable across hundreds of thousands of digitized
+    specimens. I use these embeddings to identify visually similar species, map
+    the morphospace of butterfly wing patterns, and test whether phenotypic
+    similarity recovers known mimicry relationships. Combined with language
+    models for natural-language search, this work shows how I use emerging AI
+    tools to extract evolutionary information from natural history collections.
   </p>
   <EmbeddingPipeline />
 </Content>
@@ -92,12 +91,11 @@ const figureClasses =
 <Content>
   <p>
     Each point is a species centroid in a principal-component space of image
-    embeddings of digitized butterfly specimens.
-    Switch between the dorsal and ventral wing surfaces to see the shift in
-    morphospace. Some families, such as the skippers (Hesperiidae) and whites
-    and sulphurs (Pieridae) separate clearly, while many lineages change
-    position between sides. Hover a point for its name, or pick a family to
-    highlight it.
+    embeddings of digitized butterfly specimens. Switch between the dorsal and
+    ventral surfaces to see the shift in morphospace. Some families, such as the
+    skippers (Hesperiidae) and whites and sulphurs (Pieridae) separate clearly,
+    while many lineages change position between sides. Hover a point for its
+    name, or pick a family to highlight it.
   </p>
 </Content>
 <figure class={`not-prose my-6 ${figureClasses}`}>
@@ -119,21 +117,22 @@ const figureClasses =
   }
 </dl>
 
-
 <SectionHead text="Does visual similarity recover butterfly mimicry?" />
 <Content>
   <p>
     Mimicry is a direct test of whether image embeddings capture what predators
-    see. I compiled published Müllerian and Batesian butterfly mimicry pairs and
-    asked where each partner ranks when either species queries every other
-    species in the collection by the similarity of its dorsal or ventral images.
-    Partners rank far above chance, and above the congeners that resemble each
-    other through shared ancestry alone. The misses are informative: in <i
+    perceive. I compiled published Müllerian and Batesian butterfly mimicry
+    pairs and, for dorsal and ventral wings separately, ranked how similar each
+    partner is to the other among all species in the collection. Mimicry pairs
+    rank far above chance, and above congeners. The misses are informative: in <i
       >Papilio polytes</i
-    > and <i>P. glaucus</i>
-    only some females mimic, and <i>Heliconius timareta</i> varies across its range,
-    so a single species centroid dilutes the mimetic form. Switch wing sides to watch
-    the ranks move, hover a dot for its rank, or click a pair for its notes and references.
+    > and <i>P. glaucus</i> only some females mimic, and <i
+      >Heliconius timareta</i
+    > varies across its range. More work is needed to improve the accuracy of the
+    methods. However, this initial work shows the potential of image embeddings to
+    capture biologically meaningful visual similarity, and that this similarity can
+    be used to study mimicry, species interactions, and phenotypic evolution. Use
+    the interactive plots below to explore the results.
   </p>
 </Content>
 <figure class={`not-prose my-6 ${figureClasses}`}>
@@ -158,11 +157,14 @@ const figureClasses =
 <SectionHead text="Choosing an open-weight LLM for natural-language search" />
 <Content>
   <p>
-    I designed natural-language search for a large specimen collection, where
-    a language model turns a question such as “orange butterflies with black stripes from Peru” into
-    structured search calls (color, country, trait, or similarity). To choose
-    the best model for production, I benchmark open-weight models on the same
-    set of queries, comparing accuracy, consistency, latency, and token cost.
+    I designed natural-language search for a large specimen collection. The
+    system uses a language model to parse a question such as “orange butterflies
+    with black stripes from Peru” into structured search calls (color, country,
+    trait, or similarity). To choose the best model for production, I benchmark
+    open-weight models on the same set of queries, comparing accuracy,
+    consistency, latency, and token cost. Open-weight models keep the search
+    reproducible and let any institution with limited resources, run it on its
+    own server.
   </p>
 </Content>
 <figure class={`not-prose my-6 ${figureClasses}`}>
@@ -172,14 +174,16 @@ const figureClasses =
 <SectionHead text="Putting it all together: BioCosmos" />
 <Content>
   <p>
-    <Link text="BioCosmos" url="https://lepiverse.com" /> brings this work
-    together in a low-cost web platform, deployed through LepiVerse, for more
-    than 600,000 digitized Lepidoptera specimen images. Image embeddings power
-    visual-similarity search and interactive morphospace plots, an open-weight
-    language model turns plain-language questions into searches, and taxonomic
-    harmonization and geographic validation keep the underlying data clean. The
-    result shows that emerging AI tools can make large natural history
-    collections explorable for anyone with a browser.
+    <Link text="BioCosmos" url="https://lepiverse.com" /> brings this work together
+    in a low-cost web platform, deployed through <Link
+      text="LepiVerse.com"
+      url="https://lepiverse.com/"
+    />, for more than 600,000 digitized Lepidoptera specimen images. Image
+    embeddings power visual-similarity search and interactive morphospace plots,
+    an open-weight language model turns plain-language questions into searches,
+    and taxonomic harmonization and geographic validation keep the underlying
+    data clean. The result shows that emerging AI tools can make large natural
+    history collections explorable for anyone with a browser.
   </p>
 </Content>
 
@@ -250,8 +254,7 @@ const figureClasses =
     <span class="font-semibold">Visually similar species.</span> Nearest neighbours
     of <i>Morpho aega</i> in embedding space. Dorsal matches are all blue
     <i>Morpho</i>, but the cryptic brown undersides also match <i>Zeuxidia</i>,
-    <i>Tanaecia</i>, and <i>Vindula</i>, from different genera: the same
-  upper/under contrast the morphospace shows.
+    <i>Tanaecia</i>, and <i>Vindula</i>, from different genera.
   </figcaption>
 </figure>
 
