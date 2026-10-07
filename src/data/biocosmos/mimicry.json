@@ -1,0 +1,835 @@
+{
+ "source": "BioCosmos analyses/notebooks/mimicry.ipynb (analyses/results/mimicry_recovery_*.csv)",
+ "top": 10,
+ "counts": {
+  "publishedPairs": 14,
+  "testedPairs": 11,
+  "publishedSpecies": 22,
+  "testedSpecies": 18,
+  "speciesRanked": 8410,
+  "imagesRanked": 614659
+ },
+ "pairs": [
+  {
+   "pair": "H. melpomene – H. erato (M)",
+   "type": "Müllerian",
+   "notes": "One of the best-studied examples of Müllerian mimicry; geographic races converge on similar warning patterns.",
+   "references": "Joron et al. 2006; Baxter et al. 2008",
+   "dois": [
+    "10.1371/journal.pbio.0040303",
+    "10.1534/genetics.107.082982"
+   ],
+   "a": {
+    "published": "Heliconius melpomene",
+    "accepted": "Heliconius melpomene",
+    "image": "/images/biocosmos/mimicry/heliconius-melpomene.webp",
+    "dorsalImages": 243,
+    "ventralImages": 24
+   },
+   "b": {
+    "published": "Heliconius erato",
+    "accepted": "Heliconius erato",
+    "image": "/images/biocosmos/mimicry/heliconius-erato.webp",
+    "dorsalImages": 299,
+    "ventralImages": 28
+   },
+   "mutual": {
+    "dorsal": true,
+    "ventral": true
+   },
+   "recovered": true,
+   "ranks": [
+    {
+     "side": "dorsal",
+     "direction": "A→B",
+     "query": "Heliconius melpomene",
+     "partner": "Heliconius erato",
+     "rank": 1,
+     "percentile": 1,
+     "score": 0.9813,
+     "siteListed": true
+    },
+    {
+     "side": "dorsal",
+     "direction": "B→A",
+     "query": "Heliconius erato",
+     "partner": "Heliconius melpomene",
+     "rank": 1,
+     "percentile": 1,
+     "score": 0.9853,
+     "siteListed": true
+    },
+    {
+     "side": "ventral",
+     "direction": "A→B",
+     "query": "Heliconius melpomene",
+     "partner": "Heliconius erato",
+     "rank": 3,
+     "percentile": 0.99976,
+     "score": 0.9662,
+     "siteListed": true
+    },
+    {
+     "side": "ventral",
+     "direction": "B→A",
+     "query": "Heliconius erato",
+     "partner": "Heliconius melpomene",
+     "rank": 9,
+     "percentile": 0.99905,
+     "score": 0.9666,
+     "siteListed": true
+    }
+   ]
+  },
+  {
+   "pair": "H. cydno – H. sapho (M)",
+   "type": "Müllerian",
+   "notes": "White-banded forms of H. cydno resemble sympatric H. sapho.",
+   "references": "Kapan 2001; Kronforst & Papa 2015",
+   "dois": [
+    "10.1038/35053066",
+    "10.1534/genetics.114.172387"
+   ],
+   "a": {
+    "published": "Heliconius cydno",
+    "accepted": "Heliconius cydno",
+    "image": "/images/biocosmos/mimicry/heliconius-cydno.webp",
+    "dorsalImages": 87,
+    "ventralImages": 8
+   },
+   "b": {
+    "published": "Heliconius sapho",
+    "accepted": "Heliconius sapho",
+    "image": "/images/biocosmos/mimicry/heliconius-sapho.webp",
+    "dorsalImages": 47,
+    "ventralImages": 13
+   },
+   "mutual": {
+    "dorsal": true,
+    "ventral": true
+   },
+   "recovered": true,
+   "ranks": [
+    {
+     "side": "dorsal",
+     "direction": "A→B",
+     "query": "Heliconius cydno",
+     "partner": "Heliconius sapho",
+     "rank": 10,
+     "percentile": 0.99893,
+     "score": 0.9721,
+     "siteListed": false
+    },
+    {
+     "side": "dorsal",
+     "direction": "B→A",
+     "query": "Heliconius sapho",
+     "partner": "Heliconius cydno",
+     "rank": 1,
+     "percentile": 1,
+     "score": 0.9837,
+     "siteListed": true
+    },
+    {
+     "side": "ventral",
+     "direction": "A→B",
+     "query": "Heliconius cydno",
+     "partner": "Heliconius sapho",
+     "rank": 2,
+     "percentile": 0.99988,
+     "score": 0.968,
+     "siteListed": true
+    },
+    {
+     "side": "ventral",
+     "direction": "B→A",
+     "query": "Heliconius sapho",
+     "partner": "Heliconius cydno",
+     "rank": 3,
+     "percentile": 0.99976,
+     "score": 0.9707,
+     "siteListed": true
+    }
+   ]
+  },
+  {
+   "pair": "H. cydno – H. eleuchia (M)",
+   "type": "Müllerian",
+   "notes": "Yellow-banded H. cydno alithea resembles sympatric H. eleuchia in western Ecuador.",
+   "references": "Kapan 2001",
+   "dois": [
+    "10.1038/35053066"
+   ],
+   "a": {
+    "published": "Heliconius cydno",
+    "accepted": "Heliconius cydno",
+    "image": "/images/biocosmos/mimicry/heliconius-cydno.webp",
+    "dorsalImages": 87,
+    "ventralImages": 8
+   },
+   "b": {
+    "published": "Heliconius eleuchia",
+    "accepted": "Heliconius primularis",
+    "image": "/images/biocosmos/mimicry/heliconius-primularis.webp",
+    "dorsalImages": 19,
+    "ventralImages": 2
+   },
+   "mutual": {
+    "dorsal": true,
+    "ventral": false
+   },
+   "recovered": true,
+   "ranks": [
+    {
+     "side": "dorsal",
+     "direction": "A→B",
+     "query": "Heliconius cydno",
+     "partner": "Heliconius primularis",
+     "rank": 3,
+     "percentile": 0.99976,
+     "score": 0.9755,
+     "siteListed": false
+    },
+    {
+     "side": "dorsal",
+     "direction": "B→A",
+     "query": "Heliconius primularis",
+     "partner": "Heliconius cydno",
+     "rank": 2,
+     "percentile": 0.99988,
+     "score": 0.9764,
+     "siteListed": true
+    },
+    {
+     "side": "ventral",
+     "direction": "A→B",
+     "query": "Heliconius cydno",
+     "partner": "Heliconius primularis",
+     "rank": 41,
+     "percentile": 0.99524,
+     "score": 0.9578,
+     "siteListed": false
+    },
+    {
+     "side": "ventral",
+     "direction": "B→A",
+     "query": "Heliconius primularis",
+     "partner": "Heliconius cydno",
+     "rank": 1,
+     "percentile": 1,
+     "score": 0.9663,
+     "siteListed": true
+    }
+   ]
+  },
+  {
+   "pair": "H. timareta – H. melpomene (M)",
+   "type": "Müllerian",
+   "notes": "Some H. timareta populations are nearly identical in warning pattern to sympatric H. melpomene.",
+   "references": "Giraldo et al. 2008; Heliconius Genome Consortium 2012",
+   "dois": [
+    "10.1186/1471-2148-8-324",
+    "10.1038/nature11041"
+   ],
+   "a": {
+    "published": "Heliconius timareta",
+    "accepted": "Heliconius timareta",
+    "image": "/images/biocosmos/mimicry/heliconius-timareta.webp",
+    "dorsalImages": 20,
+    "ventralImages": 13
+   },
+   "b": {
+    "published": "Heliconius melpomene",
+    "accepted": "Heliconius melpomene",
+    "image": "/images/biocosmos/mimicry/heliconius-melpomene.webp",
+    "dorsalImages": 243,
+    "ventralImages": 24
+   },
+   "mutual": {
+    "dorsal": false,
+    "ventral": false
+   },
+   "recovered": false,
+   "ranks": [
+    {
+     "side": "dorsal",
+     "direction": "A→B",
+     "query": "Heliconius timareta",
+     "partner": "Heliconius melpomene",
+     "rank": 156,
+     "percentile": 0.98157,
+     "score": 0.9566,
+     "siteListed": true
+    },
+    {
+     "side": "dorsal",
+     "direction": "B→A",
+     "query": "Heliconius melpomene",
+     "partner": "Heliconius timareta",
+     "rank": 4,
+     "percentile": 0.99964,
+     "score": 0.9787,
+     "siteListed": true
+    },
+    {
+     "side": "ventral",
+     "direction": "A→B",
+     "query": "Heliconius timareta",
+     "partner": "Heliconius melpomene",
+     "rank": 3415,
+     "percentile": 0.59396,
+     "score": 0.9042,
+     "siteListed": false
+    },
+    {
+     "side": "ventral",
+     "direction": "B→A",
+     "query": "Heliconius melpomene",
+     "partner": "Heliconius timareta",
+     "rank": 13,
+     "percentile": 0.99857,
+     "score": 0.9625,
+     "siteListed": false
+    }
+   ]
+  },
+  {
+   "pair": "P. polytes – P. aristolochiae (B)",
+   "type": "Batesian",
+   "notes": "Mimetic female P. polytes resemble the toxic common rose; males and some female morphs are non-mimetic.",
+   "references": "Palmer et al. 2018",
+   "dois": [
+    "10.1002/ece3.4207"
+   ],
+   "a": {
+    "published": "Papilio polytes",
+    "accepted": "Papilio polytes",
+    "image": "/images/biocosmos/mimicry/papilio-polytes.webp",
+    "dorsalImages": 702,
+    "ventralImages": 443
+   },
+   "b": {
+    "published": "Pachliopta aristolochiae",
+    "accepted": "Pachliopta aristolochiae",
+    "image": "/images/biocosmos/mimicry/pachliopta-aristolochiae.webp",
+    "dorsalImages": 72,
+    "ventralImages": 54
+   },
+   "mutual": {
+    "dorsal": false,
+    "ventral": false
+   },
+   "recovered": false,
+   "ranks": [
+    {
+     "side": "dorsal",
+     "direction": "A→B",
+     "query": "Papilio polytes",
+     "partner": "Pachliopta aristolochiae",
+     "rank": 19,
+     "percentile": 0.99786,
+     "score": 0.9741,
+     "siteListed": false
+    },
+    {
+     "side": "dorsal",
+     "direction": "B→A",
+     "query": "Pachliopta aristolochiae",
+     "partner": "Papilio polytes",
+     "rank": 7,
+     "percentile": 0.99929,
+     "score": 0.9836,
+     "siteListed": true
+    },
+    {
+     "side": "ventral",
+     "direction": "A→B",
+     "query": "Papilio polytes",
+     "partner": "Pachliopta aristolochiae",
+     "rank": 18,
+     "percentile": 0.99798,
+     "score": 0.9724,
+     "siteListed": false
+    },
+    {
+     "side": "ventral",
+     "direction": "B→A",
+     "query": "Pachliopta aristolochiae",
+     "partner": "Papilio polytes",
+     "rank": 8,
+     "percentile": 0.99917,
+     "score": 0.9815,
+     "siteListed": true
+    }
+   ]
+  },
+  {
+   "pair": "H. misippus – D. chrysippus (B)",
+   "type": "Batesian",
+   "notes": "Female H. misippus are polymorphic and imitate different colour morphs of D. chrysippus.",
+   "references": "Smith 1973; VanKuren et al. 2019",
+   "dois": [
+    "10.1038/242129a0",
+    "10.1093/molbev/msz194"
+   ],
+   "a": {
+    "published": "Hypolimnas misippus",
+    "accepted": "Hypolimnas misippus",
+    "image": "/images/biocosmos/mimicry/hypolimnas-misippus.webp",
+    "dorsalImages": 142,
+    "ventralImages": 23
+   },
+   "b": {
+    "published": "Danaus chrysippus",
+    "accepted": "Danaus chrysippus",
+    "image": "/images/biocosmos/mimicry/danaus-chrysippus.webp",
+    "dorsalImages": 406,
+    "ventralImages": 55
+   },
+   "mutual": {
+    "dorsal": true,
+    "ventral": true
+   },
+   "recovered": true,
+   "ranks": [
+    {
+     "side": "dorsal",
+     "direction": "A→B",
+     "query": "Hypolimnas misippus",
+     "partner": "Danaus chrysippus",
+     "rank": 7,
+     "percentile": 0.99929,
+     "score": 0.9751,
+     "siteListed": true
+    },
+    {
+     "side": "dorsal",
+     "direction": "B→A",
+     "query": "Danaus chrysippus",
+     "partner": "Hypolimnas misippus",
+     "rank": 2,
+     "percentile": 0.99988,
+     "score": 0.9793,
+     "siteListed": true
+    },
+    {
+     "side": "ventral",
+     "direction": "A→B",
+     "query": "Hypolimnas misippus",
+     "partner": "Danaus chrysippus",
+     "rank": 3,
+     "percentile": 0.99976,
+     "score": 0.9678,
+     "siteListed": true
+    },
+    {
+     "side": "ventral",
+     "direction": "B→A",
+     "query": "Danaus chrysippus",
+     "partner": "Hypolimnas misippus",
+     "rank": 2,
+     "percentile": 0.99988,
+     "score": 0.9686,
+     "siteListed": true
+    }
+   ]
+  },
+  {
+   "pair": "P. glaucus – B. philenor (B)",
+   "type": "Batesian",
+   "notes": "Dark-form females of P. glaucus resemble the chemically defended pipevine swallowtail.",
+   "references": "Brower 1957; Koch et al. 2000",
+   "dois": [
+    "10.1038/180444a0",
+    "10.1016/S0960-9822(00)00494-2"
+   ],
+   "a": {
+    "published": "Papilio glaucus",
+    "accepted": "Papilio glaucus",
+    "image": "/images/biocosmos/mimicry/papilio-glaucus.webp",
+    "dorsalImages": 266,
+    "ventralImages": 63
+   },
+   "b": {
+    "published": "Battus philenor",
+    "accepted": "Battus philenor",
+    "image": "/images/biocosmos/mimicry/battus-philenor.webp",
+    "dorsalImages": 702,
+    "ventralImages": 537
+   },
+   "mutual": {
+    "dorsal": false,
+    "ventral": false
+   },
+   "recovered": false,
+   "ranks": [
+    {
+     "side": "dorsal",
+     "direction": "A→B",
+     "query": "Papilio glaucus",
+     "partner": "Battus philenor",
+     "rank": 118,
+     "percentile": 0.98608,
+     "score": 0.9197,
+     "siteListed": false
+    },
+    {
+     "side": "dorsal",
+     "direction": "B→A",
+     "query": "Battus philenor",
+     "partner": "Papilio glaucus",
+     "rank": 6,
+     "percentile": 0.99941,
+     "score": 0.9715,
+     "siteListed": true
+    },
+    {
+     "side": "ventral",
+     "direction": "A→B",
+     "query": "Papilio glaucus",
+     "partner": "Battus philenor",
+     "rank": 118,
+     "percentile": 0.98608,
+     "score": 0.9242,
+     "siteListed": false
+    },
+    {
+     "side": "ventral",
+     "direction": "B→A",
+     "query": "Battus philenor",
+     "partner": "Papilio glaucus",
+     "rank": 5,
+     "percentile": 0.99952,
+     "score": 0.9663,
+     "siteListed": true
+    }
+   ]
+  },
+  {
+   "pair": "P. polyxenes – B. philenor (B)",
+   "type": "Batesian",
+   "notes": "The black swallowtail resembles the pipevine swallowtail; dorsal resemblance is especially strong in females.",
+   "references": "Codella & Lederhouse 1989",
+   "dois": [
+    "10.1111/j.1558-5646.1989.tb04236.x"
+   ],
+   "a": {
+    "published": "Papilio polyxenes",
+    "accepted": "Papilio polyxenes",
+    "image": "/images/biocosmos/mimicry/papilio-polyxenes.webp",
+    "dorsalImages": 334,
+    "ventralImages": 65
+   },
+   "b": {
+    "published": "Battus philenor",
+    "accepted": "Battus philenor",
+    "image": "/images/biocosmos/mimicry/battus-philenor.webp",
+    "dorsalImages": 702,
+    "ventralImages": 537
+   },
+   "mutual": {
+    "dorsal": false,
+    "ventral": true
+   },
+   "recovered": true,
+   "ranks": [
+    {
+     "side": "dorsal",
+     "direction": "A→B",
+     "query": "Papilio polyxenes",
+     "partner": "Battus philenor",
+     "rank": 14,
+     "percentile": 0.99845,
+     "score": 0.9644,
+     "siteListed": false
+    },
+    {
+     "side": "dorsal",
+     "direction": "B→A",
+     "query": "Battus philenor",
+     "partner": "Papilio polyxenes",
+     "rank": 34,
+     "percentile": 0.99608,
+     "score": 0.9637,
+     "siteListed": false
+    },
+    {
+     "side": "ventral",
+     "direction": "A→B",
+     "query": "Papilio polyxenes",
+     "partner": "Battus philenor",
+     "rank": 6,
+     "percentile": 0.99941,
+     "score": 0.9751,
+     "siteListed": true
+    },
+    {
+     "side": "ventral",
+     "direction": "B→A",
+     "query": "Battus philenor",
+     "partner": "Papilio polyxenes",
+     "rank": 2,
+     "percentile": 0.99988,
+     "score": 0.9748,
+     "siteListed": true
+    }
+   ]
+  },
+  {
+   "pair": "L. lorquini – A. bredowii (B)",
+   "type": "Batesian",
+   "notes": "L. lorquini is palatable and resembles the moderately unpalatable A. bredowii.",
+   "references": "Prudic et al. 2002",
+   "dois": [
+    "10.1046/j.0307-6946.2001.00384.x"
+   ],
+   "a": {
+    "published": "Limenitis lorquini",
+    "accepted": "Limenitis lorquini",
+    "image": "/images/biocosmos/mimicry/limenitis-lorquini.webp",
+    "dorsalImages": 108,
+    "ventralImages": 29
+   },
+   "b": {
+    "published": "Adelpha bredowii",
+    "accepted": "Limenitis bredowii",
+    "image": "/images/biocosmos/mimicry/limenitis-bredowii.webp",
+    "dorsalImages": 65,
+    "ventralImages": 22
+   },
+   "mutual": {
+    "dorsal": false,
+    "ventral": false
+   },
+   "recovered": false,
+   "ranks": [
+    {
+     "side": "dorsal",
+     "direction": "A→B",
+     "query": "Limenitis lorquini",
+     "partner": "Limenitis bredowii",
+     "rank": 118,
+     "percentile": 0.98608,
+     "score": 0.9667,
+     "siteListed": false
+    },
+    {
+     "side": "dorsal",
+     "direction": "B→A",
+     "query": "Limenitis bredowii",
+     "partner": "Limenitis lorquini",
+     "rank": 6,
+     "percentile": 0.99941,
+     "score": 0.9719,
+     "siteListed": true
+    },
+    {
+     "side": "ventral",
+     "direction": "A→B",
+     "query": "Limenitis lorquini",
+     "partner": "Limenitis bredowii",
+     "rank": 17,
+     "percentile": 0.9981,
+     "score": 0.9407,
+     "siteListed": false
+    },
+    {
+     "side": "ventral",
+     "direction": "B→A",
+     "query": "Limenitis bredowii",
+     "partner": "Limenitis lorquini",
+     "rank": 17,
+     "percentile": 0.9981,
+     "score": 0.952,
+     "siteListed": false
+    }
+   ]
+  },
+  {
+   "pair": "L. archippus – D. plexippus (M*)",
+   "type": "Müllerian / context-dependent",
+   "notes": "Historically treated as Batesian mimicry, but viceroys can themselves be unpalatable.",
+   "references": "Ritland & Brower 1991",
+   "dois": [
+    "10.1038/350497a0"
+   ],
+   "a": {
+    "published": "Limenitis archippus",
+    "accepted": "Limenitis archippus",
+    "image": "/images/biocosmos/mimicry/limenitis-archippus.webp",
+    "dorsalImages": 199,
+    "ventralImages": 66
+   },
+   "b": {
+    "published": "Danaus plexippus",
+    "accepted": "Danaus plexippus",
+    "image": "/images/biocosmos/mimicry/danaus-plexippus.webp",
+    "dorsalImages": 3488,
+    "ventralImages": 2837
+   },
+   "mutual": {
+    "dorsal": true,
+    "ventral": true
+   },
+   "recovered": true,
+   "ranks": [
+    {
+     "side": "dorsal",
+     "direction": "A→B",
+     "query": "Limenitis archippus",
+     "partner": "Danaus plexippus",
+     "rank": 1,
+     "percentile": 1,
+     "score": 0.9808,
+     "siteListed": true
+    },
+    {
+     "side": "dorsal",
+     "direction": "B→A",
+     "query": "Danaus plexippus",
+     "partner": "Limenitis archippus",
+     "rank": 1,
+     "percentile": 1,
+     "score": 0.9835,
+     "siteListed": false
+    },
+    {
+     "side": "ventral",
+     "direction": "A→B",
+     "query": "Limenitis archippus",
+     "partner": "Danaus plexippus",
+     "rank": 1,
+     "percentile": 1,
+     "score": 0.9738,
+     "siteListed": true
+    },
+    {
+     "side": "ventral",
+     "direction": "B→A",
+     "query": "Danaus plexippus",
+     "partner": "Limenitis archippus",
+     "rank": 3,
+     "percentile": 0.99976,
+     "score": 0.9727,
+     "siteListed": false
+    }
+   ]
+  },
+  {
+   "pair": "P. troilus – B. philenor (B)",
+   "type": "Batesian",
+   "notes": "The spicebush swallowtail belongs to the North American B. philenor mimicry complex.",
+   "references": "Brower 1957",
+   "dois": [
+    "10.1038/180444a0"
+   ],
+   "a": {
+    "published": "Papilio troilus",
+    "accepted": "Papilio troilus",
+    "image": "/images/biocosmos/mimicry/papilio-troilus.webp",
+    "dorsalImages": 215,
+    "ventralImages": 91
+   },
+   "b": {
+    "published": "Battus philenor",
+    "accepted": "Battus philenor",
+    "image": "/images/biocosmos/mimicry/battus-philenor.webp",
+    "dorsalImages": 702,
+    "ventralImages": 537
+   },
+   "mutual": {
+    "dorsal": true,
+    "ventral": true
+   },
+   "recovered": true,
+   "ranks": [
+    {
+     "side": "dorsal",
+     "direction": "A→B",
+     "query": "Papilio troilus",
+     "partner": "Battus philenor",
+     "rank": 8,
+     "percentile": 0.99917,
+     "score": 0.976,
+     "siteListed": true
+    },
+    {
+     "side": "dorsal",
+     "direction": "B→A",
+     "query": "Battus philenor",
+     "partner": "Papilio troilus",
+     "rank": 5,
+     "percentile": 0.99952,
+     "score": 0.972,
+     "siteListed": true
+    },
+    {
+     "side": "ventral",
+     "direction": "A→B",
+     "query": "Papilio troilus",
+     "partner": "Battus philenor",
+     "rank": 3,
+     "percentile": 0.99976,
+     "score": 0.9735,
+     "siteListed": true
+    },
+    {
+     "side": "ventral",
+     "direction": "B→A",
+     "query": "Battus philenor",
+     "partner": "Papilio troilus",
+     "rank": 3,
+     "percentile": 0.99976,
+     "score": 0.9719,
+     "siteListed": true
+    }
+   ]
+  }
+ ],
+ "permutations": [
+  {
+   "side": "dorsal",
+   "null": "Random",
+   "queries": 22,
+   "observed": 0.9973,
+   "mean": 0.4995,
+   "low": 0.3802,
+   "high": 0.6162,
+   "p": 0.00009999000099990002,
+   "permutations": 10000
+  },
+  {
+   "side": "dorsal",
+   "null": "Congeners",
+   "queries": 22,
+   "observed": 0.9973,
+   "mean": 0.6952,
+   "low": 0.6018,
+   "high": 0.7875,
+   "p": 0.00009999000099990002,
+   "permutations": 10000
+  },
+  {
+   "side": "ventral",
+   "null": "Random",
+   "queries": 22,
+   "observed": 0.9802,
+   "mean": 0.4994,
+   "low": 0.3798,
+   "high": 0.6182,
+   "p": 0.00009999000099990002,
+   "permutations": 10000
+  },
+  {
+   "side": "ventral",
+   "null": "Congeners",
+   "queries": 22,
+   "observed": 0.9802,
+   "mean": 0.6859,
+   "low": 0.5948,
+   "high": 0.7777,
+   "p": 0.00009999000099990002,
+   "permutations": 10000
+  }
+ ]
+}

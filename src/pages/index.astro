@@ -31,9 +31,9 @@ const keywordClasses = cntl`
 `;
 
 const keywordList = [
-  "Island speciation",
-  "Natural history collections",
-  "AI & biodiversity software",
+  { label: "Island speciation", href: "/projects#speciation" },
+  { label: "Natural history collections", href: "/projects#others" },
+  { label: "AI & biodiversity software", href: "/projects#ai" },
 ];
 
 const primaryButtonClasses = cntl`
@@ -110,7 +110,7 @@ const highlights = [
   {
     eyebrow: "Island speciation",
     title: "An island of islands",
-    text: "My main system is the Bunomys rats of Sulawesi, where paleo-islands, colliding tectonic plates, and young mountains drove an in situ radiation. Through collaborations, I also support work on island shrews and other rodents.",
+    text: "My main system is the <i>Bunomys</i> rats of Sulawesi, where paleo-islands, tectonic plate movements, and mountain formation drove an in situ radiation. Through collaborations, I also support work on island shrews and other rodents.",
     stat: "24+",
     statLabel: "mammal species described or revised with collaborators",
     note: "Received the 2023 Murie Family Conservation Award (ASM) for conserving mammals and their habitats",
@@ -122,18 +122,18 @@ const highlights = [
   {
     eyebrow: "AI phenomics",
     title: "Reading evolution from specimen images",
-    text: "With butterflies as a test case, image embeddings from digitized specimens quantify coloration, a complex trait shaped by ancestry, mimicry, and environment. I hope to extend the approach to island rodents.",
+    text: "I use image embeddings to quantify coloration phenotypes from digitized specimens and test evolutionary hypotheses at scale.",
     stat: "619,739",
     statLabel: "specimen images across 9,342 species",
     image: lepiverseHome,
     alt: "Lepiverse, an AI-powered butterfly specimen explorer",
-    href: "/projects#software",
+    href: "/projects#ai",
     span: "lg:col-span-2",
   },
   {
     eyebrow: "Fieldwork & collections",
     title: "15 years in remote mountains",
-    text: "Collaborative expeditions across more than 20 mountain systems in Southeast Asia, building the specimen record these questions rest on.",
+    text: "Collaborative expeditions across more than 20 mountain systems in Southeast Asia, building the specimen records and field experience that underlies my research and software development.",
     stat: "8,000+",
     statLabel: "voucher specimens and 30,000+ specimen parts",
     image: latimojongValley,
@@ -144,7 +144,7 @@ const highlights = [
   {
     eyebrow: "Open software",
     title: "From phones to HPC clusters",
-    text: "SEGUL, NAHPU, ULLAR, and the MDD app bring cutting-edge phylogenomics and collection data to app stores and the command line alike.",
+    text: "SEGUL, NAHPU, ULLAR, and the MDD app make genomic analysis and biodiversity data management efficient andaccessible through user-friendly applications and command-line tools.",
     liveStat: "code_changes.totals.additions",
     statLabel: "lines of code added across public repositories",
     note: "SEGUL received the 2024 Ernst Mayr Award (SSB)",
@@ -171,13 +171,14 @@ const approachSteps = [
     icon: "collections",
     title: "Collections",
     tone: "bg-moss-700",
-    text: "More than 8,000 vouchers and 30,000 specimen parts in museums. That decade on complex islands shaped NAHPU, the digital field catalog our teams now use on recent expeditions.",
+    text: "More than 8,000 vouchers and 30,000 specimen parts in museums. That decade on complex islands shaped NAHPU, the digital field catalog our and other teams now use on recent expeditions.",
   },
   {
     icon: "phenomics",
     title: "Genomes & phenomes",
     tone: "bg-mist-600",
     text: "Phylogenomics and population genomics alongside AI image embeddings that measure complex traits across entire collections.",
+    link: { text: "AI image embeddings", href: "/projects#ai" },
   },
   {
     icon: "software",
@@ -188,36 +189,51 @@ const approachSteps = [
 ] as const;
 
 const leadershipPhotos = [
-  { src: expeditionTeam, alt: "Expedition team of collaborators, local community members, and students in the rainforest", span: "col-span-2 row-span-2" },
+  {
+    src: expeditionTeam,
+    alt: "Expedition team of collaborators, local community members, and students in the rainforest",
+    span: "col-span-2 row-span-2",
+  },
   { src: fieldRidgeTeam, alt: "Field team on a montane ridge trail", span: "" },
-  { src: fieldCampSelfie, alt: "Heru with the field team building a camp shelter in the mist", span: "" },
-  { src: labCodeReview, alt: "Heru and a student reviewing butterfly image analysis code", span: "" },
-  { src: labMentoring, alt: "Heru walking students through code and results on a monitor", span: "" },
+  {
+    src: fieldCampSelfie,
+    alt: "Heru with the field team building a camp shelter in the mist",
+    span: "",
+  },
+  {
+    src: labCodeReview,
+    alt: "Heru and a student reviewing butterfly image analysis code",
+    span: "",
+  },
+  {
+    src: labMentoring,
+    alt: "Heru walking students through code and results on a monitor",
+    span: "",
+  },
 ];
 
 const researchQuestions = [
   {
     icon: "island",
     question:
-      "How do paleo-islands, colliding plates, and young mountains drive speciation?",
+      "How do paleo-islands, tectonic plate movements, and mountain formation drive speciation?",
     detail:
-      "Testing in situ diversification in the Bunomys rodent clade on Sulawesi, where each summit acts as a sky island, and supporting collaborative work on shrews.",
+      "My genomic work on Sulawesi’s endemic <i>Bunomys</i> rodents, many of which are restricted to individual mountains, reveals in situ diversification but mixed support for the island’s classic areas of endemism. Next, I plan to test whether their parasites diversify with them or switch hosts, and how they shape infection down to the level of individual host cells.",
     href: "/projects#speciation",
   },
   {
     icon: "phenomics",
-    question:
-      "Can AI measure how complex phenotypes like coloration evolve?",
+    question: "How do complex phenotypes evolve across species?",
     detail:
-      "Using image embeddings from hundreds of thousands of specimens to separate ancestry, mimicry, and environment, with butterflies as a test case and the hope of extending to island rodents.",
-    href: "/projects#software",
+      "Using deep learning, I extract image embeddings from digitized butterfly specimens to map wing-pattern morphospace and identify known mimics among visually similar species, establishing a framework I aim to extend to study color evolution in island rodents.",
+    href: "/projects#ai",
   },
   {
     icon: "software",
     question:
-      "How can cutting-edge genomic analyses run on any device, for anyone?",
+      "How can biodiversity data be collected and analyzed on any device, by anyone?",
     detail:
-      "Building memory-efficient, cross-platform tools so researchers with a laptop, or a phone, can work with phylogenomic-scale data.",
+      "Free, open-source tools that run on anything from a phone to a computing cluster and install in one click or a single command, from NAHPU in the field to SEGUL for phylogenomic data, and beyond.",
     href: "/software",
   },
 ] as const;
@@ -241,25 +257,39 @@ const researchQuestions = [
           <h1
             class="mt-4 font-serif text-5xl text-forest-950 dark:text-forest-50 sm:text-6xl"
           >
-            Hi, I'm <strong class="text-moss-700 dark:text-moss-300">Heru Handika</strong>
+            Hi, I'm <strong class="text-moss-700 dark:text-moss-300"
+              >Heru Handika</strong
+            >
           </h1>
           <p
             class="mt-3 text-lg font-medium text-forest-800 dark:text-forest-200"
           >
-            Postdoctoral Researcher · AI Biodiversity Informatics, Florida
-            Museum of Natural History, University of Florida
+            Postdoctoral Researcher · <a
+              href="/projects#ai"
+              class="underline decoration-moss-500/50 underline-offset-4 hover:decoration-moss-500"
+              >AI Biodiversity Informatics</a
+            >, Florida Museum of Natural History, University of Florida
           </p>
           <div
             class="mt-4 flex flex-wrap justify-center gap-2 sm:gap-3 lg:justify-start"
           >
-            {keywordList.map((keyword) => <span class={keywordClasses}>{keyword}</span>)}
+            {
+              keywordList.map((keyword) => (
+                <a
+                  href={keyword.href}
+                  class={`${keywordClasses} transition hover:bg-forest-200 dark:hover:bg-forest-800`}
+                >
+                  {keyword.label}
+                </a>
+              ))
+            }
           </div>
           <p
             class="mt-5 text-pretty text-lg text-slate-700 dark:text-slate-200 sm:text-xl/8"
           >
             You can call me Heru or Hez. I'm an evolutionary biologist working
-            at the intersection of field biology, genomics, phenomics,
-            on-device deep learning, and cross-platform software. I study how geographic
+            at the intersection of field biology, genomics, phenomics, on-device
+            deep learning, and cross-platform software. I study how geographic
             isolation shapes genomic divergence, ecological interactions, and
             phenotypic evolution in island small mammals, and build open-source
             tools so these questions can be tested at scale.
@@ -282,7 +312,9 @@ const researchQuestions = [
             href="/fieldwork"
             class="group block rounded-3xl border border-forest-900/10 bg-white/80 p-5 shadow-xl shadow-forest-900/5 backdrop-blur transition hover:border-moss-400/60 dark:border-forest-100/10 dark:bg-forest-950/60 sm:p-6"
           >
-            <dl class="grid grid-cols-3 divide-x divide-forest-900/10 dark:divide-forest-100/10">
+            <dl
+              class="grid grid-cols-3 divide-x divide-forest-900/10 dark:divide-forest-100/10"
+            >
               {
                 heroStats.map((s) => (
                   <div class="flex flex-col px-3 first:pl-0 last:pr-0 sm:px-4">
@@ -306,7 +338,9 @@ const researchQuestions = [
                 </p>
               ))
             }
-            <span class="mt-3 block text-sm font-semibold text-forest-700 group-hover:underline dark:text-forest-300">
+            <span
+              class="mt-3 block text-sm font-semibold text-forest-700 group-hover:underline dark:text-forest-300"
+            >
               Explore my fieldwork →
             </span>
           </a>
@@ -360,9 +394,11 @@ const researchQuestions = [
                 <h3 class="mt-1 font-serif text-2xl text-forest-950 dark:text-forest-50">
                   {h.title}
                 </h3>
-                <p class="mt-2 text-pretty text-slate-700 dark:text-slate-300">
-                  {h.text}
-                </p>
+                {/* Text may hold <i> for taxon names. */}
+                <p
+                  class="mt-2 text-pretty text-slate-700 dark:text-slate-300"
+                  set:html={h.text}
+                />
                 <div class="mt-auto pt-5">
                   <p class="text-forest-950 dark:text-forest-50">
                     <strong class="text-3xl font-semibold tabular-nums">
@@ -403,19 +439,25 @@ const researchQuestions = [
             Leadership &amp; mentoring
           </p>
           <h2 class={sectionTitleClasses}>On the trail and at the terminal</h2>
-          <p class="mt-4 text-pretty text-lg text-slate-700 dark:text-slate-300">
+          <p
+            class="mt-4 text-pretty text-lg text-slate-700 dark:text-slate-300"
+          >
             I have been lucky to work alongside collaborators and local
             communities, and to mentor biology and computer science students.
             Together, we carry 800 kg of supplies on foot up a mountain on
-            barely visible trails to reach places that have never been
-            surveyed before, and make software work for everyone amid
-            evolving hardware and operating systems.
+            barely visible trails to reach places that have never been surveyed
+            before, and make software work for everyone amid evolving hardware
+            and operating systems.
           </p>
         </div>
-        <div class="grid auto-rows-[7rem] grid-cols-4 gap-2 sm:auto-rows-[9rem]">
+        <div
+          class="grid auto-rows-[7rem] grid-cols-4 gap-2 sm:auto-rows-[9rem]"
+        >
           {
             leadershipPhotos.map((photo) => (
-              <div class={`overflow-hidden rounded-2xl bg-forest-100 dark:bg-forest-900 ${photo.span}`}>
+              <div
+                class={`overflow-hidden rounded-2xl bg-forest-100 dark:bg-forest-900 ${photo.span}`}
+              >
                 <Image
                   src={photo.src}
                   alt={photo.alt}
@@ -438,11 +480,17 @@ const researchQuestions = [
         </p>
         <h2 class={sectionTitleClasses}>From the field to the phone</h2>
         <p class="mt-4 text-pretty text-lg text-slate-700 dark:text-slate-300">
-          I work across the whole pipeline of collection-based evolutionary
-          biology: I survey remote island mountains, build the specimen record,
-          generate genomes and AI-measured phenotypes from it, and write the
-          software that makes those analyses fast, reproducible, and usable
-          by anyone, on anything from a phone to a computing cluster.
+          I work across the full spectrum of collection-based evolutionary
+          biology, from surveying remote mountains across complex island systems
+          and building specimen collections to generating genomic data and
+          quantifying
+          <a
+            href="/projects#ai"
+            class="underline decoration-moss-500/50 underline-offset-4 hover:decoration-moss-500"
+            >phenotypic variation</a
+          >. I also develop software that makes these workflows faster, more
+          reproducible, and accessible across computing environments, from
+          mobile devices to high-performance clusters.
         </p>
       </div>
 
@@ -451,16 +499,28 @@ const researchQuestions = [
           approachSteps.map((step, i) => (
             <li class={`relative rounded-3xl p-5 text-white ${step.tone}`}>
               <div class="flex items-center gap-3">
-                <PillarIcon name={step.icon} class="h-10 w-10 shrink-0 text-white" />
-                <span class="font-mono text-sm text-white">
-                  0{i + 1}
-                </span>
+                <PillarIcon
+                  name={step.icon}
+                  class="h-10 w-10 shrink-0 text-white"
+                />
+                <span class="font-mono text-sm text-white">0{i + 1}</span>
               </div>
-              <h3 class="mt-3 font-semibold">
-                {step.title}
-              </h3>
+              <h3 class="mt-3 font-semibold">{step.title}</h3>
               <p class="mt-1 text-sm text-white">
-                {step.text}
+                {"link" in step ? (
+                  <Fragment>
+                    {step.text.split(step.link.text)[0]}
+                    <a
+                      href={step.link.href}
+                      class="underline decoration-white/60 underline-offset-2 hover:decoration-white"
+                    >
+                      {step.link.text}
+                    </a>
+                    {step.text.split(step.link.text)[1]}
+                  </Fragment>
+                ) : (
+                  step.text
+                )}
               </p>
             </li>
           ))
@@ -472,7 +532,9 @@ const researchQuestions = [
       >
         Research questions
       </h2>
-      <ul class="mx-auto mt-6 max-w-3xl divide-y divide-forest-900/10 dark:divide-forest-100/10">
+      <ul
+        class="mx-auto mt-6 max-w-3xl divide-y divide-forest-900/10 dark:divide-forest-100/10"
+      >
         {
           researchQuestions.map((q) => (
             <li>
@@ -482,7 +544,10 @@ const researchQuestions = [
                   <span class="block text-xl text-moss-950 group-hover:underline dark:text-moss-50">
                     {q.question}
                   </span>
-                  <span class="mt-1 block text-slate-700 dark:text-slate-300">{q.detail}</span>
+                  <span
+                    class="mt-1 block text-slate-700 dark:text-slate-300"
+                    set:html={q.detail}
+                  />
                 </span>
               </a>
             </li>

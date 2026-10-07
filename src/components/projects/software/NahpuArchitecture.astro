@@ -4,6 +4,7 @@
 // Two layouts share one node list: a wide one for md+ and a stacked one for
 // phones. Hover, focus, or tap a layer to read what it does.
 import { tones, wrapChips, arrowHead, lineClass, labelClass, packetClass, type Tone } from "./diagram";
+import MotionToggle from "../MotionToggle.astro";
 
 interface NodeText {
   title: string;
@@ -254,10 +255,11 @@ function place(layout: Layout) {
 const layouts = [wide, narrow].map((layout) => ({ ...layout, placed: place(layout) }));
 ---
 
-<figure class="arch not-prose my-6" data-arch>
+<figure class="arch motion not-prose my-6" data-arch>
   <div
     class="rounded-2xl border border-forest-900/10 bg-white/70 p-3 shadow-sm dark:border-forest-100/10 dark:bg-forest-950/40 sm:p-5"
   >
+    <div class="mb-2 flex justify-end"><MotionToggle /></div>
     {
       layouts.map((layout) => (
         <svg
@@ -415,7 +417,7 @@ const layouts = [wide, narrow].map((layout) => ({ ...layout, placed: place(layou
     class="mx-auto mt-3 min-h-[3.5rem] max-w-3xl rounded-xl px-4 py-2 text-center text-sm text-forest-800 dark:text-forest-200"
     aria-live="polite"
   >
-    <span class="caption-title font-semibold text-moss-700 dark:text-moss-300">Hover or tap a layer</span>
+    <span class="caption-title font-semibold text-moss-700 dark:text-moss-300">Hover, tap, or tab to a layer</span>
     <span class="caption-desc"> to see what it does. Screens stay thin, workflows live in services, and heavy lifting goes to Rust.</span>
   </figcaption>
 </figure>
@@ -486,6 +488,12 @@ const layouts = [wide, narrow].map((layout) => ({ ...layout, placed: place(layou
       n.addEventListener("mouseenter", () => activate(n.dataset.node!));
       n.addEventListener("focus", () => activate(n.dataset.node!));
       n.addEventListener("click", () => activate(n.dataset.node!));
+      n.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          activate(n.dataset.node!);
+        } else if (e.key === "Escape") activate(null);
+      });
     });
     root.querySelectorAll(".diagram").forEach((svg) =>
       svg.addEventListener("mouseleave", () => activate(null)),

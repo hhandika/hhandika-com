@@ -122,14 +122,15 @@ export default function PlannerPlot() {
         padding: 0.06,
         x: { domain: planner.cases.map(caseLabel), tickRotate: -45, label: null },
         y: { domain: order, label: null },
-        color: { domain: [0, 1], range: ["#e8f1d2", "#415522"], interpolate: "rgb" },
+        // Piecewise so every cell's label reaches 4.5:1 (scores are multiples of 20%).
+        color: { type: "linear", domain: [0, 0.65, 0.7, 1], range: ["#f3f8e8", "#c3d897", "#5a7a2e", "#2f3f18"], interpolate: "rgb" },
         marks: [
           Plot.cell(cells, { x: "case", y: "model", fill: "accuracy", rx: 3, title: (d) => `${d.model}\n${d.case}: ${Math.round(d.accuracy * 100)}% correct (${Math.round(d.accuracy * planner.repeats)}/${planner.repeats} runs)` }),
           Plot.text(cells, {
             x: "case",
             y: "model",
             text: (d) => `${Math.round(d.accuracy * 100)}%`,
-            fill: (d) => (d.accuracy > 0.55 ? "white" : "#283a2e"),
+            fill: (d) => (d.accuracy > 0.65 ? "white" : "#283a2e"),
             fontSize: 9.5,
           }),
         ],
@@ -137,6 +138,8 @@ export default function PlannerPlot() {
     }
 
     plot.classList.add("bc-anim", `bc-${view}`);
+    // The container carries the accessible name; the table below has the values.
+    plot.setAttribute("aria-hidden", "true");
     // Keep the heatmap readable on phones: scroll sideways instead of shrinking.
     if (view === "cases") plot.style.maxWidth = "none";
     // Stagger the entrance: bars and dots by row, heatmap cells by column.
@@ -154,16 +157,23 @@ export default function PlannerPlot() {
   }, [view, width]);
 
   const prod = models.find((m) => m.model === planner.productionModel)!;
+  // Text alternative carrying the values the chart shows (WCAG 1.1.1).
+  const summary = `LLM planner benchmark, ${VIEWS.find((v) => v.id === view)!.label.toLowerCase()} view. ${models
+    .map((m) => {
+      const per = m.perCase as Record<string, number>;
+      const weak = planner.cases.filter((c) => per[c] < 1).map((c) => `${caseLabel(c)} ${Math.round(per[c] * 100)}%`);
+      return `${m.model}${m.model === planner.productionModel ? " (production)" : ""}: ${Math.round(m.accuracy * 100)}% accuracy, median latency ${m.latencyP50} s, 95th percentile ${m.latencyP95} s, ${m.tokensPerCall.toLocaleString()} tokens per call, ${weak.length ? `below 100% on ${weak.join(", ")}` : "100% on every query type"}`;
+    })
+    .join("; ")}.`;
 
   return (
     <div class="bc-plot">
       <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
-        <div class="inline-flex flex-wrap rounded-full border border-forest-900/15 p-1 dark:border-forest-100/15" role="tablist" aria-label="Benchmark view">
+        <div class="inline-flex flex-wrap rounded-full border border-forest-900/15 p-1 dark:border-forest-100/15" role="group" aria-label="Benchmark view">
           {VIEWS.map((v) => (
             <button
               type="button"
-              role="tab"
-              aria-selected={view === v.id}
+              aria-pressed={view === v.id}
               onClick={() => setView(v.id)}
               class={`rounded-full px-3 py-1 text-sm transition-colors duration-500 ${
                 view === v.id
@@ -180,7 +190,7 @@ export default function PlannerPlot() {
           <span class="inline-flex items-center gap-1"><span class="h-2.5 w-2.5 rounded-full" style={{ background: OTHER }} /> evaluated</span>
         </p>
       </div>
-      <div ref={ref} class="w-full overflow-x-auto text-forest-900 dark:text-forest-100" role="img" aria-label={`LLM planner benchmark, ${view} view`} />
+      <div ref={ref} class="w-full overflow-x-auto text-forest-900 dark:text-forest-100" role="img" aria-label={summary} />
       <p class="mt-2 text-xs text-forest-700 dark:text-forest-300">
         {view === "accuracy" &&
           `Share of correct tool calls over ${planner.cases.length} query types × ${planner.repeats} repeats per model. ${prod.model} answered all ${prod.trials} correctly and stayed consistent on ${prod.consistentCases} of ${planner.cases.length} query types.`}

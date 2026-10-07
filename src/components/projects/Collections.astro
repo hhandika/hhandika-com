@@ -3,6 +3,7 @@ import Image from "astro/components/Image.astro";
 import Content from "../Content.astro";
 import SectionHead from "../SectionHead.astro";
 import cntl from "cntl";
+import Link from "../Link.astro";
 import ProjectPubs from "../../layouts/ProjectPubs.astro";
 import PubButton from "../buttons/PubButton.astro";
 import herbarium from "../../assets/img/herbarium.jpg";
@@ -15,11 +16,18 @@ const spaceClasses = cntl`
 const pillars = [
   {
     title: "Specimen acquisition",
-    text: "Targeted fieldwork in under-sampled biodiversity hotspots of the Indo-Australian Archipelago, with best-practice specimen and tissue preservation and photographs and recordings linked to each voucher in the field.",
+    text: "Targeted fieldwork in under-sampled biodiversity hotspots across the Indo-Australian Archipelago, using best practices for specimen and tissue preservation while linking photographs and recordings to voucher specimens directly in the field.",
   },
   {
     title: "Stewardship & data",
-    text: "FAIR, Darwin Core–ready data from the field onward. NAHPU, our cross-platform digital field catalog, supports QR/barcode scanning and is adding automatic validation to streamline the path from field to collection database.",
+    text: [
+      { text: "FAIR", url: "https://www.go-fair.org/fair-principles/" },
+      " data, ready for ",
+      { text: "Darwin Core", url: "https://dwc.tdwg.org/" },
+      " and ",
+      { text: "Frictionless Data", url: "https://frictionlessdata.io/" },
+      " from the field onward. NAHPU, our cross-platform digital field catalog, supports QR/barcode scanning and is adding automatic validation to streamline data flow from field to collection database.",
+    ],
   },
   {
     title: "Training & outreach",
@@ -29,14 +37,16 @@ const pillars = [
 ---
 
 <div>
-  <SectionHead text="Natural history collections" />
+  <SectionHead
+    text="Biodiversity Inventories: Building Natural History Collections"
+  />
   <Content>
     <p>
       Continuously growing collections keep natural history museums relevant:
       newly acquired specimens are the best material for genomic, microbiome,
       and phenomic studies, and many regions remain poorly documented. Over 13
-      years, my work has both drawn on existing museum collections and built
-      new ones, expanding sampling to under-surveyed islands and mountains.
+      years, my work has both drawn on existing museum collections and built new
+      ones, expanding sampling to under-surveyed islands and mountains.
     </p>
   </Content>
 
@@ -44,8 +54,20 @@ const pillars = [
     {
       pillars.map((p) => (
         <div class="rounded-xl border border-moss-900/15 bg-white p-4 dark:border-moss-100/15 dark:bg-forest-950">
-          <h3 class="font-serif text-lg text-forest-900 dark:text-forest-100">{p.title}</h3>
-          <p class="mt-1 text-sm text-forest-800 dark:text-forest-200">{p.text}</p>
+          <h3 class="font-serif text-lg text-forest-900 dark:text-forest-100">
+            {p.title}
+          </h3>
+          <p class="mt-1 text-sm text-forest-800 dark:text-forest-200">
+            {typeof p.text === "string"
+              ? p.text
+              : p.text.map((part) =>
+                  typeof part === "string" ? (
+                    part
+                  ) : (
+                    <Link text={part.text} url={part.url} />
+                  ),
+                )}
+          </p>
         </div>
       ))
     }
@@ -69,43 +91,43 @@ const pillars = [
   </Content>
   <div class="clear-both"></div>
 
-<Image
-src={herbarium}
-alt="Herbarium Universitas Andalas"
-width={220}
-class="rounded-xl float-right ml-4 mt-8"
-/>
-<SectionHead text="Herbarium digitization and data mobilization" />
-<Content>
-<p>
-  This project is led by Dr. Nurainas at the Herbarium Universitas Andalas
-  (ANDA) funded through the collection and data mobilization grant provided by
-  the Global Biodiversity Information Facility (GBIF). We digitized >65,000
-  sheets of the herbarium specimens at ANDA and make the data accessible
-  through the GBIF portal.
-</p>
-<div class="mt-4 mb-2 text-semibold">Published datasets:</div>
-<ProjectPubs author="Nurainas et. al.">
-  <PubButton
-    author="Nurainas N, Amolia R R, Taufiq A, Handika H, Syamsuardi S"
-    year="2024a"
-    title="Flora of Sumatra : Vascular plant collection from Batang Toru Forest deposited in ANDA Herbarium"
-    doi="https://doi.org/10.15468/ue7xyn"
+  <Image
+    src={herbarium}
+    alt="Herbarium Universitas Andalas"
+    width={220}
+    class="rounded-xl float-right ml-4 mt-8"
   />
-  <span class={spaceClasses}>,</span>
-  <PubButton
-    author="Nurainas N, Taufiq A, Handika H, Syamsuardi S"
-    year="2024b"
-    title="Flora of Sumatra: Vascular plant collection of selected families deposited at Herbarium of Andalas University (ANDA)"
-    doi="https://doi.org/10.15468/sncpxn"
-  />
-  <span class={spaceClasses}>,</span>
-  <PubButton
-    author="Nurainas N, Taufiq A, Handika H, Harapan T S, Syamsuardi S"
-    year="2024c"
-    title="Flora Sumatra: Digitizing and data basing specimens of the Sumatran Flora deposited at Herbarium Universitas Andalas (ANDA)-Part 2"
-    doi="https://doi.org/10.15468/55evew "
-  />
-</ProjectPubs>
-</Content>
+  <SectionHead text="Herbarium digitization and data mobilization" />
+  <Content>
+    <p>
+      This project is led by Dr. Nurainas at the Herbarium Universitas Andalas
+      (ANDA) funded through the collection and data mobilization grant provided
+      by the Global Biodiversity Information Facility (GBIF). We digitized
+      >65,000 sheets of the herbarium specimens at ANDA and make the data
+      accessible through the GBIF portal.
+    </p>
+    <div class="mt-4 mb-2 text-semibold">Published datasets:</div>
+    <ProjectPubs author="Nurainas et. al.">
+      <PubButton
+        author="Nurainas N, Amolia R R, Taufiq A, Handika H, Syamsuardi S"
+        year="2024a"
+        title="Flora of Sumatra : Vascular plant collection from Batang Toru Forest deposited in ANDA Herbarium"
+        doi="https://doi.org/10.15468/ue7xyn"
+      />
+      <span class={spaceClasses}>,</span>
+      <PubButton
+        author="Nurainas N, Taufiq A, Handika H, Syamsuardi S"
+        year="2024b"
+        title="Flora of Sumatra: Vascular plant collection of selected families deposited at Herbarium of Andalas University (ANDA)"
+        doi="https://doi.org/10.15468/sncpxn"
+      />
+      <span class={spaceClasses}>,</span>
+      <PubButton
+        author="Nurainas N, Taufiq A, Handika H, Harapan T S, Syamsuardi S"
+        year="2024c"
+        title="Flora Sumatra: Digitizing and data basing specimens of the Sumatran Flora deposited at Herbarium Universitas Andalas (ANDA)-Part 2"
+        doi="https://doi.org/10.15468/55evew "
+      />
+    </ProjectPubs>
+  </Content>
 </div>

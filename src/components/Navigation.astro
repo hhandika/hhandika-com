@@ -14,6 +14,7 @@ const navItems = [
 ];
 
 const currentPath = Astro.url.pathname;
+const isCurrent = (path: string) => currentPath === path || currentPath === `${path}/`;
 
 const navClasses = cntl`
   flex
@@ -48,14 +49,20 @@ const desktopLinkClasses = cntl`
   -m-1.5
   p-1.5
   font-semibold
-  hover:text-moss-700
-  dark:hover:text-moss-300
+  rounded-full
+  transition-colors
+  duration-200
 `;
 
+// Hover applies only to inactive links, so the active pill keeps its contrast.
 const inactiveLinkClasses = cntl`
   text-moss-900
   dark:text-moss-50
   px-4
+  hover:bg-moss-200
+  hover:text-moss-950
+  dark:hover:bg-mist-800
+  dark:hover:text-moss-50
 `;
 
 const mobileMenuClasses = cntl`
@@ -66,8 +73,9 @@ const mobileLinkClasses = cntl`
   block
   px-4
   py-2
-  hover:text-moss-700
-  dark:hover:text-moss-300
+  rounded-full
+  transition-colors
+  duration-200
   text-base/7
 `;
 
@@ -96,8 +104,8 @@ const mobileMenuPanelClasses = cntl`
   <div class="flex lg:flex-1">
     <a href="/" class="-m-1.5 p-1.5">
       <span class="sr-only">Heru Handika</span>
+      <Icons />
     </a>
-    <Icons />
   </div>
   <div class="flex items-center gap-3 lg:hidden">
     <ThemeIcon />
@@ -108,7 +116,8 @@ const mobileMenuPanelClasses = cntl`
       navItems.map(({ path, label }) => (
         <a
           href={path}
-          class={`${desktopLinkClasses} ${currentPath === path || currentPath === `${path}/` ? activeLinkClasses : inactiveLinkClasses}`}
+          aria-current={isCurrent(path) ? "page" : undefined}
+          class={`${desktopLinkClasses} ${isCurrent(path) ? activeLinkClasses : inactiveLinkClasses}`}
         >
           {label}
         </a>
@@ -120,7 +129,7 @@ const mobileMenuPanelClasses = cntl`
   </div>
 </nav>
 <!-- Mobile menu, show/hide based on menu open state. -->
-<div id="mobile-menu" class={mobileMenuClasses} role="dialog" aria-modal="true">
+<div id="mobile-menu" class={mobileMenuClasses} role="dialog" aria-modal="true" aria-label="Main menu">
   <!-- Background backdrop, show/hide based on slide-over state. -->
   <div class="fixed inset-0 z-50">
     <div id="menu-panel" class={mobileMenuPanelClasses}>
@@ -138,7 +147,8 @@ const mobileMenuPanelClasses = cntl`
               navItems.map(({ path, label }) => (
                 <a
                   href={path}
-                  class={`${mobileLinkClasses} ${currentPath === path || currentPath === `${path}/` ? activeLinkClasses : inactiveLinkClasses}`}
+                  aria-current={isCurrent(path) ? "page" : undefined}
+                  class={`${mobileLinkClasses} ${isCurrent(path) ? activeLinkClasses : inactiveLinkClasses}`}
                 >
                   {label}
                 </a>
@@ -151,19 +161,48 @@ const mobileMenuPanelClasses = cntl`
   </div>
 
   <script>
+    // Modal menu: focus moves in on open, Tab stays inside, Escape or the close
+    // button closes it, and focus returns to the menu button.
     const menuButton = document.getElementById("menu-button");
     const closeButton = document.getElementById("close-button");
     const mobileMenu = document.getElementById("mobile-menu");
 
-    if (menuButton && mobileMenu) {
-      menuButton.addEventListener("click", function () {
-        mobileMenu.classList.toggle("hidden");
-      });
-    }
+    if (menuButton && closeButton && mobileMenu) {
+      const focusables = () =>
+        [...mobileMenu.querySelectorAll<HTMLElement>("a[href], button")].filter((el) => el.offsetParent !== null);
 
-    if (closeButton && mobileMenu) {
-      closeButton.addEventListener("click", function () {
-        mobileMenu.classList.toggle("hidden");
+      const open = () => {
+        mobileMenu.classList.remove("hidden");
+        menuButton.setAttribute("aria-expanded", "true");
+        document.body.style.overflow = "hidden";
+        closeButton.focus();
+      };
+      const close = () => {
+        mobileMenu.classList.add("hidden");
+        menuButton.setAttribute("aria-expanded", "false");
+        document.body.style.overflow = "";
+        menuButton.focus();
+      };
+
+      menuButton.addEventListener("click", open);
+      closeButton.addEventListener("click", close);
+      mobileMenu.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") return close();
+        if (e.key !== "Tab") return;
+        const items = focusables();
+        const first = items[0];
+        const last = items[items.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      });
+      // Close if the viewport grows past the mobile breakpoint while open.
+      window.matchMedia("(min-width: 1024px)").addEventListener("change", (e) => {
+        if (e.matches && !mobileMenu.classList.contains("hidden")) close();
       });
     }
   </script>
