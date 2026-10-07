@@ -286,7 +286,7 @@ const layouts = [wide, narrow].map((layout) => ({ ...layout, placed: place(layou
               x2={layout.boundary.x2}
               y1={layout.boundary.y}
               y2={layout.boundary.y}
-              class="stroke-moss-400 dark:stroke-moss-600"
+              class="stroke-moss-600 dark:stroke-moss-600"
               stroke-width="1.25"
               stroke-dasharray="2 5"
               stroke-linecap="round"
@@ -396,7 +396,7 @@ const layouts = [wide, narrow].map((layout) => ({ ...layout, placed: place(layou
               const y = layout.legend.vertical ? layout.legend.y + k * 24 : layout.legend.y;
               return (
                 <g>
-                  <rect x={x} y={y - 10} width="12" height="12" rx="3.5" class={tones[item.tone].badge} />
+                  <rect x={x} y={y - 10} width="12" height="12" rx="3.5" class={tones[item.tone].swatch} />
                   <text x={x + 20} y={y} class="fill-forest-800 dark:fill-forest-200">
                     {item.label}
                   </text>

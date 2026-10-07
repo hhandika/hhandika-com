@@ -433,10 +433,11 @@ const layouts = [wide, narrow].map((layout) => ({
 // services/agent.py.
 const traces = [
   {
+    // Benchmarked with Costa Rica; shown with Indonesia.
     id: "color-country-trait",
-    query: "orange canopy butterflies in Costa Rica",
+    query: "orange canopy butterflies in Indonesia",
     calls: [
-      { kind: "filter", call: 'search_by_location(country="CR")' },
+      { kind: "filter", call: 'search_by_location(country="ID")' },
       { kind: "filter", call: 'search_by_traits(canopy="closed")' },
       { kind: "ranking", call: 'search_by_color(color_description="orange")' },
     ],
@@ -592,7 +593,7 @@ const callClass: Record<string, string> = {
               height={layout.boundary.h}
               rx="20"
               fill="none"
-              class="stroke-moss-400 dark:stroke-moss-600"
+              class="stroke-moss-600 dark:stroke-moss-600"
               stroke-width="1.25"
               stroke-dasharray="2 5"
               stroke-linecap="round"
@@ -762,7 +763,7 @@ const callClass: Record<string, string> = {
                     width="12"
                     height="12"
                     rx="3.5"
-                    class={tones[item.tone].badge}
+                    class={tones[item.tone].swatch}
                   />
                   <text
                     x={x + 20}
