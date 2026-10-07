@@ -1,0 +1,969 @@
+---
+// Interactive BioCosmos architecture, drawn from the BioCosmos backend
+// (backend/app/main.py, services/agent.py, database/). It shares the NAHPU
+// diagram's visual language: here forest is Python services, moss is AI
+// models, and mist is embedded data. Hover, focus, or tap a component to read
+// what it does, or pick an example question to trace it through the system.
+import {
+  tones,
+  wrapChips,
+  arrowHead,
+  lineClass,
+  labelClass,
+  packetClass,
+  type Tone,
+} from "./diagram";
+import MotionToggle from "../MotionToggle.astro";
+import planner from "../../../data/biocosmos/planner.json";
+
+interface NodeText {
+  title: string;
+  path?: string;
+  sub?: string;
+  chips?: string[];
+}
+
+interface NodeDef extends NodeText {
+  id: string;
+  tone: Tone;
+  badge?: string;
+  desc: string;
+}
+
+const model = planner.productionModel;
+const toolNames = [
+  "search_by_location",
+  "search_by_traits",
+  "search_by_common_name",
+  "search_by_color",
+  "search_by_image_similarity",
+];
+
+const nodes: NodeDef[] = [
+  {
+    id: "app",
+    tone: "app",
+    title: "LepiVerse web app",
+    sub: "Next.js + React · server-rendered pages · MapLibre maps",
+    chips: ["search", "species", "morphospace", "maps"],
+    desc: "A Next.js site renders species, genus, and family pages on the server and calls the API for search, maps, and morphospaces.",
+  },
+  {
+    id: "api",
+    tone: "dart",
+    badge: "FastAPI",
+    title: "FastAPI service",
+    path: "backend/app/routers/",
+    sub: "Thin async handlers · search cache · HTTP cache headers",
+    desc: "One process loads the models and opens both databases once at startup. Routers stay thin. Agent searches are cached for 15 minutes to save computational resources.",
+  },
+  {
+    id: "planner",
+    tone: "rust",
+    badge: "LLM",
+    title: "LLM planner",
+    path: `${model} · services/agent.py`,
+    sub: "One call turns a question into typed tool calls",
+    chips: toolNames,
+    desc: `An open-weight model (${model}), chosen by benchmark, parses the question once and returns typed tool calls. It never writes SQL or sees the data, and checks are performed to ensure the calls are valid.`,
+  },
+  {
+    id: "filters",
+    tone: "dart",
+    badge: "SQL",
+    title: "Filter tools",
+    path: "concurrent, exact",
+    sub: "location · traits · common name",
+    desc: "Location, trait, and common-name tools are hard constraints matching the data. They run concurrently as parameterized SQL, and their results are combined into a single allowlist.",
+  },
+  {
+    id: "ranking",
+    tone: "dart",
+    badge: "ANN",
+    title: "Ranking tools",
+    path: "inside the allowlist",
+    sub: "color · look-alikes",
+    desc: "Color and appearance tools rank images by visual similarity inside the allowlist.",
+  },
+  {
+    id: "encoders",
+    tone: "rust",
+    badge: "GPU",
+    title: "Vision encoders",
+    path: "clip.py · unicom.py",
+    sub: "CLIP text · UNICOM images",
+    desc: "CLIP turns a text description into a vector at query time. UNICOM embeddings, suited to fine-grained biological similarity, are precomputed for every image. Both models stay loaded on the GPU.",
+  },
+  {
+    id: "duckdb",
+    tone: "data",
+    badge: "OLAP",
+    title: "DuckDB",
+    path: "biocosmos.duckdb",
+    sub: "Embedded columnar analytics",
+    chips: [
+      "image_meta",
+      "CoL taxonomy",
+      "locality",
+      "LepTraits",
+      "similarity",
+      "morphospace",
+    ],
+    desc: "An in-process, columnar OLAP database for image metadata, Catalogue of Life taxonomy, GBIF localities, LepTraits, and precomputed similarity and morphospace tables. It runs analytical queries directly against local data with no server required and automatically skips re-ingesting sources whose fingerprints have not changed.",
+  },
+  {
+    id: "lancedb",
+    tone: "data",
+    badge: "Vector",
+    title: "LanceDB",
+    path: "biocosmos.lance",
+    sub: "Embedded vector database on the Lance columnar format",
+    chips: [
+      "CLIP · 512-d",
+      "UNICOM · 768-d",
+      "IVF-HNSW-SQ index",
+      "img_id B-tree",
+    ],
+    desc: "An in-process vector database storing CLIP and UNICOM embeddings for every image and handling vector operations. A quantized IVF-HNSW index improves search performance, and a B-tree on img_id keeps queries efficient.",
+  },
+  {
+    id: "offline",
+    tone: "rust",
+    badge: "CLI",
+    title: "Offline pipelines",
+    path: "packages/ · uv workspace",
+    sub: "Harmonize, precompute, and benchmark, outside the request path",
+    chips: [
+      "colharmonize",
+      "geoharmonize",
+      "instharmonize",
+      "similarity",
+      "morphospace",
+      "plannerbench",
+    ],
+    desc: "Command-line packages harmonize names against the Catalogue of Life, validate coordinates against GADM, resolve institutions, precompute similar species and morphospaces, and benchmark planner models. Each run writes a manifest containing the SHA-256 hash of every generated output.",
+  },
+];
+
+interface Box {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  text?: Partial<NodeText>;
+}
+
+interface Edge {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+  label?: string;
+  // Labels sit right of vertical edges; horizontal edges centre them above.
+  lx?: number;
+  ly?: number;
+}
+
+interface Layout {
+  name: string;
+  class: string;
+  width: number;
+  height: number;
+  badges: boolean;
+  chipCharW: number;
+  boxes: Record<string, Box>;
+  edges: Edge[];
+  boundary: {
+    x: number;
+    y: number;
+    w: number;
+    h: number;
+    label: string;
+    ly: number;
+  };
+  packets: { tone: Tone; d: string; dur: number; begin: number }[];
+  legend: { x: number; y: number; vertical: boolean };
+}
+
+// Wide: three lanes. Filters and DuckDB on the left, ranking and LanceDB in
+// the middle, the encoders on the right.
+const c1 = 170;
+const c2 = 494;
+const c3 = 800;
+const wide: Layout = {
+  name: "wide",
+  class: "hidden md:block",
+  width: 960,
+  height: 724,
+  badges: true,
+  chipCharW: 6.4,
+  boxes: {
+    app: { x: 40, y: 16, w: 880, h: 60 },
+    api: { x: 40, y: 108, w: 880, h: 66 },
+    planner: { x: 40, y: 206, w: 880, h: 96 },
+    filters: { x: 40, y: 334, w: 260, h: 66 },
+    ranking: { x: 364, y: 334, w: 260, h: 66 },
+    encoders: { x: 680, y: 334, w: 240, h: 66 },
+    duckdb: { x: 40, y: 432, w: 300, h: 122 },
+    lancedb: { x: 388, y: 432, w: 532, h: 122 },
+    offline: { x: 40, y: 600, w: 620, h: 96 },
+  },
+  edges: [
+    { x1: c1, y1: 76, x2: c1, y2: 108, label: "REST · JSON" },
+    { x1: c1, y1: 174, x2: c1, y2: 206, label: "plain-language question" },
+    { x1: c1, y1: 302, x2: c1, y2: 334, label: "filter calls" },
+    { x1: c2, y1: 302, x2: c2, y2: 334, label: "ranking calls" },
+    {
+      x1: 300,
+      y1: 367,
+      x2: 364,
+      y2: 367,
+      label: "allowlist",
+      lx: 332,
+      ly: 359,
+    },
+    { x1: 624, y1: 367, x2: 680, y2: 367, label: "embed", lx: 652, ly: 359 },
+    { x1: c1, y1: 400, x2: c1, y2: 432, label: "parameterized SQL" },
+    { x1: c2, y1: 400, x2: c2, y2: 432, label: "vector search" },
+    { x1: c3, y1: 400, x2: c3, y2: 432, label: "query vector" },
+    { x1: 340, y1: 474, x2: 388, y2: 474, label: "img_id", lx: 364, ly: 467 },
+    { x1: 388, y1: 514, x2: 340, y2: 514, label: "join", lx: 364, ly: 507 },
+    {
+      x1: c1,
+      y1: 600,
+      x2: c1,
+      y2: 554,
+      label: "write tables, backend stopped",
+    },
+  ],
+  boundary: {
+    x: 24,
+    y: 96,
+    w: 912,
+    h: 470,
+    label: "ONE PROCESS · EMBEDDED DATABASES · NO DATABASE SERVER",
+    ly: 582,
+  },
+  packets: [
+    { tone: "dart", d: `M${c1} 76 V432`, dur: 9, begin: 0 },
+    {
+      tone: "rust",
+      d: `M${c1} 76 V254 H${c2} V367 H${c3} V432`,
+      dur: 12,
+      begin: 4,
+    },
+    { tone: "data", d: `M${c2} 514 H${c1} V76`, dur: 9, begin: 6 },
+  ],
+  legend: { x: 696, y: 620, vertical: true },
+};
+
+const n1 = 92;
+const n2 = 268;
+const narrow: Layout = {
+  name: "narrow",
+  class: "block md:hidden",
+  width: 360,
+  height: 852,
+  badges: false,
+  chipCharW: 6,
+  boxes: {
+    app: {
+      x: 12,
+      y: 12,
+      w: 336,
+      h: 84,
+      text: { sub: "Next.js + React · MapLibre" },
+    },
+    api: {
+      x: 12,
+      y: 128,
+      w: 336,
+      h: 66,
+      text: { sub: "Async handlers · search cache" },
+    },
+    planner: {
+      x: 12,
+      y: 226,
+      w: 336,
+      h: 122,
+      text: {
+        path: model,
+        sub: "One call → typed tool calls",
+        chips: [
+          "location",
+          "traits",
+          "common name",
+          "color",
+          "image similarity",
+        ],
+      },
+    },
+    filters: {
+      x: 12,
+      y: 380,
+      w: 160,
+      h: 66,
+      text: { path: "SQL, concurrent", sub: "place · traits · name" },
+    },
+    ranking: {
+      x: 188,
+      y: 380,
+      w: 160,
+      h: 66,
+      text: { path: "in the allowlist" },
+    },
+    duckdb: {
+      x: 12,
+      y: 478,
+      w: 160,
+      h: 164,
+      text: {
+        sub: "Embedded OLAP",
+        chips: ["image_meta", "taxonomy", "locality", "traits"],
+      },
+    },
+    encoders: {
+      x: 188,
+      y: 478,
+      w: 160,
+      h: 66,
+      text: { title: "Encoders", sub: "CLIP · UNICOM" },
+    },
+    lancedb: {
+      x: 188,
+      y: 576,
+      w: 160,
+      h: 66,
+      text: { sub: "Embedded vectors", chips: [] },
+    },
+    offline: {
+      x: 12,
+      y: 684,
+      w: 336,
+      h: 122,
+      text: { sub: "Harmonize · precompute · benchmark" },
+    },
+  },
+  edges: [
+    { x1: n1, y1: 96, x2: n1, y2: 128 },
+    { x1: n1, y1: 194, x2: n1, y2: 226 },
+    { x1: n1, y1: 348, x2: n1, y2: 380 },
+    { x1: n2, y1: 348, x2: n2, y2: 380 },
+    { x1: 172, y1: 413, x2: 188, y2: 413 },
+    { x1: n1, y1: 446, x2: n1, y2: 478 },
+    { x1: n2, y1: 446, x2: n2, y2: 478 },
+    { x1: n2, y1: 544, x2: n2, y2: 576 },
+    { x1: 172, y1: 598, x2: 188, y2: 598 },
+    { x1: 188, y1: 620, x2: 172, y2: 620 },
+    { x1: n1, y1: 684, x2: n1, y2: 642 },
+  ],
+  boundary: {
+    x: 4,
+    y: 118,
+    w: 352,
+    h: 534,
+    label: "ONE PROCESS · EMBEDDED DATABASES",
+    ly: 668,
+  },
+  packets: [
+    { tone: "dart", d: `M${n1} 96 V478`, dur: 9, begin: 0 },
+    { tone: "rust", d: `M${n1} 96 V287 H${n2} V576`, dur: 12, begin: 4 },
+    { tone: "data", d: `M${n2} 609 H${n1} V96`, dur: 9, begin: 6 },
+  ],
+  legend: { x: 20, y: 834, vertical: false },
+};
+
+const legendItems: { tone: Tone; label: string }[] = [
+  { tone: "dart", label: "Python services" },
+  { tone: "rust", label: "AI models & tooling" },
+  { tone: "data", label: "Embedded data" },
+];
+
+// Resolve text, badge width, and chip positions for each node in a layout.
+function place(layout: Layout) {
+  return nodes.map((n, i) => {
+    const b = layout.boxes[n.id];
+    const text: NodeText = {
+      title: n.title,
+      path: n.path,
+      sub: n.sub,
+      chips: n.chips,
+      ...b.text,
+    };
+    const t = tones[n.tone];
+    const badge =
+      layout.badges && n.badge
+        ? {
+            label: n.badge.toUpperCase(),
+            w: Math.round(n.badge.length * 6.6 + 14),
+          }
+        : null;
+    const chipY = b.y + (text.sub ? 66 : 50);
+    let chips = text.chips?.length
+      ? wrapChips(text.chips, b.x + 14, chipY, b.w - 24, {
+          charW: layout.chipCharW,
+          rowH: 26,
+        })
+      : [];
+    if (n.id === "app") {
+      // Page chips: right-aligned on wide, below the title on narrow.
+      if (layout.name === "wide") {
+        const last = chips[chips.length - 1];
+        const shift = b.x + b.w - 16 - (last.x + last.w);
+        chips = chips.map((c) => ({
+          ...c,
+          x: c.x + shift,
+          y: b.y + (b.h - 22) / 2,
+        }));
+      } else {
+        chips = chips.map((c) => ({ ...c, y: b.y + 52 }));
+      }
+    }
+    return { ...n, ...b, text, t, badge, chips, i };
+  });
+}
+
+const layouts = [wide, narrow].map((layout) => ({
+  ...layout,
+  placed: place(layout),
+}));
+
+// Example questions from the BioCosmos planner benchmark
+// (packages/plannerbench/resources/cases.toml), traced through
+// services/agent.py.
+const traces = [
+  {
+    id: "color-country-trait",
+    query: "orange canopy butterflies in Costa Rica",
+    calls: [
+      { kind: "filter", call: 'search_by_location(country="CR")' },
+      { kind: "filter", call: 'search_by_traits(canopy="closed")' },
+      { kind: "ranking", call: 'search_by_color(color_description="orange")' },
+    ],
+    steps: [
+      {
+        node: "planner",
+        text: "One planner call splits the question into three typed tool calls.",
+      },
+      {
+        node: "filters",
+        text: "The location and trait filters run concurrently.",
+      },
+      {
+        node: "duckdb",
+        text: "DuckDB operates on both the locality and LepTraits indexes, and their species sets intersect into an allowlist.",
+      },
+      {
+        node: "ranking",
+        text: "The color tool receives the allowlist instead of searching every image.",
+      },
+      { node: "encoders", text: "CLIP embeds “orange” as a text vector." },
+      {
+        node: "lancedb",
+        text: "LanceDB ranks only the allowlisted images by cosine distance.",
+      },
+      {
+        node: "duckdb",
+        text: "The ranked image IDs join back to species metadata, keeping the best image per species.",
+      },
+      {
+        node: "api",
+        text: "The ranked list is cached and served a page at a time.",
+      },
+    ],
+  },
+  {
+    id: "similar-country",
+    query: "butterflies like Morpho menelaus from Peru",
+    calls: [
+      { kind: "filter", call: 'search_by_location(country="PE")' },
+      {
+        kind: "ranking",
+        call: 'search_by_image_similarity(reference_species="Morpho menelaus")',
+      },
+    ],
+    steps: [
+      {
+        node: "planner",
+        text: "The planner passes the common name to the database to resolve the name to its scientific name.",
+      },
+      {
+        node: "filters",
+        text: "The location filter becomes the allowlist, such as every species recorded in Peru.",
+      },
+      {
+        node: "duckdb",
+        text: "DuckDB operates on the allowlist and returns the image IDs of the reference species.",
+      },
+      {
+        node: "ranking",
+        text: "The image similarity tool only need to compare pre-computed embeddings; no additional processing required.",
+      },
+      {
+        node: "lancedb",
+        text: "LanceDB averages the reference's UNICOM embeddings into a centroid and searches the allowlist, widening the pool until enough other species remain.",
+      },
+      {
+        node: "api",
+        text: "Results link to species pages, ranked by visual similarity.",
+      },
+    ],
+  },
+  {
+    id: "adm1-ambiguous-name",
+    query: "butterflies in Georgia USA",
+    calls: [
+      {
+        kind: "filter",
+        call: 'search_by_location(country="US", state_province="Georgia")',
+      },
+    ],
+    steps: [
+      {
+        node: "planner",
+        text: "The planner reads Georgia as the US state, not the country (GE), and passes an ISO code plus a state.",
+      },
+      {
+        node: "filters",
+        text: "With no ranking tool, the search is a pure filter.",
+      },
+      {
+        node: "duckdb",
+        text: "DuckDB matches the state against the locality table derived from GBIF occurrences.",
+      },
+      {
+        node: "api",
+        text: "No vector search and no GPU: the answer comes straight from SQL.",
+      },
+    ],
+  },
+].map((t) => ({ ...t, nodes: [...new Set(t.steps.map((s) => s.node))] }));
+
+const callClass: Record<string, string> = {
+  filter:
+    "bg-forest-100 text-forest-800 dark:bg-forest-900 dark:text-forest-200",
+  ranking: "bg-moss-100 text-moss-800 dark:bg-moss-900 dark:text-moss-200",
+};
+---
+
+<figure class="bc-arch motion not-prose my-6" data-bc-arch>
+  <div
+    class="rounded-2xl border border-forest-900/10 bg-white/70 p-3 shadow-sm dark:border-forest-100/10 dark:bg-forest-950/40 sm:p-5"
+  >
+    <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
+      <div
+        class="flex flex-wrap items-center gap-1.5"
+        role="group"
+        aria-label="Trace an example question"
+      >
+        <span
+          class="mr-1 text-xs font-semibold text-forest-800 dark:text-forest-200"
+          >Trace a question:</span
+        >
+        {
+          traces.map((t) => (
+            <button
+              type="button"
+              class="trace-button rounded-full border border-forest-900/15 px-2.5 py-1 text-xs text-forest-800 transition-colors hover:bg-forest-100 aria-pressed:border-forest-600 aria-pressed:bg-forest-600 aria-pressed:text-white dark:border-forest-100/20 dark:text-forest-100 dark:hover:bg-forest-900 dark:aria-pressed:border-forest-300 dark:aria-pressed:bg-forest-300 dark:aria-pressed:text-forest-950"
+              data-trace={t.id}
+              aria-pressed="false"
+            >
+              “{t.query}”
+            </button>
+          ))
+        }
+      </div>
+      <MotionToggle />
+    </div>
+    {
+      layouts.map((layout) => (
+        <svg
+          viewBox={`0 0 ${layout.width} ${layout.height}`}
+          class={`diagram w-full h-auto font-sans ${layout.class}`}
+          role="group"
+          aria-label="BioCosmos architecture: a Next.js site calls one FastAPI process in which an open-weight language model plans typed tool calls, filters run as SQL in the embedded DuckDB OLAP database, and ranking runs as vector search in the embedded LanceDB database, fed by offline harmonization pipelines"
+        >
+          {/* Connectors and packets sit under the boxes so data appears to pass through each layer. */}
+          <g>
+            <rect
+              x={layout.boundary.x}
+              y={layout.boundary.y}
+              width={layout.boundary.w}
+              height={layout.boundary.h}
+              rx="20"
+              fill="none"
+              class="stroke-moss-400 dark:stroke-moss-600"
+              stroke-width="1.25"
+              stroke-dasharray="2 5"
+              stroke-linecap="round"
+            />
+            <text
+              x={layout.boundary.x + layout.boundary.w - 8}
+              y={layout.boundary.ly}
+              text-anchor="end"
+              font-size={layout.name === "wide" ? 11 : 9.5}
+              letter-spacing="0.08em"
+              class="fill-moss-700 dark:fill-moss-300 font-semibold"
+            >
+              {layout.boundary.label}
+            </text>
+            {layout.edges.map((e) => (
+              <g>
+                <line
+                  x1={e.x1}
+                  y1={e.y1}
+                  x2={e.x2}
+                  y2={e.y2}
+                  class={`flow ${lineClass}`}
+                  stroke-width="1.75"
+                />
+                <polygon
+                  points={arrowHead(e.x1, e.y1, e.x2, e.y2)}
+                  class="fill-forest-400 dark:fill-forest-500"
+                />
+                {e.label && (
+                  <text
+                    x={e.lx ?? e.x1 + 12}
+                    y={e.ly ?? (e.y1 + e.y2) / 2 + 4}
+                    text-anchor={e.lx === undefined ? "start" : "middle"}
+                    font-size={e.lx === undefined ? 11.5 : 10.5}
+                    class={`${labelClass} italic`}
+                  >
+                    {e.label}
+                  </text>
+                )}
+              </g>
+            ))}
+            {layout.packets.map((p) => (
+              <g class={`packet ${packetClass[p.tone]}`}>
+                <circle r="10" opacity="0.22" />
+                <circle r="4.5" />
+                <animateMotion
+                  path={p.d}
+                  dur={`${p.dur}s`}
+                  begin={`-${p.begin}s`}
+                  repeatCount="indefinite"
+                />
+              </g>
+            ))}
+          </g>
+
+          {layout.placed.map((n) => (
+            <g
+              class="node"
+              style={`--i:${n.i}`}
+              data-node={n.id}
+              data-title={n.title}
+              data-desc={n.desc}
+              tabindex="0"
+              role="button"
+              aria-label={`${n.title}. ${n.desc}`}
+            >
+              <rect
+                x={n.x}
+                y={n.y}
+                width={n.w}
+                height={n.h}
+                rx="14"
+                class={`box ${n.t.box}`}
+                stroke-width="1.5"
+              />
+              <text
+                x={n.x + (n.id === "app" ? 18 : 14)}
+                y={n.y + (n.id === "app" ? 26 : 24)}
+                font-size={
+                  n.id === "app" ? 18 : layout.name === "wide" ? 15 : 14
+                }
+                class={`font-semibold ${n.t.title}`}
+              >
+                {n.text.title}
+              </text>
+              {n.text.path && (
+                <text
+                  x={n.x + 14}
+                  y={n.y + 41}
+                  font-size={layout.name === "wide" ? 11.5 : 10}
+                  class={`font-mono ${n.t.muted}`}
+                >
+                  {n.text.path}
+                </text>
+              )}
+              {n.text.sub && (
+                <text
+                  x={n.x + (n.id === "app" ? 18 : 14)}
+                  y={n.y + (n.id === "app" ? 45 : 57)}
+                  font-size={layout.name === "wide" ? 12 : 11}
+                  class={n.t.muted}
+                  opacity="0.9"
+                >
+                  {n.text.sub}
+                </text>
+              )}
+              {n.badge && (
+                <g>
+                  <rect
+                    x={n.x + n.w - n.badge.w - 12}
+                    y={n.y + 11}
+                    width={n.badge.w}
+                    height="18"
+                    rx="9"
+                    class={n.t.badge}
+                  />
+                  <text
+                    x={n.x + n.w - n.badge.w / 2 - 12}
+                    y={n.y + 23.5}
+                    text-anchor="middle"
+                    font-size="9.5"
+                    letter-spacing="0.06em"
+                    class={`font-bold ${n.t.badgeText}`}
+                  >
+                    {n.badge.label}
+                  </text>
+                </g>
+              )}
+              {n.chips.map((c) => (
+                <g>
+                  <rect
+                    x={c.x}
+                    y={c.y}
+                    width={c.w}
+                    height="20"
+                    rx="10"
+                    class={n.t.chip}
+                    stroke-width="1"
+                  />
+                  <text
+                    x={c.x + c.w / 2}
+                    y={c.y + 14}
+                    text-anchor="middle"
+                    font-size={layout.name === "wide" ? 11 : 10}
+                    class={`font-mono ${n.t.chipText}`}
+                  >
+                    {c.label}
+                  </text>
+                </g>
+              ))}
+            </g>
+          ))}
+
+          <g class="legend" font-size={layout.name === "wide" ? 12 : 11}>
+            {legendItems.map((item, k) => {
+              const x = layout.legend.vertical
+                ? layout.legend.x
+                : layout.legend.x + [0, 120, 212][k];
+              const y = layout.legend.vertical
+                ? layout.legend.y + k * 24
+                : layout.legend.y;
+              return (
+                <g>
+                  <rect
+                    x={x}
+                    y={y - 10}
+                    width="12"
+                    height="12"
+                    rx="3.5"
+                    class={tones[item.tone].badge}
+                  />
+                  <text
+                    x={x + 20}
+                    y={y}
+                    class="fill-forest-800 dark:fill-forest-200"
+                  >
+                    {layout.name === "wide"
+                      ? item.label
+                      : item.label.replace(" & tooling", "")}
+                  </text>
+                </g>
+              );
+            })}
+            {layout.legend.vertical && (
+              <text
+                x={layout.legend.x}
+                y={layout.legend.y + 3 * 24 + 4}
+                class="fill-forest-600 dark:fill-forest-400 italic"
+              >
+                Moving dots trace a query.
+              </text>
+            )}
+          </g>
+        </svg>
+      ))
+    }
+
+    {
+      traces.map((t) => (
+        <div
+          class="trace-panel mt-4 hidden"
+          data-trace-panel={t.id}
+          data-nodes={t.nodes.join(" ")}
+        >
+          <ul
+            class="flex flex-wrap gap-1.5"
+            aria-label="Tool calls returned by the planner"
+          >
+            {t.calls.map((c) => (
+              <li
+                class={`max-w-full rounded-lg px-2 py-1 font-mono text-[0.7rem] [overflow-wrap:anywhere] ${callClass[c.kind]}`}
+              >
+                <span class="mr-1 font-sans font-semibold uppercase tracking-wider opacity-70">
+                  {c.kind}
+                </span>
+                {c.call}
+              </li>
+            ))}
+          </ul>
+          <ol class="mt-3 gap-x-4 text-sm text-forest-800 dark:text-forest-200 sm:columns-2">
+            {t.steps.map((s, k) => (
+              <li
+                class="trace-step mb-1.5 flex break-inside-avoid gap-2 rounded-lg px-2 py-1 outline-none transition-colors hover:bg-forest-100 focus-visible:bg-forest-100 dark:hover:bg-forest-900 dark:focus-visible:bg-forest-900"
+                data-step-node={s.node}
+                tabindex="0"
+              >
+                <span class="font-mono text-xs leading-5 text-moss-700 dark:text-moss-300">
+                  {k + 1}
+                </span>
+                <span>{s.text}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      ))
+    }
+  </div>
+  <figcaption
+    class="mx-auto mt-3 min-h-[3.5rem] max-w-3xl rounded-xl px-4 py-2 text-center text-sm text-forest-800 dark:text-forest-200"
+    aria-live="polite"
+  >
+    <span class="caption-title font-semibold text-moss-700 dark:text-moss-300"
+      >Hover, tap, or tab to a component</span
+    >
+    <span class="caption-desc">
+      to see what it does. The language model only plans; SQL filters and vector
+      search do the work, inside one process.</span
+    >
+  </figcaption>
+</figure>
+
+<style>
+  .flow {
+    stroke-dasharray: 4 5;
+    animation: flow 3s linear infinite;
+  }
+  @keyframes flow {
+    to {
+      stroke-dashoffset: -9;
+    }
+  }
+  .node {
+    cursor: pointer;
+    outline: none;
+    transition: opacity 0.25s ease;
+    animation: rise 0.6s ease-out backwards;
+    animation-delay: calc(var(--i) * 80ms);
+  }
+  .node .box {
+    transition:
+      stroke-width 0.2s ease,
+      filter 0.2s ease;
+  }
+  .node:hover .box,
+  .node:focus-visible .box,
+  .node.is-active .box,
+  .node.in-trace .box {
+    stroke-width: 3;
+    filter: drop-shadow(0 4px 10px rgb(0 0 0 / 0.12));
+  }
+  .diagram.has-trace .node:not(.in-trace) {
+    opacity: 0.3;
+  }
+  .diagram.has-active .node:not(.is-active) {
+    opacity: 0.45;
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .flow,
+    .node {
+      animation: none;
+    }
+    .packet {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-bc-arch]").forEach((root) => {
+    const title = root.querySelector(".caption-title")!;
+    const desc = root.querySelector(".caption-desc")!;
+    const nodes = root.querySelectorAll<SVGGElement>(".node");
+    const diagrams = root.querySelectorAll(".diagram");
+    const buttons = root.querySelectorAll<HTMLButtonElement>(".trace-button");
+    const panels = root.querySelectorAll<HTMLElement>(".trace-panel");
+
+    const activate = (id: string | null) => {
+      nodes.forEach((n) =>
+        n.classList.toggle("is-active", n.dataset.node === id),
+      );
+      diagrams.forEach((svg) =>
+        svg.classList.toggle("has-active", id !== null),
+      );
+      const node = [...nodes].find((n) => n.dataset.node === id);
+      if (node) {
+        title.textContent = node.dataset.title ?? "";
+        desc.textContent = ` — ${node.dataset.desc}`;
+      }
+    };
+
+    // Highlight the components one example question passes through.
+    const trace = (id: string | null) => {
+      buttons.forEach((b) =>
+        b.setAttribute("aria-pressed", String(b.dataset.trace === id)),
+      );
+      let path: string[] = [];
+      panels.forEach((p) => {
+        const on = p.dataset.tracePanel === id;
+        p.classList.toggle("hidden", !on);
+        if (on) path = (p.dataset.nodes ?? "").split(" ");
+      });
+      nodes.forEach((n) =>
+        n.classList.toggle("in-trace", path.includes(n.dataset.node!)),
+      );
+      diagrams.forEach((svg) => svg.classList.toggle("has-trace", id !== null));
+      activate(null);
+    };
+
+    nodes.forEach((n) => {
+      n.addEventListener("mouseenter", () => activate(n.dataset.node!));
+      n.addEventListener("focus", () => activate(n.dataset.node!));
+      n.addEventListener("click", () => activate(n.dataset.node!));
+      n.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          activate(n.dataset.node!);
+        } else if (e.key === "Escape") activate(null);
+      });
+    });
+    diagrams.forEach((svg) =>
+      svg.addEventListener("mouseleave", () => activate(null)),
+    );
+
+    buttons.forEach((b) =>
+      b.addEventListener("click", () =>
+        trace(
+          b.getAttribute("aria-pressed") === "true" ? null : b.dataset.trace!,
+        ),
+      ),
+    );
+    root.querySelectorAll<HTMLElement>(".trace-step").forEach((s) => {
+      s.addEventListener("mouseenter", () => activate(s.dataset.stepNode!));
+      s.addEventListener("focus", () => activate(s.dataset.stepNode!));
+      s.addEventListener("mouseleave", () => activate(null));
+      s.addEventListener("blur", () => activate(null));
+    });
+  });
+</script>

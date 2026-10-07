@@ -5,6 +5,8 @@ interface SectionHead {
   text: string;
   // Heading level; sections nested under a page subtitle use 3.
   level?: 2 | 3;
+  // Anchor for deep links such as /projects#biocosmos-architecture.
+  id?: string;
 }
 
 const sectionHeadClasses = cntl`
@@ -14,13 +16,14 @@ const sectionHeadClasses = cntl`
   dark:text-moss-200
   mt-8
   mb-2
+  scroll-mt-24
 `;
 
-const { text, level = 2 } = Astro.props as SectionHead;
+const { text, level = 2, id } = Astro.props as SectionHead;
 const Heading = `h${level}`;
 ---
 
-<div class={sectionHeadClasses}>
+<div id={id} class={sectionHeadClasses}>
   <Heading>
     {text}
   </Heading>

@@ -222,12 +222,23 @@ const inactiveClass = cntl`
     });
 
     // Deep links like /projects#ai open that tab; old anchors still resolve.
+    // An anchor inside a tab, such as #biocosmos-architecture, opens its tab
+    // and scrolls to it.
     const aliases: Record<string, string> = { phenomics: "ai" };
     const sectionIds = tabs.map((b) => b.dataset.section!);
     const fromHash = () => {
       const hash = location.hash.slice(1);
       const id = aliases[hash] ?? hash;
-      if (sectionIds.includes(id)) showSection(id);
+      if (sectionIds.includes(id)) {
+        showSection(id);
+        return;
+      }
+      const target = hash ? document.getElementById(hash) : null;
+      const panel = target?.closest<HTMLElement>(".project-panel");
+      if (target && panel) {
+        showSection(panel.id.replace(/-section$/, ""));
+        target.scrollIntoView();
+      }
     };
     addEventListener("hashchange", fromHash);
     fromHash();
