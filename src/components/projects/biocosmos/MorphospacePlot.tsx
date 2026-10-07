@@ -4,6 +4,7 @@
 // the 6,424 species centroids are drawn on a canvas so transitions stay smooth.
 import * as Plot from "@observablehq/plot";
 import { useEffect, useRef, useState } from "preact/hooks";
+import ViewToggle from "./ViewToggle";
 import "./plots.css";
 
 type Row = [string, number, number | null, number | null, number | null, number | null];
@@ -22,6 +23,8 @@ const PALETTE_LIGHT = ["#1b9e77", "#d95f02", "#7570b3", "#e7298a", "#5d8a1a", "#
 const isDark = () => document.documentElement.classList.contains("dark");
 const DURATION = 1800; // slow, gentle transitions
 const RADIUS = 2.4;
+// Below this width the plot scrolls sideways rather than squeezing its x-axis.
+const MIN_WIDTH = 480;
 
 const MODES: { id: Mode; label: string }[] = [
   { id: "dorsal", label: "Dorsal" },
@@ -76,7 +79,8 @@ export default function MorphospacePlot() {
     };
   }, []);
 
-  const height = Math.round(Math.min(560, Math.max(320, width * 0.68)));
+  const plotWidth = Math.max(width, MIN_WIDTH);
+  const height = Math.round(Math.min(560, Math.max(320, plotWidth * 0.68)));
 
   // Target positions and opacities for a mode, in pixel space.
   function target(d: Data, m: Mode, fam: number | null): Frame {
@@ -110,7 +114,7 @@ export default function MorphospacePlot() {
     const dpr = window.devicePixelRatio || 1;
     const ctx = canvas.getContext("2d")!;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, width, height);
+    ctx.clearRect(0, 0, plotWidth, height);
     const fg = getComputedStyle(canvas).color;
 
     if (f.link > 0.01) {
@@ -179,7 +183,7 @@ export default function MorphospacePlot() {
     const ys = pts.map((p) => p[1]).filter((v): v is number => v !== null);
     const pad = (lo: number, hi: number) => [lo - (hi - lo) * 0.03, hi + (hi - lo) * 0.03];
     const plot = Plot.plot({
-      width,
+      width: plotWidth,
       height,
       marginLeft: 46,
       marginBottom: 38,
@@ -197,9 +201,9 @@ export default function MorphospacePlot() {
 
     const canvas = canvasRef.current;
     const dpr = window.devicePixelRatio || 1;
-    canvas.width = width * dpr;
+    canvas.width = plotWidth * dpr;
     canvas.height = height * dpr;
-    canvas.style.width = `${width}px`;
+    canvas.style.width = `${plotWidth}px`;
     canvas.style.height = `${height}px`;
 
     const t = target(data, mode, family);
@@ -254,54 +258,46 @@ export default function MorphospacePlot() {
   return (
     <div class="bc-plot">
       <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
-        <div class="inline-flex rounded-full border border-forest-900/15 p-1 dark:border-forest-100/15" role="group" aria-label="Wing surface">
-          {MODES.map((m) => (
-            <button
-              type="button"
-              aria-pressed={mode === m.id}
-              onClick={() => setMode(m.id)}
-              class={`rounded-full px-3 py-1 text-sm transition-colors duration-500 ${
-                mode === m.id
-                  ? "bg-forest-600 text-white dark:bg-forest-300 dark:text-forest-950"
-                  : "text-forest-800 hover:bg-forest-100 dark:text-forest-200 dark:hover:bg-forest-900"
-              }`}
-            >
-              {m.label}
-            </button>
-          ))}
-        </div>
+        <ViewToggle label="Wing surface" options={MODES} value={mode} onChange={setMode} />
         <p class="text-xs text-forest-700 dark:text-forest-300">
           {counts ? `${counts.dorsal.toLocaleString()} dorsal · ${counts.ventral.toLocaleString()} ventral species centroids` : "Loading…"}
           <span class="ml-2">● dorsal ○ ventral</span>
         </p>
       </div>
 
-      <div ref={wrapRef} class="relative w-full text-forest-900 dark:text-forest-100" style={{ height: `${height}px` }} onMouseMove={onMove} onMouseLeave={() => setTip(null)}>
-        <div ref={axesRef} class="absolute inset-0" aria-hidden="true" />
-        <canvas
-          ref={canvasRef}
-          class="absolute left-0 top-0"
-          role="img"
-          aria-label={`Scatter plot of butterfly species in a two-dimensional principal component space of image embeddings, colored by family.${
-            data
-              ? ` ${data.families
-                  .map((name, i) => {
-                    const rows = data.species.filter((sp) => sp[1] === i);
-                    return `${name}: ${rows.filter((sp) => sp[2] !== null).length} dorsal, ${rows.filter((sp) => sp[4] !== null).length} ventral species`;
-                  })
-                  .join("; ")}.`
-              : ""
-          }`}
-        />
-        {tip && (
-          <div
-            class="pointer-events-none absolute z-10 rounded-lg bg-white/95 px-2.5 py-1.5 text-xs shadow-md ring-1 ring-forest-900/10 dark:bg-forest-950/95 dark:ring-forest-100/10"
-            style={{ left: `${Math.min(tip.x + 12, width - 180)}px`, top: `${Math.max(tip.y - 44, 0)}px` }}
-          >
-            <div class="font-semibold italic">{tip.text}</div>
-            <div class="text-forest-700 dark:text-forest-300">{tip.sub}</div>
-          </div>
-        )}
+      <div ref={wrapRef} class="w-full overflow-x-auto">
+        <div
+          class="relative text-forest-900 dark:text-forest-100"
+          style={{ width: width ? `${plotWidth}px` : "100%", height: `${height}px` }}
+          onMouseMove={onMove}
+          onMouseLeave={() => setTip(null)}
+        >
+          <div ref={axesRef} class="absolute inset-0" aria-hidden="true" />
+          <canvas
+            ref={canvasRef}
+            class="absolute left-0 top-0"
+            role="img"
+            aria-label={`Scatter plot of butterfly species in a two-dimensional principal component space of image embeddings, colored by family.${
+              data
+                ? ` ${data.families
+                    .map((name, i) => {
+                      const rows = data.species.filter((sp) => sp[1] === i);
+                      return `${name}: ${rows.filter((sp) => sp[2] !== null).length} dorsal, ${rows.filter((sp) => sp[4] !== null).length} ventral species`;
+                    })
+                    .join("; ")}.`
+                : ""
+            }`}
+          />
+          {tip && (
+            <div
+              class="pointer-events-none absolute z-10 rounded-lg bg-white/95 px-2.5 py-1.5 text-xs shadow-md ring-1 ring-forest-900/10 dark:bg-forest-950/95 dark:ring-forest-100/10"
+              style={{ left: `${Math.min(tip.x + 12, plotWidth - 180)}px`, top: `${Math.max(tip.y - 44, 0)}px` }}
+            >
+              <div class="font-semibold italic">{tip.text}</div>
+              <div class="text-forest-700 dark:text-forest-300">{tip.sub}</div>
+            </div>
+          )}
+        </div>
       </div>
 
       {data && (

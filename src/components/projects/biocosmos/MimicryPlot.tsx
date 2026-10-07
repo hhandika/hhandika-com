@@ -7,6 +7,7 @@
 // permutation tests and plots.css animates them in.
 import * as Plot from "@observablehq/plot";
 import { useEffect, useRef, useState } from "preact/hooks";
+import ViewToggle from "./ViewToggle";
 import mimicry from "../../../data/biocosmos/mimicry.json";
 import "./plots.css";
 
@@ -28,6 +29,9 @@ const pos = (rank: number) =>
   ((Math.log10(rank) - Math.log10(DOMAIN[0])) /
     (Math.log10(DOMAIN[1]) - Math.log10(DOMAIN[0]))) *
   100;
+
+// Below this width both views scroll sideways rather than squeezing the rank axis.
+const MIN_WIDTH = 480;
 
 const short = (name: string) => name.replace(/^(\w)\w+ /, "$1. ");
 
@@ -60,7 +64,7 @@ export default function MimicryPlot() {
     const narrow = width < 560;
     const rows = mimicry.permutations.map((p) => ({ ...p, row: p.null }));
     const plot = Plot.plot({
-      width,
+      width: Math.max(width, MIN_WIDTH),
       height: 160,
       marginLeft: narrow ? 80 : 96,
       marginRight: narrow ? 64 : 80,
@@ -120,6 +124,7 @@ export default function MimicryPlot() {
     });
     plot.classList.add("bc-anim");
     plot.setAttribute("aria-hidden", "true");
+    plot.style.maxWidth = "none";
     plot
       .querySelectorAll('g[aria-label="link"] :is(path, line)')
       .forEach((el, i) => {
@@ -141,32 +146,15 @@ export default function MimicryPlot() {
   const random = mimicry.permutations.find((p) => p.null === "Random")!;
   const congeners = mimicry.permutations.find((p) => p.null === "Congeners")!;
 
-  const tabClasses = (active: boolean) =>
-    `rounded-full px-3 py-1 text-sm transition-colors duration-500 ${
-      active
-        ? "bg-forest-600 text-white dark:bg-forest-300 dark:text-forest-950"
-        : "text-forest-800 hover:bg-forest-100 dark:text-forest-200 dark:hover:bg-forest-900"
-    }`;
-
   return (
     <div class="bc-plot">
       <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
-        <div
-          class="inline-flex flex-wrap rounded-full border border-forest-900/15 p-1 dark:border-forest-100/15"
-          role="group"
-          aria-label="Mimicry view"
-        >
-          {VIEWS.map((v) => (
-            <button
-              type="button"
-              aria-pressed={view === v.id}
-              onClick={() => setView(v.id)}
-              class={tabClasses(view === v.id)}
-            >
-              {v.label}
-            </button>
-          ))}
-        </div>
+        <ViewToggle
+          label="Mimicry view"
+          options={VIEWS}
+          value={view}
+          onChange={setView}
+        />
       </div>
 
       {/* Keys stop Preact from reusing one div for both views, which would
@@ -181,184 +169,191 @@ export default function MimicryPlot() {
             </span>
           </p>
 
-          <ul
-            class="divide-y divide-forest-900/10 dark:divide-forest-100/10"
-            aria-label="Partner rank of each published mimicry pair"
-          >
-            {mimicry.pairs.map((p, i) => {
-              const isOpen = open === p.pair;
-              const hit = p.recovered;
-              return (
-                <li
-                  class={`transition-colors duration-700 ${hit ? "bg-amber-100/70 dark:bg-amber-400/10" : ""}`}
-                >
-                  <div class="grid grid-cols-[auto_1fr] items-center gap-x-3 gap-y-1 px-2 py-2 sm:grid-cols-[minmax(0,17rem)_1fr]">
-                    <button
-                      type="button"
-                      aria-expanded={isOpen}
-                      onClick={() => setOpen(isOpen ? null : p.pair)}
-                      class="col-span-2 flex items-center gap-2 rounded-lg text-left hover:bg-forest-900/5 dark:hover:bg-white/5 sm:col-span-1"
+          <div class="overflow-x-auto">
+            <div class="min-w-[30rem]">
+              <ul
+                class="divide-y divide-forest-900/10 dark:divide-forest-100/10"
+                aria-label="Partner rank of each published mimicry pair"
+              >
+                {mimicry.pairs.map((p, i) => {
+                  const isOpen = open === p.pair;
+                  const hit = p.recovered;
+                  return (
+                    <li
+                      class={`transition-colors duration-700 ${hit ? "bg-amber-100/70 dark:bg-amber-400/10" : ""}`}
                     >
-                      <span class="flex shrink-0">
-                        {[p.a, p.b].map((m) => (
-                          <img
-                            src={m.image}
-                            alt={`${m.accepted}, dorsal`}
-                            width={44}
-                            height={44}
-                            loading="lazy"
-                            class="h-11 w-11 object-contain"
-                          />
-                        ))}
-                      </span>
-                      <span
-                        class={`text-sm leading-tight ${hit ? "font-semibold" : ""}`}
-                      >
-                        <i>{short(p.a.published)}</i> –{" "}
-                        <i>{short(p.b.published)}</i>
-                        <span class="block text-xs font-normal text-forest-700 dark:text-forest-300">
-                          {p.type}
+                      <div class="grid grid-cols-[auto_1fr] items-center gap-x-3 gap-y-1 px-2 py-2 sm:grid-cols-[minmax(0,17rem)_1fr]">
+                        <button
+                          type="button"
+                          aria-expanded={isOpen}
+                          onClick={() => setOpen(isOpen ? null : p.pair)}
+                          class="col-span-2 flex items-center gap-2 rounded-lg text-left hover:bg-forest-900/5 dark:hover:bg-white/5 sm:col-span-1"
+                        >
+                          <span class="flex shrink-0">
+                            {[p.a, p.b].map((m) => (
+                              <img
+                                src={m.image}
+                                alt={`${m.accepted}, dorsal`}
+                                width={44}
+                                height={44}
+                                loading="lazy"
+                                class="h-11 w-11 object-contain"
+                              />
+                            ))}
+                          </span>
                           <span
-                            aria-hidden="true"
-                            class={`ml-1 inline-block transition-transform duration-300 ${isOpen ? "rotate-90" : ""}`}
+                            class={`text-sm leading-tight ${hit ? "font-semibold" : ""}`}
                           >
-                            ›
+                            <i>{short(p.a.published)}</i> –{" "}
+                            <i>{short(p.b.published)}</i>
+                            <span class="block text-xs font-normal text-forest-700 dark:text-forest-300">
+                              {p.type}
+                              <span
+                                aria-hidden="true"
+                                class={`ml-1 inline-block transition-transform duration-300 ${isOpen ? "rotate-90" : ""}`}
+                              >
+                                ›
+                              </span>
+                            </span>
                           </span>
-                        </span>
-                      </span>
-                    </button>
+                        </button>
 
-                    <div class="relative col-span-2 h-12 sm:col-span-1">
-                      <span
-                        class="absolute inset-y-0 border-l border-dashed border-moss-600/70 dark:border-moss-300/60"
-                        style={{ left: `${pos(10.5)}%` }}
-                        aria-hidden="true"
-                      />
-                      <span
-                        class="absolute inset-y-0 border-l border-dotted border-forest-900/30 dark:border-forest-100/30"
-                        style={{ left: `${pos(chance)}%` }}
-                        aria-hidden="true"
-                      />
-                      {p.ranks.map((r, k) => {
-                        const label = `${short(r.query)} → ${short(r.partner)}: rank ${r.rank.toLocaleString()} of ${species.toLocaleString()}`;
-                        return (
+                        <div class="relative col-span-2 h-12 sm:col-span-1">
                           <span
-                            class="absolute -ml-[6px] -mt-[6px] h-3 w-3 rounded-full border-2 transition-all duration-1000 ease-out motion-reduce:transition-none"
-                            style={{
-                              left: `${ready ? pos(r.rank) : 0}%`,
-                              top: "50%",
-                              borderColor: COLOR,
-                              background:
-                                r.direction === "A→B" ? COLOR : "transparent",
-                              opacity: ready ? 1 : 0,
-                              transitionDelay: ready
-                                ? `${i * 60 + k * 30}ms`
-                                : "0ms",
-                            }}
-                            role="img"
-                            aria-label={label}
-                            title={`${label}${r.siteListed ? ", listed on the species page" : ""}`}
+                            class="absolute inset-y-0 border-l border-dashed border-moss-600/70 dark:border-moss-300/60"
+                            style={{ left: `${pos(10.5)}%` }}
+                            aria-hidden="true"
                           />
-                        );
-                      })}
-                    </div>
-                  </div>
+                          <span
+                            class="absolute inset-y-0 border-l border-dotted border-forest-900/30 dark:border-forest-100/30"
+                            style={{ left: `${pos(chance)}%` }}
+                            aria-hidden="true"
+                          />
+                          {p.ranks.map((r, k) => {
+                            const label = `${short(r.query)} → ${short(r.partner)}: rank ${r.rank.toLocaleString()} of ${species.toLocaleString()}`;
+                            return (
+                              <span
+                                class="absolute -ml-[6px] -mt-[6px] h-3 w-3 rounded-full border-2 transition-all duration-1000 ease-out motion-reduce:transition-none"
+                                style={{
+                                  left: `${ready ? pos(r.rank) : 0}%`,
+                                  top: "50%",
+                                  borderColor: COLOR,
+                                  background:
+                                    r.direction === "A→B"
+                                      ? COLOR
+                                      : "transparent",
+                                  opacity: ready ? 1 : 0,
+                                  transitionDelay: ready
+                                    ? `${i * 60 + k * 30}ms`
+                                    : "0ms",
+                                }}
+                                role="img"
+                                aria-label={label}
+                                title={`${label}${r.siteListed ? ", listed on the species page" : ""}`}
+                              />
+                            );
+                          })}
+                        </div>
+                      </div>
 
-                  {isOpen && (
-                    <div class="mx-2 mb-3 rounded-xl bg-white/80 p-3 text-xs text-forest-800 ring-1 ring-forest-900/10 dark:bg-forest-950/60 dark:text-forest-200 dark:ring-forest-100/10">
-                      <p>{p.notes}</p>
-                      <table class="mt-1.5 tabular-nums">
-                        <caption class="sr-only">
-                          Partner ranks for {p.pair}
-                        </caption>
-                        <thead>
-                          <tr>
-                            <th
-                              scope="col"
-                              class="pr-3 text-left font-semibold"
-                            >
-                              Query → partner
-                            </th>
-                            <th
-                              scope="col"
-                              class="pr-3 text-right font-semibold"
-                            >
-                              Rank
-                            </th>
-                            <th scope="col" class="text-left font-semibold">
-                              On species page
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {p.ranks.map((r) => (
-                            <tr>
-                              <td class="pr-3">
-                                <i>{short(r.query)}</i> →{" "}
-                                <i>{short(r.partner)}</i>
-                              </td>
-                              <td class="pr-3 text-right">
-                                {r.rank.toLocaleString()}
-                              </td>
-                              <td>{r.siteListed ? "yes" : "no"}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                      <p class="mt-1.5">
-                        {[p.a, p.b].map((m, j) => (
-                          <span>
-                            {j > 0 && " · "}
-                            <i>{m.accepted}</i>
-                            {m.accepted !== m.published && (
+                      {isOpen && (
+                        <div class="mx-2 mb-3 rounded-xl bg-white/80 p-3 text-xs text-forest-800 ring-1 ring-forest-900/10 dark:bg-forest-950/60 dark:text-forest-200 dark:ring-forest-100/10">
+                          <p>{p.notes}</p>
+                          <table class="mt-1.5 tabular-nums">
+                            <caption class="sr-only">
+                              Partner ranks for {p.pair}
+                            </caption>
+                            <thead>
+                              <tr>
+                                <th
+                                  scope="col"
+                                  class="pr-3 text-left font-semibold"
+                                >
+                                  Query → partner
+                                </th>
+                                <th
+                                  scope="col"
+                                  class="pr-3 text-right font-semibold"
+                                >
+                                  Rank
+                                </th>
+                                <th scope="col" class="text-left font-semibold">
+                                  On species page
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {p.ranks.map((r) => (
+                                <tr>
+                                  <td class="pr-3">
+                                    <i>{short(r.query)}</i> →{" "}
+                                    <i>{short(r.partner)}</i>
+                                  </td>
+                                  <td class="pr-3 text-right">
+                                    {r.rank.toLocaleString()}
+                                  </td>
+                                  <td>{r.siteListed ? "yes" : "no"}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                          <p class="mt-1.5">
+                            {[p.a, p.b].map((m, j) => (
+                              <span>
+                                {j > 0 && " · "}
+                                <i>{m.accepted}</i>
+                                {m.accepted !== m.published && (
+                                  <>
+                                    {" "}
+                                    (published as <i>{m.published}</i>)
+                                  </>
+                                )}
+                                : {m.dorsalImages.toLocaleString()} dorsal
+                                images
+                              </span>
+                            ))}
+                          </p>
+                          <p class="mt-1.5">
+                            {p.references}
+                            {": "}
+                            {p.dois.map((d, j) => (
                               <>
-                                {" "}
-                                (published as <i>{m.published}</i>)
+                                {j > 0 && ", "}
+                                <a
+                                  href={`https://doi.org/${d}`}
+                                  class="break-all font-mono text-moss-700 underline decoration-moss-400/50 hover:decoration-moss-500 dark:text-moss-300"
+                                >
+                                  {d}
+                                </a>
                               </>
-                            )}
-                            : {m.dorsalImages.toLocaleString()} dorsal images
-                          </span>
-                        ))}
-                      </p>
-                      <p class="mt-1.5">
-                        {p.references}
-                        {": "}
-                        {p.dois.map((d, j) => (
-                          <>
-                            {j > 0 && ", "}
-                            <a
-                              href={`https://doi.org/${d}`}
-                              class="break-all font-mono text-moss-700 underline decoration-moss-400/50 hover:decoration-moss-500 dark:text-moss-300"
-                            >
-                              {d}
-                            </a>
-                          </>
-                        ))}
-                      </p>
-                    </div>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
+                            ))}
+                          </p>
+                        </div>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
 
-          <div
-            class="grid grid-cols-[auto_1fr] gap-x-3 px-2 sm:grid-cols-[minmax(0,17rem)_1fr]"
-            aria-hidden="true"
-          >
-            <span class="hidden sm:block" />
-            <div class="relative col-span-2 h-9 border-t border-forest-900/20 text-[0.7rem] text-forest-700 dark:border-forest-100/20 dark:text-forest-300 sm:col-span-1">
-              {TICKS.map((t) => (
-                <span
-                  class="absolute top-1 -translate-x-1/2"
-                  style={{ left: `${pos(t)}%` }}
-                >
-                  {t >= 1000 ? `${t / 1000}k` : t}
-                </span>
-              ))}
-              <span class="absolute bottom-0 right-0">
-                Partner rank among all species (log) →
-              </span>
+              <div
+                class="grid grid-cols-[auto_1fr] gap-x-3 px-2 sm:grid-cols-[minmax(0,17rem)_1fr]"
+                aria-hidden="true"
+              >
+                <span class="hidden sm:block" />
+                <div class="relative col-span-2 h-9 border-t border-forest-900/20 text-[0.7rem] text-forest-700 dark:border-forest-100/20 dark:text-forest-300 sm:col-span-1">
+                  {TICKS.map((t) => (
+                    <span
+                      class="absolute top-1 -translate-x-1/2"
+                      style={{ left: `${pos(t)}%` }}
+                    >
+                      {t >= 1000 ? `${t / 1000}k` : t}
+                    </span>
+                  ))}
+                  <span class="absolute bottom-0 right-0">
+                    Partner rank among all species (log) →
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -366,7 +361,7 @@ export default function MimicryPlot() {
         <div
           key="tests"
           ref={testsRef}
-          class="w-full text-forest-900 dark:text-forest-100"
+          class="w-full overflow-x-auto text-forest-900 dark:text-forest-100"
           role="img"
           aria-label={`Permutation tests on dorsal wings. ${mimicry.permutations.map((p) => `${p.null} null: observed mean partner percentile ${p.observed.toFixed(3)}, null mean ${p.mean.toFixed(2)} (95% ${p.low.toFixed(2)} to ${p.high.toFixed(2)})`).join("; ")}. All p ≤ 0.0001.`}
         />

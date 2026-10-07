@@ -4,6 +4,7 @@
 // repeats. Observable Plot renders each view; CSS in plots.css animates it in.
 import * as Plot from "@observablehq/plot";
 import { useEffect, useRef, useState } from "preact/hooks";
+import ViewToggle from "./ViewToggle";
 import planner from "../../../data/biocosmos/planner.json";
 import "./plots.css";
 
@@ -13,6 +14,9 @@ const VIEWS: { id: View; label: string }[] = [
   { id: "speed", label: "Speed vs accuracy" },
   { id: "cases", label: "By query type" },
 ];
+
+// Below this width the scatter plot scrolls sideways rather than squeezing its x-axis.
+const MIN_SCATTER_WIDTH = 480;
 
 const PROD = "#688a2c"; // moss-600
 const OTHER = "#8199a2"; // mist-400
@@ -66,7 +70,7 @@ export default function PlannerPlot() {
       });
     } else if (view === "speed") {
       plot = Plot.plot({
-        width,
+        width: Math.max(width, MIN_SCATTER_WIDTH),
         height: 320,
         marginLeft: 48,
         marginRight: 24,
@@ -140,8 +144,8 @@ export default function PlannerPlot() {
     plot.classList.add("bc-anim", `bc-${view}`);
     // The container carries the accessible name; the table below has the values.
     plot.setAttribute("aria-hidden", "true");
-    // Keep the heatmap readable on phones: scroll sideways instead of shrinking.
-    if (view === "cases") plot.style.maxWidth = "none";
+    // Keep the heatmap and scatter plot readable on phones: scroll sideways instead of shrinking.
+    if (view !== "accuracy") plot.style.maxWidth = "none";
     // Stagger the entrance: bars and dots by row, heatmap cells by column.
     const stagger = (mark: string, sel: string, delay: (i: number) => number) =>
       plot
@@ -169,22 +173,7 @@ export default function PlannerPlot() {
   return (
     <div class="bc-plot">
       <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
-        <div class="inline-flex flex-wrap rounded-full border border-forest-900/15 p-1 dark:border-forest-100/15" role="group" aria-label="Benchmark view">
-          {VIEWS.map((v) => (
-            <button
-              type="button"
-              aria-pressed={view === v.id}
-              onClick={() => setView(v.id)}
-              class={`rounded-full px-3 py-1 text-sm transition-colors duration-500 ${
-                view === v.id
-                  ? "bg-forest-600 text-white dark:bg-forest-300 dark:text-forest-950"
-                  : "text-forest-800 hover:bg-forest-100 dark:text-forest-200 dark:hover:bg-forest-900"
-              }`}
-            >
-              {v.label}
-            </button>
-          ))}
-        </div>
+        <ViewToggle label="Benchmark view" options={VIEWS} value={view} onChange={setView} />
         <p class="flex items-center gap-3 text-xs text-forest-700 dark:text-forest-300">
           <span class="inline-flex items-center gap-1"><span class="h-2.5 w-2.5 rounded-full" style={{ background: PROD }} /> in production</span>
           <span class="inline-flex items-center gap-1"><span class="h-2.5 w-2.5 rounded-full" style={{ background: OTHER }} /> evaluated</span>

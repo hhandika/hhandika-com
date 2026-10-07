@@ -4,6 +4,7 @@
 // Observable Plot renders each view; CSS in plots.css animates it in.
 import * as Plot from "@observablehq/plot";
 import { useEffect, useRef, useState } from "preact/hooks";
+import ViewToggle from "../biocosmos/ViewToggle";
 import bench from "../../../data/segul/bench.json";
 import "../biocosmos/plots.css";
 
@@ -47,6 +48,9 @@ const short = (task: string) => task.replace(/^Alignment /, "");
 const fmtTime = (s: number) => `${s < 10 ? s.toFixed(2) : s < 100 ? s.toFixed(1) : Math.round(s)} s`;
 const fmtRam = (mb: number) => (mb >= 1000 ? `${(mb / 1000).toFixed(1)} GB` : `${Math.round(mb)} MB`);
 const datasetInfo = (id: string) => bench.datasets.find((d) => d.id === id)!;
+
+// Below this width the scatter plot scrolls sideways rather than squeezing its x-axis.
+const MIN_SCATTER_WIDTH = 480;
 
 const logTicks = (lo: number, hi: number, steps: number[]) => {
   const out: number[] = [];
@@ -119,7 +123,7 @@ export default function SegulBenchPlot() {
       const hi = Math.max(...points.map((r) => r.cpu!)) * 1.4;
       const decade = 10 ** Math.floor(Math.log10(lo));
       plot = Plot.plot({
-        width,
+        width: Math.max(width, MIN_SCATTER_WIDTH),
         height: narrow ? 340 : 400,
         marginLeft: 52,
         marginRight: 16,
@@ -167,9 +171,11 @@ export default function SegulBenchPlot() {
       const hi = 10 ** Math.ceil(Math.log10(Math.max(...values) * 1.6));
       plot = Plot.plot({
         width,
-        height: bars.length * (narrow ? 38 : 30) + 40,
+        height: bars.length * (narrow ? 38 : 30) + 50,
         marginLeft: narrow ? 118 : 200,
         marginRight: 16,
+        // Room for the axis label below the tick labels, so they don't overlap.
+        marginBottom: 40,
         style,
         x: {
           type: "log",
@@ -214,9 +220,10 @@ export default function SegulBenchPlot() {
       const tasks = bench.tasks.map(short);
       plot = Plot.plot({
         width,
-        height: tasks.length * PLATFORMS.length * (narrow ? 20 : 18) + tasks.length * 14 + 40,
-        marginLeft: narrow ? 92 : 110,
+        height: tasks.length * PLATFORMS.length * (narrow ? 20 : 18) + tasks.length * 14 + 50,
+        marginLeft: narrow ? 96 : 124,
         marginRight: 56,
+        marginBottom: 40,
         style,
         x: {
           grid: true,
@@ -230,6 +237,8 @@ export default function SegulBenchPlot() {
           range: PLATFORMS.map((p) => p.color),
         },
         marks: [
+          // Wrap "Sequence Removal" onto two lines on phones so it fits the margin.
+          Plot.axisFy({ anchor: "left", lineWidth: narrow ? 7 : 20, label: null }),
           Plot.barX(mobile, {
             x: "time",
             y: "platform",
@@ -254,6 +263,8 @@ export default function SegulBenchPlot() {
     }
 
     plot.classList.add("bc-anim", `sb-${view}`);
+    // Let the scatter plot keep its minimum width; the container scrolls.
+    if (view === "cpu") plot.style.maxWidth = "none";
     // The container carries the accessible name with every value.
     plot.setAttribute("aria-hidden", "true");
     const stagger = (mark: string, sel: string, delay: (i: number) => number) =>
@@ -319,26 +330,7 @@ export default function SegulBenchPlot() {
   return (
     <div class="bc-plot">
       <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
-        <div
-          class="inline-flex flex-wrap rounded-full border border-forest-900/15 p-1 dark:border-forest-100/15"
-          role="group"
-          aria-label="Benchmark view"
-        >
-          {VIEWS.map((v) => (
-            <button
-              type="button"
-              aria-pressed={view === v.id}
-              onClick={() => setView(v.id)}
-              class={`rounded-full px-3 py-1 text-sm transition-colors duration-500 ${
-                view === v.id
-                  ? "bg-forest-600 text-white dark:bg-forest-300 dark:text-forest-950"
-                  : "text-forest-800 hover:bg-forest-100 dark:text-forest-200 dark:hover:bg-forest-900"
-              }`}
-            >
-              {v.label}
-            </button>
-          ))}
-        </div>
+        <ViewToggle label="Benchmark view" options={VIEWS} value={view} onChange={setView} />
         <p class="flex flex-wrap items-center gap-3 text-xs text-forest-700 dark:text-forest-300">
           {legend.map((l) => (
             <span class="inline-flex items-center gap-1">
