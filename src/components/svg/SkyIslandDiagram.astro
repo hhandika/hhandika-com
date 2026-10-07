@@ -23,11 +23,16 @@ const mountainsRaw = [
   { name: "Latimojong", lat: -3.420665, lon: 120.094371, h: 3478 },
 ];
 
-const km = (a: { lat: number; lon: number }, b: { lat: number; lon: number }) => {
+const km = (
+  a: { lat: number; lon: number },
+  b: { lat: number; lon: number },
+) => {
   const r = Math.PI / 180;
   const s =
     Math.sin(((b.lat - a.lat) * r) / 2) ** 2 +
-    Math.cos(a.lat * r) * Math.cos(b.lat * r) * Math.sin(((b.lon - a.lon) * r) / 2) ** 2;
+    Math.cos(a.lat * r) *
+      Math.cos(b.lat * r) *
+      Math.sin(((b.lon - a.lon) * r) / 2) ** 2;
   return 6371 * 2 * Math.asin(Math.sqrt(s));
 };
 
@@ -52,13 +57,19 @@ const xs = mountainsRaw.map((_, i) => {
 // `reach` px, meeting the neighbouring flank midway when summits are close.
 const mountains = mountainsRaw.map((m, i) => {
   const montane = elevation.taxa
-    .filter((t) => t.group === "Montane" && t.records.some((r) => r.locality === m.name))
+    .filter(
+      (t) =>
+        t.group === "Montane" && t.records.some((r) => r.locality === m.name),
+    )
     .map((t) => t.label);
   const reach = 55 + m.h * 0.03;
   const flank = (j: number) =>
     j < 0 || j >= xs.length
       ? { d: reach, f: FLOOR }
-      : { d: Math.min(reach, Math.abs(xs[j] - xs[i]) / 2), f: valleys[Math.min(i, j)] };
+      : {
+          d: Math.min(reach, Math.abs(xs[j] - xs[i]) / 2),
+          f: valleys[Math.min(i, j)],
+        };
   return { ...m, x: xs[i], left: flank(i - 1), right: flank(i + 1), montane };
 });
 
@@ -71,7 +82,8 @@ const y = (m: number) => GROUND - m * PER_M;
 // between flanks the ground sits on the valley floor. Small roughness.
 const SHAPE = 1.35;
 const floorAt = (x: number) => {
-  for (let i = 0; i < xs.length - 1; i++) if (x > xs[i] && x < xs[i + 1]) return valleys[i];
+  for (let i = 0; i < xs.length - 1; i++)
+    if (x > xs[i] && x < xs[i + 1]) return valleys[i];
   return FLOOR;
 };
 const elevAt = (x: number) =>
@@ -83,7 +95,8 @@ const elevAt = (x: number) =>
       return t >= 1 ? 0 : f + (m.h - f) * (1 - t) ** SHAPE;
     }),
   );
-const rough = (x: number) => 25 * Math.sin(x * 0.37) + 18 * Math.sin(x * 0.91 + 1.3);
+const rough = (x: number) =>
+  25 * Math.sin(x * 0.37) + 18 * Math.sin(x * 0.91 + 1.3);
 const pts: string[] = [];
 for (let x = 40; x <= W - 40; x += 2) {
   const e = elevAt(x);
@@ -96,7 +109,13 @@ const rand = (i: number, seed: number) =>
   Math.abs(Math.sin((i + 1) * 12.9898 * seed) * 43758.5453) % 1;
 
 // Scatter n dots on mountain m within an elevation band, inside the cone.
-const scatter = (m: (typeof mountains)[number], n: number, lo: number, hi: number, seed: number) => {
+const scatter = (
+  m: (typeof mountains)[number],
+  n: number,
+  lo: number,
+  hi: number,
+  seed: number,
+) => {
   const top = Math.min(hi, m.h - 150);
   const bottom = Math.max(lo, Math.min(m.left.f, m.right.f) + 100);
   return Array.from({ length: n }, (_, i) => {
@@ -105,7 +124,8 @@ const scatter = (m: (typeof mountains)[number], n: number, lo: number, hi: numbe
     let side = rand(i, seed * 2.3 + 0.1) < 0.5 ? m.left : m.right;
     if (e < side.f + 100) side = side === m.left ? m.right : m.left;
     const sign = side === m.left ? -1 : 1;
-    const half = side.d * (1 - ((e - side.f) / (m.h - side.f)) ** (1 / SHAPE)) * 0.8;
+    const half =
+      side.d * (1 - ((e - side.f) / (m.h - side.f)) ** (1 / SHAPE)) * 0.8;
     return { x: m.x + sign * rand(i, seed * 1.9 + 0.7) * half, y: y(e) };
   });
 };
@@ -121,11 +141,15 @@ const lineages = [
 ].map((l) => ({ ...l, taxon: taxon(l.label) }));
 
 // Spell out each genus at its first mention in the legend.
-const genera: Record<string, string> = { "B.": "Bunomys", "E.": "Eropeplus", "T.": "Taeromys" };
+const genera: Record<string, string> = {
+  "B.": "Bunomys",
+  "E.": "Eropeplus",
+  "T.": "Taeromys",
+};
 const seen = new Set(["T."]);
 const legendName = (label: string) => {
   const [g, ...rest] = label.split(" ");
-  const full = seen.has(g) ? g : genera[g] ?? g;
+  const full = seen.has(g) ? g : (genera[g] ?? g);
   seen.add(g);
   return { binomial: `${full} ${rest[0]}`, suffix: rest.slice(1).join(" ") };
 };
@@ -154,15 +178,21 @@ mountains.forEach((m, mi) => {
 const bb = sulawesi.bbox;
 const INSET = { x: 330, y: 8, w: 118 };
 const insetH = (INSET.w * sulawesi.image.height) / sulawesi.image.width;
-const ix = (lon: number) => INSET.x + ((lon - bb.xmin) / (bb.xmax - bb.xmin)) * INSET.w;
-const iy = (lat: number) => INSET.y + ((bb.ymax - lat) / (bb.ymax - bb.ymin)) * insetH;
+const ix = (lon: number) =>
+  INSET.x + ((lon - bb.xmin) / (bb.xmax - bb.xmin)) * INSET.w;
+const iy = (lat: number) =>
+  INSET.y + ((bb.ymax - lat) / (bb.ymax - bb.ymin)) * insetH;
 
 const ticks = [1000, 2000, 3000];
 const yThreshold = y(elevation.threshold);
 ---
 
 <figure class="sky-island">
-  <div class="sky-scroll -mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0" tabindex="0" aria-label="Mountain profile, scrolls horizontally">
+  <div
+    class="sky-scroll -mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0"
+    tabindex="0"
+    aria-label="Mountain profile, scrolls horizontally"
+  >
     <svg
       viewBox={`0 0 ${W} 360`}
       class="h-auto w-full min-w-[760px]"
@@ -172,55 +202,110 @@ const yThreshold = y(elevation.threshold);
       <title id="sky-title">Four sky islands in Sulawesi's central core</title>
       <desc id="sky-desc">
         A schematic north–south profile through Rorekatimbo, Torompupu,
-        Gandangdewata, and Latimojong, spaced by their real distances
-        ({gaps.map((g) => `${Math.round(g)} km`).join(", ")}). Taeromys dominator
-        occurs on all four mountains. Above 1,000 m, montane lineages are
-        confined to one or two summits: Eropeplus canus has a different haplogroup on
-        Rorekatimbo and Torompupu but shares one between Gandangdewata and
-        Latimojong; Bunomys torajae differs between Gandangdewata and
-        Latimojong; Bunomys penitus WC-B is shared by Rorekatimbo and Torompupu.
+        Gandangdewata, and Latimojong, spaced by their real distances ({
+          gaps.map((g) => `${Math.round(g)} km`).join(", ")
+        }). Taeromys dominator occurs on all four mountains. Above 1,000 m,
+        montane lineages are confined to one or two summits: Eropeplus canus has
+        a different haplogroup on Rorekatimbo and Torompupu but shares one
+        between Gandangdewata and Latimojong; Bunomys torajae differs between
+        Gandangdewata and Latimojong; Bunomys penitus WC-B is shared by
+        Rorekatimbo and Torompupu.
       </desc>
       <defs>
-        <clipPath id="terrain-clip"><path d={terrain} /></clipPath>
+        <clipPath id="terrain-clip"><path d={terrain}></path></clipPath>
       </defs>
 
       <!-- elevation axis -->
       {
         ticks.map((m) => (
           <g class="fill-forest-700 dark:fill-forest-300">
-            <line x1="40" x2={W - 40} y1={y(m)} y2={y(m)} class="stroke-forest-900/10 dark:stroke-forest-100/10" stroke-width="1" />
-            <text x="4" y={y(m) + 4} font-size="11">{fmt(m)} m</text>
+            <line
+              x1="40"
+              x2={W - 40}
+              y1={y(m)}
+              y2={y(m)}
+              class="stroke-forest-900/10 dark:stroke-forest-100/10"
+              stroke-width="1"
+            />
+            <text x="4" y={y(m) + 4} font-size="11">
+              {fmt(m)} m
+            </text>
           </g>
         ))
       }
 
       <!-- locator inset -->
       <g aria-hidden="true">
-        <image href={relief.src} x={INSET.x} y={INSET.y} width={INSET.w} height={insetH} opacity="0.9" />
+        <image
+          href={relief.src}
+          x={INSET.x}
+          y={INSET.y}
+          width={INSET.w}
+          height={insetH}
+          opacity="0.9"
+        />
         <polyline
-          points={mountains.map((m) => `${ix(m.lon).toFixed(1)},${iy(m.lat).toFixed(1)}`).join(" ")}
+          points={mountains
+            .map((m) => `${ix(m.lon).toFixed(1)},${iy(m.lat).toFixed(1)}`)
+            .join(" ")}
           fill="none"
           stroke="#c95d10"
           stroke-width="1.5"
-          stroke-dasharray="3 2"
-        />
-        {mountains.map((m) => <circle cx={ix(m.lon)} cy={iy(m.lat)} r="2.6" fill="#c95d10" stroke="#fff" stroke-width="0.8" />)}
-        <text x={INSET.x + INSET.w + 6} y={INSET.y + 58} font-size="10.5" class="fill-forest-700 dark:fill-forest-300">
+          stroke-dasharray="3 2"></polyline>
+        {
+          mountains.map((m) => (
+            <circle
+              cx={ix(m.lon)}
+              cy={iy(m.lat)}
+              r="2.6"
+              fill="#c95d10"
+              stroke="#fff"
+              stroke-width="0.8"
+            />
+          ))
+        }
+        <text
+          x={INSET.x + INSET.w + 6}
+          y={INSET.y + 58}
+          font-size="10.5"
+          class="fill-forest-700 dark:fill-forest-300"
+        >
           <tspan x={INSET.x + INSET.w + 6}>Profile line through</tspan>
           <tspan x={INSET.x + INSET.w + 6} dy="13">the central core</tspan>
         </text>
       </g>
 
       <!-- terrain, darker above the lowland–montane threshold -->
-      <path d={terrain} class="fill-forest-500 dark:fill-forest-600" />
+      <path d={terrain} class="fill-forest-500 dark:fill-forest-600"></path>
       <g clip-path="url(#terrain-clip)">
-        <rect x="0" y="0" width={W} height={yThreshold} class="fill-forest-800 dark:fill-forest-900" />
-        <rect x="0" y="0" width={W} height={y(2500)} class="fill-moss-800/70" />
+        <rect
+          x="0"
+          y="0"
+          width={W}
+          height={yThreshold}
+          class="fill-forest-800 dark:fill-forest-900"></rect>
+        <rect x="0" y="0" width={W} height={y(2500)} class="fill-moss-800/70"
+        ></rect>
       </g>
 
       <!-- threshold -->
-      <line x1="40" x2={W - 40} y1={yThreshold} y2={yThreshold} stroke="#e9edd6" stroke-width="1.5" stroke-dasharray="6 6" opacity="0.85" />
-      <text x={(mountains[1].x + mountains[2].x) / 2} y={yThreshold - 8} text-anchor="middle" font-size="11" font-weight="600" class="fill-forest-800 dark:fill-forest-100">
+      <line
+        x1="40"
+        x2={W - 40}
+        y1={yThreshold}
+        y2={yThreshold}
+        stroke="#e9edd6"
+        stroke-width="1.5"
+        stroke-dasharray="6 6"
+        opacity="0.85"></line>
+      <text
+        x={(mountains[1].x + mountains[2].x) / 2}
+        y={yThreshold - 8}
+        text-anchor="middle"
+        font-size="11"
+        font-weight="600"
+        class="fill-forest-800 dark:fill-forest-100"
+      >
         {fmt(elevation.threshold)} m: lowland | montane
       </text>
 
@@ -228,13 +313,29 @@ const yThreshold = y(elevation.threshold);
       {
         mountains.map((m) => (
           <g text-anchor="middle">
-            <text x={m.x} y={y(m.h) - 34} font-size="12.5" font-weight="700" class="fill-forest-900 dark:fill-forest-50">
+            <text
+              x={m.x}
+              y={y(m.h) - 34}
+              font-size="12.5"
+              font-weight="700"
+              class="fill-forest-900 dark:fill-forest-50"
+            >
               {m.name}
             </text>
-            <text x={m.x} y={y(m.h) - 21} font-size="10.5" class="fill-forest-700 dark:fill-forest-300">
+            <text
+              x={m.x}
+              y={y(m.h) - 21}
+              font-size="10.5"
+              class="fill-forest-700 dark:fill-forest-300"
+            >
               {fmt(m.h)} m
             </text>
-            <text x={m.x} y={y(m.h) - 8} font-size="10.5" class="fill-forest-700 dark:fill-forest-300">
+            <text
+              x={m.x}
+              y={y(m.h) - 8}
+              font-size="10.5"
+              class="fill-forest-700 dark:fill-forest-300"
+            >
               {m.montane.length} montane taxa
             </text>
           </g>
@@ -242,7 +343,16 @@ const yThreshold = y(elevation.threshold);
       }
 
       <!-- populations -->
-      {wideDots.map((d) => <circle cx={d.x.toFixed(1)} cy={d.y.toFixed(1)} r="3.6" class="dot-wide" />)}
+      {
+        wideDots.map((d) => (
+          <circle
+            cx={d.x.toFixed(1)}
+            cy={d.y.toFixed(1)}
+            r="3.6"
+            class="dot-wide"
+          />
+        ))
+      }
       {
         montaneDots.map((d) => (
           <circle
@@ -259,7 +369,14 @@ const yThreshold = y(elevation.threshold);
       {
         valleys.map((f, i) =>
           valleyKnown[i] ? (
-            <text x={(xs[i] + xs[i + 1]) / 2} y={y(f) + 16} text-anchor="middle" font-size="10.5" font-weight="600" class="fill-forest-50">
+            <text
+              x={(xs[i] + xs[i + 1]) / 2}
+              y={y(f) + 16}
+              text-anchor="middle"
+              font-size="10.5"
+              font-weight="600"
+              class="fill-forest-50"
+            >
               ~{fmt(f)} m
             </text>
           ) : null,
@@ -276,7 +393,14 @@ const yThreshold = y(elevation.threshold);
               <line x1={a} x2={b} y1="326" y2="326" stroke-width="1" />
               <line x1={a} x2={a} y1="321" y2="331" stroke-width="1" />
               <line x1={b} x2={b} y1="321" y2="331" stroke-width="1" />
-              <text x={(a + b) / 2} y="346" text-anchor="middle" font-size="11.5" font-weight="600" stroke="none">
+              <text
+                x={(a + b) / 2}
+                y="346"
+                text-anchor="middle"
+                font-size="11.5"
+                font-weight="600"
+                stroke="none"
+              >
                 {Math.round(gaps[i])} km
               </text>
             </g>
@@ -285,54 +409,85 @@ const yThreshold = y(elevation.threshold);
       }
     </svg>
   </div>
-  <p class="mt-1 text-right text-xs text-forest-600 sm:hidden dark:text-forest-400">Swipe to explore →</p>
+  <p
+    class="mt-1 text-right text-xs text-forest-600 sm:hidden dark:text-forest-400"
+  >
+    Swipe to explore →
+  </p>
 
   <figcaption class="mt-3 text-sm text-forest-800 dark:text-forest-200">
     <ul class="grid gap-x-4 gap-y-1.5 sm:grid-cols-2 lg:grid-cols-3">
       <li class="flex items-center gap-2">
-        <span class="inline-block h-2.5 w-2.5 shrink-0 rounded-full" style={`background:${SHARED}`}></span>
-        <span><i>Taeromys dominator</i>, widespread ({fmt(wide.min)}–{fmt(wide.max)} m), on all four</span>
+        <span
+          class="inline-block h-2.5 w-2.5 shrink-0 rounded-full"
+          style={`background:${SHARED}`}></span>
+        <span
+          ><i>Taeromys dominator</i>, widespread ({fmt(wide.min)}–{
+            fmt(wide.max)
+          } m), on all four</span
+        >
       </li>
       {
         legend.map((l) => (
           <li class="flex items-center gap-2">
-            <span class="inline-block h-2.5 w-2.5 shrink-0 rounded-full" style={`background:${l.color};box-shadow:0 0 0 1px rgb(14 26 18 / 0.25)`} />
+            <span
+              class="inline-block h-2.5 w-2.5 shrink-0 rounded-full"
+              style={`background:${l.color};box-shadow:0 0 0 1px rgb(14 26 18 / 0.25)`}
+            />
             <span>
               <i>{l.name.binomial}</i> {l.name.suffix}
               <span class="opacity-70">
-                · {[...new Set(l.taxon.records.map((r) => r.locality))].join(", ")}
+                ·{" "}
+                {[...new Set(l.taxon.records.map((r) => r.locality))].join(
+                  ", ",
+                )}
               </span>
             </span>
           </li>
         ))
       }
       <li class="flex items-center gap-2">
-        <span class="inline-block h-2.5 w-2.5 shrink-0 rounded-full" style={`background:${OTHER}`}></span>
+        <span
+          class="inline-block h-2.5 w-2.5 shrink-0 rounded-full"
+          style={`background:${OTHER}`}></span>
         <span>Other montane taxa</span>
       </li>
     </ul>
     <p class="mt-3 text-pretty text-forest-700 dark:text-forest-300">
-      Distance alone does not predict who is shared. Rorekatimbo and Torompupu,
-      {Math.round(gaps[0])} km apart, hold different <i>E. canus</i> haplogroups
-      yet share <i>B. penitus</i> WC-B; Gandangdewata and Latimojong,
-      {Math.round(gaps[2])} km apart, share an <i>E. canus</i> haplogroup but not
-      <i> B. torajae</i>. Schematic profile; peaks drawn to true summit heights.
+      Distance alone does not predict shared ancestry. Rorekatimbo and
+      Torompupu,
+      {Math.round(gaps[0])} km apart, have different <i>E. canus</i> haplogroups yet
+      share <i>B. penitus</i> WC-B. Mts. Gandangdewata and Latimojong,
+      {Math.round(gaps[2])} km apart, on the other hand, share an <i>E. canus</i
+      > haplogroup but not
+      <i> B. torajae</i>. The peaks in the schematic profile are drawn according
+      to their present-day summit heights.
     </p>
   </figcaption>
 </figure>
 
 <style>
-  .sky-scroll { scrollbar-width: thin; }
-  .dot-wide { fill: #f5a028; stroke: #3b2a10; stroke-width: 0.6; }
+  .sky-scroll {
+    scrollbar-width: thin;
+  }
+  .dot-wide {
+    fill: #f5a028;
+    stroke: #3b2a10;
+    stroke-width: 0.6;
+  }
   .dot-peak {
     fill: #a9bcc2;
     stroke: #1c2b21;
     stroke-width: 0.6;
     transition: fill 1.2s ease;
   }
-  .sky-island.in .dot-peak { fill: var(--c); }
+  .sky-island.in .dot-peak {
+    fill: var(--c);
+  }
   @media (prefers-reduced-motion: reduce) {
-    .dot-peak { transition: none; }
+    .dot-peak {
+      transition: none;
+    }
   }
 </style>
 

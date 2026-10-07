@@ -156,8 +156,10 @@ export default function MimicryPlot() {
         )}
       </div>
 
+      {/* Keys stop Preact from reusing one div for both views, which would
+          leave the Plot SVG (added outside Preact) behind in the ranks view. */}
       {view === "ranks" ? (
-        <div class="text-forest-900 dark:text-forest-100">
+        <div key="ranks" class="text-forest-900 dark:text-forest-100">
           <p class="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-forest-700 dark:text-forest-300">
             <span class="inline-flex items-center gap-1"><span class="h-2.5 w-2.5 rounded-full" style={{ background: COLOR.dorsal }} /> dorsal</span>
             <span class="inline-flex items-center gap-1"><span class="h-2.5 w-2.5 rounded-full" style={{ background: COLOR.ventral }} /> ventral</span>
@@ -286,7 +288,7 @@ export default function MimicryPlot() {
           </div>
         </div>
       ) : (
-        <div ref={testsRef} class="w-full text-forest-900 dark:text-forest-100" role="img" aria-label={`Permutation tests. ${mimicry.permutations.map((p) => `${p.side} side, ${p.null} null: observed mean partner percentile ${p.observed.toFixed(3)}, null mean ${p.mean.toFixed(2)} (95% ${p.low.toFixed(2)} to ${p.high.toFixed(2)})`).join("; ")}. All p ≤ 0.0001.`} />
+        <div key="tests" ref={testsRef} class="w-full text-forest-900 dark:text-forest-100" role="img" aria-label={`Permutation tests. ${mimicry.permutations.map((p) => `${p.side} side, ${p.null} null: observed mean partner percentile ${p.observed.toFixed(3)}, null mean ${p.mean.toFixed(2)} (95% ${p.low.toFixed(2)} to ${p.high.toFixed(2)})`).join("; ")}. All p ≤ 0.0001.`} />
       )}
 
       <p class="mt-2 text-xs text-forest-700 dark:text-forest-300">

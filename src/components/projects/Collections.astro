@@ -3,6 +3,7 @@ import Image from "astro/components/Image.astro";
 import Content from "../Content.astro";
 import SectionHead from "../SectionHead.astro";
 import cntl from "cntl";
+import Link from "../Link.astro";
 import ProjectPubs from "../../layouts/ProjectPubs.astro";
 import PubButton from "../buttons/PubButton.astro";
 import herbarium from "../../assets/img/herbarium.jpg";
@@ -19,7 +20,14 @@ const pillars = [
   },
   {
     title: "Stewardship & data",
-    text: "FAIR, Darwin Core–ready data from the field onward. NAHPU, our cross-platform digital field catalog, supports QR/barcode scanning and is adding automatic validation to streamline the path from field to collection database.",
+    text: [
+      { text: "FAIR", url: "https://www.go-fair.org/fair-principles/" },
+      " data, ready for ",
+      { text: "Darwin Core", url: "https://dwc.tdwg.org/" },
+      " and ",
+      { text: "Frictionless Data", url: "https://frictionlessdata.io/" },
+      " from the field onward. NAHPU, our cross-platform digital field catalog, supports QR/barcode scanning and is adding automatic validation to streamline the path from field to collection database.",
+    ],
   },
   {
     title: "Training & outreach",
@@ -29,7 +37,7 @@ const pillars = [
 ---
 
 <div>
-  <SectionHead text="Natural history collections" />
+  <SectionHead text="Biodiversity Inventories: Building Natural History Collections" />
   <Content>
     <p>
       Continuously growing collections keep natural history museums relevant:
@@ -45,7 +53,11 @@ const pillars = [
       pillars.map((p) => (
         <div class="rounded-xl border border-moss-900/15 bg-white p-4 dark:border-moss-100/15 dark:bg-forest-950">
           <h3 class="font-serif text-lg text-forest-900 dark:text-forest-100">{p.title}</h3>
-          <p class="mt-1 text-sm text-forest-800 dark:text-forest-200">{p.text}</p>
+          <p class="mt-1 text-sm text-forest-800 dark:text-forest-200">
+            {typeof p.text === "string"
+              ? p.text
+              : p.text.map((part) => (typeof part === "string" ? part : <Link text={part.text} url={part.url} />))}
+          </p>
         </div>
       ))
     }

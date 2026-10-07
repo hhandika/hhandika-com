@@ -1,5 +1,4 @@
 ---
-import { Image } from "astro:assets";
 import Content from "../Content.astro";
 import SectionHead from "../SectionHead.astro";
 import Link from "../Link.astro";
@@ -7,17 +6,49 @@ import EmbeddingPipeline from "./software/EmbeddingPipeline.astro";
 import MorphospacePlot from "./biocosmos/MorphospacePlot.tsx";
 import PlannerPlot from "./biocosmos/PlannerPlot.tsx";
 import MimicryPlot from "./biocosmos/MimicryPlot.tsx";
-import mimicry from "../../data/biocosmos/mimicry.json";
-import stats from "../../data/biocosmos/morphospace-stats.json";
+import { Image } from "astro:assets";
 import lepiverseHome from "../../assets/img/biocosmos/lepiverse-home.jpg";
 import lepiverseSpecies from "../../assets/img/biocosmos/lepiverse-species.jpg";
 import lepiverseSimilar from "../../assets/img/biocosmos/lepiverse-similar-species.jpg";
+import mimicry from "../../data/biocosmos/mimicry.json";
+import stats from "../../data/biocosmos/morphospace-stats.json";
 
 const morphoStats = [
-  { value: stats.species.toLocaleString(), label: "species in the morphospace" },
-  { value: stats.bothSides.toLocaleString(), label: "seen from both wing sides" },
-  { value: `${stats.generaSignificant}/${stats.genera}`, label: "genera with integrated dorsal and ventral patterns (Mantel p < 0.05)" },
-  { value: `r = ${stats.scopeMantelR}`, label: "dorso-ventral integration across all species" },
+  {
+    value: stats.species.toLocaleString(),
+    label: "species in the morphospace",
+  },
+  {
+    value: stats.bothSides.toLocaleString(),
+    label: "seen from both wing sides",
+  },
+  {
+    value: `${stats.generaSignificant}/${stats.genera}`,
+    label:
+      "genera with integrated dorsal and ventral patterns (Mantel p < 0.05)",
+  },
+  {
+    value: `r = ${stats.scopeMantelR}`,
+    label: "dorso-ventral integration across all species",
+  },
+];
+
+
+const random = mimicry.permutations.filter((p) => p.null === "Random");
+const mimicryStats = [
+  {
+    value: `${mimicry.pairs.filter((p) => p.recovered).length}/${mimicry.counts.testedPairs}`,
+    label:
+      "pairs mutually in the top 10 of 8,409 species on at least one wing side",
+  },
+  {
+    value: random.map((p) => p.observed.toFixed(3)).join(" · "),
+    label: "mean partner percentile, dorsal · ventral (chance = 0.50)",
+  },
+  {
+    value: "p ≤ 0.0001",
+    label: "against random and congener nulls (10,000 permutations)",
+  },
 ];
 
 // From the lepiverse.com collection summary (October 2026).
@@ -28,46 +59,43 @@ const collection = [
   { value: "8", label: "validated families" },
 ];
 
-const random = mimicry.permutations.filter((p) => p.null === "Random");
-const mimicryStats = [
-  { value: `${mimicry.pairs.filter((p) => p.recovered).length}/${mimicry.counts.testedPairs}`, label: "pairs mutually in the top 10 of 8,409 species on at least one wing side" },
-  { value: random.map((p) => p.observed.toFixed(3)).join(" · "), label: "mean partner percentile, dorsal · ventral (chance = 0.50)" },
-  { value: "p ≤ 0.0001", label: "against random and congener nulls (10,000 permutations)" },
-];
-
-const figureClasses =
-  "rounded-2xl border border-forest-900/10 bg-white/70 p-3 shadow-sm dark:border-forest-100/10 dark:bg-forest-950/40 sm:p-5";
 const shotClasses =
   "group overflow-hidden rounded-2xl border border-forest-900/10 bg-forest-50 p-1.5 transition duration-500 hover:-translate-y-0.5 hover:shadow-lg dark:border-forest-100/10 dark:bg-forest-900/40";
+const figureClasses =
+  "rounded-2xl border border-forest-900/10 bg-white/70 p-3 shadow-sm dark:border-forest-100/10 dark:bg-forest-950/40 sm:p-5";
 ---
 
-<SectionHead text="AI-assisted phenomics: quantifying complex traits at collection scale" />
+<SectionHead
+  text="AI-assisted phenomics: quantifying complex traits at scale"
+/>
 <Content>
   <p>
-    Coloration is a complex phenotype shaped by shared ancestry, convergence,
-    and environmental selection. Using image embeddings from digitized
-    specimens, we measure phenotypic similarity within and among species and
-    have found latitudinal variation in color similarity alongside species
-    richness. Butterflies are our test case: I am testing these patterns in
-    butterfly mimicry by integrating image-based similarity with genetic
-    relationships and geographic co-occurrence.
-  </p>
-  <p class="mt-2">
-    I hope to extend this framework to Indo-Australian rodents, asking
-    whether phenotypic divergence among isolated island and mountain
-    populations parallels genomic divergence or reflects local environments,
-    and, through collaborations, to frogs, reptiles, and birds.
+    Coloration is a complex, multidimensional phenotype that is difficult to
+    compare consistently across large numbers of species. Its variation can
+    reflect shared ancestry, convergence, and environmental selection. Image
+    embeddings provide a scalable way to quantify this variation: a vision model
+    converts each specimen photograph into a numerical representation, placing
+    visually similar specimens near one another in trait space. This makes
+    appearance measurable across hundreds of thousands of digitized specimens.
+    I use these embeddings to identify visually similar species, map the morphospace of
+    butterfly wing patterns, and test whether phenotypic similarity recovers
+    known mimicry relationships. Combined with language models for
+    natural-language search, this work shows how I use emerging AI tools to
+    extract evolutionary information from natural history collections.
   </p>
   <EmbeddingPipeline />
 </Content>
 
-<SectionHead text="The butterfly morphospace: upper and under wings tell different stories" />
+<SectionHead
+  text="The butterfly morphospace: upper and under wings tell different stories"
+/>
 <Content>
   <p>
     Each point is a species centroid in a principal-component space of image
-    embeddings from BioCosmos. Switch between the dorsal (upper) and ventral
-    (under) wing surfaces to watch species shift: skippers (Hesperiidae) and
-    whites and sulphurs (Pieridae) separate clearly, while many lineages change
+    embeddings of digitized butterfly specimens.
+    Switch between the dorsal and ventral wing surfaces to see the shift in
+    morphospace. Some families, such as the skippers (Hesperiidae) and whites
+    and sulphurs (Pieridae) separate clearly, while many lineages change
     position between sides. Hover a point for its name, or pick a family to
     highlight it.
   </p>
@@ -80,42 +108,94 @@ const shotClasses =
     morphoStats.map((s) => (
       <div class="rounded-2xl border border-forest-900/10 px-3 py-3 dark:border-forest-100/10">
         <dt class="sr-only">{s.label}</dt>
-        <dd class="font-serif text-xl font-semibold text-moss-700 dark:text-moss-300">{s.value}</dd>
-        <dd class="mt-1 text-xs text-forest-700 dark:text-forest-300">{s.label}</dd>
+        <dd class="font-serif text-xl font-semibold text-moss-700 dark:text-moss-300">
+          {s.value}
+        </dd>
+        <dd class="mt-1 text-xs text-forest-700 dark:text-forest-300">
+          {s.label}
+        </dd>
       </div>
     ))
   }
 </dl>
 
-<SectionHead text="BioCosmos: AI-enabled exploration of biological collections" />
+
+<SectionHead text="Does visual similarity recover butterfly mimicry?" />
 <Content>
   <p>
-    <Link text="BioCosmos" url="https://lepiverse.com" /> is a low-cost,
-    AI-enabled web platform deployed through LepiVerse that brings together more
-    than 600,000 digitized Lepidoptera specimen images. It combines taxonomic
-    harmonization and geographic data validation with visual-similarity search,
-    natural-language search, interactive morphospace plots, and enriched species
-    pages, showing that image embeddings and open-weight large language models
-    can make large collections explorable. Next, I plan to extend
-    embedding-based trait exploration across more Lepidoptera and connect
-    phenotypes with taxonomic, geographic, and genomic data.
+    Mimicry is a direct test of whether image embeddings capture what predators
+    see. I compiled published Müllerian and Batesian butterfly mimicry pairs and
+    asked where each partner ranks when either species queries every other
+    species in the collection by the similarity of its dorsal or ventral images.
+    Partners rank far above chance, and above the congeners that resemble each
+    other through shared ancestry alone. The misses are informative: in <i
+      >Papilio polytes</i
+    > and <i>P. glaucus</i>
+    only some females mimic, and <i>Heliconius timareta</i> varies across its range,
+    so a single species centroid dilutes the mimetic form. Switch wing sides to watch
+    the ranks move, hover a dot for its rank, or click a pair for its notes and references.
   </p>
-  <p class="mt-2">
-    This work is part of my postdoc in the AI Biodiversity Informatics Division
-    at the Florida Museum of Natural History, with <Link
-      text="Porto's lab"
-      url="https://agporto.github.io/"
-    />, University of Florida.
+</Content>
+<figure class={`not-prose my-6 ${figureClasses}`}>
+  <MimicryPlot client:visible />
+</figure>
+<dl class="grid gap-3 sm:grid-cols-3">
+  {
+    mimicryStats.map((s) => (
+      <div class="rounded-2xl border border-forest-900/10 px-3 py-3 dark:border-forest-100/10">
+        <dt class="sr-only">{s.label}</dt>
+        <dd class="font-serif text-xl font-semibold text-moss-700 dark:text-moss-300">
+          {s.value}
+        </dd>
+        <dd class="mt-1 text-xs text-forest-700 dark:text-forest-300">
+          {s.label}
+        </dd>
+      </div>
+    ))
+  }
+</dl>
+
+<SectionHead text="Choosing an open-weight LLM for natural-language search" />
+<Content>
+  <p>
+    I designed natural-language search for a large specimen collection, where
+    a language model turns a question such as “orange butterflies with black stripes from Peru” into
+    structured search calls (color, country, trait, or similarity). To choose
+    the best model for production, I benchmark open-weight models on the same
+    set of queries, comparing accuracy, consistency, latency, and token cost.
+  </p>
+</Content>
+<figure class={`not-prose my-6 ${figureClasses}`}>
+  <PlannerPlot client:visible />
+</figure>
+
+<SectionHead text="Putting it all together: BioCosmos" />
+<Content>
+  <p>
+    <Link text="BioCosmos" url="https://lepiverse.com" /> brings this work
+    together in a low-cost web platform, deployed through LepiVerse, for more
+    than 600,000 digitized Lepidoptera specimen images. Image embeddings power
+    visual-similarity search and interactive morphospace plots, an open-weight
+    language model turns plain-language questions into searches, and taxonomic
+    harmonization and geographic validation keep the underlying data clean. The
+    result shows that emerging AI tools can make large natural history
+    collections explorable for anyone with a browser.
   </p>
 </Content>
 
-<dl class="mx-auto mt-6 grid max-w-4xl grid-cols-2 gap-3 text-center sm:grid-cols-4">
+<dl
+  class="mx-auto mt-6 grid max-w-4xl grid-cols-2 gap-3 text-center sm:grid-cols-4"
+>
   {
     collection.map((s) => (
       <div class="rounded-2xl border border-forest-900/10 px-3 py-4 dark:border-forest-100/10">
         <dt class="sr-only">{s.label}</dt>
-        <dd class="font-serif text-2xl font-semibold text-moss-700 dark:text-moss-300">{s.value}</dd>
-        <dd class="mt-1 text-xs text-forest-700 dark:text-forest-300">{s.label}</dd>
+        <dd class="font-serif text-2xl font-semibold text-moss-700 dark:text-moss-300">
+          {s.value}
+        </dd>
+        <dd class="mt-1 text-xs text-forest-700 dark:text-forest-300">
+          {s.label}
+        </dd>
       </div>
     ))
   }
@@ -123,20 +203,41 @@ const shotClasses =
 
 <div class="my-6 grid gap-3 md:grid-cols-2">
   <a href="https://lepiverse.com" class={shotClasses}>
-    <Image src={lepiverseHome} alt="LepiVerse home page with semantic, text, and image search beside a grid of butterfly specimens" width={900} loading="lazy" class="rounded-xl" />
+    <Image
+      src={lepiverseHome}
+      alt="LepiVerse home page with semantic, text, and image search beside a grid of butterfly specimens"
+      width={900}
+      loading="lazy"
+      class="rounded-xl"
+    />
     <p class="flex justify-between px-2 pt-1.5 text-xs">
-      <span class="font-semibold text-forest-900 dark:text-forest-100">Semantic, text, and image search</span>
-      <span class="font-mono text-forest-600 dark:text-forest-400">lepiverse.com</span>
+      <span class="font-semibold text-forest-900 dark:text-forest-100"
+        >Semantic, text, and image search</span
+      >
+      <span class="font-mono text-forest-600 dark:text-forest-400"
+        >lepiverse.com</span
+      >
     </p>
   </a>
   <a href="https://lepiverse.com/species/morpho_aega" class={shotClasses}>
-    <Image src={lepiverseSpecies} alt="LepiVerse species page for Morpho aega with specimen images, classification, and distribution map" width={900} loading="lazy" class="rounded-xl" />
+    <Image
+      src={lepiverseSpecies}
+      alt="LepiVerse species page for Morpho aega with specimen images, classification, and distribution map"
+      width={900}
+      loading="lazy"
+      class="rounded-xl"
+    />
     <p class="flex justify-between px-2 pt-1.5 text-xs">
-      <span class="font-semibold text-forest-900 dark:text-forest-100">Enriched species page</span>
-      <span class="font-mono text-forest-600 dark:text-forest-400"><i>Morpho aega</i></span>
+      <span class="font-semibold text-forest-900 dark:text-forest-100"
+        >Enriched species page</span
+      >
+      <span class="font-mono text-forest-600 dark:text-forest-400"
+        ><i>Morpho aega</i></span
+      >
     </p>
   </a>
 </div>
+
 <figure class={shotClasses}>
   <Image
     src={lepiverseSimilar}
@@ -150,51 +251,16 @@ const shotClasses =
     of <i>Morpho aega</i> in embedding space. Dorsal matches are all blue
     <i>Morpho</i>, but the cryptic brown undersides also match <i>Zeuxidia</i>,
     <i>Tanaecia</i>, and <i>Vindula</i>, from different genera: the same
-    upper/under contrast the morphospace shows.
+  upper/under contrast the morphospace shows.
   </figcaption>
 </figure>
 
-<SectionHead text="Does visual similarity recover butterfly mimicry?" />
+<SectionHead text="Future directions" />
 <Content>
   <p>
-    Mimicry is a direct test of whether image embeddings capture what
-    predators see. I compiled published Müllerian and Batesian butterfly
-    mimicry pairs and asked where each partner ranks when either species
-    queries every other species in the collection by the similarity of its
-    dorsal or ventral images. Partners rank far above chance, and above the
-    congeners that resemble each other through shared ancestry alone. The
-    misses are informative: in <i>Papilio polytes</i> and <i>P. glaucus</i>
-    only some females mimic, and <i>Heliconius timareta</i> varies across its
-    range, so a single species centroid dilutes the mimetic form. Switch wing
-    sides to watch the ranks move, hover a dot for its rank, or click a pair
-    for its notes and references.
+    I hope to extend this framework to Indo-Australian rodents, asking whether
+    phenotypic divergence among isolated island and mountain populations
+    parallels genomic divergence or reflects local environments, and, through
+    collaborations, to frogs, reptiles, and birds.
   </p>
 </Content>
-<figure class={`not-prose my-6 ${figureClasses}`}>
-  <MimicryPlot client:visible />
-</figure>
-<dl class="grid gap-3 sm:grid-cols-3">
-  {
-    mimicryStats.map((s) => (
-      <div class="rounded-2xl border border-forest-900/10 px-3 py-3 dark:border-forest-100/10">
-        <dt class="sr-only">{s.label}</dt>
-        <dd class="font-serif text-xl font-semibold text-moss-700 dark:text-moss-300">{s.value}</dd>
-        <dd class="mt-1 text-xs text-forest-700 dark:text-forest-300">{s.label}</dd>
-      </div>
-    ))
-  }
-</dl>
-
-<SectionHead text="Choosing an open-weight LLM for natural-language search" />
-<Content>
-  <p>
-    I designed the search features in BioCosmos, where a language model turns a
-    question such as “orange butterflies with black stripes from Peru” into
-    structured search calls (color, country, trait, or similarity). To choose
-    the best model for production, I benchmark open-weight models on the same
-    set of queries, comparing accuracy, consistency, latency, and token cost.
-  </p>
-</Content>
-<figure class={`not-prose my-6 ${figureClasses}`}>
-  <PlannerPlot client:visible />
-</figure>

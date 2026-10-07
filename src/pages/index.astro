@@ -31,9 +31,9 @@ const keywordClasses = cntl`
 `;
 
 const keywordList = [
-  "Island speciation",
-  "Natural history collections",
-  "AI & biodiversity software",
+  { label: "Island speciation", href: "/projects#speciation" },
+  { label: "Natural history collections", href: "/projects#others" },
+  { label: "AI & biodiversity software", href: "/projects#ai" },
 ];
 
 const primaryButtonClasses = cntl`
@@ -127,7 +127,7 @@ const highlights = [
     statLabel: "specimen images across 9,342 species",
     image: lepiverseHome,
     alt: "Lepiverse, an AI-powered butterfly specimen explorer",
-    href: "/projects#software",
+    href: "/projects#ai",
     span: "lg:col-span-2",
   },
   {
@@ -178,6 +178,7 @@ const approachSteps = [
     title: "Genomes & phenomes",
     tone: "bg-mist-600",
     text: "Phylogenomics and population genomics alongside AI image embeddings that measure complex traits across entire collections.",
+    link: { text: "AI image embeddings", href: "/projects#ai" },
   },
   {
     icon: "software",
@@ -210,7 +211,7 @@ const researchQuestions = [
       "Can AI measure how complex phenotypes like coloration evolve?",
     detail:
       "Using image embeddings from hundreds of thousands of specimens to separate ancestry, mimicry, and environment, with butterflies as a test case and the hope of extending to island rodents.",
-    href: "/projects#software",
+    href: "/projects#ai",
   },
   {
     icon: "software",
@@ -246,13 +247,21 @@ const researchQuestions = [
           <p
             class="mt-3 text-lg font-medium text-forest-800 dark:text-forest-200"
           >
-            Postdoctoral Researcher · AI Biodiversity Informatics, Florida
+            Postdoctoral Researcher · <a
+              href="/projects#ai"
+              class="underline decoration-moss-500/50 underline-offset-4 hover:decoration-moss-500"
+              >AI Biodiversity Informatics</a
+            >, Florida
             Museum of Natural History, University of Florida
           </p>
           <div
             class="mt-4 flex flex-wrap justify-center gap-2 sm:gap-3 lg:justify-start"
           >
-            {keywordList.map((keyword) => <span class={keywordClasses}>{keyword}</span>)}
+            {keywordList.map((keyword) => (
+              <a href={keyword.href} class={`${keywordClasses} transition hover:bg-forest-200 dark:hover:bg-forest-800`}>
+                {keyword.label}
+              </a>
+            ))}
           </div>
           <p
             class="mt-5 text-pretty text-lg text-slate-700 dark:text-slate-200 sm:text-xl/8"
@@ -440,7 +449,11 @@ const researchQuestions = [
         <p class="mt-4 text-pretty text-lg text-slate-700 dark:text-slate-300">
           I work across the whole pipeline of collection-based evolutionary
           biology: I survey remote island mountains, build the specimen record,
-          generate genomes and AI-measured phenotypes from it, and write the
+          generate genomes and <a
+            href="/projects#ai"
+            class="underline decoration-moss-500/50 underline-offset-4 hover:decoration-moss-500"
+            >AI-measured phenotypes</a
+          > from it, and write the
           software that makes those analyses fast, reproducible, and usable
           by anyone, on anything from a phone to a computing cluster.
         </p>
@@ -460,7 +473,17 @@ const researchQuestions = [
                 {step.title}
               </h3>
               <p class="mt-1 text-sm text-white">
-                {step.text}
+                {"link" in step ? (
+                  <Fragment>
+                    {step.text.split(step.link.text)[0]}
+                    <a href={step.link.href} class="underline decoration-white/60 underline-offset-2 hover:decoration-white">
+                      {step.link.text}
+                    </a>
+                    {step.text.split(step.link.text)[1]}
+                  </Fragment>
+                ) : (
+                  step.text
+                )}
               </p>
             </li>
           ))

@@ -11,6 +11,7 @@ import PageSubtitle from "../PageSubtitle.astro";
 import LowSeaLevelMap from "./LowSeaLevelMap.astro";
 import SkyIslandDiagram from "../svg/SkyIslandDiagram.astro";
 import SulawesiAncestryMap from "./SulawesiAncestryMap.astro";
+import ParasiteStudyDesign from "./ParasiteStudyDesign.astro";
 // import ElevationRanges from "./ElevationRanges.astro";
 
 const firstParagraphClasses = cntl`
@@ -36,19 +37,23 @@ const eyebrowClasses = cntl`
 ---
 
 <div>
-  <PageSubtitle subtitle="Island Speciation" />
+  <PageSubtitle subtitle="Island Speciation & Host-Parasite Interactions" />
 
-  <SectionHead text="Islands as natural laboratories" />
+  <SectionHead
+    text="Islands and mountains as natural laboratories of evolution"
+  />
   <Content>
     <p class={firstParagraphClasses}>
       The Indo-Australian Archipelago (IAA) combines marine barriers, ancient
       paleo-islands, and steep mountains, a system where isolation has
-      repeatedly driven diversification. During Pleistocene sea-level lows,
-      Sumatra, Java, and Borneo joined mainland Asia as Sundaland, while
-      Sulawesi, the Moluccas, and the Lesser Sundas stayed isolated by deep
-      water. Within islands, mountains act as sky islands. Many of these
-      regions remain poorly surveyed. I ask how geographic isolation shapes
-      genomic divergence, ecological interactions, and phenotypic evolution.
+      repeatedly driven diversification. During the Pleistocene, when sea levels
+      were lower, Sumatra, Java, and Borneo joined mainland Asia as Sundaland,
+      while Sulawesi, the Moluccas, and the Lesser Sundas stayed isolated by
+      deep water. Like the Sunda Shelf, the Sahul Shelf was continuous landmass
+      that connected the Australian continent to New Guinea during this time.
+      Within islands, mountains act as sky islands. Many of these regions remain
+      poorly surveyed. I ask how geographic isolation shapes genomic divergence,
+      ecological interactions, and phenotypic evolution.
     </p>
   </Content>
   <p class={eyebrowClasses}>Pleistocene low sea-level boundaries</p>
@@ -56,7 +61,9 @@ const eyebrowClasses = cntl`
     <LowSeaLevelMap />
   </div>
 
-  <SectionHead text="In situ diversification of the Bunomys clade on Sulawesi" />
+  <SectionHead
+    text="In situ diversification of the Bunomys clade on Sulawesi"
+  />
   <Content>
     <Image
       src={lenomys}
@@ -65,17 +72,16 @@ const eyebrowClasses = cntl`
       class="float-left mr-4 mt-2 rounded-xl"
     />
     <p>
-      My main study system is the most speciose rodent clade on Sulawesi:
-      the <i>Bunomys</i> clade. I study its systematics and in situ
-      diversification.
-      Integrating morphology, multi-marker Sanger sequencing, and
-      ultra-conserved elements, we revealed taxonomic problems in the group and
-      a complex interplay between paleo-islands, tectonic plates, and mountain
-      formation in promoting its diversification, with mixed support for the
-      Area of Endemism paradigm on Sulawesi.
+      My main study system is the most speciose rodent clade on Sulawesi: the <i
+        >Bunomys</i
+      > clade. I study its systematics and in situ diversification. Integrating morphology,
+      multi-marker Sanger sequencing, and ultra-conserved elements, we revealed taxonomic
+      problems in the group and a complex interplay between paleo-islands, tectonic
+      plates, and mountain formation in promoting its diversification, with mixed
+      support for the Area of Endemism paradigm on Sulawesi.
     </p>
     <p class="mt-2">
-      This work rests on 13 years of collaborative field expeditions across
+      This work builds on 13 years of collaborative field expeditions across
       more than 20 remote mountain systems in Southeast Asia: over 20
       field-collecting expeditions contributing more than 8,000 voucher
       specimens and 30,000 specimen parts to natural history collections.
@@ -89,14 +95,15 @@ const eyebrowClasses = cntl`
   </Content>
 
   <div class="clear-both">
-    <SectionHead text="An island of islands" />
+    <SectionHead text="Sulawesi as an island of islands: A brief overview" />
   </div>
   <Content>
     <p>
-      On Sulawesi, ancient paleo-islands, colliding tectonic plates, and young
-      mountains together shaped the <i>Bunomys</i> radiation. Above about
-      1,000 m, many species are confined to a single mountain, while others
-      range from the lowlands to the summits and connect them.
+      Sulawesi is a complex island with a rich geological history. It has been
+      shaped by ancient paleo-islands, tectonic plate movements, and mountain
+      formation. Together, these factors have shaped the <i>Bunomys</i> radiation.
+      Above about 1,000 m, many species are confined to a single mountain, while others
+      have widespread distributions that span multiple mountains and across the island.
     </p>
   </Content>
   <p class={eyebrowClasses}>Four sky islands in the central core</p>
@@ -104,7 +111,8 @@ const eyebrowClasses = cntl`
     <SkyIslandDiagram />
   </div>
 
-  {/* Elevational distribution plot hidden for now.
+  {
+    /* Elevational distribution plot hidden for now.
   <p class={eyebrowClasses}>Across elevations</p>
   <Content>
     <p>
@@ -119,54 +127,70 @@ const eyebrowClasses = cntl`
   <div class="mt-4 rounded-2xl bg-white p-4 shadow-sm dark:bg-[#141810]">
     <ElevationRanges />
   </div>
-  */}
+  */
+  }
 
   <p class={eyebrowClasses}>Across the island</p>
   <Content>
     <p>
-      Sulawesi is often divided into seven areas of endemism separated by
-      narrow boundary zones. <i>Taeromys dominator</i>, a large endemic rat
-      found across the island and from lowlands to high elevations, shows how messy the real system is: one
-      ancestry cluster spans mountains in every area of endemism, populations
-      in the southeast carry a distinct cluster, and several individuals are
-      admixed, so the boundaries are only partly respected.
+      Sulawesi is often divided into seven areas of endemism separated by narrow
+      boundary zones. <i>Taeromys dominator</i>, a large endemic rat found
+      across the island and from lowlands to high elevations, shows how messy
+      the system is: one ancestry cluster spans mountains in every area of
+      endemism, populations in the southeast carry a distinct cluster, and
+      several individuals are admixed, so the boundaries are only partly
+      respected.
     </p>
   </Content>
   <div class="mt-4 rounded-2xl bg-white p-4 shadow-sm dark:bg-[#141810]">
     <SulawesiAncestryMap />
     <p class="mt-4 text-pretty text-sm text-forest-700 dark:text-forest-300">
-      Ancestry of 29 <i>T. dominator</i> from 12 localities, estimated from
-      genome-wide SNPs with PopCluster at K = 4, the best-supported K by DLK2. Each pie is one individual;
-      individuals from the same locality are fanned out around it. Dark bands
-      mark the boundary zones between areas of endemism.
+      Ancestry of 29 <i>T. dominator</i> from 12 localities, estimated from ultra-conserved
+      element (UCE) SNPs with PopCluster at K = 4, the best-supported K by DLK2. Each
+      pie is one individual; individuals from the same locality are fanned out around
+      it. The bands mark the boundary zones between areas of endemism.
     </p>
   </div>
 
-  <SectionHead text="Parasites and microbiomes: collaborations and next steps" />
+  <SectionHead
+    text="Parasites and microbiomes: collaborations and next steps"
+  />
   <Content>
     <p>
-      The evolutionary history of the <i>Bunomys</i> clade also provides a
-      framework for asking whether parasites co-evolve with their hosts or
-      cross species boundaries. Work led by <Link
+      The evolutionary history of the <i>Bunomys</i> clade also provides a framework
+      for asking whether parasites co-evolve with their hosts or cross species boundaries.
+      Work led by <Link
         text="Kevin Rowe's lab at Museums Victoria"
         url="https://museumsvictoria.com.au/about-us/board-and-staff/staff/dr-kevin-rowe/"
-      />, Australia, on which I am a co-author, documented native and introduced <i>Trypanosoma</i> lineages
-      in Sulawesi rodents, with high prevalence in several <i>Bunomys</i>
-      species and infections from village edges to remote montane forests,
-      peaking above 2,000 m. The Esselstyn lab studies the gut microbial
-      communities of Sulawesi shrews and rodents.
+      />, Australia, on which I am a co-author, documented native and introduced <i
+        >Trypanosoma</i
+      > lineages in Sulawesi rodents, with high prevalence in several <i
+        >Bunomys</i
+      >
+      species and infections from village edges to remote montane forests, peaking
+      above 2,000 m. The <Link
+        text="Esselstyn lab"
+        url="http://esselstyn.github.io/"
+      /> studies the gut microbial communities of Sulawesi shrews and rodents.
     </p>
     <p class="mt-2">
-      Building on these collaborations, parasite evolution is a direction I
-      hope to pursue: integrating host population genomics, parasite
-      phylogenies, and environmental data to test whether parasite
-      diversification parallels host history or reflects host switching and
-      local adaptation. To lay the groundwork, I am building parasite records
-      into <Link text="NAHPU" url="https://nahpu.app" />, so parasites
-      collected in the field are easier to track and stay associated with
-      their host specimens.
+      Building on these collaborations, parasite evolution is a direction I hope
+      to pursue by integrating host population genomics, parasite phylogenies,
+      environmental data, and single-cell sequencing. This framework would test
+      whether parasite diversification parallels host history or reflects host
+      switching and local adaptation, while also examining how these processes
+      shape host-cell tropism and immune responses. Single-cell or
+      single-nucleus sequencing of infected tissues could link host and parasite
+      genetic variation to the specific cell types and transcriptional states
+      associated with infection. To lay the groundwork, <Link
+        text="NAHPU"
+        url="https://nahpu.app"
+      /> records parasites collected in the field alongside their host specimens and
+      tracks their screening, keeping parasite identity, infection status, and molecular
+      data linked to the host from which they originated.
     </p>
   </Content>
+  <ParasiteStudyDesign />
 </div>
 <div class="mt-8 mb-2 text-semibold text-lg">Speciation and systematics:</div>
 <ProjectPubs author="Handika et. al.">
@@ -252,7 +276,7 @@ const eyebrowClasses = cntl`
     pdfUrl="https://www.researchgate.net/publication/377726198_Three_new_shrews_Soricidae_Crocidura_from_West_Sumatra_Indonesia_elevational_and_morphological_divergence_in_syntopic_sister_taxa"
   />
 </ProjectPubs>
-  <div class="mt-4 mb-2 text-semibold">Host–parasite and microbiome (collaborations):</div>
+<div class="mt-4 mb-2 text-semibold">Host–parasite and microbiome:</div>
 <ProjectPubs author="Adams et al.">
   <PubButton
     author="Adams, A.L., Achmadi, A.S., Mursyid, A., Handika, H., Nurdin, M.R.T., Esselstyn, J.A., Perkins, S.L., Rowe, K.M., and Rowe, K.C."
