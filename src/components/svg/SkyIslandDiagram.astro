@@ -141,6 +141,21 @@ const lineages = [
   { label: "B. torajae WC-B", color: "#f2cf4a" },
   { label: "B. penitus WC-B", color: "#e9edd6" },
 ];
+// Every other taxon also has its own colour, used for its legend chip and
+// whenever it is selected. Widespread taxa take warm, earthy tones; the
+// remaining montane taxa stay grey in the overview.
+const ownColors: Record<string, string> = {
+  "B. andrewsi": "#e4572e",
+  "T. celebensis": "#b98b5e",
+  "B. penitus WC-A": "#f7a072",
+  "B. chrysocomus EC-SE-WC": "#8c5a3c",
+  "T. callitrichus": "#d4c09a",
+  "Bunomys sp2": "#9bd15f",
+  "T. hamatus": "#9cd3f0",
+  "Taeromys spnov": "#3f9a5c",
+  "Genus spnov": "#e07a7a",
+  "Taeromys sp3": "#7b6fc4",
+};
 const OTHER = "#8199a2";
 const SHARED = "#f5a028";
 const WIDE = "T. dominator EC-SE-SW-WC";
@@ -189,10 +204,11 @@ const taxa = elevation.taxa
           ]
         : [];
     });
+    const featured = t.label === WIDE || lineages.some((l) => l.label === t.label);
     const color =
       t.label === WIDE
         ? SHARED
-        : (lineages.find((l) => l.label === t.label)?.color ?? OTHER);
+        : (lineages.find((l) => l.label === t.label)?.color ?? ownColors[t.label] ?? OTHER);
     const lo = Math.min(...ranges.map((r) => r.min));
     const hi = Math.max(...ranges.map((r) => r.max));
     const n = ranges.reduce((sum, r) => sum + r.n, 0);
@@ -208,9 +224,13 @@ const taxa = elevation.taxa
       label: t.label,
       group: t.group,
       color,
+      featured,
+      // Grey in the overview until selected.
+      muted: !featured && t.group === "Montane",
       // Drawn before any selection: T. dominator and the montane taxa.
       shown: t.label === WIDE || t.group === "Montane",
       chip: html(t.label, false),
+      full: html(t.label, true),
       summary: `${html(t.label, true)} is ${zone}. On these mountains: ${where.length > 1 ? `${where.slice(0, -1).join(", ")} and ${where.at(-1)}` : where[0]}, ${fmt(lo)}–${fmt(hi)} m, ${n} specimen${n === 1 ? "" : "s"}.`,
       ranges,
     };
@@ -220,7 +240,7 @@ const taxa = elevation.taxa
 // mountain. Featured lineages and T. dominator get more dots than the rest.
 const dots = taxa.flatMap((t, ti) =>
   t.ranges.flatMap((r) => {
-    const n = t.color === OTHER ? 3 : 6;
+    const n = t.featured ? 6 : 3;
     const seed = 2.1 + r.mi * 1.7 + ti * 0.61;
     return scatter(mountains[r.mi], n, r.min, r.max, seed).map((d) => ({
       ...d,
@@ -412,7 +432,7 @@ const yThreshold = y(elevation.threshold);
             r="3.6"
             class={`dot ${d.t.label === WIDE ? "dot-wide" : d.t.shown ? "dot-peak" : "dot-extra"}`}
             data-taxon={d.t.id}
-            style={`--c:${d.t.color};transition-delay:${d.delay.toFixed(2)}s`}
+            style={`--c:${d.t.muted ? OTHER : d.t.color};--sel:${d.t.color};transition-delay:${d.delay.toFixed(2)}s`}
           />
         ))
       }
@@ -431,9 +451,30 @@ const yThreshold = y(elevation.threshold);
               return (
                 <g>
                   <line x1={x} x2={x} y1={y1} y2={y2} class="range-halo" />
-                  <line x1={x} x2={x} y1={y1} y2={y2} class="range-bar" style={`--c:${t.color}`} />
-                  <line x1={x - 6} x2={x + 6} y1={y1} y2={y1} class="range-bar" style={`--c:${t.color}`} />
-                  <line x1={x - 6} x2={x + 6} y1={y2} y2={y2} class="range-bar" style={`--c:${t.color}`} />
+                  <line
+                    x1={x}
+                    x2={x}
+                    y1={y1}
+                    y2={y2}
+                    class="range-bar"
+                    style={`--c:${t.color}`}
+                  />
+                  <line
+                    x1={x - 6}
+                    x2={x + 6}
+                    y1={y1}
+                    y2={y1}
+                    class="range-bar"
+                    style={`--c:${t.color}`}
+                  />
+                  <line
+                    x1={x - 6}
+                    x2={x + 6}
+                    y1={y2}
+                    y2={y2}
+                    class="range-bar"
+                    style={`--c:${t.color}`}
+                  />
                   <text
                     x={lx}
                     y={(y1 + y2) / 2 - 2}
@@ -442,8 +483,14 @@ const yThreshold = y(elevation.threshold);
                     font-weight="700"
                     class="range-text"
                   >
-                    <tspan x={lx}>{r.min === r.max ? `${fmt(r.min)} m` : `${fmt(r.min)}–${fmt(r.max)} m`}</tspan>
-                    <tspan x={lx} dy="13" font-weight="500">{r.n} specimen{r.n === 1 ? "" : "s"}</tspan>
+                    <tspan x={lx}>
+                      {r.min === r.max
+                        ? `${fmt(r.min)} m`
+                        : `${fmt(r.min)}–${fmt(r.max)} m`}
+                    </tspan>
+                    <tspan x={lx} dy="13" font-weight="500">
+                      {r.n} specimen{r.n === 1 ? "" : "s"}
+                    </tspan>
                   </text>
                 </g>
               );
@@ -525,7 +572,7 @@ const yThreshold = y(elevation.threshold);
               <li>
                 <button
                   type="button"
-                  class="sky-chip flex items-center gap-1.5 rounded-full border border-forest-900/15 px-2.5 py-1 text-xs text-forest-800 transition-colors hover:bg-forest-100 aria-pressed:border-forest-700 aria-pressed:bg-forest-700 aria-pressed:text-white dark:border-forest-100/20 dark:text-forest-100 dark:hover:bg-forest-900 dark:aria-pressed:border-forest-200 dark:aria-pressed:bg-forest-200 dark:aria-pressed:text-forest-950"
+                  class="sky-chip group flex items-center gap-1.5 rounded-full border border-forest-900/15 px-2.5 py-1 text-xs text-forest-800 transition-colors hover:bg-forest-100 aria-pressed:border-forest-700 aria-pressed:bg-forest-700 aria-pressed:text-white dark:border-forest-100/20 dark:text-forest-100 dark:hover:bg-forest-900 dark:aria-pressed:border-forest-200 dark:aria-pressed:bg-forest-200 dark:aria-pressed:text-forest-950"
                   data-select={t.id}
                   data-mountains={t.ranges.map((r) => r.mi).join(" ")}
                   data-detail={t.summary}
@@ -535,7 +582,9 @@ const yThreshold = y(elevation.threshold);
                     class="inline-block h-2.5 w-2.5 shrink-0 rounded-full"
                     style={`background:${t.color};box-shadow:0 0 0 1px rgb(14 26 18 / 0.3)`}
                   />
-                  <span set:html={t.chip} />
+                  {/* Abbreviated in the list; the full name once selected. */}
+                  <span class="group-aria-pressed:hidden" set:html={t.chip} />
+                  <span class="hidden group-aria-pressed:inline" set:html={t.full} />
                 </button>
               </li>
             ))}
@@ -543,11 +592,12 @@ const yThreshold = y(elevation.threshold);
         </div>
       ))
     }
-    <p class="sky-detail mt-3 min-h-[2.5rem] rounded-xl bg-forest-50 px-3 py-2 text-forest-800 dark:bg-forest-900/60 dark:text-forest-100" aria-live="polite">
-      Highlight a taxon's populations and its recorded elevation range on each
-      mountain. Grey dots are other montane taxa; widespread taxa other than <i
-        >T. dominator</i
-      > appear when selected.
+    <p
+      class="sky-detail mt-3 min-h-[2.5rem] rounded-xl bg-forest-50 px-3 py-2 text-forest-800 dark:bg-forest-900/60 dark:text-forest-100"
+      aria-live="polite"
+    >
+      Orange dots are <i>Taeromys dominator</i>, the only taxon on all four
+      mountains. Select a taxon to show its populations and elevation range.
     </p>
     <p class="mt-3 text-pretty text-forest-700 dark:text-forest-300">
       Distance alone does not predict shared ancestry. Rorekatimbo and
@@ -591,7 +641,7 @@ const yThreshold = y(elevation.threshold);
   }
   .dot-extra {
     display: none;
-    fill: var(--c);
+    fill: var(--sel);
     stroke: #1c2b21;
     stroke-width: 0.6;
   }
@@ -607,7 +657,7 @@ const yThreshold = y(elevation.threshold);
   }
   .dot-extra.sel,
   .dot-peak.sel {
-    fill: var(--c);
+    fill: var(--sel);
   }
   .peak-label {
     transition: opacity 0.3s ease;
@@ -661,15 +711,17 @@ const yThreshold = y(elevation.threshold);
       const peaks = (chip?.dataset.mountains ?? "").split(" ");
       chips.forEach((c) => c.setAttribute("aria-pressed", String(c === chip)));
       svg.classList.toggle("has-sel", id !== null);
-      svg.querySelectorAll<SVGElement>(".dot").forEach((d) =>
-        d.classList.toggle("sel", d.dataset.taxon === id),
-      );
-      svg.querySelectorAll<SVGElement>(".range").forEach((g) =>
-        g.classList.toggle("hidden", g.dataset.range !== id),
-      );
-      svg.querySelectorAll<SVGElement>(".peak-label").forEach((g) =>
-        g.classList.toggle("sel", peaks.includes(g.dataset.mountain!)),
-      );
+      svg
+        .querySelectorAll<SVGElement>(".dot")
+        .forEach((d) => d.classList.toggle("sel", d.dataset.taxon === id));
+      svg
+        .querySelectorAll<SVGElement>(".range")
+        .forEach((g) => g.classList.toggle("hidden", g.dataset.range !== id));
+      svg
+        .querySelectorAll<SVGElement>(".peak-label")
+        .forEach((g) =>
+          g.classList.toggle("sel", peaks.includes(g.dataset.mountain!)),
+        );
       // Summaries are built from the data file at build time; they carry <i>.
       detail.innerHTML = chip?.dataset.detail ?? intro;
       clear.classList.toggle("hidden", id === null);
@@ -677,12 +729,16 @@ const yThreshold = y(elevation.threshold);
 
     chips.forEach((c) =>
       c.addEventListener("click", () =>
-        select(c.getAttribute("aria-pressed") === "true" ? null : c.dataset.select!),
+        select(
+          c.getAttribute("aria-pressed") === "true" ? null : c.dataset.select!,
+        ),
       ),
     );
-    svg.querySelectorAll<SVGElement>(".dot").forEach((d) =>
-      d.addEventListener("click", () => select(d.dataset.taxon!)),
-    );
+    svg
+      .querySelectorAll<SVGElement>(".dot")
+      .forEach((d) =>
+        d.addEventListener("click", () => select(d.dataset.taxon!)),
+      );
     clear.addEventListener("click", () => select(null));
     root.addEventListener("keydown", (e) => {
       if (e.key === "Escape") select(null);
