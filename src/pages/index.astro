@@ -7,8 +7,8 @@ import latimojongValley from "../assets/img/latimojong-valley.webp";
 import nahpuDesktop from "../assets/img/nahpu/media-gallery.jpg";
 import expeditionTeam from "../assets/img/leadership/expedition-team.jpg";
 import fieldCampSelfie from "../assets/img/leadership/field-camp-selfie.jpg";
-import fieldRidgeTeam from "../assets/img/leadership/field-ridge-team.jpg";
-import labCodeReview from "../assets/img/leadership/lab-code-review.jpg";
+import forestTeam from "../assets/img/leadership/forest-team.jpg";
+import labWorkshop from "../assets/img/leadership/lab-workshop.jpg";
 import labMentoring from "../assets/img/leadership/lab-mentoring.jpg";
 import cntl from "cntl";
 import { Image } from "astro:assets";
@@ -191,18 +191,22 @@ const approachSteps = [
 const leadershipPhotos = [
   {
     src: expeditionTeam,
-    alt: "Expedition team of collaborators, local community members, and students in the rainforest",
+    alt: "Expedition team of collaborators, local community members, and students resting with packed gear at a field hut",
     span: "col-span-2 row-span-2",
   },
-  { src: fieldRidgeTeam, alt: "Field team on a montane ridge trail", span: "" },
+  {
+    src: forestTeam,
+    alt: "Field team of researchers and local guides in a mossy montane forest",
+    span: "",
+  },
   {
     src: fieldCampSelfie,
     alt: "Heru with the field team building a camp shelter in the mist",
     span: "",
   },
   {
-    src: labCodeReview,
-    alt: "Heru and a student reviewing butterfly image analysis code",
+    src: labWorkshop,
+    alt: "Students with laptops around a table during a coding workshop, with a learning curve slide on the screen",
     span: "",
   },
   {
@@ -436,7 +440,7 @@ const researchQuestions = [
           <p
             class="text-sm font-semibold uppercase tracking-widest text-moss-700 dark:text-moss-300"
           >
-            Leadership &amp; mentoring
+            Leadership &amp; mentorship
           </p>
           <h2 class={sectionTitleClasses}>
             On the cold mountains and the computer terminal
@@ -446,7 +450,7 @@ const researchQuestions = [
           >
             I have been lucky to work alongside amazing collaborators and local
             communities, and to mentor biology and computer science students.
-            Together, we carry 800 kg of supplies on foot up a mountain on
+            Together, we carry &gt;800 kg of supplies on foot up a mountain on
             barely visible trails to reach places that have never been surveyed
             before, and make software work for everyone amid evolving hardware
             and operating systems.
