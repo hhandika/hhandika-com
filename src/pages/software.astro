@@ -26,6 +26,14 @@ import mddAppTree from "../assets/img/mdd/app-taxonomy-tree.webp";
 import mddAppTaxon from "../assets/img/mdd/app-taxon-info.webp";
 import mddAppMap from "../assets/img/mdd/app-occurrence-map.webp";
 import mddAppStats from "../assets/img/mdd/app-statistics.webp";
+import lepiverseHome from "../assets/img/biocosmos/lepiverse-home.jpg";
+import lepiverseSpecies from "../assets/img/biocosmos/lepiverse-species.jpg";
+import lepiverseSimilar from "../assets/img/biocosmos/lepiverse-similar-species.jpg";
+import lepiverseNymphalidae from "../assets/img/biocosmos/lepiverse-family-nymphalidae.jpg";
+import lepiverseMorphospace from "../assets/img/biocosmos/lepiverse-morphospace-lycaenidae.jpg";
+import lepiverseGenetics from "../assets/img/biocosmos/lepiverse-genetics-danaus.jpg";
+import lepiverseTaxonomy from "../assets/img/biocosmos/lepiverse-taxonomy-danaus.jpg";
+import lepiverseLiterature from "../assets/img/biocosmos/lepiverse-literature-danaus.jpg";
 
 const cardDescriptonClasses = cntl`
   mt-4
@@ -196,6 +204,44 @@ const cardDescriptonClasses = cntl`
               It allows offline access, advanced search, and user-selected
               export functions for the database. We aim to simplify access to
               MDD data when access to the internet is limited.
+            </p>
+          </SoftwareCard>
+        </SoftwareLayout>
+      </div>
+      <div class="mt-4">
+        <SoftwareLayout>
+          <SoftwareCard
+            title="BioCosmos"
+            subtitle="AI-powered search and trait exploration for natural history collections"
+            platform={["Web app", "API server"]}
+            repo="https://github.com/BioVisionLab/BioCosmos"
+            docs="/projects#biocosmos-architecture"
+            install="https://lepiverse.com"
+            screenshots={[
+              { src: lepiverseHome, alt: "LepiVerse home page, built on BioCosmos" },
+              { src: lepiverseSpecies, alt: "LepiVerse species page for Morpho aega with specimen images and classification" },
+              { src: lepiverseSimilar, alt: "Visually similar species to Morpho aega ranked by image embedding similarity" },
+              { src: lepiverseNymphalidae, alt: "LepiVerse Nymphalidae family page in dark mode with genus, species, and image counts" },
+              { src: lepiverseMorphospace, alt: "Coloration morphospace of Lycaenidae, with dorsal and ventral points for each species on the first two principal components" },
+              { src: lepiverseGenetics, alt: "Genetics section for Danaus plexippus summarizing the reference genome, assembly, and gene annotation" },
+              { src: lepiverseTaxonomy, alt: "Taxonomy section for Danaus plexippus with nomenclature, classification, and name usage" },
+              { src: lepiverseLiterature, alt: "Literature section listing publications on Danaus plexippus by year" },
+            ]}
+          >
+            <p class={cardDescriptonClasses}>
+              BioCosmos is the platform behind <LinkCard
+                text="LepiVerse"
+                url="https://lepiverse.com"
+              />. It lets anyone search more than 600,000 butterfly specimen
+              images by name, image, or a plain-language question. An
+              open-weight language model plans each search as typed tool calls,
+              vision models encode it, and two embedded databases, <LinkCard
+                text="DuckDB"
+                url="https://duckdb.org"
+              /> and <LinkCard text="LanceDB" url="https://lancedb.com" />,
+              execute it in a single lightweight server. The language model
+              never touches the data, keeping token usage low and the data
+              private.
             </p>
           </SoftwareCard>
         </SoftwareLayout>

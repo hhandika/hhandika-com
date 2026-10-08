@@ -25,12 +25,12 @@ const otherProjects = [
 const tabContainerClasses = cntl`
   border
   border-forest-200
-  dark:border-forest-900
+  dark:border-forest-700
   p-1
   gap-x-2
   divide-x
   divide-forest-200
-  dark:divide-forest-900
+  dark:divide-forest-700
   flex
   rounded-full
   items-center
@@ -70,7 +70,7 @@ const inactiveClass = cntl`
       </PageDescription>
     </PageTitle>
     <div class={tabContainerClasses}>
-      <div class="flex items-center gap-x-2 divide-x divide-forest-200 dark:divide-forest-900" role="tablist" aria-label="Research areas">
+      <div class="flex items-center gap-x-2 divide-x divide-forest-200 dark:divide-forest-700" role="tablist" aria-label="Research areas">
         {
           tabData.map((tab) => (
             <button
