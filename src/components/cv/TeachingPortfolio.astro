@@ -59,6 +59,16 @@ const courseGroups = [
   },
 ];
 
+const pedagogicalTraining = [
+  {
+    code: "BASC 7000",
+    title: "Methods of Instruction in College Life Science Laboratories",
+    credits: 1,
+    term: "Fall 2019",
+    institution: "Louisiana State University, USA",
+  },
+];
+
 const workshopImages = [
   {
     src: tamboraGh,
@@ -264,6 +274,32 @@ const panelClasses = cntl`
       ))
     }
   </div>
+
+  <SectionHead text="Pedagogical Training" level={3} />
+  <ol class="space-y-4">
+    {
+      pedagogicalTraining.map((t) => (
+        <li class={panelClasses}>
+          <div class="flex flex-col gap-3 sm:flex-row sm:gap-6">
+            <p class="shrink-0 font-serif text-lg text-moss-800 dark:text-moss-200 sm:w-32">
+              {t.term}
+            </p>
+            <div class="min-w-0">
+              <h4 class="font-semibold text-forest-950 dark:text-forest-50">
+                <span class="font-mono text-sm text-forest-600 dark:text-forest-400">
+                  {t.code}
+                </span>{" "}
+                {t.title}
+              </h4>
+              <p class="mt-0.5 text-sm text-forest-700 dark:text-forest-300">
+                {t.credits} credit hour · {t.institution}
+              </p>
+            </div>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
 
   <SectionHead text="Workshops Taught" level={3} />
   <ol class="space-y-4">
