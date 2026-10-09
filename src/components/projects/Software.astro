@@ -296,15 +296,13 @@ const spaceClasses = cntl`
   />
   <Content>
     <p class={firstParagraphClasses}>
-      Over 13 years of working in the complex island systems of Southeast Asia,
-      I have repeatedly encountered the practical challenges of biodiversity
-      research: collecting standardized data in harsh field conditions, managing
-      growing genomic datasets, integrating taxonomic and phylogenetic
-      information, and working with limited computational resources. Just as
-      importantly, this work showed me the limitations of traditional workflows,
-      particularly their difficulty in representing uncertainty and capturing
-      the breadth of information needed to understand complex biological
-      systems.
+      My experience over 13 years of working in the complex island systems of
+      Southeast Asia exposed the limitations of conventional workflows. These
+      includes preserving the breadth of information needed to understand
+      complex biological systems, provide real-time feedback that can reduce
+      observer bias in the field, and enable contributions from researchers
+      working with limited resources. These challenges motivate my software
+      development efforts.
     </p>
     <p class="mt-2">
       I develop free, open-source software spanning field data collection (<Link
@@ -319,23 +317,33 @@ const spaceClasses = cntl`
       />), taxonomy (<Link
         text="Mammal Diversity Database"
         url="https://github.com/mammaldiversity/mdd_app"
-      />), and AI-enabled specimen exploration (<Link
+      />), and AI-enabled specimen exploration and trait analyses (<Link
         text="BioCosmos"
         url="https://lepiverse.com"
-      />). Together, these projects comprise more than 740,000 lines of code and
-      aim to make biodiversity research more efficient, reproducible, and
-      accessible, particularly to underfunded laboratories.
+      />). Together, these projects comprise more than 740,000 lines of code.
+      They aim to make biodiversity research more efficient, reproducible, and
+      accessible, particularly to underfunded laboratories, while enabling new
+      research directions, such as using vector embedding approaches to study
+      multi-dimensional trait variation.
     </p>
-    <p class="mt-2">
+  </Content>
+
+  <SectionHead text="Software that runs anywhere and captures more" />
+  <Content>
+    <p>
       My tools work on anything, from a phone to a high-performance computing
       cluster, and install in one click from the app stores or with a single
-      command in the terminal. Beyond speed, they capture information that was
-      difficult to record before. NAHPU, for example, links every specimen part,
-      field observation, and derivative data (e.g., audio, video, and
-      photographs) to its voucher from the moment of collection. It generates
-      statistics that detects outlier measurements and aids decision-making in
-      the field, such as which specimens to prioritize for complete tissue
-      sampling when preservation resources are limited.
+      command in the terminal. It installs like everyday software, without
+      requiring additional applications, such as Docker or Singularity. Beyond
+      speed, they capture information that was difficult to record before.
+      NAHPU, for example, links every specimen part, field observation (e.g.,
+      habitat and environmental conditions), parasite collection, and derivative
+      data (e.g., audio, video, and photographs) to its voucher from the moment
+      of collection. It generates statistics that detects outlier measurements
+      and aids decision-making in the field. This includes prioritizing
+      specimens for complete tissue sampling when preservation resources are
+      limited and reducing observer bias toward specimens that are easier or
+      more convenient to collect.
     </p>
   </Content>
 
