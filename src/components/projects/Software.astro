@@ -451,22 +451,25 @@ const spaceClasses = cntl`
   <Content>
     <p class="mt-4">
       Data preparation is handled by command-line packages that are decoupled
-      from the backend and can run independently. The packages share the same <Link
+      from the backend and can run independently. This design enables the code
+      to be used outside Biocosmos. The packages share the same <Link
         text="uv"
         url="https://docs.astral.sh/uv/"
-      /> workspace and match taxonomic names against the <Link
+      /> workspace, ensuring consistent dependency management and versioning across
+      the project. They match taxonomic names against the <Link
         text="Catalogue of Life"
         url="https://www.catalogueoflife.org"
       />, validate coordinates against <Link
         text="GADM"
         url="https://gadm.org"
       />, and precompute visual similarity and morphospace tables. Each run
-      writes a manifest containing the SHA-256 hash of every generated output.
-      The same workspace also benchmarks candidate planner models, which
-      informed the selection of the open-weight model used in production (see <a
+      writes a manifest containing the SHA-256 hash of every generated output,
+      providing a verifiable record for traceability and reproducibility. The
+      same workspace also benchmarks candidate planner models, which informed
+      the selection of the open-weight model used in production (see <a
         href="#llm-benchmark"
         class="text-mist-700 underline hover:text-mist-900 dark:text-mist-200 dark:hover:text-mist-100"
-        >the AI tab</a
+        >the AI section</a
       >).
     </p>
   </Content>
