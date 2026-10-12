@@ -11,6 +11,7 @@ import SoftwareCard from "../components/SoftwareCard.astro";
 import cntl from "cntl";
 import LinkCard from "../components/LinkCard.astro";
 import CodeStats from "../components/github/CodeStats.astro";
+import AppStoreLinks from "../components/software/AppStoreLinks.astro";
 import seguiWindows from "../assets/img/segul/segui-windows-genomics.png";
 import seguiIosGenomics from "../assets/img/segul/segui-ios-genomics.jpg";
 import seguiIosAlignments from "../assets/img/segul/segui-ios-alignments.jpg";
@@ -55,6 +56,8 @@ const cardDescriptonClasses = cntl`
       </PageDescription>
     </PageTitle>
     <CodeStats />
+    <PageSubtitle subtitle="Get the apps" />
+    <AppStoreLinks />
     <PageSubtitle subtitle="Software Projects" />
 
     <SoftwareLayout>

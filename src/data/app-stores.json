@@ -1,0 +1,41 @@
+{
+  "stores": [
+    { "id": "apple", "name": "App Store", "maker": "Apple", "platforms": "iOS, iPadOS, macOS" },
+    { "id": "google", "name": "Google Play", "maker": "Google", "platforms": "Android" },
+    { "id": "microsoft", "name": "Microsoft Store", "maker": "Microsoft", "platforms": "Windows" },
+    { "id": "snap", "name": "Snap Store", "maker": "Canonical", "platforms": "Linux" }
+  ],
+  "apps": [
+    {
+      "name": "NAHPU",
+      "tagline": "Field catalog for natural history specimens",
+      "site": "https://nahpu.app",
+      "links": {
+        "apple": "https://apps.apple.com/us/app/nahpu/id1661448584",
+        "google": "https://play.google.com/store/apps/details?id=com.hhandika.nahpu",
+        "microsoft": "https://apps.microsoft.com/detail/9NX3Z8P3NSML",
+        "snap": "https://snapcraft.io/nahpu"
+      }
+    },
+    {
+      "name": "SEGUI",
+      "tagline": "Phylogenomic data tools in a desktop and mobile app",
+      "site": "https://www.segul.app",
+      "links": {
+        "apple": "https://apps.apple.com/us/app/segui/id6447999874",
+        "google": "https://play.google.com/store/apps/details?id=com.hhandika.segui",
+        "microsoft": "https://apps.microsoft.com/detail/9NP1BQ6FW9PW",
+        "snap": "https://snapcraft.io/segui"
+      }
+    },
+    {
+      "name": "Mammal Diversity",
+      "tagline": "The Mammal Diversity Database, offline",
+      "site": "https://www.mammaldiversity.org",
+      "links": {
+        "apple": "https://apps.apple.com/us/app/mammal-diversity/id6504446627",
+        "google": "https://play.google.com/store/apps/details?id=com.hhandika.mdd"
+      }
+    }
+  ]
+}

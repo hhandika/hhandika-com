@@ -1,0 +1,79 @@
+---
+import data from "../../data/app-stores.json";
+import StoreIcon from "./StoreIcon.astro";
+
+const { stores, apps } = data;
+
+type StoreId = "apple" | "google" | "microsoft" | "snap";
+const linkFor = (app: (typeof apps)[number], store: string) =>
+  (app.links as Partial<Record<StoreId, string>>)[store as StoreId];
+
+const totalLinks = apps.reduce((n, app) => n + Object.keys(app.links).length, 0);
+const summary = `Store listings for ${apps.length} free apps across ${stores.length} app stores, ${totalLinks} in all.`;
+---
+
+<div
+  class="rounded-3xl border border-forest-900/10 bg-white p-5 shadow-sm dark:border-forest-100/10 dark:bg-forest-950/60 sm:p-6"
+>
+  <p class="sr-only">{summary}</p>
+  <div
+    class="hidden grid-cols-[minmax(0,1.4fr)_repeat(4,minmax(0,1fr))] gap-x-3 border-b border-forest-900/10 pb-3 dark:border-forest-100/10 md:grid"
+  >
+    <span class="text-xs uppercase tracking-wide text-forest-700 dark:text-forest-300">
+      App
+    </span>
+    {
+      stores.map((s) => (
+        <span class="flex items-center gap-1.5 text-xs uppercase tracking-wide text-forest-700 dark:text-forest-300">
+          <StoreIcon store={s.id} class="h-3.5 w-3.5" />
+          {s.name}
+        </span>
+      ))
+    }
+  </div>
+  <ul class="divide-y divide-forest-900/10 dark:divide-forest-100/10">
+    {
+      apps.map((app) => (
+        <li class="grid gap-3 py-4 md:grid-cols-[minmax(0,1.4fr)_repeat(4,minmax(0,1fr))] md:items-center md:gap-x-3">
+          <div>
+            <a
+              href={app.site}
+              target="_blank"
+              rel="noopener"
+              class="font-semibold text-forest-950 hover:underline dark:text-forest-50"
+            >
+              {app.name}
+            </a>
+            <p class="text-sm text-slate-600 dark:text-slate-400">{app.tagline}</p>
+          </div>
+          <div class="grid grid-cols-2 gap-2 md:contents">
+            {stores.map((s) => {
+              const url = linkFor(app, s.id);
+              return url ? (
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noopener"
+                  aria-label={`Get ${app.name} free on ${s.name}`}
+                  class="inline-flex items-center justify-center gap-1.5 rounded-full bg-forest-100 px-3 py-1.5 text-sm font-medium text-forest-900 transition hover:bg-forest-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-forest-500 dark:bg-forest-800 dark:text-forest-50 dark:hover:bg-forest-700"
+                >
+                  <StoreIcon store={s.id} class="h-4 w-4" />
+                  <span class="md:hidden">{s.name}</span>
+                  <span class="hidden md:inline">Free</span>
+                </a>
+              ) : (
+                <span class="hidden text-center text-sm text-slate-400 dark:text-slate-600 md:block">
+                  <span aria-hidden="true">—</span>
+                  <span class="sr-only">Not on {s.name}</span>
+                </span>
+              );
+            })}
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+  <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
+    All apps are free to download.
+  </p>
+</div>
