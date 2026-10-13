@@ -54,12 +54,12 @@ const summary = `Store listings for ${apps.length} free apps across ${stores.len
                   href={url}
                   target="_blank"
                   rel="noopener"
-                  aria-label={`Get ${app.name} free on ${s.name}`}
+                  aria-label={`Install ${app.name} from ${s.name}`}
                   class="inline-flex items-center justify-center gap-1.5 rounded-full bg-forest-100 px-3 py-1.5 text-sm font-medium text-forest-900 transition hover:bg-forest-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-forest-500 dark:bg-forest-800 dark:text-forest-50 dark:hover:bg-forest-700"
                 >
                   <StoreIcon store={s.id} class="h-4 w-4" />
                   <span class="md:hidden">{s.name}</span>
-                  <span class="hidden md:inline">Free</span>
+                  <span class="hidden md:inline">Install</span>
                 </a>
               ) : (
                 <span class="hidden text-center text-sm text-slate-400 dark:text-slate-600 md:block">
