@@ -8,7 +8,10 @@ type StoreId = "apple" | "google" | "microsoft" | "snap";
 const linkFor = (app: (typeof apps)[number], store: string) =>
   (app.links as Partial<Record<StoreId, string>>)[store as StoreId];
 
-const totalLinks = apps.reduce((n, app) => n + Object.keys(app.links).length, 0);
+const totalLinks = apps.reduce(
+  (n, app) => n + Object.keys(app.links).length,
+  0,
+);
 const summary = `Store listings for ${apps.length} free apps across ${stores.length} app stores, ${totalLinks} in all.`;
 ---
 
@@ -19,7 +22,9 @@ const summary = `Store listings for ${apps.length} free apps across ${stores.len
   <div
     class="hidden grid-cols-[minmax(0,1.4fr)_repeat(4,minmax(0,1fr))] gap-x-3 border-b border-forest-900/10 pb-3 dark:border-forest-100/10 md:grid"
   >
-    <span class="text-xs uppercase tracking-wide text-forest-700 dark:text-forest-300">
+    <span
+      class="text-xs uppercase tracking-wide text-forest-700 dark:text-forest-300"
+    >
       App
     </span>
     {
@@ -44,7 +49,9 @@ const summary = `Store listings for ${apps.length} free apps across ${stores.len
             >
               {app.name}
             </a>
-            <p class="text-sm text-slate-600 dark:text-slate-400">{app.tagline}</p>
+            <p class="text-sm text-slate-600 dark:text-slate-400">
+              {app.tagline}
+            </p>
           </div>
           <div class="grid grid-cols-2 gap-2 md:contents">
             {stores.map((s) => {
@@ -74,6 +81,6 @@ const summary = `Store listings for ${apps.length} free apps across ${stores.len
     }
   </ul>
   <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
-    All apps are free to download.
+    All apps are free to install.
   </p>
 </div>
