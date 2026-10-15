@@ -3,10 +3,13 @@
  * Sulawesi relief with area-of-endemism boundary zones and per-individual
  * ancestry pies for Taeromys dominator (PopCluster, K = 4), plus a linked
  * STRUCTURE-style bar strip. Data comes from scripts/build-sulawesi.R.
+ * In either view the base map can step back through the island's
+ * paleogeography over the past 4 million years (scripts/build-sulawesi-paleo.mjs).
  */
 import { Image } from "astro:assets";
 import relief from "../../assets/graphics/sulawesi-relief.png";
 import data from "../../data/sulawesi-dominator.json";
+import paleo from "../../data/sulawesi-paleo.json";
 
 const { bbox } = data;
 const W = (bbox.xmax - bbox.xmin) * 100;
@@ -19,7 +22,8 @@ const f = (n: number) => n.toFixed(2);
 // 100 units per degree, so 1° of longitude spans 111.32 km × cos(latitude);
 // across this map's latitudes that varies by under 1%.
 const scaleLat = bbox.ymin + 0.45;
-const kmToX = (km: number) => (km / (111.32 * Math.cos((scaleLat * Math.PI) / 180))) * 100;
+const kmToX = (km: number) =>
+  (km / (111.32 * Math.cos((scaleLat * Math.PI) / 180))) * 100;
 const scaleTicks = [0, 100, 200];
 const scaleX = W - 30 - kmToX(scaleTicks.at(-1)!);
 const scaleY = py(scaleLat);
@@ -79,7 +83,10 @@ const wedges = (q: number[], cx: number, cy: number, r: number) => {
 };
 
 const boundaries = data.boundaries.map(
-  (b) => "M" + b.ring.map(([lon, lat]) => `${f(px(lon))} ${f(py(lat))}`).join(" L") + " Z",
+  (b) =>
+    "M" +
+    b.ring.map(([lon, lat]) => `${f(px(lon))} ${f(py(lat))}`).join(" L") +
+    " Z",
 );
 
 // Bar strip order: by dominant cluster, then by Cluster 1 (as in the Rmd).
@@ -108,186 +115,386 @@ const kMin = Math.min(...dlk2.map((d) => d.k));
 const kMax = Math.max(...dlk2.map((d) => d.k));
 const vMin = Math.min(0, ...dlk2.map((d) => d.value));
 const vMax = Math.max(...dlk2.map((d) => d.value)) * 1.1;
-const kx = (k: number) => K_PAD.l + ((k - kMin) / (kMax - kMin)) * (K_W - K_PAD.l - K_PAD.r);
-const ky = (v: number) => K_PAD.t + ((vMax - v) / (vMax - vMin)) * (K_H - K_PAD.t - K_PAD.b);
-const kLine = dlk2.map((d, i) => `${i ? "L" : "M"}${f(kx(d.k))} ${f(ky(d.value))}`).join(" ");
+const kx = (k: number) =>
+  K_PAD.l + ((k - kMin) / (kMax - kMin)) * (K_W - K_PAD.l - K_PAD.r);
+const ky = (v: number) =>
+  K_PAD.t + ((vMax - v) / (vMax - vMin)) * (K_H - K_PAD.t - K_PAD.b);
+const kLine = dlk2
+  .map((d, i) => `${i ? "L" : "M"}${f(kx(d.k))} ${f(ky(d.value))}`)
+  .join(" ");
 const kTicks = [0, 1, 2].filter((v) => v >= vMin && v <= vMax);
+
+// Base maps: land and shelf at 4–1 Ma, redrawn from Nugraha & Hall (2018)
+// by scripts/build-sulawesi-paleo.mjs, then today's relief.
+const ringsPath = (rings: number[][][]) =>
+  rings
+    .map(
+      (r) =>
+        "M" +
+        r
+          .map(([lon, lat]) => `${px(lon).toFixed(1)} ${py(lat).toFixed(1)}`)
+          .join("L") +
+        "Z",
+    )
+    .join("");
+const paleoBands = ["shelf", "land", "high", "peak"] as const;
+const paleoLegend = [
+  { band: "shelf", label: "Shallow sea, < 200 m deep" },
+  { band: "land", label: "Land, 0–1,000 m" },
+  { band: "high", label: "Land above 1,000 m" },
+  { band: "peak", label: "Land above 2,000 m" },
+];
+const paleoSteps = [
+  ...paleo.frames.map((fr) => ({
+    ma: fr.ma,
+    label: `${fr.ma} Ma`,
+    when: `${fr.ma} million years ago`,
+    paths: paleoBands.map((b) => ({ band: b, d: ringsPath(fr.layers[b]) })),
+  })),
+  { ma: 0, label: "Today", when: "Today", paths: [] },
+];
+const coastPath = ringsPath(paleo.today.coast);
 ---
 
-<figure id="sulawesi-map" class="sulawesi-map" data-view="ancestry">
+<figure
+  id="sulawesi-map"
+  class="sulawesi-map"
+  data-view="ancestry"
+  data-age="0"
+>
   <div class="grid gap-6 lg:grid-cols-5">
     <div class="relative lg:col-span-3">
-      <div class="relative z-10 mb-2 inline-flex gap-1 rounded-full lg:absolute lg:left-0 lg:top-0 lg:mb-0 border border-forest-900/10 bg-white/85 p-1 text-xs font-semibold backdrop-blur dark:border-white/15 dark:bg-mist-950/75">
-        <button type="button" data-view-btn="ancestry" aria-pressed="true" class="view-btn">
+      <div
+        class="relative z-10 mb-2 inline-flex gap-1 rounded-full lg:absolute lg:left-0 lg:top-0 lg:mb-0 border border-forest-900/10 bg-white/85 p-1 text-xs font-semibold backdrop-blur dark:border-white/15 dark:bg-mist-950/75"
+      >
+        <button
+          type="button"
+          data-view-btn="ancestry"
+          aria-pressed="true"
+          class="view-btn"
+        >
           <i>T. dominator</i> ancestry
         </button>
-        <button type="button" data-view-btn="aoe" aria-pressed="false" class="view-btn">
+        <button
+          type="button"
+          data-view-btn="aoe"
+          aria-pressed="false"
+          class="view-btn"
+        >
           Areas of endemism
         </button>
       </div>
 
       <div class="relative mx-auto max-w-[560px]">
-        <Image
-          src={relief}
-          alt=""
-          width={900}
-          class="block h-auto w-full select-none"
-          draggable="false"
-        />
-        <svg
-          viewBox={`0 0 ${f(W)} ${f(H)}`}
-          class="absolute inset-0 h-full w-full overflow-visible"
-          role="group"
-          aria-labelledby="sul-title"
-          aria-describedby="sul-desc"
-        >
-          <title id="sul-title">Sulawesi: areas of endemism and Taeromys dominator ancestry</title>
-          <desc id="sul-desc">
-            Shaded relief map of Sulawesi with dark bands marking the boundary
-            zones between seven areas of endemism. Pie charts show the ancestry
-            proportions of 29 Taeromys dominator individuals from 12
-            localities across four genetic clusters.
-          </desc>
+        <div class="relative">
+          <Image
+            src={relief}
+            alt=""
+            width={900}
+            class="relief block h-auto w-full select-none"
+            draggable="false"
+          />
+          <svg
+            viewBox={`0 0 ${f(W)} ${f(H)}`}
+            class="absolute inset-0 h-full w-full overflow-visible"
+            role="group"
+            aria-labelledby="sul-title"
+            aria-describedby="sul-desc"
+          >
+            <title id="sul-title">
+              Sulawesi: areas of endemism and Taeromys dominator ancestry
+            </title>
+            <desc id="sul-desc">
+              Shaded relief map of Sulawesi with dark bands marking the boundary
+              zones between seven areas of endemism. Pie charts show the
+              ancestry proportions of 29 Taeromys dominator individuals from 12
+              localities across four genetic clusters. The base map can show
+              land and shallow sea 4, 3, 2, or 1 million years ago, redrawn from
+              Nugraha and Hall (2018), against today's coastline.
+            </desc>
 
-          <g class="boundaries">
-            {boundaries.map((d) => <path d={d} class="boundary" />)}
-          </g>
+            <g class="paleo" aria-hidden="true">
+              {
+                paleoSteps
+                  .filter((st) => st.ma > 0)
+                  .map((st) => (
+                    <g class="paleo-frame" data-ma={st.ma}>
+                      {st.paths.map((p) => (
+                        <path
+                          d={p.d}
+                          class={`paleo-${p.band}`}
+                          fill-rule="evenodd"
+                        />
+                      ))}
+                    </g>
+                  ))
+              }
+              <path d={coastPath} class="paleo-coast" fill-rule="evenodd"
+              ></path>
+            </g>
 
-          <g class="aoe-labels" aria-hidden="true">
-            {
-              data.aoeLabels.map((l) => (
-                <g>
-                  <text x={f(px(l.lon))} y={f(py(l.lat))} text-anchor="middle" class="aoe-code">
-                    {l.aoe}
+            <g class="boundaries">
+              {boundaries.map((d) => <path d={d} class="boundary" />)}
+            </g>
+
+            <g class="aoe-labels" aria-hidden="true">
+              {
+                data.aoeLabels.map((l) => (
+                  <g>
+                    <text
+                      x={f(px(l.lon))}
+                      y={f(py(l.lat))}
+                      text-anchor="middle"
+                      class="aoe-code"
+                    >
+                      {l.aoe}
+                    </text>
+                    <text
+                      x={f(px(l.lon))}
+                      y={f(py(l.lat) + 17)}
+                      text-anchor="middle"
+                      class="aoe-name"
+                    >
+                      {l.name}
+                    </text>
+                  </g>
+                ))
+              }
+            </g>
+
+            <g class="leaders">
+              {
+                individuals
+                  .filter((d) => d.moved)
+                  .map((d) => (
+                    <line x1={f(d.cx)} y1={f(d.cy)} x2={f(d.lx)} y2={f(d.ly)} />
+                  ))
+              }
+            </g>
+
+            <g class="locality-dots">
+              {
+                data.localities.map((l) => (
+                  <circle cx={f(px(l.lon))} cy={f(py(l.lat))} r="2.6">
+                    <title>{l.id}</title>
+                  </circle>
+                ))
+              }
+            </g>
+
+            <g
+              role="img"
+              aria-label={`Scale bar, ${scaleTicks.at(-1)} kilometres`}
+            >
+              {
+                scaleTicks
+                  .slice(1)
+                  .map((km, k) => (
+                    <rect
+                      x={f(scaleX + kmToX(scaleTicks[k]))}
+                      y={f(scaleY - 8)}
+                      width={f(kmToX(km - scaleTicks[k]))}
+                      height="8"
+                      class={`stroke-forest-900 dark:stroke-forest-100 ${k % 2 ? "fill-white dark:fill-forest-950" : "fill-forest-900 dark:fill-forest-100"}`}
+                      stroke-width="1.2"
+                    />
+                  ))
+              }
+              {
+                scaleTicks.map((km, k) => (
+                  <text
+                    x={f(scaleX + kmToX(km))}
+                    y={f(scaleY + 18)}
+                    text-anchor="middle"
+                    font-size="18"
+                    class="fill-forest-900 dark:fill-forest-100"
+                  >
+                    {k === scaleTicks.length - 1 ? `${km} km` : km}
                   </text>
-                  <text x={f(px(l.lon))} y={f(py(l.lat) + 17)} text-anchor="middle" class="aoe-name">
-                    {l.name}
-                  </text>
-                </g>
-              ))
-            }
-          </g>
+                ))
+              }
+            </g>
 
-          <g class="leaders">
-            {
-              individuals
-                .filter((d) => d.moved)
-                .map((d) => <line x1={f(d.cx)} y1={f(d.cy)} x2={f(d.lx)} y2={f(d.ly)} />)
-            }
-          </g>
+            <g class="pies">
+              {
+                individuals.map((d) => (
+                  <g
+                    class="pie"
+                    data-ind={d.i}
+                    data-tip={tip(d)}
+                    tabindex="0"
+                    role="button"
+                    aria-label={`${d.catalog}, ${d.locality}: ${d.q.flatMap((v, c) => (pct(v) === "0%" ? [] : [`cluster ${c + 1} ${pct(v)}`])).join(", ")}`}
+                    style={`transition-delay:${(0.15 + d.i * 0.03).toFixed(2)}s`}
+                  >
+                    {wedges(d.q, d.cx, d.cy, PIE_R).map((w) =>
+                      w.full ? (
+                        <circle
+                          cx={f(d.cx)}
+                          cy={f(d.cy)}
+                          r={PIE_R}
+                          fill={w.fill}
+                        />
+                      ) : (
+                        <path d={w.d} fill={w.fill} />
+                      ),
+                    )}
+                    <circle
+                      cx={f(d.cx)}
+                      cy={f(d.cy)}
+                      r={PIE_R}
+                      class="pie-ring"
+                    />
+                  </g>
+                ))
+              }
+            </g>
+          </svg>
+          <div
+            class="paleo-legend pointer-events-none absolute bottom-[11%] right-0 z-10 rounded-lg border border-forest-900/10 bg-white/85 px-2.5 py-2 text-[0.7rem] leading-tight text-forest-800 backdrop-blur dark:border-white/15 dark:bg-mist-950/75 dark:text-forest-100"
+            aria-hidden="true"
+          >
+            <ul class="space-y-1">
+              {
+                paleoLegend.map((l) => (
+                  <li class="flex items-center gap-1.5">
+                    <svg viewBox="0 0 12 12" class="h-2.5 w-2.5 shrink-0">
+                      <rect
+                        width="12"
+                        height="12"
+                        rx="2"
+                        class={`paleo-${l.band}`}
+                      />
+                    </svg>
+                    {l.label}
+                  </li>
+                ))
+              }
+              <li class="flex items-center gap-1.5">
+                <svg viewBox="0 0 24 10" class="h-2.5 w-5 shrink-0">
+                  <path d="M0 5H24" class="paleo-coast"></path>
+                </svg>
+                Today's coastline
+              </li>
+            </ul>
+            <a
+              href={paleo.source.doi}
+              class="pointer-events-auto mt-1.5 block text-forest-600 underline decoration-moss-400 underline-offset-2 hover:text-moss-700 dark:text-forest-300"
+              >{paleo.source.short}</a
+            >
+          </div>
+          <div
+            class="map-tip absolute z-20 hidden min-w-[9.5rem] rounded-lg border border-forest-900/10 bg-white/95 px-3 py-2 text-xs shadow-lg backdrop-blur dark:border-white/15 dark:bg-mist-950/90 dark:text-forest-100"
+            role="status"
+          >
+          </div>
+        </div>
 
-          <g class="locality-dots">
-            {
-              data.localities.map((l) => (
-                <circle cx={f(px(l.lon))} cy={f(py(l.lat))} r="2.6">
-                  <title>{l.id}</title>
-                </circle>
-              ))
-            }
-          </g>
-
-          <g role="img" aria-label={`Scale bar, ${scaleTicks.at(-1)} kilometres`}>
-            {
-              scaleTicks.slice(1).map((km, k) => (
-                <rect
-                  x={f(scaleX + kmToX(scaleTicks[k]))}
-                  y={f(scaleY - 8)}
-                  width={f(kmToX(km - scaleTicks[k]))}
-                  height="8"
-                  class={`stroke-forest-900 dark:stroke-forest-100 ${k % 2 ? "fill-white dark:fill-forest-950" : "fill-forest-900 dark:fill-forest-100"}`}
-                  stroke-width="1.2"
-                />
-              ))
-            }
-            {
-              scaleTicks.map((km, k) => (
-                <text
-                  x={f(scaleX + kmToX(km))}
-                  y={f(scaleY + 18)}
-                  text-anchor="middle"
-                  font-size="18"
-                  class="fill-forest-900 dark:fill-forest-100"
-                >
-                  {k === scaleTicks.length - 1 ? `${km} km` : km}
-                </text>
-              ))
-            }
-          </g>
-
-          <g class="pies">
-            {
-              individuals.map((d) => (
-                <g
-                  class="pie"
-                  data-ind={d.i}
-                  data-tip={tip(d)}
-                  tabindex="0"
-                  role="button"
-                  aria-label={`${d.catalog}, ${d.locality}: ${d.q.flatMap((v, c) => (pct(v) === "0%" ? [] : [`cluster ${c + 1} ${pct(v)}`])).join(", ")}`}
-                  style={`transition-delay:${(0.15 + d.i * 0.03).toFixed(2)}s`}
-                >
-                  {wedges(d.q, d.cx, d.cy, PIE_R).map((w) =>
-                    w.full ? (
-                      <circle cx={f(d.cx)} cy={f(d.cy)} r={PIE_R} fill={w.fill} />
-                    ) : (
-                      <path d={w.d} fill={w.fill} />
-                    ),
-                  )}
-                  <circle cx={f(d.cx)} cy={f(d.cy)} r={PIE_R} class="pie-ring" />
-                </g>
-              ))
-            }
-          </g>
-        </svg>
         <div
-          class="map-tip absolute z-20 hidden min-w-[9.5rem] rounded-lg border border-forest-900/10 bg-white/95 px-3 py-2 text-xs shadow-lg backdrop-blur dark:border-white/15 dark:bg-mist-950/90 dark:text-forest-100"
-          role="status"
+          class="relative z-10 mt-2 inline-flex flex-wrap items-center gap-1 rounded-full border border-forest-900/10 bg-white/85 p-1 text-xs font-semibold backdrop-blur lg:absolute lg:bottom-0 lg:left-0 lg:mt-0 dark:border-white/15 dark:bg-mist-950/75"
+          role="group"
+          aria-label="Base map age"
         >
+          {
+            paleoSteps.map((st, k) => (
+              <button
+                type="button"
+                class="time-btn"
+                data-step={k}
+                aria-pressed={k === paleoSteps.length - 1 ? "true" : "false"}
+                title={st.when}
+              >
+                {st.label}
+              </button>
+            ))
+          }
+          <button
+            type="button"
+            class="time-btn play-btn"
+            aria-label="Animate the past 4 million years"
+            title="Animate the past 4 million years"
+          >
+            <svg viewBox="0 0 16 16" class="h-3.5 w-3.5" aria-hidden="true"
+              ><path d="M4 2.5v11l9-5.5z" fill="currentColor"></path></svg
+            >
+          </button>
         </div>
       </div>
     </div>
 
-    <div class="flex flex-col gap-4 text-sm text-forest-800 lg:col-span-2 dark:text-forest-200">
+    <div
+      class="flex flex-col gap-4 text-sm text-forest-800 lg:col-span-2 dark:text-forest-200"
+    >
       <div>
-        <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-forest-600 dark:text-forest-400">
+        <p
+          class="mb-2 text-xs font-semibold uppercase tracking-wider text-forest-600 dark:text-forest-400"
+        >
           Ancestry clusters (K = 4)
         </p>
         <ul class="grid grid-cols-2 gap-x-4 gap-y-1">
           {
             colors.map((c, i) => (
               <li class="flex items-center gap-2">
-                <span class="inline-block h-3 w-3 rounded-sm" style={`background:${c}`} />
+                <span
+                  class="inline-block h-3 w-3 rounded-sm"
+                  style={`background:${c}`}
+                />
                 Cluster {i + 1}
               </li>
             ))
           }
         </ul>
         <p class="mt-2 flex items-center gap-2">
-          <span class="inline-block h-2.5 w-6 rounded-sm bg-forest-950/80 dark:bg-black/80 dark:ring-1 dark:ring-white/30"></span>
+          <span
+            class="inline-block h-2.5 w-6 rounded-sm bg-forest-950/80 dark:bg-black/80 dark:ring-1 dark:ring-white/30"
+          ></span>
           Boundary zones between areas of endemism
         </p>
       </div>
 
       <ul class="list-disc space-y-1.5 pl-4 text-pretty marker:text-moss-500">
         <li>
-          <span class="whitespace-nowrap font-semibold text-forest-900 dark:text-forest-50"><span class="mr-1 inline-block h-2.5 w-2.5 rounded-sm align-baseline" style={`background:${colors[1]}`} aria-hidden="true"></span>Cluster 2</span> occurs in
-          every area of endemism sampled, from the southwest peninsula to the
-          northeastern tip.
+          <span
+            class="whitespace-nowrap font-semibold text-forest-900 dark:text-forest-50"
+            ><span
+              class="mr-1 inline-block h-2.5 w-2.5 rounded-sm align-baseline"
+              style={`background:${colors[1]}`}
+              aria-hidden="true"></span>Cluster 2</span
+          > occurs in every area of endemism sampled, from the southwest peninsula
+          to the northeastern tip.
         </li>
         <li>
-          <span class="whitespace-nowrap font-semibold text-forest-900 dark:text-forest-50"><span class="mr-1 inline-block h-2.5 w-2.5 rounded-sm align-baseline" style={`background:${colors[3]}`} aria-hidden="true"></span>Cluster 4</span> dominates
-          the southeast (Lawaki), with a trace in one west-central individual.
+          <span
+            class="whitespace-nowrap font-semibold text-forest-900 dark:text-forest-50"
+            ><span
+              class="mr-1 inline-block h-2.5 w-2.5 rounded-sm align-baseline"
+              style={`background:${colors[3]}`}
+              aria-hidden="true"></span>Cluster 4</span
+          > dominates the southeast (Lawaki), with a trace in one west-central individual.
         </li>
         <li>
-          <span class="whitespace-nowrap font-semibold text-forest-900 dark:text-forest-50"><span class="mr-1 inline-block h-2.5 w-2.5 rounded-sm align-baseline" style={`background:${colors[0]}`} aria-hidden="true"></span>Cluster 1</span> and
-          <span class="whitespace-nowrap font-semibold text-forest-900 dark:text-forest-50"><span class="mr-1 inline-block h-2.5 w-2.5 rounded-sm align-baseline" style={`background:${colors[2]}`} aria-hidden="true"></span>Cluster 3</span> occur at
-          scattered sites, and several individuals are
-          admixed, some sharing a mountain with unadmixed neighbours.
+          <span
+            class="whitespace-nowrap font-semibold text-forest-900 dark:text-forest-50"
+            ><span
+              class="mr-1 inline-block h-2.5 w-2.5 rounded-sm align-baseline"
+              style={`background:${colors[0]}`}
+              aria-hidden="true"></span>Cluster 1</span
+          > and
+          <span
+            class="whitespace-nowrap font-semibold text-forest-900 dark:text-forest-50"
+            ><span
+              class="mr-1 inline-block h-2.5 w-2.5 rounded-sm align-baseline"
+              style={`background:${colors[2]}`}
+              aria-hidden="true"></span>Cluster 3</span
+          > occur at scattered sites, and several individuals are admixed, some sharing
+          a mountain with unadmixed neighbours.
         </li>
       </ul>
 
       <div>
-        <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-forest-600 dark:text-forest-400">
+        <p
+          class="mb-1 text-xs font-semibold uppercase tracking-wider text-forest-600 dark:text-forest-400"
+        >
           Each bar is one individual
         </p>
         <svg
@@ -303,26 +510,48 @@ const kTicks = [0, 1, 2].filter((v) => v >= vMin && v <= vMax);
                 <g class="bar" data-ind={d.i} data-tip={tip(d)}>
                   {d.q.map((v, c) => {
                     const h = v * BAR_H;
-                    const r = <rect x={j * BAR_W} y={f(y)} width={BAR_W} height={f(h)} fill={colors[c]} />;
+                    const r = (
+                      <rect
+                        x={j * BAR_W}
+                        y={f(y)}
+                        width={BAR_W}
+                        height={f(h)}
+                        fill={colors[c]}
+                      />
+                    );
                     y += h;
                     return r;
                   })}
-                  <rect x={j * BAR_W} y="0" width={BAR_W} height={BAR_H} class="bar-hit" />
+                  <rect
+                    x={j * BAR_W}
+                    y="0"
+                    width={BAR_W}
+                    height={BAR_H}
+                    class="bar-hit"
+                  />
                 </g>
               );
             })
           }
         </svg>
         <p class="mt-1 text-xs text-forest-600 dark:text-forest-400">
-          Hover or tap a bar or pie, or tab to a pie, to see the specimen, locality, and ancestry.
+          Hover or tap a bar or pie, or tab to a pie, to see the specimen,
+          locality, and ancestry.
         </p>
       </div>
 
       <div>
-        <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-forest-600 dark:text-forest-400">
+        <p
+          class="mb-1 text-xs font-semibold uppercase tracking-wider text-forest-600 dark:text-forest-400"
+        >
           Choosing K
         </p>
-        <p class="text-[0.7rem] text-forest-600 dark:text-forest-400" aria-hidden="true">DLK2</p>
+        <p
+          class="text-[0.7rem] text-forest-600 dark:text-forest-400"
+          aria-hidden="true"
+        >
+          DLK2
+        </p>
         <svg
           viewBox={`0 0 ${K_W} ${K_H}`}
           class="h-auto w-full overflow-visible"
@@ -332,41 +561,81 @@ const kTicks = [0, 1, 2].filter((v) => v >= vMin && v <= vMax);
           {
             kTicks.map((v) => (
               <g>
-                <line x1={K_PAD.l} x2={K_W - K_PAD.r} y1={f(ky(v))} y2={f(ky(v))} class={v === 0 ? "k-zero" : "k-grid"} />
-                <text x={K_PAD.l - 6} y={f(ky(v) + 3.5)} text-anchor="end" class="k-axis">{v}</text>
+                <line
+                  x1={K_PAD.l}
+                  x2={K_W - K_PAD.r}
+                  y1={f(ky(v))}
+                  y2={f(ky(v))}
+                  class={v === 0 ? "k-zero" : "k-grid"}
+                />
+                <text
+                  x={K_PAD.l - 6}
+                  y={f(ky(v) + 3.5)}
+                  text-anchor="end"
+                  class="k-axis"
+                >
+                  {v}
+                </text>
               </g>
             ))
           }
           {
             dlk2.map((d) => (
-              <text x={f(kx(d.k))} y={K_H - 6} text-anchor="middle" class={d.k === bestK ? "k-axis k-best-text" : "k-axis"}>
+              <text
+                x={f(kx(d.k))}
+                y={K_H - 6}
+                text-anchor="middle"
+                class={d.k === bestK ? "k-axis k-best-text" : "k-axis"}
+              >
                 K={d.k}
               </text>
             ))
           }
-          <path d={kLine} class="k-line" />
+          <path d={kLine} class="k-line"></path>
           {
             dlk2.map((d) =>
               d.k === bestK ? (
                 <g>
-                  <circle cx={f(kx(d.k))} cy={f(ky(d.value))} r="7" class="k-best-ring" />
-                  <circle cx={f(kx(d.k))} cy={f(ky(d.value))} r="4" class="k-best" />
-                  <text x={f(kx(d.k) + 11)} y={f(ky(d.value) + 4)} class="k-best-text k-label">
+                  <circle
+                    cx={f(kx(d.k))}
+                    cy={f(ky(d.value))}
+                    r="7"
+                    class="k-best-ring"
+                  />
+                  <circle
+                    cx={f(kx(d.k))}
+                    cy={f(ky(d.value))}
+                    r="4"
+                    class="k-best"
+                  />
+                  <text
+                    x={f(kx(d.k) + 11)}
+                    y={f(ky(d.value) + 4)}
+                    class="k-best-text k-label"
+                  >
                     best K = {bestK}
                   </text>
                 </g>
               ) : (
-                <circle cx={f(kx(d.k))} cy={f(ky(d.value))} r="3.5" class="k-pt">
-                  <title>K = {d.k}: DLK2 = {d.value}</title>
+                <circle
+                  cx={f(kx(d.k))}
+                  cy={f(ky(d.value))}
+                  r="3.5"
+                  class="k-pt"
+                >
+                  <title>
+                    K = {d.k}: DLK2 = {d.value}
+                  </title>
                 </circle>
               ),
             )
           }
         </svg>
-        <p class="mt-1 text-pretty text-xs text-forest-600 dark:text-forest-400">
+        <p
+          class="mt-1 text-pretty text-xs text-forest-600 dark:text-forest-400"
+        >
           PopCluster's DLK2 statistic, the second-order change in likelihood
-          between successive K, peaks at K = {bestK} (K = 1–7, five replicates
-          each).
+          between successive K, peaks at K = {bestK} (K = 1–7, five replicates each).
         </p>
       </div>
     </div>
@@ -378,9 +647,13 @@ const kTicks = [0, 1, 2].filter((v) => v >= vMin && v <= vMax);
     border-radius: 9999px;
     padding: 0.35rem 0.75rem;
     color: theme("colors.forest.700");
-    transition: background-color 0.2s, color 0.2s;
+    transition:
+      background-color 0.2s,
+      color 0.2s;
   }
-  :global(.dark) .view-btn { color: theme("colors.forest.100"); }
+  :global(.dark) .view-btn {
+    color: theme("colors.forest.100");
+  }
   .view-btn[aria-pressed="true"] {
     background: theme("colors.moss.400");
     color: theme("colors.moss.950");
@@ -392,7 +665,9 @@ const kTicks = [0, 1, 2].filter((v) => v >= vMin && v <= vMax);
     stroke: #0e1a12;
     stroke-width: 1.5;
     stroke-linejoin: round;
-    transition: fill 0.4s, stroke 0.4s;
+    transition:
+      fill 0.4s,
+      stroke 0.4s;
   }
   .aoe-code,
   .aoe-name {
@@ -432,9 +707,13 @@ const kTicks = [0, 1, 2].filter((v) => v >= vMin && v <= vMax);
     transform-box: fill-box;
     transform-origin: center;
     transform: scale(0);
-    transition: transform 0.5s cubic-bezier(0.3, 1.4, 0.5, 1), opacity 0.3s;
+    transition:
+      transform 0.5s cubic-bezier(0.3, 1.4, 0.5, 1),
+      opacity 0.3s;
   }
-  .sulawesi-map.in .pie { transform: scale(1); }
+  .sulawesi-map.in .pie {
+    transform: scale(1);
+  }
   .pie-ring {
     fill: none;
     stroke: #0e1a12;
@@ -445,21 +724,36 @@ const kTicks = [0, 1, 2].filter((v) => v >= vMin && v <= vMax);
     stroke: #fff;
     stroke-width: 3;
   }
-  .pie.active { filter: drop-shadow(0 0 4px rgb(0 0 0 / 0.6)); }
+  .pie.active {
+    filter: drop-shadow(0 0 4px rgb(0 0 0 / 0.6));
+  }
 
   /* Areas-of-endemism view */
   [data-view="aoe"] .boundary {
     fill: #c95d10;
     stroke: #c95d10;
   }
-  [data-view="aoe"] .aoe-code { opacity: 0.9; }
-  [data-view="aoe"] .aoe-name { opacity: 0.85; }
+  [data-view="aoe"] .aoe-code {
+    opacity: 0.9;
+  }
+  [data-view="aoe"] .aoe-name {
+    opacity: 0.85;
+  }
   [data-view="aoe"] .pie,
-  [data-view="aoe"] .leaders { opacity: 0; pointer-events: none; }
-  .leaders { transition: opacity 0.3s; }
+  [data-view="aoe"] .leaders {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .leaders {
+    transition: opacity 0.3s;
+  }
 
-  .bar { cursor: pointer; }
-  .bar rect { shape-rendering: crispEdges; }
+  .bar {
+    cursor: pointer;
+  }
+  .bar rect {
+    shape-rendering: crispEdges;
+  }
   .bar-hit {
     fill: transparent;
     stroke: #0e1a12;
@@ -470,14 +764,20 @@ const kTicks = [0, 1, 2].filter((v) => v >= vMin && v <= vMax);
     stroke: #0e1a12;
     stroke-width: 2.5;
   }
-  :global(.dark) .bar.active .bar-hit { stroke: #fff; }
-  .bar-strip:has(.bar.active) .bar:not(.active) { opacity: 0.45; }
+  :global(.dark) .bar.active .bar-hit {
+    stroke: #fff;
+  }
+  .bar-strip:has(.bar.active) .bar:not(.active) {
+    opacity: 0.45;
+  }
 
   .k-axis {
     font-size: 10px;
     fill: theme("colors.forest.600");
   }
-  :global(.dark) .k-axis { fill: theme("colors.forest.400"); }
+  :global(.dark) .k-axis {
+    fill: theme("colors.forest.400");
+  }
   .k-grid {
     stroke: theme("colors.forest.900");
     stroke-opacity: 0.1;
@@ -486,16 +786,26 @@ const kTicks = [0, 1, 2].filter((v) => v >= vMin && v <= vMax);
     stroke: theme("colors.forest.900");
     stroke-opacity: 0.35;
   }
-  :global(.dark) .k-grid { stroke: #fff; stroke-opacity: 0.1; }
-  :global(.dark) .k-zero { stroke: #fff; stroke-opacity: 0.35; }
+  :global(.dark) .k-grid {
+    stroke: #fff;
+    stroke-opacity: 0.1;
+  }
+  :global(.dark) .k-zero {
+    stroke: #fff;
+    stroke-opacity: 0.35;
+  }
   .k-line {
     fill: none;
     stroke: theme("colors.forest.500");
     stroke-width: 1.5;
     stroke-linejoin: round;
   }
-  .k-pt { fill: theme("colors.forest.500"); }
-  .k-best { fill: theme("colors.moss.500"); }
+  .k-pt {
+    fill: theme("colors.forest.500");
+  }
+  .k-best {
+    fill: theme("colors.moss.500");
+  }
   .k-best-ring {
     fill: none;
     stroke: theme("colors.moss.500");
@@ -506,11 +816,97 @@ const kTicks = [0, 1, 2].filter((v) => v >= vMin && v <= vMax);
     fill: theme("colors.moss.700");
     font-weight: 700;
   }
-  :global(.dark) .k-best-text { fill: theme("colors.moss.300"); }
-  .k-label { font-size: 11px; }
+  :global(.dark) .k-best-text {
+    fill: theme("colors.moss.300");
+  }
+  .k-label {
+    font-size: 11px;
+  }
+
+  /* Paleogeography view */
+  .relief {
+    transition: opacity 0.5s;
+  }
+  .paleo,
+  .paleo-frame {
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+  .paleo {
+    pointer-events: none;
+  }
+  .paleo-frame.on {
+    opacity: 1;
+  }
+  .paleo-shelf {
+    fill: #cae3fc;
+  }
+  .paleo-land {
+    fill: #c9d6b0;
+  }
+  .paleo-high {
+    fill: #8fa972;
+  }
+  .paleo-peak {
+    fill: #66704f;
+  }
+  :global(.dark) .paleo-shelf {
+    fill: #2c4a66;
+  }
+  .paleo-coast {
+    fill: none;
+    stroke: #1c2b21;
+    stroke-width: 1.2;
+    stroke-dasharray: 3 2.5;
+    stroke-opacity: 0.7;
+  }
+  :global(.dark) .paleo-coast {
+    stroke: #e2e9e3;
+  }
+  .paleo-legend {
+    display: none;
+  }
+  .sulawesi-map:not([data-age="0"]) .paleo-legend {
+    display: block;
+  }
+  .sulawesi-map:not([data-age="0"]) .paleo {
+    opacity: 1;
+  }
+  .sulawesi-map:not([data-age="0"]) .relief {
+    opacity: 0;
+  }
+  .time-btn {
+    border-radius: 9999px;
+    padding: 0.3rem 0.65rem;
+    color: theme("colors.forest.700");
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+  .time-btn.play-btn {
+    padding: 0.35rem 0.55rem;
+  }
+  :global(.dark) .time-btn {
+    color: theme("colors.forest.100");
+  }
+  .time-btn[aria-pressed="true"] {
+    background: theme("colors.moss.400");
+    color: theme("colors.moss.950");
+  }
 
   @media (prefers-reduced-motion: reduce) {
-    .pie, .boundary, .aoe-code, .aoe-name, .leaders { transition: none; }
+    .pie,
+    .boundary,
+    .aoe-code,
+    .aoe-name,
+    .leaders {
+      transition: none;
+    }
+    .relief,
+    .paleo,
+    .paleo-frame {
+      transition: none;
+    }
   }
 </style>
 
@@ -538,31 +934,70 @@ const kTicks = [0, 1, 2].filter((v) => v >= vMin && v <= vMax);
     b.addEventListener("click", () => {
       root.dataset.view = b.dataset.viewBtn;
       buttons.forEach((o) => o.setAttribute("aria-pressed", String(o === b)));
-      if (b.dataset.viewBtn === "aoe") clear();
+      if (b.dataset.viewBtn !== "ancestry") clear();
     }),
   );
 
+  // Base map age.
+  const frames = root.querySelectorAll<SVGGElement>(".paleo-frame");
+  const timeBtns = root.querySelectorAll<HTMLButtonElement>(
+    ".time-btn[data-step]",
+  );
+  const last = frames.length;
+  const setStep = (k: number) => {
+    root.dataset.age = k === last ? "0" : frames[k].dataset.ma;
+    frames.forEach((fr, j) => fr.classList.toggle("on", j === k));
+    timeBtns.forEach((b) =>
+      b.setAttribute("aria-pressed", String(Number(b.dataset.step) === k)),
+    );
+  };
+  let timer: number | undefined;
+  const stop = () => {
+    window.clearInterval(timer);
+    timer = undefined;
+  };
+  timeBtns.forEach((b) =>
+    b.addEventListener("click", () => {
+      stop();
+      setStep(Number(b.dataset.step));
+    }),
+  );
+  // Step from 4 Ma to today.
+  root.querySelector(".play-btn")!.addEventListener("click", () => {
+    stop();
+    let k = 0;
+    setStep(k);
+    timer = window.setInterval(() => {
+      k += 1;
+      setStep(k);
+      if (k === last) stop();
+    }, 1400);
+  });
+
   // Linked highlight between pies and bars.
   const clear = () => {
-    root.querySelectorAll(".active").forEach((el) => el.classList.remove("active"));
+    root
+      .querySelectorAll(".active")
+      .forEach((el) => el.classList.remove("active"));
     tipEl.classList.add("hidden");
   };
 
   const show = (i: string) => {
-    if (root.dataset.view === "aoe") return;
+    if (root.dataset.view !== "ancestry") return;
     clear();
-    root.querySelectorAll(`[data-ind="${i}"]`).forEach((el) => el.classList.add("active"));
+    root
+      .querySelectorAll(`[data-ind="${i}"]`)
+      .forEach((el) => el.classList.add("active"));
     const pie = root.querySelector<SVGGElement>(`.pie[data-ind="${i}"]`)!;
     const d = JSON.parse(pie.dataset.tip!);
     tipEl.innerHTML =
       `<p class="font-semibold">${d.catalog}</p>` +
       `<p class="mb-1 opacity-80">${d.locality} · ${d.aoe}</p>` +
       d.q
-        .map(
-          (v: string, c: number) =>
-            v === "0%"
-              ? ""
-              : `<p class="flex items-center gap-2"><span style="background:${colors[c]}" class="inline-block h-2 w-2 rounded-sm"></span>Cluster ${c + 1}<span class="ml-auto tabular-nums">${v}</span></p>`,
+        .map((v: string, c: number) =>
+          v === "0%"
+            ? ""
+            : `<p class="flex items-center gap-2"><span style="background:${colors[c]}" class="inline-block h-2 w-2 rounded-sm"></span>Cluster ${c + 1}<span class="ml-auto tabular-nums">${v}</span></p>`,
         )
         .join("");
     tipEl.classList.remove("hidden");
@@ -570,8 +1005,14 @@ const kTicks = [0, 1, 2].filter((v) => v >= vMin && v <= vMax);
     const p = pie.getBoundingClientRect();
     const x = p.left - box.left + p.width / 2;
     const y = p.top - box.top;
-    const left = Math.min(Math.max(x - tipEl.offsetWidth / 2, 0), box.width - tipEl.offsetWidth);
-    const top = y - tipEl.offsetHeight - 8 < 0 ? p.bottom - box.top + 8 : y - tipEl.offsetHeight - 8;
+    const left = Math.min(
+      Math.max(x - tipEl.offsetWidth / 2, 0),
+      box.width - tipEl.offsetWidth,
+    );
+    const top =
+      y - tipEl.offsetHeight - 8 < 0
+        ? p.bottom - box.top + 8
+        : y - tipEl.offsetHeight - 8;
     tipEl.style.left = `${left}px`;
     tipEl.style.top = `${top}px`;
   };
