@@ -1,0 +1,288 @@
+{
+  "source": "BEAST 2, five loci, strict clock",
+  "samples": 55,
+  "species": 19,
+  "stem": {
+    "h": 3.039,
+    "hpd": [
+      2.572,
+      3.506
+    ],
+    "pp": 0.613
+  },
+  "tree": {
+    "h": 2.805,
+    "hpd": [
+      2.344,
+      3.25
+    ],
+    "pp": 0.99,
+    "children": [
+      {
+        "h": 2.433,
+        "hpd": [
+          2.043,
+          2.836
+        ],
+        "pp": 1,
+        "children": [
+          {
+            "h": 1.394,
+            "hpd": [
+              1.121,
+              1.674
+            ],
+            "pp": 1,
+            "children": [
+              {
+                "h": 1.295,
+                "hpd": [
+                  1.049,
+                  1.56
+                ],
+                "pp": 0.941,
+                "children": [
+                  {
+                    "h": 1.142,
+                    "hpd": [
+                      0.918,
+                      1.376
+                    ],
+                    "pp": 0.99,
+                    "children": [
+                      {
+                        "h": 1.003,
+                        "hpd": [
+                          0.773,
+                          1.243
+                        ],
+                        "pp": 0.739,
+                        "children": [
+                          {
+                            "name": "Bunomys andrewsi",
+                            "samples": 5,
+                            "crown": 0.525
+                          },
+                          {
+                            "name": "Bunomys coelestis",
+                            "samples": 4,
+                            "crown": 0.055
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Bunomys penitus",
+                        "samples": 5,
+                        "crown": 0.799
+                      }
+                    ]
+                  },
+                  {
+                    "h": 0.959,
+                    "hpd": [
+                      0.696,
+                      1.225
+                    ],
+                    "pp": 0.988,
+                    "children": [
+                      {
+                        "name": "Bunomys chrysocomus",
+                        "samples": 3,
+                        "crown": 0.269
+                      },
+                      {
+                        "name": "Bunomys prolatus",
+                        "samples": 2,
+                        "crown": 0.012
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "h": 0.748,
+                "hpd": [
+                  0.512,
+                  0.991
+                ],
+                "pp": 1,
+                "children": [
+                  {
+                    "name": "Bunomys sp. nov.",
+                    "samples": 1,
+                    "crown": null
+                  },
+                  {
+                    "name": "Bunomys torajae",
+                    "samples": 3,
+                    "crown": 0.071
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "h": 2.316,
+            "hpd": [
+              1.946,
+              2.697
+            ],
+            "pp": 0.93,
+            "children": [
+              {
+                "h": 2.185,
+                "hpd": [
+                  1.819,
+                  2.559
+                ],
+                "pp": 0.471,
+                "children": [
+                  {
+                    "name": "Bunomys fratrorum",
+                    "samples": 7,
+                    "crown": 1.597
+                  },
+                  {
+                    "h": 2.124,
+                    "hpd": [
+                      1.76,
+                      2.512
+                    ],
+                    "pp": 0.324,
+                    "children": [
+                      {
+                        "h": 1.647,
+                        "hpd": [
+                          1.281,
+                          2.031
+                        ],
+                        "pp": 0.999,
+                        "children": [
+                          {
+                            "name": "Eropeplus canus",
+                            "samples": 1,
+                            "crown": null
+                          },
+                          {
+                            "name": "Lenomys meyeri",
+                            "samples": 3,
+                            "crown": 0.212
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Gen. nov. sp. nov.",
+                        "samples": 1,
+                        "crown": null
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "h": 2.246,
+                "hpd": [
+                  1.884,
+                  2.627
+                ],
+                "pp": 0.41,
+                "children": [
+                  {
+                    "h": 1.65,
+                    "hpd": [
+                      1.312,
+                      1.993
+                    ],
+                    "pp": 1,
+                    "children": [
+                      {
+                        "name": "Taeromys dominator",
+                        "samples": 7,
+                        "crown": 0.802
+                      },
+                      {
+                        "name": "Taeromys celebensis",
+                        "samples": 2,
+                        "crown": 0.29
+                      }
+                    ]
+                  },
+                  {
+                    "h": 1.882,
+                    "hpd": [
+                      1.54,
+                      2.23
+                    ],
+                    "pp": 1,
+                    "children": [
+                      {
+                        "h": 1.448,
+                        "hpd": [
+                          1.154,
+                          1.749
+                        ],
+                        "pp": 1,
+                        "children": [
+                          {
+                            "h": 1.331,
+                            "hpd": [
+                              1.045,
+                              1.63
+                            ],
+                            "pp": 0.486,
+                            "children": [
+                              {
+                                "name": "Taeromys calitrichus",
+                                "samples": 2,
+                                "crown": 0.502
+                              },
+                              {
+                                "name": "Taeromys punicans",
+                                "samples": 1,
+                                "crown": null
+                              }
+                            ]
+                          },
+                          {
+                            "name": "Taeromys sp. nov.",
+                            "samples": 1,
+                            "crown": null
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Taeromys taerae",
+                        "samples": 5,
+                        "crown": 0.366
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "h": 1.248,
+        "hpd": [
+          0.807,
+          1.7
+        ],
+        "pp": 1,
+        "children": [
+          {
+            "name": "Halmaheramys bokimekot",
+            "samples": 1,
+            "crown": null
+          },
+          {
+            "name": "Halmaheramys wallacei",
+            "samples": 1,
+            "crown": null
+          }
+        ]
+      }
+    ]
+  }
+}

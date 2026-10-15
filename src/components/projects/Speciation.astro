@@ -12,6 +12,7 @@ import LowSeaLevelMap from "./LowSeaLevelMap.astro";
 import SkyIslandDiagram from "../svg/SkyIslandDiagram.astro";
 import SulawesiAncestryMap from "./SulawesiAncestryMap.astro";
 import ParasiteStudyDesign from "./ParasiteStudyDesign.astro";
+import BunomysChronogram from "./BunomysChronogram.astro";
 // import ElevationRanges from "./ElevationRanges.astro";
 
 const firstParagraphClasses = cntl`
@@ -96,6 +97,13 @@ const eyebrowClasses = cntl`
       significance of this work in conserving mammals and their habitats.
     </p>
   </Content>
+
+  <p class={`clear-both ${eyebrowClasses}`}>
+    The Divergence times of the Bunomys clade
+  </p>
+  <div class="mt-2 rounded-2xl bg-white p-4 shadow-sm dark:bg-[#141810]">
+    <BunomysChronogram />
+  </div>
 
   <div class="clear-both">
     <SectionHead text="Sulawesi as an island of islands: A brief overview" />

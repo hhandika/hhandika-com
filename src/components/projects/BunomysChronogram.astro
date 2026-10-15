@@ -1,0 +1,393 @@
+---
+/**
+ * Time-calibrated tree of the Bunomys clade on Sulawesi and its sister,
+ * Halmaheramys, one tip per species (scripts/build-bunomys-tree.mjs).
+ * Branches are coloured by genus, bars span the 95% HPD of each node age,
+ * and filled nodes have posterior ≥ 0.95. The tree is ladderized with the
+ * smaller clade on top, so Halmaheramys sits next to the dashed stem that
+ * leads to the outgroups left out of the figure. A geological time scale
+ * runs along the bottom. Scrolls horizontally on small screens.
+ */
+import cntl from "cntl";
+import Link from "../Link.astro";
+import data from "../../data/bunomys-chronogram.json";
+
+type Tip = { name: string; samples: number; crown: number | null };
+type Clade = { h: number; hpd: number[]; pp: number; children: Node[] };
+type Node = Tip | Clade;
+type Genus = "Bunomys" | "Taeromys" | "Lenomys" | "Halmaheramys";
+type Placed = {
+  node: Node;
+  h: number;
+  y: number;
+  genus: Genus | null;
+  children: Placed[];
+};
+
+const isTip = (n: Node): n is Tip => "name" in n;
+const size = (n: Node): number =>
+  isTip(n) ? 1 : n.children.reduce((s, c) => s + size(c), 0);
+const genusOf = (name: string): Genus => {
+  const g = name.split(" ")[0];
+  return g === "Bunomys" || g === "Taeromys" || g === "Halmaheramys"
+    ? g
+    : "Lenomys";
+};
+
+// ---- Scales ---------------------------------------------------------------
+const W = 680;
+const AGE_MAX = 3.6;
+const X0 = 20;
+const X1 = 492;
+const x = (ma: number) => X0 + ((AGE_MAX - ma) / AGE_MAX) * (X1 - X0);
+const OUT_Y = 22; // the outgroup stem
+const TOP = 48; // first tip
+const ROW = 22;
+const yAt = (i: number) => TOP + i * ROW;
+
+// ---- Layout: ladderize with the smaller clade on top -----------------------
+let row = 0;
+const place = (n: Node): Placed => {
+  if (isTip(n))
+    return {
+      node: n,
+      h: 0,
+      y: yAt(row++),
+      genus: genusOf(n.name),
+      children: [],
+    };
+  const children = [...n.children].sort((a, b) => size(a) - size(b)).map(place);
+  const genera = new Set(children.map((c) => c.genus));
+  return {
+    node: n,
+    h: n.h,
+    y: (children[0].y + children.at(-1)!.y) / 2,
+    genus: genera.size === 1 ? children[0].genus : null,
+    children,
+  };
+};
+const root = place(data.tree);
+const all: Placed[] = [];
+const walk = (p: Placed) => {
+  all.push(p);
+  p.children.forEach(walk);
+};
+walk(root);
+const tips = all.filter((p) => isTip(p.node));
+const clades = all.filter((p) => !isTip(p.node));
+const plotBottom = tips.at(-1)!.y + 18;
+
+// ---- Colours (full class strings for Tailwind) ----------------------------
+const stroke: Record<Genus | "mixed", string> = {
+  Bunomys: "stroke-moss-600 dark:stroke-moss-400",
+  Taeromys: "stroke-mist-600 dark:stroke-mist-300",
+  Lenomys: "stroke-amber-700 dark:stroke-amber-400",
+  Halmaheramys: "stroke-stone-400 dark:stroke-stone-500",
+  mixed: "stroke-forest-400 dark:stroke-forest-500",
+};
+const fill: Record<Genus | "mixed", string> = {
+  Bunomys: "fill-moss-600 dark:fill-moss-400",
+  Taeromys: "fill-mist-600 dark:fill-mist-300",
+  Lenomys: "fill-amber-700 dark:fill-amber-400",
+  Halmaheramys: "fill-stone-400 dark:fill-stone-500",
+  mixed: "fill-forest-400 dark:fill-forest-500",
+};
+const key = (p: Placed) => p.genus ?? "mixed";
+const hollow = "fill-white dark:fill-[#141810]";
+const ink = "fill-forest-800 dark:fill-forest-100";
+const muted = "fill-forest-500 dark:fill-forest-400";
+const legend: { genus: Genus; label: string }[] = [
+  { genus: "Bunomys", label: "<i>Bunomys</i>" },
+  { genus: "Taeromys", label: "<i>Taeromys</i>" },
+  { genus: "Lenomys", label: "<i>Lenomys</i>, <i>Eropeplus</i>, gen. nov." },
+  { genus: "Halmaheramys", label: "<i>Halmaheramys</i> (Halmahera)" },
+];
+const swatch: Record<Genus, string> = {
+  Bunomys: "bg-moss-600 dark:bg-moss-400",
+  Taeromys: "bg-mist-600 dark:bg-mist-300",
+  Lenomys: "bg-amber-700 dark:bg-amber-400",
+  Halmaheramys: "bg-stone-400 dark:bg-stone-500",
+};
+
+// ---- Geological time scale (ICS 2023) -------------------------------------
+// The Holocene (last 11.7 kyr) is under 2 px at this scale, so its cell gets a
+// fixed width at the end of the bar to show the Pleistocene has ended.
+const HOLOCENE = 0.0117;
+const HOLOCENE_W = 6;
+const cellX = (ma: number) => (ma === HOLOCENE ? x(0) - HOLOCENE_W : x(ma));
+const epochs = [
+  {
+    name: "Pliocene",
+    from: AGE_MAX,
+    to: 2.58,
+    band: "fill-moss-100/60 dark:fill-moss-950/40",
+    cell: "fill-moss-200 dark:fill-moss-900",
+  },
+  {
+    name: "Pleistocene",
+    from: 2.58,
+    to: HOLOCENE,
+    band: "fill-transparent",
+    cell: "fill-mist-200 dark:fill-mist-800",
+  },
+];
+const EPOCH_Y = plotBottom + 6;
+const TICK_Y = EPOCH_Y + 22;
+const H = TICK_Y + 30;
+const ticks = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5];
+
+// ---- Text -----------------------------------------------------------------
+const f2 = (n: number) => n.toFixed(2);
+const nodeTitle = (n: Clade) =>
+  `${f2(n.h)} Ma (95% HPD ${f2(n.hpd[0])}–${f2(n.hpd[1])}), posterior ${f2(n.pp)}`;
+const crown = data.tree;
+const sulawesi = root.children.find((c) => c.genus !== "Halmaheramys")!
+  .node as Clade;
+const tipParts = (name: string) => {
+  if (name.startsWith("Gen.")) return { italic: "", rest: name };
+  const [genus, epithet] = name.split(" ");
+  return epithet === "sp."
+    ? { italic: genus, rest: " sp. nov." }
+    : { italic: name, rest: "" };
+};
+const ariaLabel =
+  `Time-calibrated tree of ${data.species} species. Halmaheramys split from ` +
+  `the Sulawesi lineages ${f2(crown.h)} million years ago, near the ` +
+  `Pliocene–Pleistocene boundary, and the Sulawesi clade began diversifying ` +
+  `${f2(sulawesi.h)} million years ago.`;
+
+const figureClasses = cntl`
+  overflow-x-auto
+`;
+---
+
+<figure>
+  <div class={figureClasses}>
+    <svg
+      viewBox={`0 0 ${W} ${H}`}
+      class="w-full min-w-[560px] font-sans"
+      role="img"
+      aria-label={ariaLabel}
+    >
+      {/* Epoch bands behind the tree */}
+      {
+        epochs.map((e) => (
+          <rect
+            x={x(e.from)}
+            y={OUT_Y - 14}
+            width={x(e.to) - x(e.from)}
+            height={EPOCH_Y - OUT_Y + 14}
+            class={e.band}
+          />
+        ))
+      }
+      {
+        ticks.map((t) => (
+          <line
+            x1={x(t)}
+            x2={x(t)}
+            y1={OUT_Y - 14}
+            y2={EPOCH_Y}
+            class="stroke-forest-200 dark:stroke-forest-800"
+            stroke-width="0.75"
+            stroke-dasharray={t % 1 ? "2 4" : undefined}
+          />
+        ))
+      }
+      <line
+        x1={x(2.58)}
+        x2={x(2.58)}
+        y1={OUT_Y - 14}
+        y2={TICK_Y}
+        class="stroke-moss-700 dark:stroke-moss-400"
+        stroke-width="1.25"></line>
+      <text
+        x={x(2.58) + 5}
+        y={OUT_Y - 2}
+        font-size="11"
+        class="fill-moss-700 dark:fill-moss-400"
+      >
+        2.58 Ma
+      </text>
+
+      {/* HPD bars */}
+      {
+        clades.map((p) => {
+          const n = p.node as Clade;
+          return (
+            <rect
+              x={x(n.hpd[1])}
+              y={p.y - 4.5}
+              width={x(n.hpd[0]) - x(n.hpd[1])}
+              height="9"
+              rx="4.5"
+              class={fill[key(p)]}
+              fill-opacity="0.22"
+            />
+          );
+        })
+      }
+
+      {/* Outgroup stem: the tree continues past the edge of the figure */}
+      <g class="stroke-forest-400 dark:stroke-forest-500" fill="none">
+        <path
+          d={`M${x(AGE_MAX)} ${OUT_Y}H${x(0) - 6}`}
+          stroke-width="2"
+          stroke-dasharray="3 4"
+          stroke-linecap="round"></path>
+        <path
+          d={`M${x(data.stem.h)} ${OUT_Y}V${root.y}H${x(root.h)}`}
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"></path>
+      </g>
+      <text x={x(0) + 8} y={OUT_Y + 4} font-size="12" class={muted}>
+        Outgroups (not shown)
+      </text>
+
+      {/* Branches */}
+      {
+        clades.flatMap((p) =>
+          p.children.map((c) => (
+            <path
+              d={`M${x(p.h)} ${p.y}V${c.y}H${x(c.h)}`}
+              class={stroke[key(c)]}
+              fill="none"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          )),
+        )
+      }
+
+      {/* Nodes */}
+      <g class={stroke.mixed}>
+        <circle
+          cx={x(data.stem.h)}
+          cy={OUT_Y}
+          r="3.5"
+          class={data.stem.pp >= 0.95 ? fill.mixed : hollow}
+          stroke-width="1.5"
+        >
+          <title>{nodeTitle(data.stem as Clade)}</title>
+        </circle>
+      </g>
+      {
+        clades.map((p) => {
+          const n = p.node as Clade;
+          return (
+            <circle
+              cx={x(n.h)}
+              cy={p.y}
+              r="3.5"
+              class={cntl`${stroke[key(p)]} ${n.pp >= 0.95 ? fill[key(p)] : hollow}`}
+              stroke-width="1.5"
+            >
+              <title>{nodeTitle(n)}</title>
+            </circle>
+          );
+        })
+      }
+
+      {/* Tip labels */}
+      {
+        tips.map((p) => {
+          const { italic, rest } = tipParts((p.node as Tip).name);
+          return (
+            <text x={x(0) + 8} y={p.y + 4} font-size="12" class={ink}>
+              <>
+                <tspan font-style="italic">{italic}</tspan>
+                <tspan>{rest}</tspan>
+              </>
+            </text>
+          );
+        })
+      }
+
+      {/* Time scale */}
+      {
+        epochs.map((e) => (
+          <g>
+            <rect
+              x={cellX(e.from) + 0.5}
+              y={EPOCH_Y}
+              width={cellX(e.to) - cellX(e.from) - 1}
+              height="18"
+              rx="3"
+              class={e.cell}
+            />
+            <text
+              x={(cellX(e.from) + cellX(e.to)) / 2}
+              y={EPOCH_Y + 13}
+              font-size="11"
+              font-weight="600"
+              text-anchor="middle"
+              class={ink}
+            >
+              {e.name}
+            </text>
+          </g>
+        ))
+      }
+      <rect
+        x={cellX(HOLOCENE) + 0.5}
+        y={EPOCH_Y}
+        width={HOLOCENE_W - 1}
+        height="18"
+        rx="2"
+        class="fill-amber-200 dark:fill-amber-700"
+      >
+        <title>Holocene, the past 11,700 years</title>
+      </rect>
+      <text x={x(0) + 8} y={EPOCH_Y + 13} font-size="11" class={muted}>
+        Holocene
+      </text>
+      {
+        ticks.map((t) => (
+          <text
+            x={x(t)}
+            y={TICK_Y + 10}
+            font-size="11"
+            text-anchor="middle"
+            class={muted}
+          >
+            {t}
+          </text>
+        ))
+      }
+      <text x={x(0) + 8} y={TICK_Y + 10} font-size="11" class={muted}>
+        Ma
+      </text>
+    </svg>
+  </div>
+  <ul
+    class="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-xs text-forest-700 dark:text-forest-300"
+  >
+    {
+      legend.map((l) => (
+        <li class="flex items-center gap-1.5">
+          <span
+            class={`inline-block h-2.5 w-2.5 rounded-sm ${swatch[l.genus]}`}
+          />
+          <span set:html={l.label} />
+        </li>
+      ))
+    }
+  </ul>
+  <figcaption
+    class="mt-3 text-pretty text-sm text-forest-700 dark:text-forest-300"
+  >
+    Time-calibrated tree of {data.species} species from {data.samples} individuals
+    and five loci, estimated with <Link
+      text="BEAST 2"
+      url="https://www.beast2.org/"
+    />. <i>Halmaheramys</i> of the northern Moluccas is sister to all Sulawesi lineages,
+    {f2(crown.h)} Ma (95% HPD {f2(crown.hpd[0])}–{f2(crown.hpd[1])}), near the
+    start of the Pleistocene. Bars span the 95% HPD of each node age; filled
+    nodes have posterior probability ≥ 0.95. Outgroups are pruned. Learn more in <Link
+      text="Handika et al., 2021"
+      url="https://onlinelibrary.wiley.com/doi/10.1111/zsc.12460"
+    />.
+  </figcaption>
+</figure>
