@@ -87,10 +87,12 @@ const tipsOf = (n) => (n.name ? [n.name] : n.children.flatMap(tipsOf));
 
 // ---- Names ----------------------------------------------------------------
 // Sample labels are Genus_species_voucher. The tree predates the transfer of
-// Paruromys dominator to Taeromys; "Genuss" marks an undescribed genus.
+// Paruromys dominator to Taeromys and Bunomys fratrorum to Frateromys;
+// "Genuss" marks an undescribed genus.
 const species = (tip) => {
   const [g, s] = tip.split("_");
-  const genus = { Paruromys: "Taeromys", Genuss: "Gen. nov." }[g] ?? g;
+  const genus =
+    s === "fratrorum" ? "Frateromys" : ({ Paruromys: "Taeromys", Genuss: "Gen. nov." }[g] ?? g);
   return `${genus} ${s === "spnov" ? "sp. nov." : s}`;
 };
 const INGROUP = ["Bunomys", "Eropeplus", "Lenomys", "Genuss", "Paruromys", "Taeromys", "Halmaheramys"];
