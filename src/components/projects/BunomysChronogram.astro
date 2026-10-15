@@ -99,7 +99,10 @@ const muted = "fill-forest-500 dark:fill-forest-400";
 const legend: { genus: Genus; label: string }[] = [
   { genus: "Bunomys", label: "<i>Bunomys</i>" },
   { genus: "Taeromys", label: "<i>Taeromys</i>" },
-  { genus: "Lenomys", label: "<i>Frateromys</i>, <i>Lenomys</i>, <i>Eropeplus</i>, gen. nov." },
+  {
+    genus: "Lenomys",
+    label: "<i>Frateromys</i>, <i>Lenomys</i>, <i>Eropeplus</i>, gen. nov.",
+  },
   { genus: "Halmaheramys", label: "<i>Halmaheramys</i> (Halmahera)" },
 ];
 const swatch: Record<Genus, string> = {
@@ -383,6 +386,7 @@ const figureClasses = cntl`
       text="BEAST 2"
       url="https://www.beast2.org/"
     />. <i>Halmaheramys</i> of the northern Moluccas is sister to all Sulawesi lineages,
+    with the divergence date estimated at
     {f2(crown.h)} Ma (95% HPD {f2(crown.hpd[0])}–{f2(crown.hpd[1])}), near the
     start of the Pleistocene. Bars span the 95% HPD of each node age; filled
     nodes have posterior probability ≥ 0.95. Outgroups are pruned. Learn more in <Link
