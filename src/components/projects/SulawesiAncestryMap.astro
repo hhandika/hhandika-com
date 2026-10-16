@@ -28,8 +28,11 @@ const scaleTicks = [0, 100, 200];
 const scaleX = W - 30 - kmToX(scaleTicks.at(-1)!);
 const scaleY = py(scaleLat);
 
-// Dark2, as in the manuscript figures.
-const colors = ["#1b9e77", "#d95f02", "#7570b3", "#e7298a"];
+// Dark2, as in the manuscript figures, with yellow in place of pink for
+// cluster 4: pink sat too close to orange, and to teal under deuteranopia.
+// Yellow is under 3:1 against the light page, so swatches carry a dark
+// ring and pie wedges a light separator (WCAG 1.4.11).
+const colors = ["#1b9e77", "#d95f02", "#7570b3", "#e6ab02"];
 
 const locById = Object.fromEntries(data.localities.map((l) => [l.id, l]));
 
@@ -336,7 +339,7 @@ const coastPath = ringsPath(paleo.today.coast);
                           fill={w.fill}
                         />
                       ) : (
-                        <path d={w.d} fill={w.fill} />
+                        <path d={w.d} fill={w.fill} class="wedge" />
                       ),
                     )}
                     <circle
@@ -436,7 +439,7 @@ const coastPath = ringsPath(paleo.today.coast);
             colors.map((c, i) => (
               <li class="flex items-center gap-2">
                 <span
-                  class="inline-block h-3 w-3 rounded-sm"
+                  class="inline-block h-3 w-3 rounded-sm ring-1 ring-forest-950/80 dark:ring-0"
                   style={`background:${c}`}
                 />
                 Cluster {i + 1}
@@ -457,7 +460,7 @@ const coastPath = ringsPath(paleo.today.coast);
           <span
             class="whitespace-nowrap font-semibold text-forest-900 dark:text-forest-50"
             ><span
-              class="mr-1 inline-block h-2.5 w-2.5 rounded-sm align-baseline"
+              class="mr-1 inline-block h-2.5 w-2.5 rounded-sm align-baseline ring-1 ring-forest-950/80 dark:ring-0"
               style={`background:${colors[1]}`}
               aria-hidden="true"></span>Cluster 2</span
           > occurs in every area of endemism sampled, from the southwest peninsula
@@ -467,7 +470,7 @@ const coastPath = ringsPath(paleo.today.coast);
           <span
             class="whitespace-nowrap font-semibold text-forest-900 dark:text-forest-50"
             ><span
-              class="mr-1 inline-block h-2.5 w-2.5 rounded-sm align-baseline"
+              class="mr-1 inline-block h-2.5 w-2.5 rounded-sm align-baseline ring-1 ring-forest-950/80 dark:ring-0"
               style={`background:${colors[3]}`}
               aria-hidden="true"></span>Cluster 4</span
           > dominates the southeast (Lawaki), with a trace in one west-central individual.
@@ -476,14 +479,14 @@ const coastPath = ringsPath(paleo.today.coast);
           <span
             class="whitespace-nowrap font-semibold text-forest-900 dark:text-forest-50"
             ><span
-              class="mr-1 inline-block h-2.5 w-2.5 rounded-sm align-baseline"
+              class="mr-1 inline-block h-2.5 w-2.5 rounded-sm align-baseline ring-1 ring-forest-950/80 dark:ring-0"
               style={`background:${colors[0]}`}
               aria-hidden="true"></span>Cluster 1</span
           > and
           <span
             class="whitespace-nowrap font-semibold text-forest-900 dark:text-forest-50"
             ><span
-              class="mr-1 inline-block h-2.5 w-2.5 rounded-sm align-baseline"
+              class="mr-1 inline-block h-2.5 w-2.5 rounded-sm align-baseline ring-1 ring-forest-950/80 dark:ring-0"
               style={`background:${colors[2]}`}
               aria-hidden="true"></span>Cluster 3</span
           > occur at scattered sites, and several individuals are admixed, some sharing
@@ -714,6 +717,11 @@ const coastPath = ringsPath(paleo.today.coast);
   .sulawesi-map.in .pie {
     transform: scale(1);
   }
+  .wedge {
+    stroke: #f4f7f8;
+    stroke-width: 0.8;
+    stroke-linejoin: round;
+  }
   .pie-ring {
     fill: none;
     stroke: #0e1a12;
@@ -914,7 +922,7 @@ const coastPath = ringsPath(paleo.today.coast);
   const root = document.getElementById("sulawesi-map")!;
   const tipEl = root.querySelector<HTMLElement>(".map-tip")!;
   const mapBox = tipEl.parentElement!;
-  const colors = ["#1b9e77", "#d95f02", "#7570b3", "#e7298a"];
+  const colors = ["#1b9e77", "#d95f02", "#7570b3", "#e6ab02"];
 
   // Reveal pies on scroll into view.
   const io = new IntersectionObserver(
@@ -997,7 +1005,7 @@ const coastPath = ringsPath(paleo.today.coast);
         .map((v: string, c: number) =>
           v === "0%"
             ? ""
-            : `<p class="flex items-center gap-2"><span style="background:${colors[c]}" class="inline-block h-2 w-2 rounded-sm"></span>Cluster ${c + 1}<span class="ml-auto tabular-nums">${v}</span></p>`,
+            : `<p class="flex items-center gap-2"><span style="background:${colors[c]}" class="inline-block h-2 w-2 rounded-sm ring-1 ring-forest-950/80 dark:ring-0"></span>Cluster ${c + 1}<span class="ml-auto tabular-nums">${v}</span></p>`,
         )
         .join("");
     tipEl.classList.remove("hidden");
