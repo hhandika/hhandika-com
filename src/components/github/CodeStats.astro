@@ -1,6 +1,6 @@
 ---
 // Activity tracker: heatmap and monthly trend beside a streak tracker, with
-// lifetime totals and languages below. The calendar is fixed at build time;
+// lifetime tiles and languages below. The calendar is fixed at build time;
 // the totals refresh in the browser.
 import {
   languageBarHtml,
@@ -29,15 +29,16 @@ const dot = [
 ];
 
 const lifetime = [
-  { path: "code_changes.totals.commits", label: "commits" },
-  { path: "code_changes.totals.additions", label: "lines added", format: "compact" },
-  { path: "overview.total_repositories", label: "repositories" },
-  { path: "overview.total_pull_requests", label: "pull requests" },
-] as const;
+  { path: "code_changes.totals.commits", label: "Commits" },
+  { path: "overview.total_repositories", label: "Repositories" },
+  { path: "overview.total_pull_requests", label: "Pull requests" },
+  { path: "overview.total_reviews", label: "Reviews" },
+];
 
 const panel =
   "rounded-3xl border border-forest-900/10 bg-white p-5 text-forest-950 shadow-sm dark:border-forest-100/10 dark:bg-forest-950/60 dark:text-forest-50 sm:p-6";
 const eyebrow = "text-xs uppercase tracking-wide text-forest-700 dark:text-forest-300";
+const tile = "rounded-2xl bg-forest-50 p-4 dark:bg-forest-900/50";
 ---
 
 <section class="my-10" aria-labelledby="code-metrics-title">
@@ -144,26 +145,33 @@ const eyebrow = "text-xs uppercase tracking-wide text-forest-700 dark:text-fores
   </div>
   )}
 
-  <div class={`${panel} mt-4 grid gap-6 md:grid-cols-2`}>
-    <div>
-      <p class={eyebrow}>All time</p>
-      <dl class="mt-2 grid grid-cols-2 gap-x-4 gap-y-2">
-        {
-          lifetime.map((t) => (
-            <div class="flex items-baseline gap-1.5">
-              <dd class="text-xl font-semibold tabular-nums">
-                <LiveStat path={t.path} format={"format" in t ? t.format : "number"} />
-              </dd>
-              <dt class="text-sm text-slate-600 dark:text-slate-400">{t.label}</dt>
-            </div>
-          ))
-        }
-      </dl>
+  <div class={`${panel} mt-4`}>
+  <p class={eyebrow}>All time</p>
+  <dl class="mt-3 grid grid-cols-2 gap-3 lg:grid-cols-5">
+    <div class={`${tile} col-span-2 lg:col-span-1`}>
+      <dt class={eyebrow}>Lines of code</dt>
+      <dd class="mt-1 text-2xl font-semibold tabular-nums">
+        +<LiveStat path="code_changes.totals.additions" format="compact" /><span class="ml-1 text-sm font-normal text-slate-600 dark:text-slate-400">added</span>
+      </dd>
+      <dd class="text-base tabular-nums text-forest-600 dark:text-forest-300">
+        −<LiveStat path="code_changes.totals.deletions" format="compact" /><span class="ml-1 text-sm text-slate-600 dark:text-slate-400">removed</span>
+      </dd>
     </div>
-    <div>
-      <p class={eyebrow}>Languages</p>
-      <div class="mt-3" data-gh-languages="6" set:html={languageBarHtml(topLanguages(stats, 6))} />
-    </div>
+    {
+      lifetime.map((t) => (
+        <div class={tile}>
+          <dt class={eyebrow}>{t.label}</dt>
+          <dd class="mt-1 text-2xl font-semibold tabular-nums">
+            <LiveStat path={t.path} />
+          </dd>
+        </div>
+      ))
+    }
+  </dl>
+  </div>
+  <div class={`${panel} mt-4`}>
+    <p class={eyebrow}>Languages</p>
+    <div class="mt-3" data-gh-languages="8" set:html={languageBarHtml(topLanguages(stats, 8))} />
   </div>
   <p class="mt-3 text-xs text-slate-600 dark:text-slate-400">
     Public repositories only. Source: <a class="underline" href={STATS_SOURCE_URL} target="_blank" rel="noopener">hhandika/hhandika</a>.
