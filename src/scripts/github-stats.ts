@@ -28,6 +28,11 @@ export interface FeaturedRepo {
   languages: Language[];
 }
 
+export interface Day {
+  date: string;
+  count: number;
+}
+
 export interface GithubStats {
   generated_at: string;
   status: string;
@@ -43,6 +48,8 @@ export interface GithubStats {
     code_deletions: number;
     peak_day: string;
     peak_hours: string;
+    hourly_events_et?: number[];
+    contribution_calendar?: Day[];
   };
   code_changes: {
     repositories: RepoChanges[];
