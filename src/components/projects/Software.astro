@@ -5,6 +5,7 @@ import cntl from "cntl";
 import ProjectPubs from "../../layouts/ProjectPubs.astro";
 import PubButton from "../buttons/PubButton.astro";
 import Link from "../Link.astro";
+import LiveStat from "../github/LiveStat.astro";
 import PageSubtitle from "../PageSubtitle.astro";
 import NahpuArchitecture from "./software/NahpuArchitecture.astro";
 import NahpuGallery from "./software/NahpuGallery.astro";
@@ -198,7 +199,7 @@ const tools = [
 ];
 
 const stats = [
-  { value: "740k+", label: "lines of code" },
+  { value: null, label: "lines added / removed" },
   { value: "5", label: "open-source tools" },
   { value: "5", label: "platforms from one codebase" },
   { value: "Ernst Mayr", label: "Award, SSB (SEGUL)" },
@@ -255,7 +256,11 @@ const spaceClasses = cntl`
         <div class="rounded-2xl border border-forest-900/10 px-3 py-4 dark:border-forest-100/10">
           <dt class="sr-only">{s.label}</dt>
           <dd class="font-serif text-2xl font-semibold text-moss-700 dark:text-moss-300">
-            {s.value}
+            {s.value ?? (
+              <>
+                +<LiveStat path="code_changes.totals.additions" format="compact" /> <span class="text-base font-normal text-forest-600 dark:text-forest-300">−<LiveStat path="code_changes.totals.deletions" format="compact" /></span>
+              </>
+            )}
           </dd>
           <dd class="mt-1 text-xs text-forest-700 dark:text-forest-300">
             {s.label}
@@ -321,8 +326,14 @@ const spaceClasses = cntl`
       />), and AI-enabled specimen exploration and trait analyses (<Link
         text="BioCosmos"
         url="https://lepiverse.com"
-      />). Together, these projects comprise more than 740,000 lines of code.
-      They aim to make biodiversity research more efficient, reproducible, and
+      />). Across my public repositories, I have added <LiveStat
+        path="code_changes.totals.additions"
+        format="compact"
+      /> lines of code and removed <LiveStat
+        path="code_changes.totals.deletions"
+        format="compact"
+      />.
+      These projects aim to make biodiversity research more efficient, reproducible, and
       accessible, particularly to underfunded laboratories, while enabling new
       research directions, such as using <Link
         text="vector embedding"
