@@ -8,7 +8,12 @@ import {
   STATS_SOURCE_URL,
   topLanguages,
 } from "../../scripts/github-stats";
-import { formatDay, fullMonth, levelOf, summarize } from "../../scripts/github-activity";
+import {
+  formatDay,
+  fullMonth,
+  levelOf,
+  summarize,
+} from "../../scripts/github-activity";
 import Heatmap from "./Heatmap.astro";
 import LiveStat from "./LiveStat.astro";
 import LiveStatsScript from "./LiveStatsScript.astro";
@@ -17,7 +22,9 @@ const stats = await loadStats();
 const a = summarize(stats);
 const maxMonth = Math.max(...(a?.months.map((m) => m.total) ?? []), 1);
 const recent = a?.days.slice(-14) ?? [];
-const delta = a?.prev30 ? Math.round(((a.last30 - a.prev30) / a.prev30) * 100) : 0;
+const delta = a?.prev30
+  ? Math.round(((a.last30 - a.prev30) / a.prev30) * 100)
+  : 0;
 const activePct = a ? Math.round((a.activeDays / a.days.length) * 100) : 0;
 
 const dot = [
@@ -37,13 +44,17 @@ const lifetime = [
 
 const panel =
   "rounded-3xl border border-forest-900/10 bg-white p-5 text-forest-950 shadow-sm dark:border-forest-100/10 dark:bg-forest-950/60 dark:text-forest-50 sm:p-6";
-const eyebrow = "text-xs uppercase tracking-wide text-forest-700 dark:text-forest-300";
+const eyebrow =
+  "text-xs uppercase tracking-wide text-forest-700 dark:text-forest-300";
 const tile = "rounded-2xl bg-forest-50 p-4 dark:bg-forest-900/50";
 ---
 
 <section class="my-10" aria-labelledby="code-metrics-title">
   <div class="flex flex-wrap items-end justify-between gap-2">
-    <h2 id="code-metrics-title" class="text-2xl font-semibold text-forest-950 dark:text-forest-50">
+    <h2
+      id="code-metrics-title"
+      class="text-2xl font-semibold text-forest-950 dark:text-forest-50"
+    >
       Code activity
     </h2>
     <p class="text-sm text-slate-600 dark:text-slate-400">
@@ -52,129 +63,194 @@ const tile = "rounded-2xl bg-forest-50 p-4 dark:bg-forest-900/50";
     </p>
   </div>
 
-  {a && (
-  <div class="mt-4 grid gap-4 lg:grid-cols-3">
-    <div class={`${panel} lg:col-span-2`}>
-      <p class={eyebrow}>Past 12 months</p>
-      <h3 class="mt-1 text-3xl font-semibold tabular-nums">
-        {a.total.toLocaleString("en")} <span class="text-base font-normal text-slate-600 dark:text-slate-400">contributions</span>
-      </h3>
-      <Heatmap activity={a} class="mt-4" />
+  {
+    a && (
+      <div class="mt-4 grid gap-4 lg:grid-cols-3">
+        <div class={`${panel} lg:col-span-2`}>
+          <p class={eyebrow}>Past 12 months</p>
+          <h3 class="mt-1 text-3xl font-semibold tabular-nums">
+            {a.total.toLocaleString("en")}{" "}
+            <span class="text-base font-normal text-slate-600 dark:text-slate-400">
+              contributions
+            </span>
+          </h3>
+          <Heatmap activity={a} class="mt-4" />
 
-      <p class={`${eyebrow} mt-6`}>Monthly volume</p>
-      <ol
-        class="mt-2 grid items-end gap-1"
-        style={`grid-template-columns:repeat(${a.months.length},minmax(0,1fr))`}
-        aria-label={`Contributions per month: ${a.months.map((m) => `${fullMonth(m.key)} ${m.total}`).join(", ")}`}
-      >
-        {
-          a.months.map((m) => (
-            <li class="flex flex-col items-center gap-1" title={`${fullMonth(m.key)}: ${m.total} contributions on ${m.active} days`}>
-              <span class="text-[10px] tabular-nums text-slate-500 dark:text-slate-400">{m.total}</span>
-              <span class="flex h-16 w-full items-end">
-                <span
-                  class="w-full rounded-t-md bg-moss-400 dark:bg-moss-600"
-                  style={`height:${Math.max((m.total / maxMonth) * 100, 3)}%`}
-                />
-              </span>
-              <span class="text-[10px] text-slate-600 dark:text-slate-400">{m.label.slice(0, 1)}</span>
-            </li>
-          ))
-        }
-      </ol>
-    </div>
-
-    <aside class={`${panel} flex flex-col gap-5`} aria-label="Activity tracker">
-      <div>
-        <p class={eyebrow}>Current streak</p>
-        <p class="mt-1 text-4xl font-semibold tabular-nums">
-          {a.currentStreak}<span class="ml-1 text-base font-normal text-slate-600 dark:text-slate-400">days</span>
-        </p>
-        <ol class="mt-3 flex gap-1" aria-label="Last 14 days">
-          {
-            recent.map((d) => (
-              <li
-                title={`${formatDay(d.date)}: ${d.count}`}
-                class={`h-5 flex-1 rounded ${dot[levelOf(d.count, a.thresholds)]}`}
-              />
-            ))
-          }
-        </ol>
-        <p class="mt-1 flex justify-between text-[10px] text-slate-500 dark:text-slate-400">
-          <span>14 days ago</span><span>Today</span>
-        </p>
-      </div>
-
-      <div class="border-t border-forest-900/10 pt-4 dark:border-forest-100/10">
-        <p class={eyebrow}>Last 30 days</p>
-        <p class="mt-1 flex flex-wrap items-baseline gap-x-2 gap-y-1">
-          <span class="text-2xl font-semibold tabular-nums">{a.last30}<span class="ml-1 text-base font-normal text-slate-600 dark:text-slate-400">contributions</span></span>
-          <span
-            class={delta >= 0
-              ? "whitespace-nowrap rounded-full bg-moss-100 px-2 py-0.5 text-xs font-medium text-moss-800 dark:bg-moss-900 dark:text-moss-200"
-              : "whitespace-nowrap rounded-full bg-mist-100 px-2 py-0.5 text-xs font-medium text-mist-800 dark:bg-mist-900 dark:text-mist-200"}
+          <p class={`${eyebrow} mt-6`}>Monthly volume</p>
+          <ol
+            class="mt-2 grid items-end gap-1"
+            style={`grid-template-columns:repeat(${a.months.length},minmax(0,1fr))`}
+            aria-label={`Contributions per month: ${a.months.map((m) => `${fullMonth(m.key)} ${m.total}`).join(", ")}`}
           >
-            {delta >= 0 ? "▲" : "▼"} {Math.abs(delta)}% vs prior 30
-          </span>
-        </p>
-      </div>
+            {a.months.map((m) => (
+              <li
+                class="flex flex-col items-center gap-1"
+                title={`${fullMonth(m.key)}: ${m.total} contributions on ${m.active} days`}
+              >
+                <span class="text-[10px] tabular-nums text-slate-500 dark:text-slate-400">
+                  {m.total}
+                </span>
+                <span class="flex h-16 w-full items-end">
+                  <span
+                    class="w-full rounded-t-md bg-moss-400 dark:bg-moss-600"
+                    style={`height:${Math.max((m.total / maxMonth) * 100, 3)}%`}
+                  />
+                </span>
+                <span class="text-[10px] text-slate-600 dark:text-slate-400">
+                  {m.label.slice(0, 1)}
+                </span>
+              </li>
+            ))}
+          </ol>
+        </div>
 
-      <div class="border-t border-forest-900/10 pt-4 dark:border-forest-100/10">
-        <p class={eyebrow}>Active days</p>
-        <p class="mt-1 text-2xl font-semibold tabular-nums">
-          {a.activeDays}<span class="ml-1 text-base font-normal text-slate-600 dark:text-slate-400">of {a.days.length} days</span>
-        </p>
-        <p class="text-xs text-slate-600 dark:text-slate-400">Days with at least one contribution</p>
-        <div class="mt-2 h-2 rounded-full bg-mist-100 dark:bg-forest-900" role="img" aria-label={`${activePct}% of days active`}>
-          <div class="h-full rounded-full bg-forest-700 dark:bg-moss-400" style={`width:${activePct}%`}></div>
-        </div>
-      </div>
+        <aside
+          class={`${panel} flex flex-col gap-5`}
+          aria-label="Activity tracker"
+        >
+          <div>
+            <p class={eyebrow}>Current streak</p>
+            <p class="mt-1 text-4xl font-semibold tabular-nums">
+              {a.currentStreak}
+              <span class="ml-1 text-base font-normal text-slate-600 dark:text-slate-400">
+                days
+              </span>
+            </p>
+            <ol class="mt-3 flex gap-1" aria-label="Last 14 days">
+              {recent.map((d) => (
+                <li
+                  title={`${formatDay(d.date)}: ${d.count}`}
+                  class={`h-5 flex-1 rounded ${dot[levelOf(d.count, a.thresholds)]}`}
+                />
+              ))}
+            </ol>
+            <p class="mt-1 flex justify-between text-[10px] text-slate-500 dark:text-slate-400">
+              <>
+                <span>14 days ago</span>
+                <span>Today</span>
+              </>
+            </p>
+          </div>
 
-      <dl class="grid grid-cols-2 gap-3 border-t border-forest-900/10 pt-4 text-sm dark:border-forest-100/10">
-        <div>
-          <dt class={eyebrow}>Longest streak</dt>
-          <dd class="mt-0.5 text-lg font-semibold tabular-nums">{a.longestStreak} days</dd>
-        </div>
-        <div>
-          <dt class={eyebrow}>Best day</dt>
-          <dd class="mt-0.5 text-lg font-semibold tabular-nums">{a.best.count}<span class="ml-1 text-sm font-normal text-slate-600 dark:text-slate-400">contributions</span></dd>
-          <dd class="text-xs text-slate-600 dark:text-slate-400">{formatDay(a.best.date)}</dd>
-        </div>
-      </dl>
-    </aside>
-  </div>
-  )}
+          <div class="border-t border-forest-900/10 pt-4 dark:border-forest-100/10">
+            <p class={eyebrow}>Last 30 days</p>
+            <p class="mt-1 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+              <span class="text-2xl font-semibold tabular-nums">
+                {a.last30}
+                <span class="ml-1 text-base font-normal text-slate-600 dark:text-slate-400">
+                  contributions
+                </span>
+              </span>
+              <span
+                class={
+                  delta >= 0
+                    ? "whitespace-nowrap rounded-full bg-moss-100 px-2 py-0.5 text-xs font-medium text-moss-800 dark:bg-moss-900 dark:text-moss-200"
+                    : "whitespace-nowrap rounded-full bg-mist-100 px-2 py-0.5 text-xs font-medium text-mist-800 dark:bg-mist-900 dark:text-mist-200"
+                }
+              >
+                {delta >= 0 ? "▲" : "▼"} {Math.abs(delta)}% vs prior 30
+              </span>
+            </p>
+          </div>
+
+          <div class="border-t border-forest-900/10 pt-4 dark:border-forest-100/10">
+            <p class={eyebrow}>Active days</p>
+            <p class="mt-1 text-2xl font-semibold tabular-nums">
+              {a.activeDays}
+              <span class="ml-1 text-base font-normal text-slate-600 dark:text-slate-400">
+                of {a.days.length} days
+              </span>
+            </p>
+            <p class="text-xs text-slate-600 dark:text-slate-400">
+              Days with at least one contribution
+            </p>
+            <div
+              class="mt-2 h-2 rounded-full bg-mist-100 dark:bg-forest-900"
+              role="img"
+              aria-label={`${activePct}% of days active`}
+            >
+              <div
+                class="h-full rounded-full bg-forest-700 dark:bg-moss-400"
+                style={`width:${activePct}%`}
+              />
+            </div>
+          </div>
+
+          <dl class="grid grid-cols-2 gap-3 border-t border-forest-900/10 pt-4 text-sm dark:border-forest-100/10">
+            <div>
+              <dt class={eyebrow}>Longest streak</dt>
+              <dd class="mt-0.5 text-lg font-semibold tabular-nums">
+                {a.longestStreak} days
+              </dd>
+            </div>
+            <div>
+              <dt class={eyebrow}>Best day</dt>
+              <dd class="mt-0.5 text-lg font-semibold tabular-nums">
+                {a.best.count}
+                <span class="ml-1 text-sm font-normal text-slate-600 dark:text-slate-400">
+                  contributions
+                </span>
+              </dd>
+              <dd class="text-xs text-slate-600 dark:text-slate-400">
+                {formatDay(a.best.date)}
+              </dd>
+            </div>
+          </dl>
+        </aside>
+      </div>
+    )
+  }
 
   <div class={`${panel} mt-4`}>
-  <p class={eyebrow}>All time</p>
-  <dl class="mt-3 grid grid-cols-2 gap-3 lg:grid-cols-5">
-    <div class={`${tile} col-span-2 lg:col-span-1`}>
-      <dt class={eyebrow}>Lines of code</dt>
-      <dd class="mt-1 text-2xl font-semibold tabular-nums">
-        +<LiveStat path="code_changes.totals.additions" format="compact" /><span class="ml-1 text-sm font-normal text-slate-600 dark:text-slate-400">added</span>
-      </dd>
-      <dd class="text-base tabular-nums text-forest-600 dark:text-forest-300">
-        −<LiveStat path="code_changes.totals.deletions" format="compact" /><span class="ml-1 text-sm text-slate-600 dark:text-slate-400">removed</span>
-      </dd>
-    </div>
-    {
-      lifetime.map((t) => (
-        <div class={tile}>
-          <dt class={eyebrow}>{t.label}</dt>
-          <dd class="mt-1 text-2xl font-semibold tabular-nums">
-            <LiveStat path={t.path} />
-          </dd>
-        </div>
-      ))
-    }
-  </dl>
+    <p class={eyebrow}>All time</p>
+    <dl class="mt-3 grid grid-cols-2 gap-3 lg:grid-cols-5">
+      <div class={`${tile} col-span-2 lg:col-span-1`}>
+        <dt class={eyebrow}>Lines of code</dt>
+        <dd class="mt-1 text-2xl font-semibold tabular-nums">
+          +<LiveStat
+            path="code_changes.totals.additions"
+            format="compact"
+          /><span
+            class="ml-1 text-sm font-normal text-slate-600 dark:text-slate-400"
+            >added</span
+          >
+        </dd>
+        <dd class="text-base tabular-nums text-forest-600 dark:text-forest-300">
+          −<LiveStat
+            path="code_changes.totals.deletions"
+            format="compact"
+          /><span class="ml-1 text-sm text-slate-600 dark:text-slate-400"
+            >removed</span
+          >
+        </dd>
+      </div>
+      {
+        lifetime.map((t) => (
+          <div class={tile}>
+            <dt class={eyebrow}>{t.label}</dt>
+            <dd class="mt-1 text-2xl font-semibold tabular-nums">
+              <LiveStat path={t.path} />
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
   </div>
   <div class={`${panel} mt-4`}>
     <p class={eyebrow}>Languages</p>
-    <div class="mt-3" data-gh-languages="8" set:html={languageBarHtml(topLanguages(stats, 8))} />
+    <div
+      class="mt-3"
+      data-gh-languages="8"
+      set:html={languageBarHtml(topLanguages(stats, 8))}
+    />
   </div>
   <p class="mt-3 text-xs text-slate-600 dark:text-slate-400">
-    Public repositories only, including <a class="underline" href="https://github.com/BioVisionLab/BioCosmos" target="_blank" rel="noopener">BioVisionLab/BioCosmos</a>. Source: <a class="underline" href={STATS_SOURCE_URL} target="_blank" rel="noopener">hhandika/hhandika</a>.
+    Public repositories only. Source: <a
+      class="underline"
+      href={STATS_SOURCE_URL}
+      target="_blank"
+      rel="noopener">hhandika/hhandika</a
+    >.
   </p>
 </section>
 <LiveStatsScript />
