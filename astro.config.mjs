@@ -11,4 +11,6 @@ export default defineConfig({
   // Astro 7 defaults to JSX whitespace rules, which drop the spaces between
   // prose and inline components such as <Link />. Keep the v5 behavior.
   compressHTML: true,
+  // MapLibre loads its worker as a module worker.
+  vite: { worker: { format: "es" } },
 });

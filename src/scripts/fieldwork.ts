@@ -63,9 +63,9 @@ export const expeditions: Expedition[] = [
     end: "2023-12",
     kind: "collecting",
     sites: [
-      { name: "Mt. Patah", latitude: -4.2576, longitude: 103.3057 },
-      { name: "Mt. Bandahara", latitude: 3.749, longitude: 97.7818 },
-      { name: "Mt. Kemiri", latitude: 3.7621, longitude: 97.4824 },
+      { name: "Mt. Patah", latitude: -4.27, longitude: 103.3 },
+      { name: "Mt. Bandahara", latitude: 3.7489, longitude: 97.7814 },
+      { name: "Mt. Kemiri", latitude: 3.7625, longitude: 97.4835 },
     ],
   },
   {
@@ -84,7 +84,7 @@ export const expeditions: Expedition[] = [
     start: "2022-04",
     end: "2022-05",
     kind: "collecting",
-    sites: [{ name: "Black Gap WMA", latitude: 29.468, longitude: -102.843 }],
+    sites: [{ name: "Black Gap Wildlife Management Area", latitude: 29.5633, longitude: -102.8978 }],
   },
   {
     title: "Davis Mountains",
@@ -92,7 +92,7 @@ export const expeditions: Expedition[] = [
     country: "USA",
     start: "2021-05",
     kind: "collecting",
-    sites: [{ name: "Davis Mountains", latitude: 30.599, longitude: -103.929 }],
+    sites: [{ name: "Davis Mountains", latitude: 30.7167, longitude: -104 }],
   },
   {
     title: "Mt. Murud",
@@ -101,7 +101,7 @@ export const expeditions: Expedition[] = [
     start: "2019-07",
     end: "2019-08",
     kind: "collecting",
-    sites: [{ name: "Mt. Murud", latitude: 3.917, longitude: 115.5 }],
+    sites: [{ name: "Mt. Murud", latitude: 3.9053, longitude: 115.4889 }],
   },
   {
     title: "Mt. Galang",
@@ -118,7 +118,7 @@ export const expeditions: Expedition[] = [
     start: "2018-03",
     end: "2018-04",
     kind: "collecting",
-    sites: [{ name: "Mt. Talamau", latitude: 0.0789, longitude: 99.9839 }],
+    sites: [{ name: "Mt. Talamau", latitude: 0.0792, longitude: 99.9833 }],
   },
   {
     title: "Mt. Torompupu",
@@ -127,7 +127,7 @@ export const expeditions: Expedition[] = [
     start: "2017-11",
     end: "2017-12",
     kind: "collecting",
-    sites: [{ name: "Mt. Torompupu", latitude: -1.48, longitude: 120.05 }],
+    sites: [{ name: "Mt. Torompupu", latitude: -1.4248, longitude: 119.8563 }],
   },
   {
     title: "Solok Selatan",
@@ -135,7 +135,7 @@ export const expeditions: Expedition[] = [
     country: "Indonesia",
     start: "2017-10",
     kind: "limited",
-    sites: [{ name: "Solok Selatan", latitude: -1.45, longitude: 101.1 }],
+    sites: [{ name: "Solok Selatan", latitude: -1.2333, longitude: 101.417 }],
   },
   {
     title: "Mt. Katopasa",
@@ -144,7 +144,7 @@ export const expeditions: Expedition[] = [
     start: "2017-08",
     end: "2017-09",
     kind: "collecting",
-    sites: [{ name: "Mt. Katopasa", latitude: -1.2, longitude: 121.4 }],
+    sites: [{ name: "Mt. Katopasa", latitude: -1.1893, longitude: 121.4416 }],
   },
   {
     title: "Wilsons Promontory National Park",
@@ -153,7 +153,7 @@ export const expeditions: Expedition[] = [
     start: "2017-06",
     kind: "survey",
     sites: [
-      { name: "Wilsons Promontory", latitude: -39.013, longitude: 146.394 },
+      { name: "Wilsons Promontory National Park", latitude: -39.033, longitude: 146.383 },
     ],
   },
   {
@@ -162,7 +162,7 @@ export const expeditions: Expedition[] = [
     country: "Australia",
     start: "2016-11",
     kind: "limited",
-    sites: [{ name: "Grampians", latitude: -37.208, longitude: 142.4 }],
+    sites: [{ name: "Grampians National Park", latitude: -37.2078, longitude: 142.3997 }],
   },
   {
     title: "Mt. Bawakaraeng",
@@ -171,7 +171,7 @@ export const expeditions: Expedition[] = [
     start: "2016-10",
     end: "2016-11",
     kind: "collecting",
-    sites: [{ name: "Mt. Bawakaraeng", latitude: -5.317, longitude: 119.945 }],
+    sites: [{ name: "Mt. Bawakaraeng", latitude: -5.3173, longitude: 119.944 }],
   },
   {
     title: "Mt. Latimojong",
@@ -180,16 +180,19 @@ export const expeditions: Expedition[] = [
     start: "2016-07",
     end: "2016-08",
     kind: "collecting",
-    sites: [{ name: "Mt. Latimojong", latitude: -3.385, longitude: 120.024 }],
+    sites: [{ name: "Mt. Latimojong", latitude: -3.385, longitude: 120.0242 }],
   },
   {
-    title: "Mt. Ambang",
+    title: "Mts. Ambang and Dua Saudara",
     region: "North Sulawesi",
     country: "Indonesia",
     start: "2016-02",
     end: "2016-03",
     kind: "collecting",
-    sites: [{ name: "Mt. Ambang", latitude: 0.757, longitude: 124.416 }],
+    sites: [
+      { name: "Mt. Ambang", latitude: 0.75, longitude: 124.42 },
+      { name: "Mt. Dua Saudara", latitude: 1.499546, longitude: 125.175809 },
+    ],
   },
   {
     title: "Grampians National Park",
@@ -197,7 +200,7 @@ export const expeditions: Expedition[] = [
     country: "Australia",
     start: "2015-11",
     kind: "limited",
-    sites: [{ name: "Grampians", latitude: -37.208, longitude: 142.4 }],
+    sites: [{ name: "Grampians National Park", latitude: -37.2078, longitude: 142.3997 }],
   },
   {
     title: "Mt. Talamau",
@@ -205,7 +208,7 @@ export const expeditions: Expedition[] = [
     country: "Indonesia",
     start: "2015-06",
     kind: "collecting",
-    sites: [{ name: "Mt. Talamau", latitude: 0.0789, longitude: 99.9839 }],
+    sites: [{ name: "Mt. Talamau", latitude: 0.0792, longitude: 99.9833 }],
   },
   {
     title: "Runtu",
@@ -213,7 +216,7 @@ export const expeditions: Expedition[] = [
     country: "Indonesia",
     start: "2014-12",
     kind: "limited",
-    sites: [{ name: "Runtu", latitude: -2.45, longitude: 111.75 }],
+    sites: [{ name: "Runtu", latitude: -2.351, longitude: 111.7071 }],
   },
   {
     title: "Mts. Tujuh and Masurai",
@@ -223,8 +226,8 @@ export const expeditions: Expedition[] = [
     end: "2014-10",
     kind: "collecting",
     sites: [
-      { name: "Mt. Tujuh", latitude: -1.71, longitude: 101.39 },
-      { name: "Mt. Masurai", latitude: -2.5, longitude: 101.85 },
+      { name: "Mt. Tujuh", latitude: -1.6747, longitude: 101.425 },
+      { name: "Mt. Masurai", latitude: -2.5025, longitude: 101.8583 },
     ],
   },
   {
@@ -235,8 +238,8 @@ export const expeditions: Expedition[] = [
     end: "2014-07",
     kind: "collecting",
     sites: [
-      { name: "San Rafael", latitude: 11.88, longitude: 125.38 },
-      { name: "Mt. Huraw", latitude: 11.85, longitude: 125.25 },
+      { name: "San Rafael", latitude: 11.5902, longitude: 124.9589 },
+      { name: "Mt. Huraw", latitude: 12.0651, longitude: 125.0599 },
     ],
   },
   {
@@ -245,7 +248,16 @@ export const expeditions: Expedition[] = [
     country: "Indonesia",
     start: "2014-05",
     kind: "limited",
-    sites: [{ name: "Cirebon", latitude: -6.73, longitude: 108.55 }],
+    sites: [{ name: "Cirebon", latitude: -6.7071, longitude: 108.5574 }],
+  },
+  {
+    title: "Mt. Buliohuto",
+    region: "Gorontalo",
+    country: "Indonesia",
+    start: "2014-01",
+    end: "2014-02",
+    kind: "collecting",
+    sites: [{ name: "Mt. Buliohuto", latitude: 0.910136, longitude: 122.450746 }],
   },
   {
     title: "Bangka Island",
@@ -254,7 +266,7 @@ export const expeditions: Expedition[] = [
     start: "2013-11",
     end: "2013-12",
     kind: "collecting",
-    sites: [{ name: "Bangka Island", latitude: -2.1, longitude: 106.1 }],
+    sites: [{ name: "Bangka Island", latitude: -2.25, longitude: 106 }],
   },
   {
     title: "Mts. Salak, Ijen, and Slamet",
@@ -264,9 +276,9 @@ export const expeditions: Expedition[] = [
     end: "2013-10",
     kind: "collecting",
     sites: [
-      { name: "Mt. Salak", latitude: -6.72, longitude: 106.73 },
-      { name: "Mt. Slamet", latitude: -7.24, longitude: 109.21 },
-      { name: "Mt. Ijen", latitude: -8.06, longitude: 114.24 },
+      { name: "Mt. Salak", latitude: -6.7158, longitude: 106.7336 },
+      { name: "Mt. Slamet", latitude: -7.2392, longitude: 109.22 },
+      { name: "Mt. Ijen", latitude: -8.0579, longitude: 114.2431 },
     ],
   },
   {
@@ -277,7 +289,7 @@ export const expeditions: Expedition[] = [
     end: "2013-07",
     kind: "limited",
     sites: [
-      { name: "Kota Waringin Barat", latitude: -2.68, longitude: 111.63 },
+      { name: "Kota Waringin Barat", latitude: -2.683, longitude: 111.617 },
     ],
   },
   {
@@ -286,7 +298,7 @@ export const expeditions: Expedition[] = [
     country: "Indonesia",
     start: "2013-03",
     kind: "collecting",
-    sites: [{ name: "Mt. Dako", latitude: 0.97, longitude: 120.78 }],
+    sites: [{ name: "Mt. Dako", latitude: 1.0617, longitude: 120.935 }],
   },
   {
     title: "Mts. Kerinci, Tujuh, and Masurai",
@@ -295,9 +307,9 @@ export const expeditions: Expedition[] = [
     start: "2013-01",
     kind: "collecting",
     sites: [
-      { name: "Mt. Kerinci", latitude: -1.7, longitude: 101.26 },
-      { name: "Mt. Tujuh", latitude: -1.71, longitude: 101.39 },
-      { name: "Mt. Masurai", latitude: -2.5, longitude: 101.85 },
+      { name: "Mt. Kerinci", latitude: -1.6967, longitude: 101.2656 },
+      { name: "Mt. Tujuh", latitude: -1.6747, longitude: 101.425 },
+      { name: "Mt. Masurai", latitude: -2.5025, longitude: 101.8583 },
     ],
   },
   {
@@ -306,7 +318,7 @@ export const expeditions: Expedition[] = [
     country: "Indonesia",
     start: "2013-01",
     kind: "collecting",
-    sites: [{ name: "Belitung Island", latitude: -2.85, longitude: 107.9 }],
+    sites: [{ name: "Belitung Island", latitude: -2.833, longitude: 107.917 }],
   },
   {
     title: "Mt. Singgalang",
@@ -315,7 +327,7 @@ export const expeditions: Expedition[] = [
     start: "2012-06",
     end: "2012-07",
     kind: "collecting",
-    sites: [{ name: "Mt. Singgalang", latitude: -0.39, longitude: 100.33 }],
+    sites: [{ name: "Mt. Singgalang", latitude: -0.39, longitude: 100.3308 }],
   },
   {
     title: "Mt. Gandang Dewata",
@@ -325,7 +337,7 @@ export const expeditions: Expedition[] = [
     end: "2012-06",
     kind: "collecting",
     sites: [
-      { name: "Mt. Gandang Dewata", latitude: -2.88, longitude: 119.37 },
+      { name: "Mt. Gandang Dewata", latitude: -2.748, longitude: 119.3685 },
     ],
   },
   {
@@ -334,7 +346,7 @@ export const expeditions: Expedition[] = [
     country: "Indonesia",
     start: "2012-04",
     kind: "survey",
-    sites: [{ name: "Mt. Malintang", latitude: -0.08, longitude: 100.65 }],
+    sites: [{ name: "Mt. Malintang", latitude: -0.3269, longitude: 100.6706 }],
   },
   {
     title: "Marak Island",
@@ -342,7 +354,7 @@ export const expeditions: Expedition[] = [
     country: "Indonesia",
     start: "2011-10",
     kind: "survey",
-    sites: [{ name: "Marak Island", latitude: -1.25, longitude: 100.35 }],
+    sites: [{ name: "Marak Island", latitude: -1.1997, longitude: 100.3347 }],
   },
   {
     title: "Siberut Island",
@@ -350,7 +362,7 @@ export const expeditions: Expedition[] = [
     country: "Indonesia",
     start: "2010-10",
     kind: "survey",
-    sites: [{ name: "Siberut Island", latitude: -1.4, longitude: 98.9 }],
+    sites: [{ name: "Siberut Island", latitude: -1.383, longitude: 98.9 }],
   },
   {
     title: "Mt. Sago",
@@ -358,7 +370,7 @@ export const expeditions: Expedition[] = [
     country: "Indonesia",
     start: "2010-09",
     kind: "survey",
-    sites: [{ name: "Mt. Sago", latitude: -0.33, longitude: 100.67 }],
+    sites: [{ name: "Mt. Sago", latitude: -0.3269, longitude: 100.6706 }],
   },
   {
     title: "Angkola",
@@ -366,7 +378,7 @@ export const expeditions: Expedition[] = [
     country: "Indonesia",
     start: "2010-07",
     kind: "survey",
-    sites: [{ name: "Angkola", latitude: 1.45, longitude: 99.3 }],
+    sites: [{ name: "Angkola", latitude: 1.3786, longitude: 99.2722 }],
   },
   {
     title: "Mt. Merapi",
@@ -374,7 +386,7 @@ export const expeditions: Expedition[] = [
     country: "Indonesia",
     start: "2009-06",
     kind: "survey",
-    sites: [{ name: "Mt. Merapi", latitude: -0.38, longitude: 100.47 }],
+    sites: [{ name: "Mt. Marapi", latitude: -0.38, longitude: 100.4742 }],
   },
 ];
 

@@ -1,0 +1,41 @@
+/**
+ * Line icons for the kinds of fieldwork, as SVG markup on a 48 × 48 grid.
+ * Shared by FieldworkIcon.astro and the field-locality map popups.
+ */
+import type { FieldworkKind } from "./fieldwork";
+
+export const fieldworkIconPaths: Record<FieldworkKind, string> = {
+  // Mouse study skin (dorsal view) with a voucher tag on the hind foot
+  collecting: [
+    '<path d="M3 19 Q7 13.5 14 13 Q22 11.5 30 12.5 Q37 13.5 37 19 Q37 24.5 30 25.5 Q22 26.5 14 25 Q7 24.5 3 19 Z" />',
+    '<path d="M9.5 14.6 Q9 9.5 13 10 Q15 10.5 14.5 13.2 M9.5 23.4 Q9 28.5 13 28 Q15 27.5 14.5 24.8" />',
+    '<path d="M20 12.4 L16 8 M20 25.6 L16 30" />',
+    '<path d="M33 13.4 L40 10 M33 24.6 L40 28" />',
+    '<path d="M37 19 H46" />',
+    '<path d="M40 28 Q42 34 35 38" />',
+    '<path d="M17 34 H31 L35 38 L31 42 H17 Z" />',
+    '<circle cx="30" cy="38" r="1.1" />',
+    '<path d="M21 38 h4" />',
+  ].join(""),
+  // Field notebook with a tissue vial
+  limited: [
+    '<rect x="6" y="5" width="23" height="38" rx="2" />',
+    '<path d="M11 5 v38" />',
+    '<path d="M16 14 h8 M16 20 h8 M16 26 h5" />',
+    '<rect x="34" y="14" width="8" height="26" rx="4" />',
+    '<path d="M33 14 h10 M34 31 h8" />',
+  ].join(""),
+  // Binoculars
+  survey: [
+    '<circle cx="13" cy="33" r="8" />',
+    '<circle cx="35" cy="33" r="8" />',
+    '<path d="M6 30 L10 10 H18 L21 27" />',
+    '<path d="M42 30 L38 10 H30 L27 27" />',
+    '<path d="M21 20 h6" />',
+    '<path d="M11 10 V6 h6 v4 M31 10 V6 h6 v4" />',
+  ].join(""),
+};
+
+/** The icon as a standalone `<svg>` string that inherits `currentColor`. */
+export const fieldworkIconSvg = (kind: FieldworkKind, className: string) =>
+  `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="${className}" aria-hidden="true">${fieldworkIconPaths[kind]}</svg>`;

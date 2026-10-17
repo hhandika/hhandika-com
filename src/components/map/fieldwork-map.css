@@ -1,0 +1,107 @@
+/* MapLibre chrome in the site's palette, with dark-mode variants (after the
+ * BioCosmos map chrome). The doubled class outranks MapLibre's own font stack. */
+.fieldwork-map.maplibregl-map {
+  font-family: inherit;
+}
+
+.fieldwork-marker {
+  cursor: pointer;
+}
+
+.fieldwork-marker:focus-visible {
+  outline: 2px solid #86ae3e; /* moss-500 */
+  outline-offset: 2px;
+}
+
+.fieldwork-popup .maplibregl-popup-content {
+  padding: 0.875rem 1rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: #1c2b21; /* forest-900 */
+  box-shadow: 0 8px 24px rgb(14 26 18 / 0.16);
+}
+
+/* A round close button in the corner, clear of the header (which keeps
+ * room for it with pr-6). */
+.fieldwork-popup .maplibregl-popup-close-button {
+  top: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 9999px;
+  font-size: 1.125rem;
+  line-height: 1;
+  color: #53705b; /* forest-500 */
+}
+
+.fieldwork-popup .maplibregl-popup-close-button:hover {
+  background: #e2e9e3; /* forest-100 */
+  color: #0e1a12;
+}
+
+.fieldwork-popup .maplibregl-popup-close-button:focus-visible {
+  outline: 2px solid #86ae3e; /* moss-500 */
+  outline-offset: 1px;
+}
+
+.dark .fieldwork-popup .maplibregl-popup-content {
+  background: #0e1a12; /* forest-950 */
+  color: #e2e9e3; /* forest-100 */
+}
+
+.dark .fieldwork-popup .maplibregl-popup-close-button {
+  color: #9db3a3; /* forest-300 */
+}
+
+.dark .fieldwork-popup .maplibregl-popup-close-button:hover {
+  background: #283a2e; /* forest-800 */
+  color: #f3f6f4;
+}
+
+/* Attribute prefixes so the corner anchors (top-left, ...) match too. */
+.dark .fieldwork-popup[class*="maplibregl-popup-anchor-top"] .maplibregl-popup-tip {
+  border-bottom-color: #0e1a12;
+}
+
+.dark .fieldwork-popup[class*="maplibregl-popup-anchor-bottom"] .maplibregl-popup-tip {
+  border-top-color: #0e1a12;
+}
+
+.dark .fieldwork-popup.maplibregl-popup-anchor-left .maplibregl-popup-tip {
+  border-right-color: #0e1a12;
+}
+
+.dark .fieldwork-popup.maplibregl-popup-anchor-right .maplibregl-popup-tip {
+  border-left-color: #0e1a12;
+}
+
+.dark .fieldwork-map .maplibregl-ctrl-group {
+  background: #0e1a12;
+  border: 1px solid #283a2e; /* forest-800 */
+}
+
+.dark .fieldwork-map .maplibregl-ctrl-group button + button {
+  border-top-color: #283a2e;
+}
+
+.dark .fieldwork-map .maplibregl-ctrl-group button:hover {
+  background: #1c2b21;
+}
+
+.dark .fieldwork-map .maplibregl-ctrl-icon,
+.dark .fieldwork-map .maplibregl-ctrl-attrib-button {
+  filter: invert(0.85);
+}
+
+.dark .fieldwork-map .maplibregl-ctrl-attrib {
+  background: rgb(14 26 18 / 0.85) !important;
+  color: #9db3a3;
+}
+
+.dark .fieldwork-map .maplibregl-ctrl-attrib a {
+  color: #b5d177; /* moss-300 */
+}
