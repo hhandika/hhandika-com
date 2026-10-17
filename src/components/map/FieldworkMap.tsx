@@ -39,35 +39,41 @@ interface Locality {
 const NEAR = 0.01;
 
 // One marker per locality, merging sites that share or nearly share a point.
-const localities = expeditions.reduce<Locality[]>((acc, e) => {
-  for (const s of e.sites) {
-    let loc = acc.find(
-      (l) =>
-        Math.abs(l.latitude - s.latitude) < NEAR &&
-        Math.abs(l.longitude - s.longitude) < NEAR,
-    );
-    if (!loc) {
-      loc = {
-        name: s.name,
-        latitude: s.latitude,
-        longitude: s.longitude,
+const groupLocalities = (list: typeof expeditions) =>
+  list.reduce<Locality[]>((acc, e) => {
+    for (const s of e.sites) {
+      let loc = acc.find(
+        (l) =>
+          Math.abs(l.latitude - s.latitude) < NEAR &&
+          Math.abs(l.longitude - s.longitude) < NEAR,
+      );
+      if (!loc) {
+        loc = {
+          name: s.name,
+          latitude: s.latitude,
+          longitude: s.longitude,
+          kind: e.kind,
+          country: e.country,
+          visits: [],
+        };
+        acc.push(loc);
+      }
+      if (!loc.name.split(" / ").includes(s.name)) loc.name += ` / ${s.name}`;
+      if (rank[e.kind] > rank[loc.kind]) loc.kind = e.kind;
+      loc.visits.push({
+        title: e.title,
+        season: formatSeason(e),
         kind: e.kind,
-        country: e.country,
-        visits: [],
-      };
-      acc.push(loc);
+        place: `${e.region}, ${e.country}`,
+      });
     }
-    if (!loc.name.split(" / ").includes(s.name)) loc.name += ` / ${s.name}`;
-    if (rank[e.kind] > rank[loc.kind]) loc.kind = e.kind;
-    loc.visits.push({
-      title: e.title,
-      season: formatSeason(e),
-      kind: e.kind,
-      place: `${e.region}, ${e.country}`,
-    });
-  }
-  return acc;
-}, []);
+    return acc;
+  }, []);
+
+const allLocalities = groupLocalities(expeditions);
+const collectingLocalities = groupLocalities(
+  expeditions.filter((e) => e.kind === "collecting"),
+);
 
 type Region = "all" | "asia" | "australia" | "usa";
 
@@ -137,7 +143,17 @@ function popupHtml(loc: Locality) {
   )}</p></div></div><ul class="mt-2.5 space-y-1 border-t border-forest-900/10 pt-2.5 text-xs dark:border-forest-100/10">${visits}</ul>`;
 }
 
-export default function FieldworkMap() {
+interface Props {
+  /** Show only expeditions of this kind, e.g. on the Projects page. */
+  kind?: "collecting";
+}
+
+export default function FieldworkMap({ kind }: Props) {
+  const localities = kind ? collectingLocalities : allLocalities;
+  // Only offer regions that have markers.
+  const regions = REGIONS.filter((r) =>
+    localities.some((l) => r.countries.includes(l.country)),
+  );
   const ref = useRef<HTMLDivElement>(null);
   const [region, setRegion] = useState<Region>("asia");
   const fitRef = useRef<(region: Region, animate: boolean) => void>();
@@ -260,7 +276,7 @@ export default function FieldworkMap() {
   return (
     <div>
       <div class="mb-3 flex flex-wrap gap-2" role="group" aria-label="Zoom the map to a region">
-        {REGIONS.map((r) => (
+        {regions.map((r) => (
           <button
             key={r.id}
             type="button"
@@ -276,7 +292,7 @@ export default function FieldworkMap() {
         ref={ref}
         class="fieldwork-map h-[360px] overflow-hidden rounded-3xl border border-forest-900/10 bg-mist-100 dark:border-forest-100/10 dark:bg-mist-950 sm:h-[460px]"
         role="region"
-        aria-label={`Map of ${localities.length} field localities. Markers are keyboard focusable; press Enter to show the visits at each locality.`}
+        aria-label={`Map of ${localities.length} ${kind ? "field collecting" : "field"} localities. Markers are keyboard focusable; press Enter to show the visits at each locality.`}
       />
     </div>
   );

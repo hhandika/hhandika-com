@@ -8,6 +8,11 @@ import ProjectPubs from "../../layouts/ProjectPubs.astro";
 import PubButton from "../buttons/PubButton.astro";
 import herbarium from "../../assets/img/herbarium.jpg";
 import outreach from "../../assets/img/hh-lsu_outreach2.webp";
+import FieldworkMap from "../map/FieldworkMap";
+import { expeditions } from "../../scripts/fieldwork";
+
+const collecting = expeditions.filter((e) => e.kind === "collecting");
+const collectingCountries = new Set(collecting.map((e) => e.country)).size;
 
 const spaceClasses = cntl`
   mr-1
@@ -72,6 +77,14 @@ const pillars = [
       ))
     }
   </div>
+
+  <SectionHead text="Field collecting localities" />
+  <figure>
+    <FieldworkMap kind="collecting" client:visible />
+    <figcaption class="mt-3 text-pretty text-sm text-forest-700 dark:text-forest-300">
+      Localities from {collecting.length} field collecting expeditions in {collectingCountries} countries. Larger markers show repeat visits. For all fieldwork, including biodiversity surveys, see the <a href="/fieldwork" class="text-mist-700 underline hover:text-mist-900 dark:text-mist-200 dark:hover:text-mist-100">Fieldwork page</a>.
+    </figcaption>
+  </figure>
 
   <SectionHead text="Public engagement" />
   <Content>
