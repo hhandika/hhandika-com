@@ -5,6 +5,8 @@ import Background from "../../components/Background.astro";
 import outreachBg from "../../assets/graphics/backgrounds/outreach.svg";
 import { Image } from "astro:assets";
 import kompasHogNosedRat from "../../assets/img/hh-kompas-hyorhinomys.webp";
+import abcBiologyResearch from "../../assets/img/hh-abc-penelitian-biologi.webp";
+import abcStudyAbroad from "../../assets/img/hh-abc-kuliah-s2.webp";
 import tamboraOutreach from "../../assets/img/hh-tambora_outreach.webp";
 import lsuOutreach2 from "../../assets/img/hh-lsu_outreach2.webp";
 import SectionHead from "../../components/SectionHead.astro";
@@ -17,6 +19,24 @@ const outreachImages = [
   {
     src: tamboraOutreach,
     alt: "Heru Handika giving outreach presentation at Tambora Muda Indonesia",
+  },
+];
+
+const mediaImages = [
+  {
+    src: kompasHogNosedRat,
+    alt: "Heru Handika interview in Kompas.com about Hog-nosed Rat discovery",
+  },
+  {
+    src: abcBiologyResearch,
+    alt: "ABC Australia Plus article by Heru Handika, Pengalaman Mahasiswa RI Memilih Jalur Penelitian Biologi di Australia",
+  },
+];
+
+const articleImages = [
+  {
+    src: abcStudyAbroad,
+    alt: "ABC Australia Plus article by Heru Handika, Hal yang Perlu Dilakukan Agar Bisa Kuliah S2 di Luar Negeri",
   },
 ];
 
@@ -68,7 +88,6 @@ interface MediaItem {
   title?: string;
   translation?: string;
   date: string;
-  url?: string;
   pdfUrl?: string;
 }
 
@@ -81,10 +100,14 @@ const mediaGroups: { title: string; items: MediaItem[] }[] = [
         title: "Berniat Terus Meneliti Tikus",
         translation: "Intending to Keep Researching Rats",
         date: "June 2017",
-        pdfUrl:
-          "https://mediakeuangan.kemenkeu.go.id/document/download/media-keuangan-edisi-juli-2017",
       },
-      { publisher: "DetikNews-ABC Australia Plus", date: "16 January 2017" },
+      {
+        publisher: "DetikNews-ABC Australia Plus",
+        title: "Pengalaman Mahasiswa RI Memilih Jalur Penelitian Biologi di Australia",
+        translation:
+          "An Indonesian Student's Experience Choosing a Biology Research Path in Australia",
+        date: "16 January 2017",
+      },
     ],
   },
   {
@@ -94,7 +117,7 @@ const mediaGroups: { title: string; items: MediaItem[] }[] = [
         publisher: "Science Next",
         title: "What Could Recovery Look Like for Blazing Australia?",
         date: "27 January 2020",
-        pdfUrl: "https://hhandika.com/dl/interview-lsuscience.pdf",
+        pdfUrl: "/pdf/interview-lsuscience.pdf",
       },
       {
         publisher: "Kompas.Com-ABC Australia Plus",
@@ -102,8 +125,6 @@ const mediaGroups: { title: string; items: MediaItem[] }[] = [
         translation:
           "The Story of an Indonesian Student Involved in the Discovery of the Hog-Nosed Rat",
         date: "26 November 2015",
-        url: "https://sains.kompas.com/read/2015/10/26/18070041/Kisah.Mahasiswa.Indonesia.Terlibat.Penemuan.Tikus.Hidung.Babi?page=all",
-        pdfUrl: "https://hhandika.com/dl/interview-tikus-hidung-babi-kompas.pdf",
       },
     ],
   },
@@ -115,15 +136,12 @@ const articles: MediaItem[] = [
     title: "Hal yang Perlu Dilakukan agar Kuliah S2 di Luar Negeri",
     translation: "Things to Do to Study for a Master's Degree Abroad",
     date: "16 February 2017",
-    pdfUrl: "https://hhandika.com/dl/republika-kuliah-s2-LN.pdf",
   },
   {
     publisher: "DetikNews-ABC AustraliaPlus",
     title: "Langkah-Langkah Kuliah ke Luar Negeri: Dari A-Z",
     translation: "Steps to Study Abroad: From A-Z",
     date: "7 June 2016",
-    url: "https://news.detik.com/abc-australia/d-3227170/langkah-langkah-kuliah-ke-luar-negeri-dari-a-z",
-    pdfUrl: "https://hhandika.com/dl/detik-langkah-langkah-kuliah-LN.pdf",
   },
   {
     publisher: "Republika-ABC AustraliaPlus",
@@ -132,30 +150,24 @@ const articles: MediaItem[] = [
     translation:
       "Determining a Research Topic: The Dilemma of Graduating Quickly vs. Research Quality",
     date: "10 May 2016",
-    url: "https://internasional.republika.co.id/berita/internasional/abc-australia-network/o6xrf3/menentukan-topik-penelitian-dilema-kecepatan-tamat-dan-kualitas-penelitian",
   },
   {
     publisher: "TribunNews-ABC AustraliaPlus",
     title: "Pengalaman Heru Handika Menyikapi Kerja Sama dengan Peneliti Asing",
     translation: "Heru Handika's Experience Collaborating with Foreign Researchers",
     date: "8 May 2016",
-    url: "https://www.tribunnews.com/australia-plus/2017/05/08/pengalaman-heru-handika-menyikapi-kerja-sama-dengan-peneliti-asing?page=all",
-    pdfUrl: "https://hhandika.com/dl/tribun-kerjasama-penelitian.pdf",
   },
   {
     publisher: "DetikNews-ABC AustraliaPlus",
     title: "Jurus Kuliah ke Luar Negeri Berkat Jaringan Pertemanan",
     translation: "Tips for Studying Abroad Thanks to Friendship Networks",
     date: "15 April 2016",
-    url: "https://news.detik.com/abc-australia/d-3189123/jurus-kuliah-ke-luar-negeri-berkat-jaringan-pertemanan",
-    pdfUrl: "https://hhandika.com/dl/detik-kuliah-ln-lewat-pertemanan.pdf",
   },
   {
     publisher: "Republika-ABC AustraliaPlus",
     title: "Kiat Meningkatkan TOEFL Melebihi 550",
     translation: "Tips for Increasing a TOEFL Score Above 550",
     date: "7 March 2016",
-    pdfUrl: "https://hhandika.com/dl/republika-toefl550.pdf",
   },
   {
     publisher: "DetikNews-ABC AustraliaPlus",
@@ -163,15 +175,12 @@ const articles: MediaItem[] = [
     translation:
       "Getting to Know the LoA and How to Get the 'Magic Letter' for Master's/PhD Studies Abroad",
     date: "3 February 2016",
-    url: "https://news.detik.com/abc-australia/d-3133938/mengenal-loa-dan-cara-mendapatkan-surat-sakti-s2s3-di-luar-negeri",
-    pdfUrl: "https://hhandika.com/dl/detik-mengenal-loa.pdf",
   },
   {
     publisher: "Republika-ABC AustraliaPlus",
     title: "Bagaimana Menulis Esai Untuk Mendapatkan Beasiswa LPDP",
     translation: "How to Write an Essay to Get an LPDP Scholarship",
     date: "11 January 2016",
-    pdfUrl: "https://hhandika.com/dl/republika-menulis-essay.pdf",
   },
 ];
 
@@ -282,12 +291,11 @@ const imgClass =
 
   <SectionHead text="In the Media" level={3} />
   <div class="mb-4 flex gap-3 overflow-x-auto pb-1">
-    <Image
-      src={kompasHogNosedRat}
-      alt="Heru Handika interview in Kompas.com about Hog-nosed Rat discovery"
-      class={imgClass}
-      loading="lazy"
-    />
+    {
+      mediaImages.map((image) => (
+        <Image src={image.src} alt={image.alt} class={imgClass} loading="lazy" />
+      ))
+    }
   </div>
   <div class="grid gap-4 md:grid-cols-2">
     {
@@ -312,18 +320,11 @@ const imgClass =
                     {m.translation}
                   </p>
                 )}
-                {(m.url || m.pdfUrl) && (
+                {m.pdfUrl && (
                   <div class="mt-2 flex flex-wrap gap-2">
-                    {m.url && (
-                      <a href={m.url} target="_blank" rel="noopener" class={linkClasses}>
-                        Read online<span class="sr-only">: {m.translation ?? m.title ?? m.publisher} (opens in new tab)</span>
-                      </a>
-                    )}
-                    {m.pdfUrl && (
-                      <a href={m.pdfUrl} target="_blank" rel="noopener" class={linkClasses}>
-                        PDF<span class="sr-only">: {m.translation ?? m.title ?? m.publisher} (opens in new tab)</span>
-                      </a>
-                    )}
+                    <a href={m.pdfUrl} target="_blank" rel="noopener" class={linkClasses}>
+                      PDF<span class="sr-only">: {m.translation ?? m.title ?? m.publisher} (opens in new tab)</span>
+                    </a>
                   </div>
                 )}
               </li>
@@ -335,10 +336,17 @@ const imgClass =
   </div>
 
   <SectionHead text="Popular Articles" level={3} />
+  <div class="mb-4 flex gap-3 overflow-x-auto pb-1">
+    {
+      articleImages.map((image) => (
+        <Image src={image.src} alt={image.alt} class={imgClass} loading="lazy" />
+      ))
+    }
+  </div>
   <ol class={`${panelClasses} divide-y divide-forest-900/10 dark:divide-forest-100/10`}>
     {
       articles.map((a) => (
-        <li class="py-3 first:pt-0 last:pb-0 sm:flex sm:items-start sm:justify-between sm:gap-6">
+        <li class="py-3 first:pt-0 last:pb-0">
           <div class="min-w-0">
             <p class="font-semibold text-forest-950 dark:text-forest-50" lang={a.translation ? "id" : undefined}>
               <i>{a.title}</i>
@@ -349,18 +357,6 @@ const imgClass =
             <p class="mt-0.5 text-sm text-forest-700 dark:text-forest-300">
               {a.publisher} · {a.date}
             </p>
-          </div>
-          <div class="mt-2 flex shrink-0 flex-wrap gap-2 sm:mt-0">
-            {a.url && (
-              <a href={a.url} target="_blank" rel="noopener" class={linkClasses}>
-                        Read online<span class="sr-only">: {a.translation ?? a.title} (opens in new tab)</span>
-                      </a>
-            )}
-            {a.pdfUrl && (
-              <a href={a.pdfUrl} target="_blank" rel="noopener" class={linkClasses}>
-                        PDF<span class="sr-only">: {a.translation ?? a.title} (opens in new tab)</span>
-                      </a>
-            )}
           </div>
         </li>
       ))
