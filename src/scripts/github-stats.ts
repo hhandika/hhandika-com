@@ -2,6 +2,9 @@
 // workflow regenerates. The file is ~20 kB, so pages fetch it at build time for
 // a static first paint and again in the browser to stay current.
 
+import { summarize } from "./github-activity";
+import { activityPanelsHtml } from "./github-activity-html";
+
 export const STATS_URL =
   "https://raw.githubusercontent.com/hhandika/hhandika/main/data/stats.json";
 export const STATS_SOURCE_URL =
@@ -240,6 +243,7 @@ export function repoMetricsHtml(
  *   [data-gh-repo-langs="owner/repo"]      → per-repo language bar
  *   [data-gh-repo-metrics="a,b"]           → per-project metric chips
  *   [data-gh-selected-repos]               → selected repositories
+ *   [data-gh-activity]                     → heatmap and activity tracker
  */
 export async function hydrateStats(root: ParentNode = document) {
   const stats = await loadStats();
@@ -263,4 +267,10 @@ export async function hydrateStats(root: ParentNode = document) {
   root.querySelectorAll<HTMLElement>("[data-gh-selected-repos]").forEach((el) => {
     el.innerHTML = selectedReposHtml(stats);
   });
+  const activity = summarize(stats);
+  if (activity) {
+    root.querySelectorAll<HTMLElement>("[data-gh-activity]").forEach((el) => {
+      el.innerHTML = activityPanelsHtml(activity);
+    });
+  }
 }
