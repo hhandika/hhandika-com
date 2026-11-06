@@ -9,11 +9,11 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/check": "0.9.10",
-    "@astrojs/partytown": "^2.1.8",
-    "@astrojs/preact": "^6.0.6",
+    "@astrojs/check": "0.9.12",
+    "@astrojs/partytown": "^2.1.9",
+    "@astrojs/preact": "^6.1.2",
     "@observablehq/plot": "^0.6.17",
-    "astro": "7.3.6",
+    "astro": "7.4.7",
     "cntl": "^1.0.0",
     "leaflet": "^1.9.4",
     "maplibre-gl": "^6.6.0",
