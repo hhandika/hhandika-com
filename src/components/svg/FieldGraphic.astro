@@ -1,0 +1,73 @@
+---
+/**
+ * Decorative ridges behind the hero fieldwork card: a trail climbs from a
+ * pair of hiking boots and a backpack to a Sulawesi rat and mouse on the
+ * ridge tops.
+ */
+
+// One boot in side profile, toe to the right, in a 100 × 90 box.
+const boot = `
+  <path d="M30 10H56L58 44Q60 50 70 54L84 59Q92 62 92 70V74H24V64Q24 58 27 52Z"/>
+  <path d="M22 74H94V82H22Z"/>
+  <path d="M30 82V78M44 82V78M58 82V78M72 82V78M86 82V78"/>
+  <path d="M29 17H56M50 24L58 24M50 31L58 31M51 38L58 38M60 47L65 42M68 51L72 46"/>
+`;
+
+// A Sulawesi murid in side profile, snout to the right, in a 24 × 12 box
+// with its feet at y = 12. Scaled down, it doubles as a mouse.
+const rodent = `
+  <path class="fill-none stroke-forest-800/25 dark:stroke-forest-100/20" d="M5 10Q-2 12 -7 7"/>
+  <path d="M4 11Q2 4 10 3Q16 2 19 5L23 7Q25 8 23 9Q20 11 16 11Z"/>
+  <circle cx="16.5" cy="3.5" r="1.8"/>
+`;
+
+// A hiking backpack from the front, in a 20 × 26 box with its base at y = 26.
+const backpack = `
+  <path d="M8 2Q10 -1 12 2"/>
+  <path d="M3 6Q3 2 10 2Q17 2 17 6V24Q17 26 15 26H5Q3 26 3 24Z"/>
+  <path d="M3 9Q10 6 17 9"/>
+  <path d="M6 15H14V22H6Z"/>
+  <path d="M3 13H1V22H3M17 13H19V22H17"/>
+`;
+---
+
+<svg
+  viewBox="0 0 400 120"
+  preserveAspectRatio="xMaxYMax slice"
+  class="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-3/4 w-full"
+  aria-hidden="true"
+>
+  <path
+    class="fill-mist-400/15 dark:fill-mist-300/10"
+    d="M0 120V74L52 40L84 60L140 18L196 64L232 46L300 86L346 54L400 78V120Z"
+  />
+  <path
+    class="fill-moss-500/15 dark:fill-moss-400/10"
+    d="M0 120V96L70 70L120 88L190 60L260 94L330 76L400 98V120Z"
+  />
+  <path
+    class="stroke-forest-700/15 dark:stroke-forest-200/15"
+    fill="none"
+    stroke-width="1.5"
+    stroke-dasharray="3 4"
+    stroke-linecap="round"
+    d="M300 104Q262 96 232 80T176 54T140 20"
+  />
+  <g
+    class="fill-forest-800/15 stroke-white dark:fill-forest-100/15 dark:stroke-forest-950"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <g stroke-width="1">
+      <g transform="translate(124 3) scale(1.5)" set:html={rodent} />
+      <g transform="translate(250 33) scale(-1.1 1.1)" set:html={rodent} />
+    </g>
+    <g stroke-width="3">
+      <g transform="translate(300 82) scale(0.3)" set:html={boot} />
+      <g transform="translate(326 84) scale(0.3)" set:html={boot} />
+    </g>
+    <g stroke-width="0.6">
+      <g transform="translate(352 69) scale(1.5)" set:html={backpack} />
+    </g>
+  </g>
+</svg>
