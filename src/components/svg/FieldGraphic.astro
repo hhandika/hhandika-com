@@ -1,8 +1,7 @@
 ---
 /**
  * Decorative ridges behind the hero fieldwork card: a trail climbs from a
- * pair of hiking boots and a backpack to a Sulawesi rat and mouse on the
- * ridge tops.
+ * pair of hiking boots and a backpack to a Sulawesi rat on the summit.
  */
 
 // One boot in side profile, toe to the right, in a 100 × 90 box.
@@ -14,9 +13,9 @@ const boot = `
 `;
 
 // A Sulawesi murid in side profile, snout to the right, in a 24 × 12 box
-// with its feet at y = 12. Scaled down, it doubles as a mouse.
+// with its feet at y = 12.
 const rodent = `
-  <path class="fill-none stroke-forest-800/25 dark:stroke-forest-100/20" d="M5 10Q-2 12 -7 7"/>
+  <path class="fill-none stroke-forest-800/15 dark:stroke-forest-100/15" d="M5 10Q-2 12 -7 7"/>
   <path d="M4 11Q2 4 10 3Q16 2 19 5L23 7Q25 8 23 9Q20 11 16 11Z"/>
   <circle cx="16.5" cy="3.5" r="1.8"/>
 `;
@@ -58,10 +57,11 @@ const backpack = `
     stroke-linecap="round"
     stroke-linejoin="round"
   >
-    <g stroke-width="1">
-      <g transform="translate(124 3) scale(1.5)" set:html={rodent} />
-      <g transform="translate(250 33) scale(-1.1 1.1)" set:html={rodent} />
-    </g>
+    <g
+      stroke-width="1"
+      transform="translate(158 32.8) rotate(39.4) scale(-1.5 1.5) translate(-13 -12)"
+      set:html={rodent}
+    />
     <g stroke-width="3">
       <g transform="translate(300 82) scale(0.3)" set:html={boot} />
       <g transform="translate(326 84) scale(0.3)" set:html={boot} />
