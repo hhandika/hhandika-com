@@ -24,9 +24,9 @@ const { authors, year, title, journal, doi, pdfUrl, url, codeUrl } =
     {year}. {title}. {journal && <em>{journal}</em>}
   </p>
   {
-    doi && (
+    (doi || url || codeUrl) && (
       <WrapButton>
-        <DownloadButton context={title} text="View Preprint" url={doi} />
+        {doi && <DownloadButton context={title} text="View Preprint" url={doi} />}
         {pdfUrl && (
           <DownloadButton context={title}
             text="Download PDF"
@@ -35,13 +35,7 @@ const { authors, year, title, journal, doi, pdfUrl, url, codeUrl } =
             primary
           />
         )}
-      </WrapButton>
-    )
-  }
-  {
-    url && (
-      <WrapButton>
-        <DownloadButton context={title} text="Learn More" url={url} />
+        {url && <DownloadButton context={title} text="Learn More" url={url} />}
         {codeUrl && (
           <DownloadButton context={title}
             text="View Code"
@@ -49,17 +43,6 @@ const { authors, year, title, journal, doi, pdfUrl, url, codeUrl } =
             primary
           />
         )}
-      </WrapButton>
-    )
-  }
-  {
-    codeUrl && !url && (
-      <WrapButton>
-        <DownloadButton context={title}
-          text="View Code"
-          url={codeUrl}
-          primary
-        />
       </WrapButton>
     )
   }
