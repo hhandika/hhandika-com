@@ -1,10 +1,9 @@
 ---
-// Animated NAHPU architecture, adapted from the nahpu-docs
+// Interactive NAHPU architecture, adapted from the nahpu-docs
 // "Architecture" page (contributing/code/architecture).
 // Two layouts share one node list: a wide one for md+ and a stacked one for
 // phones. Hover, focus, or tap a layer to read what it does.
-import { tones, wrapChips, arrowHead, lineClass, labelClass, packetClass, type Tone } from "./diagram";
-import MotionToggle from "../MotionToggle.astro";
+import { tones, wrapChips, arrowHead, lineClass, labelClass, type Tone } from "./diagram";
 
 interface NodeText {
   title: string;
@@ -130,7 +129,6 @@ interface Layout {
   boxes: Record<string, Box>;
   edges: { x1: number; y1: number; x2: number; y2: number; label?: string }[];
   boundary: { x1: number; x2: number; y: number };
-  packets: { tone: Tone; d: string; dur: number; begin: number }[];
   legend: { x: number; y: number; vertical: boolean };
 }
 
@@ -167,11 +165,6 @@ const wide: Layout = {
     { x1: R, y1: 584, x2: R, y2: 616, label: "delegate reusable behavior" },
   ],
   boundary: { x1: 520, x2: 920, y: 502 },
-  packets: [
-    { tone: "dart", d: `M${L} 76 V518`, dur: 9, begin: 0 },
-    { tone: "rust", d: `M${L} 76 V346 H${R} V616`, dur: 12, begin: 4 },
-    { tone: "data", d: `M${L} 518 V174`, dur: 8, begin: 6 },
-  ],
   legend: { x: 56, y: 624, vertical: true },
 };
 
@@ -214,11 +207,6 @@ const narrow: Layout = {
     { x1: r, y1: 624, x2: r, y2: 656 },
   ],
   boundary: { x1: 180, x2: 356, y: 542 },
-  packets: [
-    { tone: "dart", d: `M${l} 96 V558`, dur: 9, begin: 0 },
-    { tone: "rust", d: `M${l} 96 V370 H${r} V656`, dur: 12, begin: 4 },
-    { tone: "data", d: `M${l} 558 V194`, dur: 8, begin: 6 },
-  ],
   legend: { x: 20, y: 782, vertical: false },
 };
 
@@ -230,7 +218,7 @@ const legendItems: { tone: Tone; label: string }[] = [
 
 // Resolve text, badge width, and chip positions for each node in a layout.
 function place(layout: Layout) {
-  return nodes.map((n, i) => {
+  return nodes.map((n) => {
     const b = layout.boxes[n.id];
     const text: NodeText = { title: n.title, path: n.path, sub: n.sub, chips: n.chips, ...b.text };
     const t = tones[n.tone];
@@ -248,18 +236,17 @@ function place(layout: Layout) {
         chips = chips.map((c) => ({ ...c, y: b.y + 52 }));
       }
     }
-    return { ...n, ...b, text, t, badge, chips, i };
+    return { ...n, ...b, text, t, badge, chips };
   });
 }
 
 const layouts = [wide, narrow].map((layout) => ({ ...layout, placed: place(layout) }));
 ---
 
-<figure class="arch motion not-prose my-6" data-arch>
+<figure class="arch not-prose my-6" data-arch>
   <div
     class="rounded-2xl border border-forest-900/10 bg-white/70 p-3 shadow-sm dark:border-forest-100/10 dark:bg-forest-950/40 sm:p-5"
   >
-    <div class="mb-2 flex justify-end"><MotionToggle /></div>
     {
       layouts.map((layout) => (
         <svg
@@ -268,7 +255,7 @@ const layouts = [wide, narrow].map((layout) => ({ ...layout, placed: place(layou
           role="group"
           aria-label="NAHPU software architecture: Flutter screens, providers, and services over a Drift SQLite database and a Rust API bridged with flutter_rust_bridge"
         >
-          {/* Connectors and packets sit under the boxes so data appears to pass through each layer. */}
+          {/* Connectors sit under the boxes. */}
           <g>
             {layout.edges.map((e) => (
               <g>
@@ -301,19 +288,12 @@ const layouts = [wide, narrow].map((layout) => ({ ...layout, placed: place(layou
             >
               DART ⇄ RUST · FFI
             </text>
-            {layout.packets.map((p) => (
-              <g class={`packet ${packetClass[p.tone]}`}>
-                <circle r="10" opacity="0.22" />
-                <circle r="4.5" />
-                <animateMotion path={p.d} dur={`${p.dur}s`} begin={`-${p.begin}s`} repeatCount="indefinite" />
-              </g>
-            ))}
           </g>
 
           {layout.placed.map((n) => (
             <g
               class="node"
-              style={`--i:${n.i}`}
+             
               data-node={n.id}
               data-title={n.title}
               data-desc={n.desc}
@@ -403,11 +383,6 @@ const layouts = [wide, narrow].map((layout) => ({ ...layout, placed: place(layou
                 </g>
               );
             })}
-            {layout.legend.vertical && (
-              <text x={layout.legend.x} y={layout.legend.y + 3 * 24 + 4} class="fill-forest-600 dark:fill-forest-400 italic">
-                Moving dots trace data through the layers.
-              </text>
-            )}
           </g>
         </svg>
       ))
@@ -425,19 +400,11 @@ const layouts = [wide, narrow].map((layout) => ({ ...layout, placed: place(layou
 <style>
   .flow {
     stroke-dasharray: 4 5;
-    animation: flow 3s linear infinite;
-  }
-  @keyframes flow {
-    to {
-      stroke-dashoffset: -9;
-    }
   }
   .node {
     cursor: pointer;
     outline: none;
     transition: opacity 0.25s ease;
-    animation: rise 0.6s ease-out backwards;
-    animation-delay: calc(var(--i) * 80ms);
   }
   .node .box {
     transition: stroke-width 0.2s ease, filter 0.2s ease;
@@ -450,21 +417,6 @@ const layouts = [wide, narrow].map((layout) => ({ ...layout, placed: place(layou
   }
   .diagram.has-active .node:not(.is-active) {
     opacity: 0.45;
-  }
-  @keyframes rise {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .flow,
-    .node {
-      animation: none;
-    }
-    .packet {
-      display: none;
-    }
   }
 </style>
 

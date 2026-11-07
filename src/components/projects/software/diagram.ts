@@ -5,7 +5,7 @@
 export type Tone = "dart" | "rust" | "data" | "app";
 
 // Full class strings so Tailwind can see them. Contrast targets (WCAG 2.2):
-// box borders, badges, and packets reach 3:1 against the figure card, and all
+// box borders and badges reach 3:1 against the figure card, and all
 // text reaches 4.5:1 against its fill, in light and dark modes. The three
 // tones differ in hue on both the border and the tinted fill, and every box
 // also names itself in text, so the tone is never the only cue. Border and
@@ -68,15 +68,9 @@ export const tones: Record<
   },
 };
 
-// Stroke classes for connectors and the matching packet fills.
+// Stroke classes for connectors and their labels.
 export const lineClass = "stroke-forest-400 dark:stroke-forest-500";
 export const labelClass = "fill-forest-700 dark:fill-forest-300";
-export const packetClass: Record<Tone, string> = {
-  dart: "fill-forest-500 dark:fill-forest-300",
-  rust: "fill-moss-600 dark:fill-moss-300",
-  data: "fill-mist-500 dark:fill-mist-300",
-  app: "fill-forest-500 dark:fill-forest-300",
-};
 
 export interface Chip {
   label: string;

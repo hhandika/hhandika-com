@@ -10,10 +10,8 @@ import {
   arrowHead,
   lineClass,
   labelClass,
-  packetClass,
   type Tone,
 } from "./diagram";
-import MotionToggle from "../MotionToggle.astro";
 import planner from "../../../data/biocosmos/planner.json";
 
 interface NodeText {
@@ -181,7 +179,6 @@ interface Layout {
     label: string;
     ly: number;
   };
-  packets: { tone: Tone; d: string; dur: number; begin: number }[];
   legend: { x: number; y: number; vertical: boolean };
 }
 
@@ -244,16 +241,6 @@ const wide: Layout = {
     label: "ONE PROCESS · EMBEDDED DATABASES · NO DATABASE SERVER",
     ly: 582,
   },
-  packets: [
-    { tone: "dart", d: `M${c1} 76 V432`, dur: 9, begin: 0 },
-    {
-      tone: "rust",
-      d: `M${c1} 76 V254 H${c2} V367 H${c3} V432`,
-      dur: 12,
-      begin: 4,
-    },
-    { tone: "data", d: `M${c2} 514 H${c1} V76`, dur: 9, begin: 6 },
-  ],
   legend: { x: 696, y: 620, vertical: true },
 };
 
@@ -365,11 +352,6 @@ const narrow: Layout = {
     label: "ONE PROCESS · EMBEDDED DATABASES",
     ly: 668,
   },
-  packets: [
-    { tone: "dart", d: `M${n1} 96 V478`, dur: 9, begin: 0 },
-    { tone: "rust", d: `M${n1} 96 V287 H${n2} V576`, dur: 12, begin: 4 },
-    { tone: "data", d: `M${n2} 609 H${n1} V96`, dur: 9, begin: 6 },
-  ],
   legend: { x: 20, y: 834, vertical: false },
 };
 
@@ -381,7 +363,7 @@ const legendItems: { tone: Tone; label: string }[] = [
 
 // Resolve text, badge width, and chip positions for each node in a layout.
 function place(layout: Layout) {
-  return nodes.map((n, i) => {
+  return nodes.map((n) => {
     const b = layout.boxes[n.id];
     const text: NodeText = {
       title: n.title,
@@ -419,7 +401,7 @@ function place(layout: Layout) {
         chips = chips.map((c) => ({ ...c, y: b.y + 52 }));
       }
     }
-    return { ...n, ...b, text, t, badge, chips, i };
+    return { ...n, ...b, text, t, badge, chips };
   });
 }
 
@@ -433,32 +415,31 @@ const layouts = [wide, narrow].map((layout) => ({
 // services/agent.py.
 const traces = [
   {
-    // Benchmarked with Costa Rica; shown with Indonesia.
-    id: "color-country-trait",
-    query: "orange canopy butterflies in Indonesia",
+    // Benchmarked with Brazil; shown with Indonesia.
+    id: "descriptive-country",
+    query: "owl-like butterflies in Indonesia",
     calls: [
       { kind: "filter", call: 'search_by_location(country="ID")' },
-      { kind: "filter", call: 'search_by_traits(canopy="closed")' },
-      { kind: "ranking", call: 'search_by_color(color_description="orange")' },
+      { kind: "ranking", call: 'search_by_color(color_description="owl-like")' },
     ],
     steps: [
       {
         node: "planner",
-        text: "One planner call splits the question into three typed tool calls.",
+        text: "One planner call splits the question into two typed tool calls, reading “owl-like” as an appearance rather than a taxon.",
       },
       {
         node: "filters",
-        text: "The location and trait filters run concurrently.",
+        text: "The location filter runs as parameterized SQL.",
       },
       {
         node: "duckdb",
-        text: "DuckDB operates on both the locality and LepTraits indexes, and their species sets intersect into an allowlist.",
+        text: "DuckDB matches the locality index and returns the species found in Indonesia as an allowlist.",
       },
       {
         node: "ranking",
-        text: "The color tool receives the allowlist instead of searching every image.",
+        text: "The appearance tool receives the allowlist instead of searching every image.",
       },
-      { node: "encoders", text: "CLIP embeds “orange” as a text vector." },
+      { node: "encoders", text: "CLIP embeds “owl-like” as a text vector." },
       {
         node: "lancedb",
         text: "LanceDB ranks only the allowlisted images by cosine distance.",
@@ -547,7 +528,7 @@ const callClass: Record<string, string> = {
 };
 ---
 
-<figure class="bc-arch motion not-prose my-6" data-bc-arch>
+<figure class="bc-arch not-prose my-6" data-bc-arch>
   <div
     class="rounded-2xl border border-forest-900/10 bg-white/70 p-3 shadow-sm dark:border-forest-100/10 dark:bg-forest-950/40 sm:p-5"
   >
@@ -574,7 +555,6 @@ const callClass: Record<string, string> = {
           ))
         }
       </div>
-      <MotionToggle />
     </div>
     {
       layouts.map((layout) => (
@@ -584,7 +564,7 @@ const callClass: Record<string, string> = {
           role="group"
           aria-label="BioCosmos architecture: a Next.js site calls one FastAPI process in which an open-weight language model plans typed tool calls, filters run as SQL in the embedded DuckDB OLAP database, and ranking runs as vector search in the embedded LanceDB database, fed by offline harmonization pipelines"
         >
-          {/* Connectors and packets sit under the boxes so data appears to pass through each layer. */}
+          {/* Connectors sit under the boxes. */}
           <g>
             <rect
               x={layout.boundary.x}
@@ -635,24 +615,12 @@ const callClass: Record<string, string> = {
                 )}
               </g>
             ))}
-            {layout.packets.map((p) => (
-              <g class={`packet ${packetClass[p.tone]}`}>
-                <circle r="10" opacity="0.22" />
-                <circle r="4.5" />
-                <animateMotion
-                  path={p.d}
-                  dur={`${p.dur}s`}
-                  begin={`-${p.begin}s`}
-                  repeatCount="indefinite"
-                />
-              </g>
-            ))}
           </g>
 
           {layout.placed.map((n) => (
             <g
               class="node"
-              style={`--i:${n.i}`}
+             
               data-node={n.id}
               data-title={n.title}
               data-desc={n.desc}
@@ -777,15 +745,6 @@ const callClass: Record<string, string> = {
                 </g>
               );
             })}
-            {layout.legend.vertical && (
-              <text
-                x={layout.legend.x}
-                y={layout.legend.y + 3 * 24 + 4}
-                class="fill-forest-600 dark:fill-forest-400 italic"
-              >
-                Moving dots trace a query.
-              </text>
-            )}
           </g>
         </svg>
       ))
@@ -848,19 +807,11 @@ const callClass: Record<string, string> = {
 <style>
   .flow {
     stroke-dasharray: 4 5;
-    animation: flow 3s linear infinite;
-  }
-  @keyframes flow {
-    to {
-      stroke-dashoffset: -9;
-    }
   }
   .node {
     cursor: pointer;
     outline: none;
     transition: opacity 0.25s ease;
-    animation: rise 0.6s ease-out backwards;
-    animation-delay: calc(var(--i) * 80ms);
   }
   .node .box {
     transition:
@@ -879,21 +830,6 @@ const callClass: Record<string, string> = {
   }
   .diagram.has-active .node:not(.is-active) {
     opacity: 0.45;
-  }
-  @keyframes rise {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .flow,
-    .node {
-      animation: none;
-    }
-    .packet {
-      display: none;
-    }
   }
 </style>
 
