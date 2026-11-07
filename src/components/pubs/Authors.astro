@@ -1,4 +1,6 @@
 ---
+import cntl from "cntl";
+
 // This component is used to render the authors of a publication.
 // It highlights the author's name if it is the author of this website.
 // It also adds commas and "and" to separate the authors.
@@ -11,6 +13,14 @@ interface Props {
 
 const { authors } = Astro.props;
 
+// The site author's name: bold in the moss accent, so it stands out by
+// weight as well as color (WCAG 1.4.1).
+const self = cntl`
+  font-bold
+  text-moss-700
+  dark:text-moss-300
+`;
+
 const separator = (index: number, count: number) => {
   if (index < count - 2) return ", ";
   if (index === count - 2) return count > 2 ? ", and " : " and ";
@@ -22,6 +32,6 @@ const separator = (index: number, count: number) => {
     between expressions render as spaces ("Handika, H. , Smith"). */}
 {
   authors.map((part: string, index: number, array: string[]) => (
-    <>{part === "Handika, H." ? <strong class="text-forest-700 dark:text-forest-400">{part}</strong> : part}{separator(index, array.length)}</>
+    <>{part === "Handika, H." ? <strong class={self}>{part}</strong> : part}{separator(index, array.length)}</>
   ))
 }

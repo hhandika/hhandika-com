@@ -18,6 +18,16 @@ interface PubButton {
 const { title, author, year, doi, pdfUrl, isRequest, url, codeUrl } =
   Astro.props as PubButton;
 
+// Highlight the site author's name in the author string, as in the CV list.
+// Matches both "Handika, H." and "Handika H"; the capture group keeps the
+// name, so odd indices of authorParts are the highlighted name.
+const authorParts = author.split(/(Handika,? H\.?)/);
+const selfClasses = cntl`
+  font-bold
+  text-moss-700
+  dark:text-moss-300
+`;
+
 // Each instance needs its own ids for aria-controls and aria-labelledby.
 const id = `pub-${`${year}-${title}`.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 60)}`;
 
@@ -97,7 +107,7 @@ const snackbarClasses = cntl`
   <img src={leadingIcon.src} alt="" class="mt-0.5 h-8 w-8 shrink-0" />
   <div class="min-w-0 flex-1 text-start">
     <h3 id={`${id}-title`} class="font-semibold leading-snug">{title}</h3>
-    <div class="mt-1 text-xs text-forest-700 dark:text-forest-300">{author}. {year}</div>
+    <div class="mt-1 text-xs text-forest-700 dark:text-forest-300">{authorParts.map((part, i) => (i % 2 ? <strong class={selfClasses}>{part}</strong> : part))}. {year}</div>
     {
       (() => {
         let activeGiven = false;
