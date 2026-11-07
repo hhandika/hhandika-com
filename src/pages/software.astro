@@ -12,10 +12,10 @@ import cntl from "cntl";
 import LinkCard from "../components/LinkCard.astro";
 import CodeStats from "../components/github/CodeStats.astro";
 import AppStoreLinks from "../components/software/AppStoreLinks.astro";
-import seguiWindows from "../assets/img/segul/segui-windows-genomics.png";
-import seguiIosGenomics from "../assets/img/segul/segui-ios-genomics.jpg";
-import seguiIosAlignments from "../assets/img/segul/segui-ios-alignments.jpg";
-import seguiIosHome from "../assets/img/segul/segui-ios-home-dark.webp";
+import seguiDesktop from "../assets/img/segul/segui-desktop-genomics.webp";
+import seguiPhoneGenomics from "../assets/img/segul/segui-phone-genomics.webp";
+import seguiPhoneAlignments from "../assets/img/segul/segui-phone-alignments.webp";
+import seguiPhoneHome from "../assets/img/segul/segui-phone-home.webp";
 import nahpuHome from "../assets/img/nahpu/phone-home-screen.jpg";
 import nahpuCoordinates from "../assets/img/nahpu/phone-coordinates.jpg";
 import nahpuSpecimenPart from "../assets/img/nahpu/phone-specimen-part.jpg";
@@ -77,10 +77,10 @@ const cardDescriptonClasses = cntl`
         metricRepos={["hhandika/segul", "hhandika/segui"]}
         languageRepo="hhandika/segui"
         screenshots={[
-          { src: seguiWindows, alt: "SEGUI on Windows summarizing genomic reads" },
-          { src: seguiIosHome, alt: "SEGUI home screen on iPhone in dark mode" },
-          { src: seguiIosGenomics, alt: "SEGUI genomic sequence tools on iPhone" },
-          { src: seguiIosAlignments, alt: "SEGUI alignment concatenation on iPhone" },
+          { src: seguiDesktop, alt: "SEGUI on desktop set up to summarize genomic reads, with the tool list and file panel" },
+          { src: seguiPhoneHome, alt: "SEGUI home screen on iPhone listing the tools" },
+          { src: seguiPhoneGenomics, alt: "SEGUI read summary tool on iPhone" },
+          { src: seguiPhoneAlignments, alt: "SEGUI alignment concatenation on iPhone" },
         ]}
       >
         <p class={cardDescriptonClasses}>

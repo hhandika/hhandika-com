@@ -13,8 +13,8 @@ import BioCosmosArchitecture from "./software/BioCosmosArchitecture.astro";
 import { Image } from "astro:assets";
 import SegulBenchPlot from "./software/SegulBenchPlot.tsx";
 import bench from "../../data/segul/bench.json";
-import seguiIosGenomics from "../../assets/img/segul/segui-ios-genomics.jpg";
-import seguiIosAlignments from "../../assets/img/segul/segui-ios-alignments.jpg";
+import seguiPhoneGenomics from "../../assets/img/segul/segui-phone-genomics.webp";
+import seguiPhoneAlignments from "../../assets/img/segul/segui-phone-alignments.webp";
 import mddHome from "../../assets/img/mdd/mdd-home.jpg";
 import mddTaxon from "../../assets/img/mdd/mdd-taxon.jpg";
 import mddAppTree from "../../assets/img/mdd/app-taxonomy-tree.webp";
@@ -120,13 +120,13 @@ const segulStats = [
 ];
 const segulShots = [
   {
-    src: seguiIosGenomics,
-    alt: "SEGUL iPhone app, Genomic Sequence Tools screen set up to summarize raw genomic reads",
+    src: seguiPhoneGenomics,
+    alt: "SEGUL iPhone app, read summary tool with eight FASTQ files selected",
     caption: "Read summary",
   },
   {
-    src: seguiIosAlignments,
-    alt: "SEGUL iPhone app, Alignment Tools screen with input, output format, and partition options for concatenation",
+    src: seguiPhoneAlignments,
+    alt: "SEGUL iPhone app, alignment concatenation tool with twelve alignments selected",
     caption: "Alignment concatenation",
   },
 ];
