@@ -321,6 +321,8 @@ export default function MimicryPlot() {
                                 {j > 0 && ", "}
                                 <a
                                   href={`https://doi.org/${d}`}
+                                  target="_blank"
+                                  rel="noopener"
                                   class="break-all font-mono text-moss-700 underline decoration-moss-400/50 hover:decoration-moss-500 dark:text-moss-300"
                                 >
                                   {d}
