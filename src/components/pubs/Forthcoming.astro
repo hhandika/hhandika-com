@@ -26,22 +26,28 @@ const { authors, year, title, journal, doi, pdfUrl, url, codeUrl } =
   {
     (doi || url || codeUrl) && (
       <WrapButton>
-        {doi && <DownloadButton context={title} text="View Preprint" url={doi} />}
+        {/* The primary action sits last, at the far right. */}
+        {url && <DownloadButton context={title} text="Learn More" url={url} />}
+        {codeUrl && (doi || pdfUrl) && (
+          <DownloadButton context={title} text="View Code" url={codeUrl} />
+        )}
         {pdfUrl && (
           <DownloadButton context={title}
             text="Download PDF"
             url={pdfUrl}
             isDownload="true"
-            primary
+            primary={!doi}
           />
         )}
-        {url && <DownloadButton context={title} text="Learn More" url={url} />}
-        {codeUrl && (
+        {codeUrl && !doi && !pdfUrl && (
           <DownloadButton context={title}
             text="View Code"
             url={codeUrl}
             primary
           />
+        )}
+        {doi && (
+          <DownloadButton context={title} text="View Preprint" url={doi} primary />
         )}
       </WrapButton>
     )
