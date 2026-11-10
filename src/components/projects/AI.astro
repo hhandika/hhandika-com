@@ -1,7 +1,4 @@
 ---
-import Content from "../Content.astro";
-import ProjectPubs from "../../layouts/ProjectPubs.astro";
-import PubButton from "../buttons/PubButton.astro";
 import PageSubtitle from "../PageSubtitle.astro";
 import Phenomics from "./Phenomics.astro";
 
@@ -11,17 +8,4 @@ import Phenomics from "./Phenomics.astro";
   <PageSubtitle subtitle="AI for Collection-based Evolutionary Studies" />
   <Phenomics />
 
-  <Content>
-    <div class="mt-4 mb-2 text-semibold">Publications:</div>
-    <ProjectPubs author="Handika et al.">
-      <PubButton
-        author="Handika, H., Lürig, M. D., Nichtawitz, K. L., Dobon, O. M., Yarava, V. S., Sobayo, J. K., Shi, B., Elliott, M. J., Fortes, J. A. B., Porto, A"
-        year="Submitted"
-        title="BioCosmos: computer vision and large language models for large-scale image-based biodiversity data and trait exploration"
-        doi="https://doi.org/10.32942/X2C11R"
-        url="https://lepiverse.com"
-        codeUrl="https://github.com/BioVisionLab/BioCosmos"
-      />
-    </ProjectPubs>
-  </Content>
 </div>

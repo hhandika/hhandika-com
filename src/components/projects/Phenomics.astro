@@ -1,6 +1,10 @@
 ---
 import Content from "../Content.astro";
 import SectionHead from "../SectionHead.astro";
+import QuestionIndex from "./QuestionIndex.astro";
+import QuestionHead from "./QuestionHead.astro";
+import ProjectPubs from "../../layouts/ProjectPubs.astro";
+import PubButton from "../buttons/PubButton.astro";
 import Link from "../Link.astro";
 import EmbeddingPipeline from "./software/EmbeddingPipeline.astro";
 import MorphospacePlot from "./biocosmos/MorphospacePlot.tsx";
@@ -57,11 +61,38 @@ const collection = [
   { value: "8", label: "validated families" },
 ];
 
+// The research questions drive both the index cards at the top and the
+// heading of each section, so the two stay in sync.
+const questions = [
+  {
+    id: "ai-morphospace",
+    question: "Are dorsal and ventral wing patterns integrated or decoupled across butterflies?",
+    topic: "Dorso-ventral integration in the butterfly wing morphospace",
+  },
+  {
+    id: "ai-mimicry",
+    question: "Does visual similarity recover butterfly mimicry?",
+    topic: "Testing image embeddings against known mimicry pairs",
+  },
+  {
+    id: "llm-benchmark",
+    question: "Which open-weight language model best turns plain questions into searches?",
+    topic: "Choosing an open-weight LLM for natural-language search",
+  },
+  {
+    id: "ai-biocosmos",
+    question: "Can AI make large collections explorable for anyone with a browser?",
+    topic: "Putting it all together: BioCosmos",
+  },
+];
+
 const shotClasses =
   "group overflow-hidden rounded-2xl border border-forest-900/10 bg-forest-50 p-1.5 transition duration-500 hover:-translate-y-0.5 hover:shadow-lg dark:border-forest-100/10 dark:bg-forest-900/40";
 const figureClasses =
   "rounded-2xl border border-forest-900/10 bg-white/70 p-3 shadow-sm dark:border-forest-100/10 dark:bg-forest-950/40 sm:p-5";
 ---
+
+<QuestionIndex questions={questions} />
 
 <SectionHead
   text="AI-assisted phenomics: quantifying complex traits at scale"
@@ -84,16 +115,24 @@ const figureClasses =
   <EmbeddingPipeline />
 </Content>
 
-<SectionHead
-  text="The butterfly morphospace: upper and under wings tell different stories"
-/>
+<QuestionHead questions={questions} id="ai-morphospace" />
 <Content>
   <p>
+    Dorsal and ventral wing patterns are largely integrated but not locked
+    together. Across {stats.bothSides.toLocaleString()} species imaged on both
+    surfaces, distances between species on the dorsal side track their
+    distances on the ventral side (Mantel r = {stats.scopeMantelR}). Within
+    genera, the two surfaces are significantly integrated in {stats.generaSignificant}
+    of {stats.genera} genera (Mantel p &lt; 0.05); the rest diverge. This
+    partial decoupling is consistent with the two surfaces facing different
+    selection, such as signaling on the dorsal side and crypsis on the ventral
+    side at rest. Skippers (Hesperiidae) and whites and sulphurs (Pieridae)
+    separate clearly on both surfaces, whereas many lineages shift position
+    between them.
+  </p>
+  <p class="mt-2">
     Each point is a species centroid in a principal-component space of image
-    embeddings of digitized butterfly specimens. Switch between the dorsal and
-    ventral surfaces to see the shift in morphospace. Some families, such as the
-    skippers (Hesperiidae) and whites and sulphurs (Pieridae) separate clearly,
-    while many lineages change position between sides. Hover a point for its
+    embeddings of digitized specimens. Switch surfaces, hover a point for its
     name, or pick a family to highlight it.
   </p>
 </Content>
@@ -116,7 +155,7 @@ const figureClasses =
   }
 </dl>
 
-<SectionHead text="Does visual similarity recover butterfly mimicry?" />
+<QuestionHead questions={questions} id="ai-mimicry" />
 <Content>
   <p>
     Mimicry is a direct test of whether image embeddings capture what predators
@@ -153,10 +192,7 @@ const figureClasses =
   }
 </dl>
 
-<SectionHead
-  id="llm-benchmark"
-  text="Choosing an open-weight LLM for natural-language search"
-/>
+<QuestionHead questions={questions} id="llm-benchmark" />
 <Content>
   <p>
     I designed natural-language search for a large specimen collection. The
@@ -175,7 +211,7 @@ const figureClasses =
   <PlannerPlot client:visible />
 </figure>
 
-<SectionHead text="Putting it all together: BioCosmos" />
+<QuestionHead questions={questions} id="ai-biocosmos" />
 <Content>
   <p>
     <Link text="BioCosmos" url="https://lepiverse.com" /> brings this work together
@@ -266,6 +302,20 @@ const figureClasses =
     <i>Tanaecia</i>, and <i>Vindula</i>, from different genera.
   </figcaption>
 </figure>
+
+<Content>
+  <p class="mt-6 mb-1 font-semibold text-moss-800 dark:text-moss-200">Publications:</p>
+  <ProjectPubs author="Handika et al.">
+    <PubButton
+      author="Handika, H., Lürig, M. D., Nichtawitz, K. L., Dobon, O. M., Yarava, V. S., Sobayo, J. K., Shi, B., Elliott, M. J., Fortes, J. A. B., Porto, A"
+      year="Submitted"
+      title="BioCosmos: computer vision and large language models for large-scale image-based biodiversity data and trait exploration"
+      doi="https://doi.org/10.32942/X2C11R"
+      url="https://lepiverse.com"
+      codeUrl="https://github.com/BioVisionLab/BioCosmos"
+    />
+  </ProjectPubs>
+</Content>
 
 <SectionHead text="Future directions" />
 <Content>

@@ -1,6 +1,8 @@
 ---
 import Content from "../Content.astro";
 import SectionHead from "../SectionHead.astro";
+import QuestionIndex from "./QuestionIndex.astro";
+import QuestionHead from "./QuestionHead.astro";
 import cntl from "cntl";
 import ProjectPubs from "../../layouts/ProjectPubs.astro";
 import PubButton from "../buttons/PubButton.astro";
@@ -241,6 +243,36 @@ const biocosmosPrinciples = [
   },
 ];
 
+// The research questions drive both the index cards at the top and the
+// heading of each section, so the two stay in sync.
+const questions = [
+  {
+    id: "software-portable",
+    question: "How can research software run anywhere and capture more in the field?",
+    topic: "Software that runs anywhere and captures more",
+  },
+  {
+    id: "software-nahpu",
+    question: "How can one field app work offline on phones, tablets, and laptops?",
+    topic: "Cross-platform software design approaches: NAHPU as an example",
+  },
+  {
+    id: "biocosmos-architecture",
+    question: "How can a modest server answer open-ended questions over 600,000 images?",
+    topic: "BioCosmos: a lightweight web architecture for AI-enabled search and trait exploration",
+  },
+  {
+    id: "software-segul",
+    question: "How can researchers explore phylogenomic data before inferring trees?",
+    topic: "SEGUL: fast phylogenomic data exploration across platforms",
+  },
+  {
+    id: "software-mdd",
+    question: "How do we keep a living checklist of the world's mammals accessible?",
+    topic: "Mammal Diversity Database: website, app, and tooling",
+  },
+];
+
 const spaceClasses = cntl`
   mr-1
 `;
@@ -297,6 +329,8 @@ const spaceClasses = cntl`
     }
   </ul>
 
+  <QuestionIndex questions={questions} />
+
   <SectionHead
     text="Digital Infrastructure for Accessible and Data-Rich Biodiversity Research"
   />
@@ -344,7 +378,7 @@ const spaceClasses = cntl`
     </p>
   </Content>
 
-  <SectionHead text="Software that runs anywhere and captures more" />
+  <QuestionHead questions={questions} id="software-portable" />
   <Content>
     <p>
       My tools work on anything, from a phone to a high-performance computing
@@ -363,9 +397,7 @@ const spaceClasses = cntl`
     </p>
   </Content>
 
-  <SectionHead
-    text="Cross-platform Software Design Approaches: NAHPU as an example"
-  />
+  <QuestionHead questions={questions} id="software-nahpu" />
   <Content>
     <p>
       <Link text="NAHPU" url="https://nahpu.app" /> is a field cataloging app for
@@ -401,11 +433,21 @@ const spaceClasses = cntl`
     }
   </ul>
   <NahpuGallery />
+  <Content>
+    <p class="mt-6 mb-1 font-semibold text-moss-800 dark:text-moss-200">Publications:</p>
+    <ProjectPubs author="Handika et al.">
+      <PubButton
+        author="Handika, H., Moncrieff, A. E., Henderson, C., Dadaian, A., Gordon, C., Canton, R., Chipps, A. S., Inayah, N., Chornelia, A., Rego, M. A., Pérez-Amaya, N., Gan, L. B., Jaiswal, A. T., Lee, D. D., Yu, J., Aravind, A. J., Evangelista, D. R., Rutledge, S. L., Elías, D. J., Troyer, E. M., de Miranda, G. S., Vonnahme, L., Shi, B., Nations, J. A., Del-Rio, G., Thom, G., Porto, A., Esselstyn, J. A"
+        year="Submitted"
+        title="NAHPU: An integrated approach to natural history data acquisition and management in the extended specimen era"
+        doi="https://doi.org/10.32942/X21M6D"
+        codeUrl="https://github.com/nahpu/nahpu"
+        url="https://nahpu.app"
+      />
+    </ProjectPubs>
+  </Content>
 
-  <SectionHead
-    id="biocosmos-architecture"
-    text="BioCosmos: A lightweight web architecture for AI-enabled search and trait exploration"
-  />
+  <QuestionHead questions={questions} id="biocosmos-architecture" />
   <Content>
     <p>
       <Link text="BioCosmos" url="https://github.com/BioVisionLab/BioCosmos" />,
@@ -490,9 +532,7 @@ const spaceClasses = cntl`
     </p>
   </Content>
 
-  <SectionHead
-    text="SEGUL: Fast Phylogenomic Data Exploration Across Platforms"
-  />
+  <QuestionHead questions={questions} id="software-segul" />
   <Content>
     <p>
       Between assembling loci and inferring trees lies an often overlooked step:
@@ -654,7 +694,31 @@ const spaceClasses = cntl`
     </div>
   </div>
 
-  <SectionHead text="Mammal Diversity Database: website, app, and tooling" />
+  <Content>
+    <p class="mt-6 mb-1 font-semibold text-moss-800 dark:text-moss-200">Publications:</p>
+    <ProjectPubs author="Handika and Esselstyn">
+      <PubButton
+        author="Handika, H. and Esselstyn, J. A"
+        year={2024}
+        title="SEGUL: Ultrafast, memory-efficient and mobile-friendly software for manipulating and summarizing phylogenomic datasets"
+        doi="https://doi.org/10.1111/1755-0998.13964"
+        pdfUrl="https://www.researchgate.net/publication/380125709_SEGUL_Ultrafast_memory-efficient_and_mobile-friendly_software_for_manipulating_and_summarizing_phylogenomic_datasets"
+        isRequest={true}
+        url="https://segul.app"
+        codeUrl="https://github.com/hhandika/segul"
+      />
+    </ProjectPubs>
+    <ProjectPubs author="Handika et al.">
+      <PubButton
+        author="Handika, H., Del-Rio, G. D., Esselstyn, J. A"
+        year="In prep"
+        title="ULLAR: An ULtrafast, scaLable, Accessible, and Reproducible phylogenomic pipeline"
+        codeUrl="https://github.com/hhandika/ullar"
+      />
+    </ProjectPubs>
+  </Content>
+
+  <QuestionHead questions={questions} id="software-mdd" />
   <Content>
     <p>
       I develop the website, cross-platform app, and data tooling for the <Link
@@ -741,36 +805,7 @@ const spaceClasses = cntl`
   </div>
 
   <Content>
-    <div class="mt-4 mb-2 text-semibold">Publications:</div>
-    <ProjectPubs author="Handika et al.">
-      <PubButton
-        author="Handika, H., Moncrieff, A. E., Henderson, C., Dadaian, A., Gordon, C., Canton, R., Chipps, A. S., Inayah, N., Chornelia, A., Rego, M. A., Pérez-Amaya, N., Gan, L. B., Jaiswal, A. T., Lee, D. D., Yu, J., Aravind, A. J., Evangelista, D. R., Rutledge, S. L., Elías, D. J., Troyer, E. M., de Miranda, G. S., Vonnahme, L., Shi, B., Nations, J. A., Del-Rio, G., Thom, G., Porto, A., Esselstyn, J. A"
-        year="Submitted"
-        title="NAHPU: An integrated approach to natural history data acquisition and management in the extended specimen era"
-        doi="https://doi.org/10.32942/X21M6D"
-        codeUrl="https://github.com/nahpu/nahpu"
-        url="https://nahpu.app"
-      />
-      <span class={spaceClasses}>,</span>
-      <PubButton
-        author="Handika, H., Del-Rio, G. D., Esselstyn, J. A"
-        year="In prep"
-        title="ULLAR: An ULtrafast, scaLable, Accessible, and Reproducible phylogenomic pipeline"
-        codeUrl="https://github.com/hhandika/ullar"
-      />
-    </ProjectPubs>
-    <ProjectPubs author="Handika and Esselstyn">
-      <PubButton
-        author="Handika, H. and Esselstyn, J. A"
-        year={2024}
-        title="SEGUL: Ultrafast, memory-efficient and mobile-friendly software for manipulating and summarizing phylogenomic datasets"
-        doi="https://doi.org/10.1111/1755-0998.13964"
-        pdfUrl="https://www.researchgate.net/publication/380125709_SEGUL_Ultrafast_memory-efficient_and_mobile-friendly_software_for_manipulating_and_summarizing_phylogenomic_datasets"
-        isRequest={true}
-        url="https://segul.app"
-        codeUrl="https://github.com/hhandika/segul"
-      />
-    </ProjectPubs>
+    <p class="mt-6 mb-1 font-semibold text-moss-800 dark:text-moss-200">Publications:</p>
     <ProjectPubs author="Burgin et al.">
       <PubButton
         author="Burgin, C. J., Zijlstra, J. S., Becker, M. A., Handika, H., Widness, J., Liphardt, S., Huckaby, D. G., and Upham, N. S."

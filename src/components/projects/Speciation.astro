@@ -13,7 +13,29 @@ import SkyIslandDiagram from "../svg/SkyIslandDiagram.astro";
 import SulawesiAncestryMap from "./SulawesiAncestryMap.astro";
 import ParasiteStudyDesign from "./ParasiteStudyDesign.astro";
 import BunomysChronogram from "./BunomysChronogram.astro";
+import QuestionIndex from "./QuestionIndex.astro";
+import QuestionHead from "./QuestionHead.astro";
 // import ElevationRanges from "./ElevationRanges.astro";
+
+// The research questions drive both the index cards at the top and the
+// heading of each section, so the two stay in sync.
+const questions = [
+  {
+    id: "speciation-diversification",
+    question: "How did the <i>Bunomys</i> clade diversify within a single island?",
+    topic: "In situ diversification of the <i>Bunomys</i> clade on Sulawesi",
+  },
+  {
+    id: "speciation-isolation",
+    question: "Do mountains and areas of endemism keep populations apart?",
+    topic: "Sulawesi as an island of islands",
+  },
+  {
+    id: "speciation-parasites",
+    question: "Do parasites follow their hosts' history or switch hosts?",
+    topic: "Parasites and microbiomes: collaborations and next steps",
+  },
+];
 
 const firstParagraphClasses = cntl`
   first-letter:text-7xl
@@ -35,12 +57,22 @@ const eyebrowClasses = cntl`
   text-moss-700
   dark:text-moss-300
 `;
+
+const pubsLabelClasses = cntl`
+  mt-6
+  mb-1
+  font-semibold
+  text-moss-800
+  dark:text-moss-200
+`;
 ---
 
 <div>
   <PageSubtitle
     subtitle="Systematics, Island Speciation, & Host-Parasite Interactions"
   />
+
+  <QuestionIndex questions={questions} />
 
   <SectionHead
     text="Islands and mountains as natural laboratories of evolution"
@@ -67,9 +99,7 @@ const eyebrowClasses = cntl`
     <LowSeaLevelMap />
   </div>
 
-  <SectionHead
-    text="In situ diversification of the Bunomys clade on Sulawesi"
-  />
+  <QuestionHead questions={questions} id="speciation-diversification" />
   <Content>
     <Image
       src={lenomys}
@@ -107,9 +137,62 @@ const eyebrowClasses = cntl`
     <BunomysChronogram />
   </div>
 
-  <div class="clear-both">
-    <SectionHead text="Sulawesi as an island of islands: A brief overview" />
-  </div>
+  <Content>
+    <p class={pubsLabelClasses}>Publications:</p>
+    <ProjectPubs author="Handika et. al.">
+      <PubButton
+        title="A new species of Frateromys from the Northern Peninsula of Sulawesi, Indonesia"
+        year="In prep"
+        author="Handika, H., Rowe, K.C., Achmadi, A.S., Swanson, M. T., and Esselstyn, J.A"
+      />
+      <span class={spaceClasses}>,</span>
+      <PubButton
+        author="Handika, H., Achmadi, A.S., Esselstyn, J.A., and Rowe, K.C"
+        year="2021"
+        title="Molecular and morphological systematics of the Bunomys division (Rodentia: Muridae), an endemic radiation on Sulawesi"
+        doi="https://doi.org/10.1111/zsc.12460"
+        pdfUrl="https://www.researchgate.net/publication/346459790_Molecular_and_morphological_systematics_of_the_Bunomys_division_Rodentia_Muridae_an_endemic_radiation_on_Sulawesi?_tp=eyJjb250ZXh0Ijp7ImZpcnN0UGFnZSI6InB1YmxpY2F0aW9uIiwicGFnZSI6InByb2ZpbGUiLCJwcmV2aW91c1BhZ2UiOiJwcm9maWxlIiwicG9zaXRpb24iOiJwYWdlQ29udGVudCJ9fQ"
+        isRequest={true}
+      />
+    </ProjectPubs>
+    <ProjectPubs author="Esselstyn et. al.">
+      <PubButton
+        author="Esselstyn, J.A., Achmadi, A.S., Handika, H., Swanson, M. T., Giarla, T.C. and Rowe, K.C"
+        year="2021"
+        title="Fourteen new, endemic species of shrew (genus Crocidura) from Sulawesi reveal a spectacular island radiation"
+        doi="https://doi.org/10.1206/0003-0090.454.1.1"
+        pdfUrl="https://bioone.org/journalArticle/Download?urlId=10.1206%2F0003-0090.454.1.1"
+      />
+      <span class={spaceClasses}>,</span>
+      <PubButton
+        author="Esselstyn, J.A., Achmadi, A.S., Handika, H., Giarla, T.C. and Rowe, K.C"
+        year="2019"
+        title="A new climbing shrew from Sulawesi highlights the tangled taxonomy of an endemic radiation"
+        doi="https://doi.org/10.1093/jmammal/gyz077"
+        pdfUrl="https://esselstyn.github.io/publications/2019/Esselstyn-2019.pdf"
+      />
+      <span class={spaceClasses}>,</span>
+      <PubButton
+        author="Esselstyn, J.A., Achmadi, A.S., Handika, H. and Rowe, K.C"
+        year="2015"
+        title="A hog-nosed shrew rat (Rodentia: Muridae) from Sulawesi Island, Indonesia"
+        doi="https://doi.org/10.1093/jmammal/gyv093"
+        pdfUrl="https://esselstyn.github.io/publications/2015/Esselstyn-2015.pdf"
+      />
+    </ProjectPubs>
+    <ProjectPubs author="Giarla et. al.">
+      <PubButton
+        author="Giarla, T. C., Achmadi, A.S., Fabre, P. H., Handika, H., Chipps, A. S., Swanson, M.T., Nations, J. A., Morni, M. A., William-Dee, J., Inayah, N., Jayanti, E. D., Nurdin, M.R.T.J., Griffin, K. E., Khan, F. A. A., Heaney, L. R., Rowe, K. C., Esselstyn, J. A"
+        year="2025"
+        title="Systematics and historical biogeography of Crunomys and Maxomys (Muridae: Murinae), with the description of a new species from Sulawesi and new genus-level classification"
+        doi="https://doi.org/10.1093/jmammal/gyaf006"
+        pdfUrl="https://www.researchgate.net/publication/392705776_Systematics_and_historical_biogeography_of_Crunomys_and_Maxomys_Muridae_Murinae_with_the_description_of_a_new_species_from_Sulawesi_and_new_genus-level_classification"
+        isRequest={true}
+      />
+    </ProjectPubs>
+  </Content>
+
+  <QuestionHead questions={questions} id="speciation-isolation" />
   <Content>
     <p>
       Sulawesi is a complex island with a rich geological history. It has been
@@ -165,9 +248,25 @@ const eyebrowClasses = cntl`
     </p>
   </div>
 
-  <SectionHead
-    text="Parasites and microbiomes: collaborations and next steps"
-  />
+  <Content>
+    <p class={pubsLabelClasses}>Publications:</p>
+    <ProjectPubs author="Handika et. al.">
+      <PubButton
+        title="An island of islands: complex gene tree discordance and local endemism on a recent, rapid rodent radiation on Sulawesi"
+        year="In prep"
+        author="Handika, H., Rowe, K.C., Achmadi, A.S., Zulkurnia Irsaf, Swanson, M. T., and Esselstyn, J.A"
+      />
+    </ProjectPubs>
+    <ProjectPubs author="Chipps et. al.">
+      <PubButton
+        title="The rapid radiation of Sulawesi shrews (Soricidae: Crocidura) is characterized by convergent evolution and low levels of gene flow"
+        year="In revision"
+        author="Chipps, S. A., Handika, H., Achmadi, S. A., Rowe, K. C., and Esselstyn, J. A"
+      />
+    </ProjectPubs>
+  </Content>
+
+  <QuestionHead questions={questions} id="speciation-parasites" />
   <Content>
     <p>
       The evolutionary history of the <i>Bunomys</i> clade also provides a framework
@@ -204,135 +303,79 @@ const eyebrowClasses = cntl`
     </p>
   </Content>
   <ParasiteStudyDesign />
+
+  <Content>
+    <p class={pubsLabelClasses}>Publications:</p>
+    <ProjectPubs author="Adams et al.">
+      <PubButton
+        author="Adams, A.L., Achmadi, A.S., Mursyid, A., Handika, H., Nurdin, M.R.T., Esselstyn, J.A., Perkins, S.L., Rowe, K.M., and Rowe, K.C."
+        year="2025"
+        title="Wildlife disease surveillance from village to peak: Trypanosome infections of mammals on Sulawesi revealed higher prevalence in intact montane forests"
+        doi="https://mastozoologiamexicana.com/therya/index.php/THERYA/article/view/6154"
+        pdfUrl="https://mastozoologiamexicana.com/therya/index.php/THERYA/article/view/6154/1475"
+      />
+    </ProjectPubs>
+    <ProjectPubs author="Mursyid et. al.">
+      <PubButton
+        author="Mursyid, A., Achmadi, A.S., Novarino, W., Handika, H., Nugroho, H.A., Anita, S., Adams, A.L., Rowe, K.M.C., and Rowe, K.C"
+        year="2023"
+        title="Trypanosoma (Euglenozoa: Kinetoplastea) infections in rodents, bats, and shrews along an elevation and disturbance gradient in Central Sulawesi, Indonesia"
+        doi="http://dx.doi.org/10.3853/j.2201-4349.75.2023.1786"
+        pdfUrl="https://journals.australian.museum/media/dd/documents/1786_complete.62f64af.pdf"
+      />
+    </ProjectPubs>
+    <ProjectPubs author="Swanson et. al.">
+      <PubButton
+        author="Swanson, M.T., Henson, M.W., Handika, H., Achmadi, A.S., Anita, S., Rowe, K.C., and Esselstyn, J.A"
+        year="2023"
+        title="Mycoplasmataceae dominate microbial community differences between gut regions in mammals with a simple gut architecture"
+        doi="https://doi.org/10.1093/jmammal/gyac098"
+        pdfUrl="https://academic.oup.com/jmammal/article/104/1/146/6823667"
+      />
+    </ProjectPubs>
+    <ProjectPubs author="Winterhoff et. al.">
+      <PubButton
+        author="Winterhoff, M.L., Achmadi, A.S., Roycroft, E.J., Handika, H., Putra, R.T.J., Rowe, K.M.C., Perkins, S., and Rowe, K.C"
+        year="2020"
+        title="Native and introduced trypanosome parasites in endemic and introduced murine rodents of Sulawesi"
+        doi="https://doi.org/10.1645/19-136"
+        pdfUrl="https://bioone.org/journalArticle/Download?urlId=10.1645%2F19-136"
+      />
+    </ProjectPubs>
+  </Content>
+
+  <Content>
+    <p class="mt-12 mb-1 font-semibold text-moss-800 dark:text-moss-200">
+      Other publications:
+    </p>
+    <ProjectPubs author="Demos et. al.">
+      <PubButton
+        author="Demos, T.C., Achmadi, A.S., Giarla, T.C., Handika, H., Rowe, K.C. and Esselstyn, J.A"
+        year={2016}
+        title="Local endemism and within‐island diversification of shrews illustrate the importance of speciation in building Sundaland mammal diversity"
+        doi="https://doi.org/10.1111/mec.13820"
+        pdfUrl="https://esselstyn.github.io/publications/2016/Demos-2016.pdf"
+      />
+      <span class={spaceClasses}>,</span>
+      <PubButton
+        author="Demos, T.C., Achmadi, A.S., Handika, H., Rowe, K.C. and Esselstyn, J.A"
+        year={2017}
+        title="A new species of shrew (Soricomorpha: Crocidura) from Java, Indonesia: possible character displacement despite interspecific gene flow"
+        doi="https://doi.org/10.1093/jmammal/gyw183"
+        pdfUrl="https://esselstyn.github.io/publications/2017/Demos-2017.pdf"
+      />
+    </ProjectPubs>
+    <ProjectPubs author="Nations et. al.">
+      <PubButton
+        author="Nations, J. A., Handika, H., Mursyid, A., Butsa, R. D., Apandi, Achmadi, A. S. Esselstyn, J. A"
+        year={2024}
+        title="Three new species of shrew (Soricidae: Crocidura) from West Sumatra, Indonesia: elevational and morphological divergence in syntopic sister taxa"
+        doi="https://doi.org/10.1093/jmammal/gyad126"
+        pdfUrl="https://www.researchgate.net/publication/377726198_Three_new_shrews_Soricidae_Crocidura_from_West_Sumatra_Indonesia_elevational_and_morphological_divergence_in_syntopic_sister_taxa"
+      />
+    </ProjectPubs>
+  </Content>
 </div>
-<div class="mt-8 mb-2 text-semibold text-lg">Speciation and systematics:</div>
-<ProjectPubs author="Handika et. al.">
-  <PubButton
-    title="An island of islands: complex gene tree discordance and local endemism on a recent, rapid rodent radiation on Sulawesi"
-    year="In prep"
-    author="Handika, H., Rowe, K.C., Achmadi, A.S., Zulkurnia Irsaf, Swanson, M. T., and Esselstyn, J.A"
-  />
-  <span class={spaceClasses}>,</span>
-  <PubButton
-    title="A new species of Frateromys from the Northern Peninsula of Sulawesi, Indonesia"
-    year="In prep"
-    author="Handika, H., Rowe, K.C., Achmadi, A.S., Swanson, M. T., and Esselstyn, J.A"
-  />
-  <span class={spaceClasses}>,</span>
-  <PubButton
-    author="Handika, H., Achmadi, A.S., Esselstyn, J.A., and Rowe, K.C"
-    year="2021"
-    title="Molecular and morphological systematics of the Bunomys division (Rodentia: Muridae), an endemic radiation on Sulawesi"
-    doi="https://doi.org/10.1111/zsc.12460"
-    pdfUrl="https://www.researchgate.net/publication/346459790_Molecular_and_morphological_systematics_of_the_Bunomys_division_Rodentia_Muridae_an_endemic_radiation_on_Sulawesi?_tp=eyJjb250ZXh0Ijp7ImZpcnN0UGFnZSI6InB1YmxpY2F0aW9uIiwicGFnZSI6InByb2ZpbGUiLCJwcmV2aW91c1BhZ2UiOiJwcm9maWxlIiwicG9zaXRpb24iOiJwYWdlQ29udGVudCJ9fQ"
-    isRequest={true}
-  />
-</ProjectPubs>
-<ProjectPubs author="Chipps et. al.">
-  <PubButton
-    title="The rapid radiation of Sulawesi shrews (Soricidae: Crocidura) is characterized by convergent evolution and low levels of gene flow"
-    year="In revision"
-    author="Chipps, S. A., Handika, H., Achmadi, S. A., Rowe, K. C., and Esselstyn, J. A"
-  />
-</ProjectPubs>
-<ProjectPubs author="Demos et. al.">
-  <PubButton
-    author="Demos, T.C., Achmadi, A.S., Handika, H., Rowe, K.C. and Esselstyn, J.A"
-    year={2017}
-    title="A new species of shrew (Soricomorpha: Crocidura) from Java, Indonesia: possible character displacement despite interspecific gene flow"
-    doi="https://doi.org/10.1093/jmammal/gyw183"
-    pdfUrl="https://esselstyn.github.io/publications/2017/Demos-2017.pdf"
-  />
-  <span class={spaceClasses}>,</span>
-  <PubButton
-    author="Demos, T.C., Achmadi, A.S., Giarla, T.C., Handika, H., Rowe, K.C. and Esselstyn, J.A"
-    year={2016}
-    title="Local endemism and within‐island diversification of shrews illustrate the importance of speciation in building Sundaland mammal diversity"
-    doi="https://doi.org/10.1111/mec.13820"
-    pdfUrl="https://esselstyn.github.io/publications/2016/Demos-2016.pdf"
-  />
-</ProjectPubs>
-<ProjectPubs author="Esselstyn et. al.">
-  <PubButton
-    author="Esselstyn, J.A., Achmadi, A.S., Handika, H. , Swanson, M. T., Giarla, T.C. and Rowe, K.C"
-    year="2021"
-    title="Fourteen new, endemic species of shrew (genus Crocidura) from Sulawesi reveal a spectacular island radiation"
-    doi="https://doi.org/10.1206/0003-0090.454.1.1"
-    pdfUrl="https://bioone.org/journalArticle/Download?urlId=10.1206%2F0003-0090.454.1.1"
-  />
-  <span class={spaceClasses}>,</span>
-  <PubButton
-    author="Esselstyn, J.A., Achmadi, A.S., Handika, H., Giarla, T.C. and Rowe, K.C"
-    year="2019"
-    title="A new climbing shrew from Sulawesi highlights the tangled taxonomy of an endemic radiation"
-    doi="https://doi.org/10.1093/jmammal/gyz077"
-    pdfUrl="https://esselstyn.github.io/publications/2019/Esselstyn-2019.pdf"
-  />
-  <span class={spaceClasses}>,</span>
-  <PubButton
-    author="Esselstyn, J.A., Achmadi, A.S., Handika, H. and Rowe, K.C"
-    year="2015"
-    title="A hog-nosed shrew rat (Rodentia: Muridae) from Sulawesi Island, Indonesia"
-    doi="https://doi.org/10.1093/jmammal/gyv093"
-    pdfUrl="https://esselstyn.github.io/publications/2015/Esselstyn-2015.pdf"
-  />
-</ProjectPubs>
-<ProjectPubs author="Giarla et. al.">
-  <PubButton
-    author="Giarla, T. C., Achmadi, A.S., Fabre, P. H., Handika, H., Chipps, A. S., Swanson, M.T., Nations, J. A., Morni, M. A., William-Dee, J., Inayah, N., Jayanti, E. D., Nurdin, M.R.T.J., Griffin, K. E., Khan, F. A. A., Heaney, L. R., Rowe, K. C., Esselstyn, J. A"
-    year="2025"
-    title="Systematics and historical biogeography of Crunomys and Maxomys (Muridae: Murinae), with the description of a new species from Sulawesi and new genus-level classification"
-    doi="https://doi.org/10.1093/jmammal/gyaf006"
-    pdfUrl="https://www.researchgate.net/publication/392705776_Systematics_and_historical_biogeography_of_Crunomys_and_Maxomys_Muridae_Murinae_with_the_description_of_a_new_species_from_Sulawesi_and_new_genus-level_classification"
-    isRequest={true}
-  />
-</ProjectPubs>
-<ProjectPubs author="Nations et. al.">
-  <PubButton
-    author="Nations, J. A., Handika, H., Mursyid, A., Butsa, R. D., Apandi, Achmadi, A. S. Esselstyn, J. A"
-    year={2024}
-    title="Three new species of shrew (Soricidae: Crocidura) from West Sumatra, Indonesia: elevational and morphological divergence in syntopic sister taxa"
-    doi="https://doi.org/10.1093/jmammal/gyad126"
-    pdfUrl="https://www.researchgate.net/publication/377726198_Three_new_shrews_Soricidae_Crocidura_from_West_Sumatra_Indonesia_elevational_and_morphological_divergence_in_syntopic_sister_taxa"
-  />
-</ProjectPubs>
-<div class="mt-4 mb-2 text-semibold">Host–parasite and microbiome:</div>
-<ProjectPubs author="Adams et al.">
-  <PubButton
-    author="Adams, A.L., Achmadi, A.S., Mursyid, A., Handika, H., Nurdin, M.R.T., Esselstyn, J.A., Perkins, S.L., Rowe, K.M., and Rowe, K.C."
-    year="2025"
-    title="Wildlife disease surveillance from village to peak: Trypanosome infections of mammals on Sulawesi revealed higher prevalence in intact montane forests"
-    doi="https://mastozoologiamexicana.com/therya/index.php/THERYA/article/view/6154"
-    pdfUrl="https://mastozoologiamexicana.com/therya/index.php/THERYA/article/view/6154/1475"
-  />
-</ProjectPubs>
-<ProjectPubs author="Mursyid et. al.">
-  <PubButton
-    author="Mursyid, A., Achmadi, A.S., Novarino, W., Handika, H., Nugroho, H.A., Anita, S., Adams, A.L., Rowe, K.M.C., and Rowe, K.C"
-    year="2023"
-    title="Trypanosoma (Euglenozoa: Kinetoplastea) infections in rodents, bats, and shrews along an elevation and disturbance gradient in Central Sulawesi, Indonesia"
-    doi="http://dx.doi.org/10.3853/j.2201-4349.75.2023.1786"
-    pdfUrl="https://journals.australian.museum/media/dd/documents/1786_complete.62f64af.pdf"
-  />
-</ProjectPubs>
-<ProjectPubs author="Swanson et. al.">
-  <PubButton
-    author="Swanson, M.T., Henson, M.W., Handika, H., Achmadi, A.S., Anita, S., Rowe, K.C., and Esselstyn, J.A"
-    year="2023"
-    title="Mycoplasmataceae dominate microbial community differences between gut regions in mammals with a simple gut architecture"
-    doi="https://doi.org/10.1093/jmammal/gyac098"
-    pdfUrl="https://academic.oup.com/jmammal/article/104/1/146/6823667"
-  />
-</ProjectPubs>
-<ProjectPubs author="Winterhoff et. al.">
-  <PubButton
-    author="Winterhoff, M.L., Achmadi, A.S., Roycroft, E.J., Handika, H., Putra, R.T.J., Rowe, K.M.C., Perkins, S., and Rowe, K.C"
-    year="2020"
-    title="Native and introduced trypanosome parasites in endemic and introduced murine rodents of Sulawesi"
-    doi="https://doi.org/10.1645/19-136"
-    pdfUrl="https://bioone.org/journalArticle/Download?urlId=10.1645%2F19-136"
-  />
-</ProjectPubs>
 <div
   class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
   aria-hidden="true"
