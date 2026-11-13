@@ -17,6 +17,9 @@ import SegulBenchPlot from "./software/SegulBenchPlot.tsx";
 import bench from "../../data/segul/bench.json";
 import seguiPhoneGenomics from "../../assets/img/segul/segui-phone-genomics.webp";
 import seguiPhoneViewer from "../../assets/img/segul/segui-phone-alignment-viewer.webp";
+import segulCliReadTable from "../../assets/img/segul/segul-cli-read-table.webp";
+import segulCliAlignment from "../../assets/img/segul/segul-cli-alignment.webp";
+import lepiverseSearch from "../../assets/img/biocosmos/lepiverse-search-owl-brazil.jpg";
 import mddHome from "../../assets/img/mdd/mdd-home.jpg";
 import mddTaxon from "../../assets/img/mdd/mdd-taxon.jpg";
 import mddAppTree from "../../assets/img/mdd/app-taxonomy-tree.webp";
@@ -65,6 +68,21 @@ const vsAmas = bench.rows.flatMap((r) => {
     ? [{ ...r, speedup: r.time! / s.time!, memory: r.ram! / s.ram! }]
     : [];
 });
+// Spells out small counts in prose, such as "six datasets".
+const spell = (n: number) =>
+  [
+    "zero",
+    "one",
+    "two",
+    "three",
+    "four",
+    "five",
+    "six",
+    "seven",
+    "eight",
+    "nine",
+    "ten",
+  ][n] ?? String(n);
 const median = (xs: number[]) =>
   [...xs].sort((a, b) => a - b)[Math.floor(xs.length / 2)];
 const benchRun = (app: string, task: string, dataset: string) =>
@@ -136,6 +154,29 @@ const segulShots = [
     device: "Android",
   },
 ];
+// The terminal shot: `segul read summary --mode complete` on six Bunomys
+// read files, opened in `segul view summary`.
+const shotFrameClasses =
+  "overflow-hidden rounded-[1.4rem] border border-forest-900/10 bg-forest-50 p-1.5 transition duration-500 hover:-translate-y-0.5 hover:shadow-lg dark:border-forest-100/10 dark:bg-forest-900/40";
+const segulViewerShot = {
+  src: segulCliAlignment,
+  alt: "segul view align in a terminal showing an Esselstyn 2021 UCE locus, 49 taxa by 813 sites, with colored bases",
+  caption: "Alignment viewer",
+  device: "segul view align",
+};
+// On wide screens each screenshot grows by its aspect ratio from a base of its
+// frame (border and padding), so every image in the row shares one height.
+const rowShots = [...segulShots, segulViewerShot];
+const shotGrow = (shot: (typeof rowShots)[number]) =>
+  (shot.src.width / shot.src.height).toFixed(3);
+// `segul read summary --mode complete` on six Bunomys read files, opened in
+// `segul view summary`.
+const segulTableShot = {
+  src: segulCliReadTable,
+  alt: "segul view summary in a terminal showing the Samples table of a complete read summary of six Bunomys read files, with reads, bases, quality, low-quality reads, duplication, adapter, and poly-G columns per sample",
+  caption: "Complete read summary",
+  device: "segul view summary",
+};
 // One Rust core, exposed four ways.
 const segulInterfaces = [
   {
@@ -298,7 +339,10 @@ const spaceClasses = cntl`
           {s.value ?? (
             <>
               +
-              <LiveStat path="code_changes.totals.additions" format="compact" />{" "}
+              <LiveStat
+                path="code_changes.totals.additions"
+                format="compact"
+              />{" "}
               <span class="text-base font-normal text-forest-600 dark:text-forest-300">
                 −
                 <LiveStat
@@ -408,17 +452,18 @@ const spaceClasses = cntl`
     <p>
       <Link text="NAHPU" url="https://nahpu.app" /> is a field cataloging app
       for collection-based research, from specimens to the parasites collected
-      from them and their screening status (<Link
+      from them and their screening status (
+      <Link
         text="Handika et al., submitted"
         url="https://doi.org/10.32942/X21M6D"
-      />). It has to work on a phone or a
-      tablet at a remote field camp and on a laptop back at the museum, with or
-      without internet. I build it in layers: a Flutter interface on top,
-      application state and domain workflows in the middle, a SQLite database
-      for records, and performance-critical, reusable code in Rust crates
-      interfaced through a generated bridge. Each layer has one job, which keeps
-      the app fast, testable, and easy for new contributors to learn. The full
-      design is documented in the{" "}
+      />
+      ). It has to work on a phone or a tablet at a remote field camp and on a
+      laptop back at the museum, with or without internet. I build it in layers:
+      a Flutter interface on top, application state and domain workflows in the
+      middle, a SQLite database for records, and performance-critical, reusable
+      code in Rust crates interfaced through a generated bridge. Each layer has
+      one job, which keeps the app fast, testable, and easy for new contributors
+      to learn. The full design is documented in the{" "}
       <Link
         text="NAHPU developer docs"
         url="https://nahpu.app/en/contributing/code/architecture/"
@@ -465,12 +510,14 @@ const spaceClasses = cntl`
       <Link text="BioCosmos" url="https://github.com/BioVisionLab/BioCosmos" />,
       the platform behind <Link text="LepiVerse" url="https://lepiverse.com" />,
       lets anyone search more than 600,000 butterfly specimen images by name,
-      image, or a plain-language question (<Link
+      image, or a plain-language question (
+      <Link
         text="Handika et al., submitted"
         url="https://doi.org/10.32942/X2C11R"
-      />). Its design problem is that it must
-      answer open-ended questions over hundreds of thousands of images and their
-      embeddings on a single, modest server. I built it as one{" "}
+      />
+      ). Its design problem is that it must answer open-ended questions over
+      hundreds of thousands of images and their embeddings on a single, modest
+      server. I built it as one{" "}
       <Link text="FastAPI" url="https://fastapi.tiangolo.com" /> process that
       holds everything needed for the search. An open-weight language model
       plans the search, the{" "}
@@ -485,15 +532,32 @@ const spaceClasses = cntl`
       place and exchange results as Arrow tables through{" "}
       <Link text="Polars" url="https://pola.rs" />.
     </p>
-    <p class="mt-2">
-      The language model never touches the data. It reads a question once and
-      returns typed tool calls for location, traits, common name, color, or
-      visual similarity. This design keep token usage low and data stay private.
-      Code then runs them in two stages: filters run concurrently as SQL in
-      DuckDB and intersect into an allowlist of species, and ranking tools
-      search the vector index only within that allowlist. Hard constraints stay
-      exact, and vector search spends its time only on candidates that can
-      match. Use the interactive diagram below to explore the architecture.
+  </Content>
+  <figure class={`not-prose my-6 ${shotFrameClasses}`}>
+    <Image
+      src={lepiverseSearch}
+      alt="LepiVerse results for the plain-language question owl-like butterfly from brazil, led by Caligo owl butterflies matched by color and location"
+      width={1200}
+      densities={[1, 2]}
+      loading="lazy"
+      class="rounded-[1.1rem]"
+    />
+    <figcaption class="flex flex-wrap items-baseline justify-between gap-x-2 px-1.5 pt-1.5 text-xs">
+      <span class="font-semibold text-forest-900 dark:text-forest-100">
+        Asking a plain-language question
+      </span>
+      <span class="font-mono text-[0.7rem] text-forest-600 dark:text-forest-400">
+        lepiverse.com
+      </span>
+    </figcaption>
+  </figure>
+  <Content>
+    <p>
+      The language model never touches the data. It reads the question once and
+      chooses which search tools to run. This design keeps token use low and the
+      data private. Filters first narrow the candidate species, and image
+      similarity then ranks only those that pass the filters. Explore the
+      architecture in the interactive diagram below.
     </p>
   </Content>
   <BioCosmosArchitecture />
@@ -514,19 +578,18 @@ const spaceClasses = cntl`
   </ul>
   <Content>
     <p class="mt-4">
-      Data preparation is handled by command-line packages that are decoupled
-      from the backend and can run independently. This design enables the code
-      to be used outside Biocosmos. The packages share the same{" "}
-      <Link text="uv" url="https://docs.astral.sh/uv/" /> workspace, ensuring
-      consistent dependency management and versioning across the project. They
-      match taxonomic names against the{" "}
+      Data preparation runs in separate command-line packages, independent of
+      the backend, so the code can be reused outside BioCosmos. The packages
+      share one <Link text="uv" url="https://docs.astral.sh/uv/" /> workspace,
+      which keeps their dependencies and versions consistent. They match
+      taxonomic names against the{" "}
       <Link text="Catalogue of Life" url="https://www.catalogueoflife.org" />,
       validate coordinates against <Link text="GADM" url="https://gadm.org" />,
-      and precompute visual similarity and morphospace tables. Each run writes a
-      manifest containing the SHA-256 hash of every generated output, providing
-      a verifiable record for traceability and reproducibility. The same
-      workspace also benchmarks candidate planner models, which informed the
-      selection of the open-weight model used in production (see{" "}
+      and precompute the visual similarity and morphospace tables. For
+      reproducibility and traceability, each run produces a manifest with the
+      SHA-256 hash of every output. The same workspace benchmarks candidate
+      planner models. Top performing open-weight model is used in production
+      (see{" "}
       <a
         href="#llm-benchmark"
         class="text-mist-700 underline hover:text-mist-900 dark:text-mist-200 dark:hover:text-mist-100"
@@ -641,72 +704,91 @@ const spaceClasses = cntl`
   <p class="copy-status sr-only" aria-live="polite"></p>
   <Content>
     <p>
-      Every interface runs on the same high-performance Rust core, so users can
-      choose whichever platform best fits their workflow without sacrificing
-      performance. I benchmarked SEGUL against widely used alternatives (
+      Every interface runs on the same fast Rust core, so SEGUL is just as quick
+      whichever interface you use. I compared it with popular alternatives (
       <Link text="AMAS" url="https://github.com/marekborowiec/AMAS" />,{" "}
       <Link text="goalign" url="https://github.com/evolbioinfo/goalign" />, and{" "}
       <Link text="Phyluce" url="https://phyluce.readthedocs.io/en/latest/" />)
-      using six published datasets spanning {bench.datasets.at(-1)!.mbases}–
-      {largest.mbases} million bases. Each benchmark was repeated{" "}
-      {bench.replicates} times on a desktop ({bench.machine}), an iPad, and an
-      Android device (
+      on {spell(bench.datasets.length)} published datasets of{" "}
+      {bench.datasets.at(-1)!.mbases}–{largest.mbases}
+      million bases each. I ran every test {spell(bench.replicates)} times on a
+      desktop computer, an iPad, and an Android device (
       <Link
         text="Handika & Esselstyn 2024"
         url="https://doi.org/10.1111/1755-0998.13964"
       />
-      ). The interactive plot below lets you explore the results across tools,
-      datasets, and platforms.
+      ). Use the interactive plot below to compare the tools, datasets, and
+      devices.
     </p>
   </Content>
   <figure class={`not-prose my-6 ${figureClasses}`}>
     <SegulBenchPlot client:visible />
   </figure>
-  <div class="grid items-start gap-4 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
-    <div class="grid grid-cols-2 gap-3">
-      {segulShots.map((shot) => (
-        <figure class="overflow-hidden rounded-[1.4rem] border border-forest-900/10 bg-forest-50 p-1.5 transition duration-500 hover:-translate-y-0.5 hover:shadow-lg dark:border-forest-100/10 dark:bg-forest-900/40">
-          <Image
-            src={shot.src}
-            alt={shot.alt}
-            width={360}
-            densities={[1, 2]}
-            loading="lazy"
-            class="rounded-[1.1rem]"
-          />
-          <figcaption class="flex flex-wrap items-baseline justify-between gap-x-2 px-1.5 pt-1.5 text-xs">
-            <span class="font-semibold text-forest-900 dark:text-forest-100">
-              {shot.caption}
-            </span>
-            <span class="font-mono text-[0.7rem] text-forest-600 dark:text-forest-400">
-              {shot.device}
-            </span>
-          </figcaption>
-        </figure>
-      ))}
-    </div>
-    <div>
-      <dl class="grid grid-cols-2 gap-3">
-        {segulStats.map((s) => (
-          <div class="rounded-2xl border border-forest-900/10 px-3 py-3 dark:border-forest-100/10">
-            <dt class="sr-only">{s.label}</dt>
-            <dd class="font-serif text-xl font-semibold text-moss-700 dark:text-moss-300">
-              {s.value}
-            </dd>
-            <dd class="mt-1 text-xs text-forest-700 dark:text-forest-300">
-              {s.label}
-            </dd>
-          </div>
-        ))}
-      </dl>
-      <p class="mt-3 text-sm text-forest-800 dark:text-forest-200">
-        On the same machine, the GUI finishes within about a second of the
-        command line and still outpaces most command-line alternatives. The
-        slower execution on mobile devices is due to slower hardware compared to
-        a desktop.
-      </p>
-    </div>
+  <dl class="grid grid-cols-2 gap-3 lg:grid-cols-4">
+    {segulStats.map((s) => (
+      <div class="rounded-2xl border border-forest-900/10 px-3 py-3 dark:border-forest-100/10">
+        <dt class="sr-only">{s.label}</dt>
+        <dd class="font-serif text-xl font-semibold text-moss-700 dark:text-moss-300">
+          {s.value}
+        </dd>
+        <dd class="mt-1 text-xs text-forest-700 dark:text-forest-300">
+          {s.label}
+        </dd>
+      </div>
+    ))}
+  </dl>
+  <p class="mt-3 text-sm text-forest-800 dark:text-forest-200">
+    On the same machine, the GUI finishes within about a second of the command
+    line and still outpaces most command-line alternatives. The slower execution
+    on mobile devices is due to slower hardware compared to a desktop.
+  </p>
+  <div class="mt-6 grid grid-cols-2 items-start gap-3 md:flex md:items-stretch">
+    {rowShots.map((shot) => (
+      <figure
+        style={`--grow: ${shotGrow(shot)}`}
+        class:list={[
+          shotFrameClasses,
+          "min-w-0 md:[flex:var(--grow)_1_14px]",
+          { "col-span-2": shot === segulViewerShot },
+        ]}
+      >
+        <Image
+          src={shot.src}
+          alt={shot.alt}
+          width={shot === segulViewerShot ? 720 : 360}
+          densities={[1, 2]}
+          loading="lazy"
+          class="rounded-[1.1rem]"
+        />
+        <figcaption class="flex flex-wrap items-baseline justify-between gap-x-2 px-1.5 pt-1.5 text-xs">
+          <span class="font-semibold text-forest-900 dark:text-forest-100">
+            {shot.caption}
+          </span>
+          <span class="font-mono text-[0.7rem] text-forest-600 dark:text-forest-400">
+            {shot.device}
+          </span>
+        </figcaption>
+      </figure>
+    ))}
   </div>
+  <figure class={`mt-3 ${shotFrameClasses}`}>
+    <Image
+      src={segulTableShot.src}
+      alt={segulTableShot.alt}
+      width={1200}
+      densities={[1, 2]}
+      loading="lazy"
+      class="rounded-[1.1rem]"
+    />
+    <figcaption class="flex flex-wrap items-baseline justify-between gap-x-2 px-1.5 pt-1.5 text-xs">
+      <span class="font-semibold text-forest-900 dark:text-forest-100">
+        {segulTableShot.caption}
+      </span>
+      <span class="font-mono text-[0.7rem] text-forest-600 dark:text-forest-400">
+        {segulTableShot.device}
+      </span>
+    </figcaption>
+  </figure>
 
   <Content>
     <p class="mt-6 mb-1 font-semibold text-moss-800 dark:text-moss-200">

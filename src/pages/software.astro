@@ -13,6 +13,10 @@ import LinkCard from "../components/LinkCard.astro";
 import CodeStats from "../components/github/CodeStats.astro";
 import AppStoreLinks from "../components/software/AppStoreLinks.astro";
 import seguiDesktop from "../assets/img/segul/segui-desktop-genomics.webp";
+import seguiDesktopAlignReport from "../assets/img/segul/segui-desktop-align-report.webp";
+import segulCliSummary from "../assets/img/segul/segul-cli-summary.webp";
+import segulCliReadSummary from "../assets/img/segul/segul-cli-read-summary.webp";
+import segulCliAlignment from "../assets/img/segul/segul-cli-alignment.webp";
 import seguiPhoneGenomics from "../assets/img/segul/segui-phone-genomics.webp";
 import seguiPhoneViewer from "../assets/img/segul/segui-phone-alignment-viewer.webp";
 import seguiPhoneHome from "../assets/img/segul/segui-phone-home.webp";
@@ -28,13 +32,14 @@ import mddAppTaxon from "../assets/img/mdd/app-taxon-info.webp";
 import mddAppMap from "../assets/img/mdd/app-occurrence-map.webp";
 import mddAppStats from "../assets/img/mdd/app-statistics.webp";
 import lepiverseHome from "../assets/img/biocosmos/lepiverse-home.jpg";
+import lepiverseSearch from "../assets/img/biocosmos/lepiverse-search-owl-brazil.jpg";
 import lepiverseSpecies from "../assets/img/biocosmos/lepiverse-species.jpg";
 import lepiverseSimilar from "../assets/img/biocosmos/lepiverse-similar-species.jpg";
 import lepiverseNymphalidae from "../assets/img/biocosmos/lepiverse-family-nymphalidae.jpg";
 import lepiverseMorphospace from "../assets/img/biocosmos/lepiverse-morphospace-lycaenidae.jpg";
 import lepiverseGenetics from "../assets/img/biocosmos/lepiverse-genetics-danaus.jpg";
 import lepiverseTaxonomy from "../assets/img/biocosmos/lepiverse-taxonomy-danaus.jpg";
-import lepiverseLiterature from "../assets/img/biocosmos/lepiverse-literature-danaus.jpg";
+import lepiverseLiterature from "../assets/img/biocosmos/lepiverse-literature-lycaenidae.jpg";
 
 const cardDescriptonClasses = cntl`
   mt-4
@@ -78,6 +83,10 @@ const cardDescriptonClasses = cntl`
         languageRepo="hhandika/segui"
         screenshots={[
           { src: seguiDesktop, alt: "SEGUI on desktop set up to summarize genomic reads, with the tool list and file panel" },
+          { src: seguiDesktopAlignReport, alt: "SEGUI alignment summary report on desktop showing a histogram of locus length across 4,040 loci" },
+          { src: segulCliSummary, alt: "segul view summary in a terminal showing a histogram of sites per locus across the same 4,040 loci" },
+          { src: segulCliReadSummary, alt: "segul view summary in a terminal showing a complete read summary of six Bunomys read files: 10,816,688 reads, 91.4% Q30 bases, and a histogram of reads by mean quality score" },
+          { src: segulCliAlignment, alt: "segul view align in a terminal showing an Esselstyn 2021 UCE locus, 49 taxa by 813 sites, with colored bases" },
           { src: seguiPhoneHome, alt: "SEGUI home screen on iPhone listing the tools" },
           { src: seguiPhoneGenomics, alt: "SEGUI read summary tool on iPhone" },
           { src: seguiPhoneViewer, alt: "SEGUI alignment viewer on Android showing a 5.4 million-site concatenated alignment" },
@@ -224,13 +233,14 @@ const cardDescriptonClasses = cntl`
             languageRepo="BioVisionLab/BioCosmos"
             screenshots={[
               { src: lepiverseHome, alt: "LepiVerse home page, built on BioCosmos" },
+              { src: lepiverseSearch, alt: "LepiVerse results for the plain-language question owl-like butterfly from brazil, led by Caligo owl butterflies matched by color and location" },
               { src: lepiverseSpecies, alt: "LepiVerse species page for Morpho aega with specimen images and classification" },
               { src: lepiverseSimilar, alt: "Visually similar species to Morpho aega ranked by image embedding similarity" },
-              { src: lepiverseNymphalidae, alt: "LepiVerse Nymphalidae family page in dark mode with genus, species, and image counts" },
+              { src: lepiverseNymphalidae, alt: "LepiVerse Nymphalidae family page with genus, species, and image counts and their Catalogue of Life coverage" },
               { src: lepiverseMorphospace, alt: "Coloration morphospace of Lycaenidae, with dorsal and ventral points for each species on the first two principal components" },
               { src: lepiverseGenetics, alt: "Genetics section for Danaus plexippus summarizing the reference genome, assembly, and gene annotation" },
               { src: lepiverseTaxonomy, alt: "Taxonomy section for Danaus plexippus with nomenclature, classification, and name usage" },
-              { src: lepiverseLiterature, alt: "Literature section listing publications on Danaus plexippus by year" },
+              { src: lepiverseLiterature, alt: "Literature tab for Lycaenidae summarizing 488 publications by type, with publications per 5 years from 1862 to 2026" },
             ]}
           >
             <p class={cardDescriptonClasses}>
