@@ -13,10 +13,21 @@ interface PubButton {
   isRequest: boolean;
   url?: string;
   codeUrl?: string;
+  /** Inferred from the DOI when omitted. */
+  type?: "article" | "preprint";
 }
 
-const { title, author, year, doi, pdfUrl, isRequest, url, codeUrl } =
+const { title, author, year, doi, pdfUrl, isRequest, url, codeUrl, type } =
   Astro.props as PubButton;
+
+// DOI prefixes of preprint servers: EcoEvoRxiv, bioRxiv, arXiv, OSF, Research
+// Square, and Preprints.org.
+const preprintDoi = /10\.(32942|1101|48550|31219|21203|20944)\//;
+const isPreprint = (type ?? (doi && preprintDoi.test(doi) ? "preprint" : "article")) === "preprint";
+const typeLabel = isPreprint ? "Preprint" : "Article";
+const typeClasses = isPreprint
+  ? "bg-mist-100 text-mist-800 dark:bg-mist-800 dark:text-mist-100"
+  : "bg-moss-100 text-moss-800 dark:bg-moss-900 dark:text-moss-100";
 
 // Highlight the site author's name in the author string, as in the CV list.
 // Matches both "Handika, H." and "Handika H"; the capture group keeps the
@@ -106,6 +117,11 @@ const snackbarClasses = cntl`
 >
   <img src={leadingIcon.src} alt="" class="mt-0.5 h-8 w-8 shrink-0" />
   <div class="min-w-0 flex-1 text-start">
+    {doi && (
+      <span class={`mb-1 inline-block rounded-full px-2 py-0.5 text-[0.7rem] font-semibold uppercase tracking-wide ${typeClasses}`}>
+        {typeLabel}
+      </span>
+    )}
     <h3 id={`${id}-title`} class="font-semibold leading-snug">{title}</h3>
     <div class="mt-1 text-xs text-forest-700 dark:text-forest-300">{authorParts.map((part, i) => (i % 2 ? <strong class={selfClasses}>{part}</strong> : part))}. {year}</div>
     {
@@ -138,7 +154,7 @@ const snackbarClasses = cntl`
                       />
                     ))}
                   <DownloadButton
-                    text="Article"
+                    text={typeLabel}
                     url={doi}
                     primary={!pdfUrl && active()}
                   />

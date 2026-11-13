@@ -408,7 +408,10 @@ const spaceClasses = cntl`
     <p>
       <Link text="NAHPU" url="https://nahpu.app" /> is a field cataloging app
       for collection-based research, from specimens to the parasites collected
-      from them and their screening status. It has to work on a phone or a
+      from them and their screening status (<Link
+        text="Handika et al., submitted"
+        url="https://doi.org/10.32942/X21M6D"
+      />). It has to work on a phone or a
       tablet at a remote field camp and on a laptop back at the museum, with or
       without internet. I build it in layers: a Flutter interface on top,
       application state and domain workflows in the middle, a SQLite database
@@ -462,7 +465,10 @@ const spaceClasses = cntl`
       <Link text="BioCosmos" url="https://github.com/BioVisionLab/BioCosmos" />,
       the platform behind <Link text="LepiVerse" url="https://lepiverse.com" />,
       lets anyone search more than 600,000 butterfly specimen images by name,
-      image, or a plain-language question. Its design problem is that it must
+      image, or a plain-language question (<Link
+        text="Handika et al., submitted"
+        url="https://doi.org/10.32942/X2C11R"
+      />). Its design problem is that it must
       answer open-ended questions over hundreds of thousands of images and their
       embeddings on a single, modest server. I built it as one{" "}
       <Link text="FastAPI" url="https://fastapi.tiangolo.com" /> process that
@@ -529,6 +535,19 @@ const spaceClasses = cntl`
       </a>
       ).
     </p>
+    <p class="mt-6 mb-1 font-semibold text-moss-800 dark:text-moss-200">
+      Publications:
+    </p>
+    <ProjectPubs author="Handika et al.">
+      <PubButton
+        author="Handika, H., Lürig, M. D., Nichtawitz, K. L., Dobon, O. M., Yarava, V. S., Sobayo, J. K., Shi, B., Elliott, M. J., Fortes, J. A. B., Porto, A"
+        year="Submitted"
+        title="BioCosmos: computer vision and large language models for large-scale image-based biodiversity data and trait exploration"
+        doi="https://doi.org/10.32942/X2C11R"
+        url="https://lepiverse.com"
+        codeUrl="https://github.com/BioVisionLab/BioCosmos"
+      />
+    </ProjectPubs>
   </Content>
 
   <QuestionHead questions={questions} id="software-segul" />
