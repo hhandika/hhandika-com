@@ -66,7 +66,8 @@ const collection = [
 const questions = [
   {
     id: "ai-morphospace",
-    question: "Are dorsal and ventral wing patterns integrated or decoupled across butterflies?",
+    question:
+      "Are dorsal and ventral wing patterns integrated or decoupled across butterflies?",
     topic: "Dorso-ventral integration in the butterfly wing morphospace",
   },
   {
@@ -76,12 +77,14 @@ const questions = [
   },
   {
     id: "llm-benchmark",
-    question: "Which open-weight language model best turns plain questions into searches?",
+    question:
+      "Which open-weight language model best turns plain questions into searches?",
     topic: "Choosing an open-weight LLM for natural-language search",
   },
   {
     id: "ai-biocosmos",
-    question: "Can AI make large collections explorable for anyone with a browser?",
+    question:
+      "Can AI make large collections explorable for anyone with a browser?",
     topic: "Putting it all together: BioCosmos",
   },
 ];
@@ -94,9 +97,7 @@ const figureClasses =
 
 <QuestionIndex questions={questions} />
 
-<SectionHead
-  text="AI-assisted phenomics: quantifying complex traits at scale"
-/>
+<SectionHead text="AI-assisted phenomics: studying complex traits at scale" />
 <Content>
   <p>
     Coloration is a complex, multidimensional phenotype that is difficult to
@@ -120,9 +121,9 @@ const figureClasses =
   <p>
     Dorsal and ventral wing patterns are largely integrated but not locked
     together. Across {stats.bothSides.toLocaleString()} species imaged on both
-    surfaces, distances between species on the dorsal side track their
-    distances on the ventral side (Mantel r = {stats.scopeMantelR}). Within
-    genera, the two surfaces are significantly integrated in {stats.generaSignificant}
+    surfaces, distances between species on the dorsal side track their distances
+    on the ventral side (Mantel r = {stats.scopeMantelR}). Within genera, the
+    two surfaces are significantly integrated in {stats.generaSignificant}
     of {stats.genera} genera (Mantel p &lt; 0.05); the rest diverge. This
     partial decoupling is consistent with the two surfaces facing different
     selection, such as signaling on the dorsal side and crypsis on the ventral
@@ -140,19 +141,17 @@ const figureClasses =
   <MorphospacePlot client:visible />
 </figure>
 <dl class="grid grid-cols-2 gap-3 lg:grid-cols-4">
-  {
-    morphoStats.map((s) => (
-      <div class="rounded-2xl border border-forest-900/10 px-3 py-3 dark:border-forest-100/10">
-        <dt class="sr-only">{s.label}</dt>
-        <dd class="font-serif text-xl font-semibold text-moss-700 dark:text-moss-300">
-          {s.value}
-        </dd>
-        <dd class="mt-1 text-xs text-forest-700 dark:text-forest-300">
-          {s.label}
-        </dd>
-      </div>
-    ))
-  }
+  {morphoStats.map((s) => (
+    <div class="rounded-2xl border border-forest-900/10 px-3 py-3 dark:border-forest-100/10">
+      <dt class="sr-only">{s.label}</dt>
+      <dd class="font-serif text-xl font-semibold text-moss-700 dark:text-moss-300">
+        {s.value}
+      </dd>
+      <dd class="mt-1 text-xs text-forest-700 dark:text-forest-300">
+        {s.label}
+      </dd>
+    </div>
+  ))}
 </dl>
 
 <QuestionHead questions={questions} id="ai-mimicry" />
@@ -162,34 +161,31 @@ const figureClasses =
     perceive. I compiled published Müllerian and Batesian butterfly mimicry
     pairs and, using dorsal wings, ranked how similar each partner is to the
     other among all species in the collection. Mimicry pairs rank far above
-    chance, and above congeners. The misses are informative: in <i
-      >Papilio polytes</i
-    > and <i>P. glaucus</i> only some females mimic, and <i
-      >Heliconius timareta</i
-    > varies across its range. More work is needed to account for these variations.
-    However, this initial work shows the potential of image embeddings to capture
-    biologically meaningful visual similarity, and that this similarity can be used
-    to study mimicry, species interactions, and phenotypic evolution. Use the interactive
-    plots below to explore the results.
+    chance, and above congeners. The misses are informative: in{" "}
+    <i>Papilio polytes</i> and <i>P. glaucus</i> only some females mimic, and{" "}
+    <i>Heliconius timareta</i> varies across its range. More work is needed to
+    account for these variations. However, this initial work shows the potential
+    of image embeddings to capture biologically meaningful visual similarity,
+    and that this similarity can be used to study mimicry, species interactions,
+    and phenotypic evolution. Use the interactive plots below to explore the
+    results.
   </p>
 </Content>
 <figure class={`not-prose my-6 ${figureClasses}`}>
   <MimicryPlot client:visible />
 </figure>
 <dl class="grid gap-3 sm:grid-cols-3">
-  {
-    mimicryStats.map((s) => (
-      <div class="rounded-2xl border border-forest-900/10 px-3 py-3 dark:border-forest-100/10">
-        <dt class="sr-only">{s.label}</dt>
-        <dd class="font-serif text-xl font-semibold text-moss-700 dark:text-moss-300">
-          {s.value}
-        </dd>
-        <dd class="mt-1 text-xs text-forest-700 dark:text-forest-300">
-          {s.label}
-        </dd>
-      </div>
-    ))
-  }
+  {mimicryStats.map((s) => (
+    <div class="rounded-2xl border border-forest-900/10 px-3 py-3 dark:border-forest-100/10">
+      <dt class="sr-only">{s.label}</dt>
+      <dd class="font-serif text-xl font-semibold text-moss-700 dark:text-moss-300">
+        {s.value}
+      </dd>
+      <dd class="mt-1 text-xs text-forest-700 dark:text-forest-300">
+        {s.label}
+      </dd>
+    </div>
+  ))}
 </dl>
 
 <QuestionHead questions={questions} id="llm-benchmark" />
@@ -214,44 +210,47 @@ const figureClasses =
 <QuestionHead questions={questions} id="ai-biocosmos" />
 <Content>
   <p>
-    <Link text="BioCosmos" url="https://lepiverse.com" /> brings this work together
-    in a low-cost web platform, deployed through <Link
-      text="LepiVerse.com"
-      url="https://lepiverse.com/"
-    />, for more than 600,000 digitized Lepidoptera specimen images. Image
-    embeddings power visual-similarity search and interactive morphospace plots,
-    an open-weight language model turns plain-language questions into searches,
-    and taxonomic harmonization and geographic validation keep the underlying
-    data clean. The result shows that emerging AI tools can make large natural
-    history collections explorable for anyone with a browser. To see how the
-    system is designed, explore the <a
+    <Link text="BioCosmos" url="https://lepiverse.com" /> brings this work
+    together in a low-cost web platform, deployed through{" "}
+    <Link text="LepiVerse.com" url="https://lepiverse.com/" />, for more than
+    600,000 digitized Lepidoptera specimen images. Image embeddings power
+    visual-similarity search and interactive morphospace plots, an open-weight
+    language model turns plain-language questions into searches, and taxonomic
+    harmonization and geographic validation keep the underlying data clean. The
+    result shows that emerging AI tools can make large natural history
+    collections explorable for anyone with a browser. To see how the system is
+    designed, explore the{" "}
+    <a
       href="#biocosmos-architecture"
       class="text-mist-700 underline hover:text-mist-900 dark:text-mist-200 dark:hover:text-mist-100"
-      >BioCosmos architecture</a
-    > in the Software section.
+    >
+      BioCosmos architecture
+    </a>{" "}
+    in the Software section.
   </p>
 </Content>
 
-<dl
-  class="mx-auto mt-6 grid max-w-4xl grid-cols-2 gap-3 text-center sm:grid-cols-4"
->
-  {
-    collection.map((s) => (
-      <div class="rounded-2xl border border-forest-900/10 px-3 py-4 dark:border-forest-100/10">
-        <dt class="sr-only">{s.label}</dt>
-        <dd class="font-serif text-2xl font-semibold text-moss-700 dark:text-moss-300">
-          {s.value}
-        </dd>
-        <dd class="mt-1 text-xs text-forest-700 dark:text-forest-300">
-          {s.label}
-        </dd>
-      </div>
-    ))
-  }
+<dl class="mx-auto mt-6 grid max-w-4xl grid-cols-2 gap-3 text-center sm:grid-cols-4">
+  {collection.map((s) => (
+    <div class="rounded-2xl border border-forest-900/10 px-3 py-4 dark:border-forest-100/10">
+      <dt class="sr-only">{s.label}</dt>
+      <dd class="font-serif text-2xl font-semibold text-moss-700 dark:text-moss-300">
+        {s.value}
+      </dd>
+      <dd class="mt-1 text-xs text-forest-700 dark:text-forest-300">
+        {s.label}
+      </dd>
+    </div>
+  ))}
 </dl>
 
 <div class="my-6 grid gap-3 md:grid-cols-2">
-  <a href="https://lepiverse.com" target="_blank" rel="noopener" class={shotClasses}>
+  <a
+    href="https://lepiverse.com"
+    target="_blank"
+    rel="noopener"
+    class={shotClasses}
+  >
     <Image
       src={lepiverseHome}
       alt="LepiVerse home page with semantic, text, and image search beside a grid of butterfly specimens"
@@ -260,15 +259,20 @@ const figureClasses =
       class="rounded-xl"
     />
     <p class="flex justify-between px-2 pt-1.5 text-xs">
-      <span class="font-semibold text-forest-900 dark:text-forest-100"
-        >Semantic, text, and image search</span
-      >
-      <span class="font-mono text-forest-600 dark:text-forest-400"
-        >lepiverse.com</span
-      >
+      <span class="font-semibold text-forest-900 dark:text-forest-100">
+        Semantic, text, and image search
+      </span>
+      <span class="font-mono text-forest-600 dark:text-forest-400">
+        lepiverse.com
+      </span>
     </p>
   </a>
-  <a href="https://lepiverse.com/species/morpho_aega" target="_blank" rel="noopener" class={shotClasses}>
+  <a
+    href="https://lepiverse.com/species/morpho_aega"
+    target="_blank"
+    rel="noopener"
+    class={shotClasses}
+  >
     <Image
       src={lepiverseSpecies}
       alt="LepiVerse species page for Morpho aega with specimen images, classification, and distribution map"
@@ -277,12 +281,12 @@ const figureClasses =
       class="rounded-xl"
     />
     <p class="flex justify-between px-2 pt-1.5 text-xs">
-      <span class="font-semibold text-forest-900 dark:text-forest-100"
-        >Enriched species page</span
-      >
-      <span class="font-mono text-forest-600 dark:text-forest-400"
-        ><i>Morpho aega</i></span
-      >
+      <span class="font-semibold text-forest-900 dark:text-forest-100">
+        Enriched species page
+      </span>
+      <span class="font-mono text-forest-600 dark:text-forest-400">
+        <i>Morpho aega</i>
+      </span>
     </p>
   </a>
 </div>
@@ -296,15 +300,18 @@ const figureClasses =
     class="w-full rounded-xl"
   />
   <figcaption class="px-2 pt-2 text-xs text-forest-800 dark:text-forest-200">
-    <span class="font-semibold">Visually similar species.</span> Nearest neighbours
-    of <i>Morpho aega</i> in embedding space. Dorsal matches are all blue
+    <span class="font-semibold">Visually similar species.</span> Nearest
+    neighbours of <i>Morpho aega</i> in embedding space. Dorsal matches are all
+    blue
     <i>Morpho</i>, but the cryptic brown undersides also match <i>Zeuxidia</i>,
     <i>Tanaecia</i>, and <i>Vindula</i>, from different genera.
   </figcaption>
 </figure>
 
 <Content>
-  <p class="mt-6 mb-1 font-semibold text-moss-800 dark:text-moss-200">Publications:</p>
+  <p class="mt-6 mb-1 font-semibold text-moss-800 dark:text-moss-200">
+    Publications:
+  </p>
   <ProjectPubs author="Handika et al.">
     <PubButton
       author="Handika, H., Lürig, M. D., Nichtawitz, K. L., Dobon, O. M., Yarava, V. S., Sobayo, J. K., Shi, B., Elliott, M. J., Fortes, J. A. B., Porto, A"

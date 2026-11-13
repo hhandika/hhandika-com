@@ -123,7 +123,7 @@ const highlights = [
   {
     eyebrow: "AI phenomics",
     title: "Reading evolution from specimen images",
-    text: "I use image embeddings to quantify coloration phenotypes from digitized specimens and test evolutionary hypotheses at scale.",
+    text: "I use image embeddings to study coloration phenotypes from digitized specimens and test evolutionary hypotheses at scale.",
     stat: "619,739",
     statLabel: "specimen images across 9,342 species",
     image: lepiverseHome,
@@ -246,9 +246,7 @@ const researchQuestions = [
 
 <Layout title="Island speciation and efficient, scalable biodiversity software">
   <main class="mx-auto max-w-6xl">
-    <section
-      class="relative flex min-h-[calc(100svh-3.5rem)] flex-col justify-center py-10"
-    >
+    <section class="relative flex min-h-[calc(100svh-3.5rem)] flex-col justify-center py-10">
       <div class="grid items-center gap-10 lg:grid-cols-[1.25fr_1fr] lg:gap-14">
         <div class="text-center lg:text-left">
           <Image
@@ -259,39 +257,33 @@ const researchQuestions = [
             loading="eager"
             alt="Handika's profile"
           />
-          <h1
-            class="mt-4 font-serif text-5xl text-forest-950 dark:text-forest-50 sm:text-6xl"
-          >
-            Hi, I'm <strong class="text-moss-700 dark:text-moss-300"
-              >Heru Handika</strong
-            >
+          <h1 class="mt-4 font-serif text-5xl text-forest-950 dark:text-forest-50 sm:text-6xl">
+            Hi, I'm{" "}
+            <strong class="text-moss-700 dark:text-moss-300">
+              Heru Handika
+            </strong>
           </h1>
-          <p
-            class="mt-3 text-lg font-medium text-forest-800 dark:text-forest-200"
-          >
-            Postdoctoral Researcher · <a
+          <p class="mt-3 text-lg font-medium text-forest-800 dark:text-forest-200">
+            Postdoctoral Researcher ·{" "}
+            <a
               href="/projects#ai"
               class="underline decoration-moss-500/50 underline-offset-4 hover:decoration-moss-500"
-              >AI Biodiversity Informatics</a
-            >, Florida Museum of Natural History, University of Florida
+            >
+              AI Biodiversity Informatics
+            </a>
+            , Florida Museum of Natural History, University of Florida
           </p>
-          <div
-            class="mt-4 flex flex-wrap justify-center gap-2 sm:gap-3 lg:justify-start"
-          >
-            {
-              keywordList.map((keyword) => (
-                <a
-                  href={keyword.href}
-                  class={`${keywordClasses} transition hover:bg-forest-200 dark:hover:bg-forest-800`}
-                >
-                  {keyword.label}
-                </a>
-              ))
-            }
+          <div class="mt-4 flex flex-wrap justify-center gap-2 sm:gap-3 lg:justify-start">
+            {keywordList.map((keyword) => (
+              <a
+                href={keyword.href}
+                class={`${keywordClasses} transition hover:bg-forest-200 dark:hover:bg-forest-800`}
+              >
+                {keyword.label}
+              </a>
+            ))}
           </div>
-          <p
-            class="mt-5 text-pretty text-lg text-slate-700 dark:text-slate-200 sm:text-xl/8"
-          >
+          <p class="mt-5 text-pretty text-lg text-slate-700 dark:text-slate-200 sm:text-xl/8">
             You can call me Heru or Hez. I'm an evolutionary biologist working
             at the intersection of field biology, genomics, phenomics, on-device
             deep learning, and cross-platform software. I study how geographic
@@ -302,13 +294,13 @@ const researchQuestions = [
           <div class="lg:[&>div]:justify-start">
             <SocialMediaIcons />
           </div>
-          <div
-            class="mt-6 flex flex-wrap justify-center gap-3 lg:justify-start"
-          >
+          <div class="mt-6 flex flex-wrap justify-center gap-3 lg:justify-start">
             <a href="#highlights" class={primaryButtonClasses}>
               Research highlights
             </a>
-            <a href="/software" class={secondaryButtonClasses}>Software</a>
+            <a href="/software" class={secondaryButtonClasses}>
+              Software
+            </a>
           </div>
         </div>
         <div class="flex flex-col gap-4">
@@ -318,35 +310,27 @@ const researchQuestions = [
             class="group relative isolate block overflow-hidden rounded-3xl border border-forest-900/10 bg-white/80 p-5 shadow-xl shadow-forest-900/5 backdrop-blur transition hover:border-moss-400/60 dark:border-forest-100/10 dark:bg-forest-950/60 sm:p-6"
           >
             <FieldGraphic />
-            <dl
-              class="grid grid-cols-3 divide-x divide-forest-900/10 dark:divide-forest-100/10"
-            >
-              {
-                heroStats.map((s) => (
-                  <div class="flex flex-col px-3 first:pl-0 last:pr-0 sm:px-4">
-                    <dt class="text-xs text-forest-700 dark:text-forest-200 sm:text-sm">
-                      {s.label}
-                    </dt>
-                    <dd class="order-first text-xl font-semibold tabular-nums text-moss-800 dark:text-moss-200 sm:text-2xl">
-                      {s.value}
-                    </dd>
-                  </div>
-                ))
-              }
+            <dl class="grid grid-cols-3 divide-x divide-forest-900/10 dark:divide-forest-100/10">
+              {heroStats.map((s) => (
+                <div class="flex flex-col px-3 first:pl-0 last:pr-0 sm:px-4">
+                  <dt class="text-xs text-forest-700 dark:text-forest-200 sm:text-sm">
+                    {s.label}
+                  </dt>
+                  <dd class="order-first text-xl font-semibold tabular-nums text-moss-800 dark:text-moss-200 sm:text-2xl">
+                    {s.value}
+                  </dd>
+                </div>
+              ))}
             </dl>
-            {
-              upcomingExpeditions.map((e) => (
-                <p class="mt-4 text-sm text-slate-700 dark:text-slate-300">
-                  <span class="font-semibold text-moss-800 dark:text-moss-300">
-                    Next:
-                  </span>{" "}
-                  {e.title}, {e.region}, {e.country} · {e.season}
-                </p>
-              ))
-            }
-            <span
-              class="mt-3 block text-sm font-semibold text-forest-700 group-hover:underline dark:text-forest-200"
-            >
+            {upcomingExpeditions.map((e) => (
+              <p class="mt-4 text-sm text-slate-700 dark:text-slate-300">
+                <span class="font-semibold text-moss-800 dark:text-moss-300">
+                  Next:
+                </span>{" "}
+                {e.title}, {e.region}, {e.country} · {e.season}
+              </p>
+            ))}
+            <span class="mt-3 block text-sm font-semibold text-forest-700 group-hover:underline dark:text-forest-200">
               Explore my fieldwork →
             </span>
           </a>
@@ -365,16 +349,16 @@ const researchQuestions = [
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg
+          aria-hidden="true"
         >
+          <path d="m6 9 6 6 6-6"></path>
+        </svg>
       </a>
     </section>
 
     <section id="highlights" class="scroll-mt-16 py-16">
       <div class="text-center">
-        <p
-          class="text-sm font-semibold uppercase tracking-widest text-moss-700 dark:text-moss-300"
-        >
+        <p class="text-sm font-semibold uppercase tracking-widest text-moss-700 dark:text-moss-300">
           Research highlights
         </p>
         <h2 class={sectionTitleClasses}>
@@ -382,108 +366,94 @@ const researchQuestions = [
         </h2>
       </div>
       <div class="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-6">
-        {
-          highlights.map((h) => (
-            <a href={h.href} class={`${cardClasses} ${h.span}`}>
-              <div class="h-56 overflow-hidden bg-forest-100 dark:bg-forest-900 sm:h-64">
-                <Image
-                  src={h.image}
-                  alt={h.alt}
-                  width={900}
-                  class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                />
-              </div>
-              <div class="flex flex-1 flex-col p-6">
-                <p class="text-xs font-semibold uppercase tracking-widest text-moss-700 dark:text-moss-300">
-                  {h.eyebrow}
-                </p>
-                <h3 class="mt-1 font-serif text-2xl text-forest-950 dark:text-forest-50">
-                  {h.title}
-                </h3>
-                {/* Text may hold <i> for taxon names. */}
-                <p
-                  class="mt-2 text-pretty text-slate-700 dark:text-slate-300"
-                  set:html={h.text}
-                />
-                <div class="mt-auto pt-5">
-                  <p class="text-forest-950 dark:text-forest-50">
-                    <strong class="text-3xl font-semibold tabular-nums">
-                      {h.liveStat ? (
-                        <LiveStat path={h.liveStat} format="compact" />
-                      ) : (
-                        h.stat
-                      )}
-                    </strong>{" "}
-                    <span class="text-sm text-forest-700 dark:text-forest-300">
-                      {h.statLabel}
-                    </span>
-                  </p>
-                  {h.note && (
-                    <p class="mt-1 text-sm text-moss-700 dark:text-moss-300">
-                      {h.note}
-                    </p>
-                  )}
-                  <span class="mt-3 inline-block text-sm font-semibold text-forest-700 group-hover:underline dark:text-forest-300">
-                    Explore →
+        {highlights.map((h) => (
+          <a href={h.href} class={`${cardClasses} ${h.span}`}>
+            <div class="h-56 overflow-hidden bg-forest-100 dark:bg-forest-900 sm:h-64">
+              <Image
+                src={h.image}
+                alt={h.alt}
+                width={900}
+                class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+              />
+            </div>
+            <div class="flex flex-1 flex-col p-6">
+              <p class="text-xs font-semibold uppercase tracking-widest text-moss-700 dark:text-moss-300">
+                {h.eyebrow}
+              </p>
+              <h3 class="mt-1 font-serif text-2xl text-forest-950 dark:text-forest-50">
+                {h.title}
+              </h3>
+              {/* Text may hold <i> for taxon names. */}
+              <p
+                class="mt-2 text-pretty text-slate-700 dark:text-slate-300"
+                set:html={h.text}
+              />
+              <div class="mt-auto pt-5">
+                <p class="text-forest-950 dark:text-forest-50">
+                  <strong class="text-3xl font-semibold tabular-nums">
+                    {h.liveStat ? (
+                      <LiveStat path={h.liveStat} format="compact" />
+                    ) : (
+                      h.stat
+                    )}
+                  </strong>{" "}
+                  <span class="text-sm text-forest-700 dark:text-forest-300">
+                    {h.statLabel}
                   </span>
-                </div>
+                </p>
+                {h.note && (
+                  <p class="mt-1 text-sm text-moss-700 dark:text-moss-300">
+                    {h.note}
+                  </p>
+                )}
+                <span class="mt-3 inline-block text-sm font-semibold text-forest-700 group-hover:underline dark:text-forest-300">
+                  Explore →
+                </span>
               </div>
-            </a>
-          ))
-        }
+            </div>
+          </a>
+        ))}
       </div>
     </section>
 
     <section id="leadership" class="scroll-mt-16 pb-24">
-      <div
-        class="grid items-center gap-8 rounded-3xl border border-forest-900/10 bg-white p-6 shadow-sm dark:border-forest-100/10 dark:bg-forest-950/60 sm:p-8 lg:grid-cols-[1fr_1.4fr]"
-      >
+      <div class="grid items-center gap-8 rounded-3xl border border-forest-900/10 bg-white p-6 shadow-sm dark:border-forest-100/10 dark:bg-forest-950/60 sm:p-8 lg:grid-cols-[1fr_1.4fr]">
         <div>
-          <p
-            class="text-sm font-semibold uppercase tracking-widest text-moss-700 dark:text-moss-300"
-          >
+          <p class="text-sm font-semibold uppercase tracking-widest text-moss-700 dark:text-moss-300">
             Leadership &amp; mentorship
           </p>
           <h2 class={sectionTitleClasses}>
             On the cold mountains and the computer terminal
           </h2>
-          <p
-            class="mt-4 text-pretty text-lg text-slate-700 dark:text-slate-300"
-          >
-            I have been lucky to work alongside amazing collaborators and local
+          <p class="mt-4 text-pretty text-lg text-slate-700 dark:text-slate-300">
+            I've been lucky to work with amazing collaborators and local
             communities, and to mentor biology and computer science students.
-            Together, we carry &gt;800 kg of supplies on foot up a mountain on
-            barely visible trails to reach places that have never been surveyed
-            before, and make software work for everyone amid evolving hardware
-            and operating systems.
+            Together, we haul over 800 kg of supplies up barely visible trails
+            to unsurveyed mountains, and build software that works for everyone
+            across changing hardware and operating systems to answer new
+            scientific questions.
           </p>
         </div>
-        <div
-          class="grid auto-rows-[7rem] grid-cols-4 gap-2 sm:auto-rows-[9rem]"
-        >
-          {
-            leadershipPhotos.map((photo) => (
-              <div
-                class={`overflow-hidden rounded-2xl bg-forest-100 dark:bg-forest-900 ${photo.span}`}
-              >
-                <Image
-                  src={photo.src}
-                  alt={photo.alt}
-                  width={900}
-                  class="h-full w-full object-cover object-[center_25%]"
-                />
-              </div>
-            ))
-          }
+        <div class="grid auto-rows-[7rem] grid-cols-4 gap-2 sm:auto-rows-[9rem]">
+          {leadershipPhotos.map((photo) => (
+            <div
+              class={`overflow-hidden rounded-2xl bg-forest-100 dark:bg-forest-900 ${photo.span}`}
+            >
+              <Image
+                src={photo.src}
+                alt={photo.alt}
+                width={900}
+                class="h-full w-full object-cover object-[center_25%]"
+              />
+            </div>
+          ))}
         </div>
       </div>
     </section>
 
     <section class="pb-24">
       <div class="mx-auto max-w-3xl text-center">
-        <p
-          class="text-sm font-semibold uppercase tracking-widest text-moss-700 dark:text-moss-300"
-        >
+        <p class="text-sm font-semibold uppercase tracking-widest text-moss-700 dark:text-moss-300">
           My approach
         </p>
         <h2 class={sectionTitleClasses}>From the field to the phone</h2>
@@ -491,76 +461,70 @@ const researchQuestions = [
           I work across the full spectrum of collection-based evolutionary
           biology, from surveying remote mountains across complex island systems
           and building specimen collections to generating genomic data and
-          quantifying
+          studying
           <a
             href="/projects#ai"
             class="underline decoration-moss-500/50 underline-offset-4 hover:decoration-moss-500"
-            >phenotypic variation</a
-          >. I also develop software that makes these workflows faster, more
+          >
+            phenotypic variation
+          </a>
+          . I also develop software that makes these workflows faster, more
           reproducible, and accessible across computing environments, from
           mobile devices to high-performance clusters.
         </p>
       </div>
 
       <ol class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {
-          approachSteps.map((step, i) => (
-            <li class={`relative rounded-3xl p-5 text-white ${step.tone}`}>
-              <div class="flex items-center gap-3">
-                <PillarIcon
-                  name={step.icon}
-                  class="h-10 w-10 shrink-0 text-white"
-                />
-                <span class="font-mono text-sm text-white">0{i + 1}</span>
-              </div>
-              <h3 class="mt-3 font-semibold">{step.title}</h3>
-              <p class="mt-1 text-sm text-white">
-                {"link" in step ? (
-                  <Fragment>
-                    {step.text.split(step.link.text)[0]}
-                    <a
-                      href={step.link.href}
-                      class="underline decoration-white/60 underline-offset-2 hover:decoration-white"
-                    >
-                      {step.link.text}
-                    </a>
-                    {step.text.split(step.link.text)[1]}
-                  </Fragment>
-                ) : (
-                  step.text
-                )}
-              </p>
-            </li>
-          ))
-        }
+        {approachSteps.map((step, i) => (
+          <li class={`relative rounded-3xl p-5 text-white ${step.tone}`}>
+            <div class="flex items-center gap-3">
+              <PillarIcon
+                name={step.icon}
+                class="h-10 w-10 shrink-0 text-white"
+              />
+              <span class="font-mono text-sm text-white">0{i + 1}</span>
+            </div>
+            <h3 class="mt-3 font-semibold">{step.title}</h3>
+            <p class="mt-1 text-sm text-white">
+              {"link" in step ? (
+                <Fragment>
+                  {step.text.split(step.link.text)[0]}
+                  <a
+                    href={step.link.href}
+                    class="underline decoration-white/60 underline-offset-2 hover:decoration-white"
+                  >
+                    {step.link.text}
+                  </a>
+                  {step.text.split(step.link.text)[1]}
+                </Fragment>
+              ) : (
+                step.text
+              )}
+            </p>
+          </li>
+        ))}
       </ol>
 
-      <h2
-        class="mt-20 text-center text-2xl font-semibold text-forest-950 dark:text-forest-50"
-      >
+      <h2 class="mt-20 text-center text-2xl font-semibold text-forest-950 dark:text-forest-50">
         Research questions
       </h2>
-      <ul
-        class="mx-auto mt-6 max-w-3xl divide-y divide-forest-900/10 dark:divide-forest-100/10"
-      >
-        {
-          researchQuestions.map((q) => (
-            <li>
-              <a href={q.href} class="group flex items-start gap-4 py-5">
-                <PillarIcon name={q.icon} class={`${iconClasses} mt-1`} />
-                <span>
-                  <span class="block text-xl text-moss-950 group-hover:underline dark:text-moss-50">
-                    {q.question}
-                  </span>
-                  <span
-                    class="mt-1 block text-slate-700 dark:text-slate-300"
-                    set:html={q.detail}
-                  />
+      <ul class="mx-auto mt-6 max-w-3xl divide-y divide-forest-900/10 dark:divide-forest-100/10">
+        {researchQuestions.map((q) => (
+          <li>
+            <a href={q.href} class="group flex items-start gap-4 py-5">
+              <PillarIcon name={q.icon} class={`${iconClasses} mt-1`} />
+              <span>
+                <span class="block text-xl text-moss-950 group-hover:underline dark:text-moss-50">
+                  {q.question}
                 </span>
-              </a>
-            </li>
-          ))
-        }
+                <span
+                  class="mt-1 block text-slate-700 dark:text-slate-300"
+                  set:html={q.detail}
+                />
+              </span>
+            </a>
+          </li>
+        ))}
       </ul>
       <div class="text-center">
         <a href="/projects" class={`${primaryButtonClasses} mt-10`}>

@@ -143,6 +143,14 @@ export function topLanguages(
   return collapseOther(all, limit);
 }
 
+/** Names of the top languages, without the "Other" bucket. */
+export function languageNames(stats: GithubStats | null, limit = 4): string {
+  return topLanguages(stats, limit)
+    .filter((l) => l.name !== "Other")
+    .map((l) => l.name)
+    .join(", ");
+}
+
 export function repoLanguages(
   stats: GithubStats | null,
   repo: string,
@@ -239,7 +247,8 @@ export function repoMetricsHtml(
 /**
  * Refreshes every live-bound element under `root` with the latest stats:
  *   [data-gh-stat="path"][data-gh-format]  → text value
- *   [data-gh-languages]                    → overall language bar
+ *   [data-gh-languages][data-gh-legend]    → overall language bar
+ *   [data-gh-language-names]               → top language names, comma-separated
  *   [data-gh-repo-langs="owner/repo"]      → per-repo language bar
  *   [data-gh-repo-metrics="a,b"]           → per-project metric chips
  *   [data-gh-selected-repos]               → selected repositories
@@ -255,7 +264,11 @@ export async function hydrateStats(root: ParentNode = document) {
   root.querySelectorAll<HTMLElement>("[data-gh-languages]").forEach((el) => {
     el.innerHTML = languageBarHtml(
       topLanguages(stats, Number(el.dataset.ghLanguages) || 6),
+      el.dataset.ghLegend !== "false",
     );
+  });
+  root.querySelectorAll<HTMLElement>("[data-gh-language-names]").forEach((el) => {
+    el.textContent = languageNames(stats, Number(el.dataset.ghLanguageNames));
   });
   root.querySelectorAll<HTMLElement>("[data-gh-repo-langs]").forEach((el) => {
     el.innerHTML = languageBarHtml(repoLanguages(stats, el.dataset.ghRepoLangs!));

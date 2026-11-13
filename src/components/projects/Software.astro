@@ -248,27 +248,33 @@ const biocosmosPrinciples = [
 const questions = [
   {
     id: "software-portable",
-    question: "How can research software run anywhere and capture more in the field?",
+    question:
+      "How can research software run anywhere and capture more in the field?",
     topic: "Software that runs anywhere and captures more",
   },
   {
     id: "software-nahpu",
-    question: "How can one field app work offline on phones, tablets, and laptops?",
+    question:
+      "How can one field app hold up in harsh, remote field conditions?",
     topic: "Cross-platform software design approaches: NAHPU as an example",
   },
   {
     id: "biocosmos-architecture",
-    question: "How can a modest server answer open-ended questions over 600,000 images?",
-    topic: "BioCosmos: a lightweight web architecture for AI-enabled search and trait exploration",
+    question:
+      "How can a modest server answer open-ended questions over 600,000 images?",
+    topic:
+      "BioCosmos: a lightweight web architecture for AI-enabled search and trait exploration",
   },
   {
     id: "software-segul",
-    question: "How can researchers explore phylogenomic data before inferring trees?",
+    question:
+      "How can anyone rigorously explore and reshape phylogenomic data with ease?",
     topic: "SEGUL: fast phylogenomic data exploration across platforms",
   },
   {
     id: "software-mdd",
-    question: "How do we keep a living checklist of the world's mammals accessible?",
+    question:
+      "How do we keep a living checklist of the world's mammals accessible?",
     topic: "Mammal Diversity Database: website, app, and tooling",
   },
 ];
@@ -280,60 +286,61 @@ const spaceClasses = cntl`
 
 <div>
   <PageSubtitle subtitle="Open, Cross-platform Software" />
-  <dl
-    class="mx-auto grid max-w-4xl grid-cols-2 gap-3 text-center sm:grid-cols-4"
-  >
-    {
-      stats.map((s) => (
-        <div class="rounded-2xl border border-forest-900/10 px-3 py-4 dark:border-forest-100/10">
-          <dt class="sr-only">{s.label}</dt>
-          <dd class="font-serif text-2xl font-semibold text-moss-700 dark:text-moss-300">
-            {s.value ?? (
-              <>
-                +<LiveStat path="code_changes.totals.additions" format="compact" /> <span class="text-base font-normal text-forest-600 dark:text-forest-300">−<LiveStat path="code_changes.totals.deletions" format="compact" /></span>
-              </>
-            )}
-          </dd>
-          <dd class="mt-1 text-xs text-forest-700 dark:text-forest-300">
-            {s.label}
-          </dd>
-        </div>
-      ))
-    }
+  <dl class="mx-auto grid max-w-4xl grid-cols-2 gap-3 text-center sm:grid-cols-4">
+    {stats.map((s) => (
+      <div class="rounded-2xl border border-forest-900/10 px-3 py-4 dark:border-forest-100/10">
+        <dt class="sr-only">{s.label}</dt>
+        <dd class="font-serif text-2xl font-semibold text-moss-700 dark:text-moss-300">
+          {s.value ?? (
+            <>
+              +
+              <LiveStat path="code_changes.totals.additions" format="compact" />{" "}
+              <span class="text-base font-normal text-forest-600 dark:text-forest-300">
+                −
+                <LiveStat
+                  path="code_changes.totals.deletions"
+                  format="compact"
+                />
+              </span>
+            </>
+          )}
+        </dd>
+        <dd class="mt-1 text-xs text-forest-700 dark:text-forest-300">
+          {s.label}
+        </dd>
+      </div>
+    ))}
   </dl>
   <ul class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-    {
-      tools.map((t) => (
-        <li>
-          <a
-            href={t.url}
-            target="_blank" rel="noopener"
-            class="group flex h-full items-center justify-between gap-3 rounded-xl border border-forest-900/15 px-4 py-3 transition hover:-translate-y-0.5 hover:border-moss-400 hover:bg-moss-50 dark:border-forest-100/15 dark:hover:bg-white/5"
-          >
-            <span>
-              <span class="block font-mono font-semibold text-forest-800 dark:text-moss-200">
-                {t.name}
-              </span>
-              <span class="block text-xs text-forest-700 dark:text-forest-300">
-                {t.role}
-              </span>
+    {tools.map((t) => (
+      <li>
+        <a
+          href={t.url}
+          target="_blank"
+          rel="noopener"
+          class="group flex h-full items-center justify-between gap-3 rounded-xl border border-forest-900/15 px-4 py-3 transition hover:-translate-y-0.5 hover:border-moss-400 hover:bg-moss-50 dark:border-forest-100/15 dark:hover:bg-white/5"
+        >
+          <span>
+            <span class="block font-mono font-semibold text-forest-800 dark:text-moss-200">
+              {t.name}
             </span>
-            {t.stack && (
-              <span class="whitespace-nowrap rounded-full bg-forest-100 px-2 py-0.5 font-mono text-[0.7rem] text-forest-800 dark:bg-forest-900 dark:text-forest-200">
-                {t.stack}
-              </span>
-            )}
-          </a>
-        </li>
-      ))
-    }
+            <span class="block text-xs text-forest-700 dark:text-forest-300">
+              {t.role}
+            </span>
+          </span>
+          {t.stack && (
+            <span class="whitespace-nowrap rounded-full bg-forest-100 px-2 py-0.5 font-mono text-[0.7rem] text-forest-800 dark:bg-forest-900 dark:text-forest-200">
+              {t.stack}
+            </span>
+          )}
+        </a>
+      </li>
+    ))}
   </ul>
 
   <QuestionIndex questions={questions} />
 
-  <SectionHead
-    text="Digital Infrastructure for Accessible and Data-Rich Biodiversity Research"
-  />
+  <SectionHead text="Building Digital Infrastructure for Accessible and Data-Rich Biodiversity Research" />
   <Content>
     <p class={firstParagraphClasses}>
       My 13 years of experience working in the complex island systems of
@@ -346,35 +353,30 @@ const spaceClasses = cntl`
       motivate my software development efforts.
     </p>
     <p class="mt-2">
-      I develop free, open-source software spanning field data collection (<Link
-        text="NAHPU"
-        url="https://nahpu.app"
-      />), phylogenomics (<Link
-        text="ULLAR"
-        url="https://github.com/hhandika/ullar"
-      />), genomic data processing (<Link
-        text="SEGUL"
-        url="https://segul.app"
-      />), taxonomy (<Link
+      I develop free, open-source software spanning field data collection (
+      <Link text="NAHPU" url="https://nahpu.app" />
+      ), phylogenomics (
+      <Link text="ULLAR" url="https://github.com/hhandika/ullar" />
+      ), genomic data processing (<Link text="SEGUL" url="https://segul.app" />
+      ), taxonomy (
+      <Link
         text="Mammal Diversity Database"
         url="https://github.com/mammaldiversity/mdd_app"
-      />), and AI-enabled specimen exploration and trait analyses (<Link
-        text="BioCosmos"
-        url="https://lepiverse.com"
-      />). Across my public repositories, I have added <LiveStat
-        path="code_changes.totals.additions"
-        format="compact"
-      /> lines of code and removed <LiveStat
-        path="code_changes.totals.deletions"
-        format="compact"
-      />.
-      These projects aim to make biodiversity research more efficient, reproducible, and
-      accessible, particularly to underfunded laboratories, while enabling new
-      research directions, such as using <Link
+      />
+      ), and AI-enabled specimen exploration and trait analyses (
+      <Link text="BioCosmos" url="https://lepiverse.com" />
+      ). Across my public repositories, I have added{" "}
+      <LiveStat path="code_changes.totals.additions" format="compact" /> lines
+      of code and removed{" "}
+      <LiveStat path="code_changes.totals.deletions" format="compact" />. These
+      projects aim to make biodiversity research more efficient, reproducible,
+      and accessible, particularly to underfunded laboratories, while enabling
+      new research directions, such as using{" "}
+      <Link
         text="vector embedding"
         url="https://www.ibm.com/think/topics/vector-embedding"
-      /> approaches to study
-      multi-dimensional trait variation.
+      />{" "}
+      approaches to study multi-dimensional trait variation.
     </p>
   </Content>
 
@@ -400,41 +402,44 @@ const spaceClasses = cntl`
   <QuestionHead questions={questions} id="software-nahpu" />
   <Content>
     <p>
-      <Link text="NAHPU" url="https://nahpu.app" /> is a field cataloging app for
-      collection-based research, from specimens to the parasites collected from them
-      and their screening status. It has to work on a phone or a tablet at a remote
-      field camp and on a laptop back at the museum, with or without internet. I build
-      it in layers: a Flutter interface on top, application state and domain workflows
-      in the middle, a SQLite database for records, and performance-critical, reusable
-      code in Rust crates interfaced through a generated bridge. Each layer has one
-      job, which keeps the app fast, testable, and easy for new contributors to learn.
-      The full design is documented in the <Link
+      <Link text="NAHPU" url="https://nahpu.app" /> is a field cataloging app
+      for collection-based research, from specimens to the parasites collected
+      from them and their screening status. It has to work on a phone or a
+      tablet at a remote field camp and on a laptop back at the museum, with or
+      without internet. I build it in layers: a Flutter interface on top,
+      application state and domain workflows in the middle, a SQLite database
+      for records, and performance-critical, reusable code in Rust crates
+      interfaced through a generated bridge. Each layer has one job, which keeps
+      the app fast, testable, and easy for new contributors to learn. The full
+      design is documented in the{" "}
+      <Link
         text="NAHPU developer docs"
         url="https://nahpu.app/en/contributing/code/architecture/"
-      />.
+      />
+      .
     </p>
   </Content>
   <NahpuArchitecture />
   <ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-    {
-      principles.map((p, i) => (
-        <li class="rounded-2xl border border-forest-900/10 bg-forest-50/60 p-4 dark:border-forest-100/10 dark:bg-forest-900/30">
-          <span class="font-mono text-xs text-moss-700 dark:text-moss-300">
-            0{i + 1}
-          </span>
-          <h3 class="mt-1 font-semibold text-forest-900 dark:text-forest-50">
-            {p.title}
-          </h3>
-          <p class="mt-1 text-sm text-forest-800 dark:text-forest-200">
-            {p.text}
-          </p>
-        </li>
-      ))
-    }
+    {principles.map((p, i) => (
+      <li class="rounded-2xl border border-forest-900/10 bg-forest-50/60 p-4 dark:border-forest-100/10 dark:bg-forest-900/30">
+        <span class="font-mono text-xs text-moss-700 dark:text-moss-300">
+          0{i + 1}
+        </span>
+        <h3 class="mt-1 font-semibold text-forest-900 dark:text-forest-50">
+          {p.title}
+        </h3>
+        <p class="mt-1 text-sm text-forest-800 dark:text-forest-200">
+          {p.text}
+        </p>
+      </li>
+    ))}
   </ul>
   <NahpuGallery />
   <Content>
-    <p class="mt-6 mb-1 font-semibold text-moss-800 dark:text-moss-200">Publications:</p>
+    <p class="mt-6 mb-1 font-semibold text-moss-800 dark:text-moss-200">
+      Publications:
+    </p>
     <ProjectPubs author="Handika et al.">
       <PubButton
         author="Handika, H., Moncrieff, A. E., Henderson, C., Dadaian, A., Gordon, C., Canton, R., Chipps, A. S., Inayah, N., Chornelia, A., Rego, M. A., Pérez-Amaya, N., Gan, L. B., Jaiswal, A. T., Lee, D. D., Yu, J., Aravind, A. J., Evangelista, D. R., Rutledge, S. L., Elías, D. J., Troyer, E. M., de Miranda, G. S., Vonnahme, L., Shi, B., Nations, J. A., Del-Rio, G., Thom, G., Porto, A., Esselstyn, J. A"
@@ -455,27 +460,20 @@ const spaceClasses = cntl`
       lets anyone search more than 600,000 butterfly specimen images by name,
       image, or a plain-language question. Its design problem is that it must
       answer open-ended questions over hundreds of thousands of images and their
-      embeddings on a single, modest server. I built it as one <Link
-        text="FastAPI"
-        url="https://fastapi.tiangolo.com"
-      /> process that holds everything needed for the search. An open-weight language
-      model plans the search, the <Link
-        text="CLIP"
-        url="https://github.com/openai/CLIP"
-      /> and <Link text="UNICOM" url="https://github.com/deepglint/unicom" /> vision
-      models encode it, and two embedded databases execute it. <Link
-        text="DuckDB"
-        url="https://duckdb.org"
-      />, an in-process analytical (OLAP) database is for metadata, taxonomy,
-      localities, and traits, and <Link
-        text="LanceDB"
-        url="https://lancedb.com"
-      />, an in-process vector database is for the image embeddings. Neither
-      needs a database server, making the system lightweight and efficient. Both
-      query columnar files in place and exchange results as Arrow tables through <Link
-        text="Polars"
-        url="https://pola.rs"
-      />.
+      embeddings on a single, modest server. I built it as one{" "}
+      <Link text="FastAPI" url="https://fastapi.tiangolo.com" /> process that
+      holds everything needed for the search. An open-weight language model
+      plans the search, the{" "}
+      <Link text="CLIP" url="https://github.com/openai/CLIP" /> and{" "}
+      <Link text="UNICOM" url="https://github.com/deepglint/unicom" /> vision
+      models encode it, and two embedded databases execute it.{" "}
+      <Link text="DuckDB" url="https://duckdb.org" />, an in-process analytical
+      (OLAP) database is for metadata, taxonomy, localities, and traits, and{" "}
+      <Link text="LanceDB" url="https://lancedb.com" />, an in-process vector
+      database is for the image embeddings. Neither needs a database server,
+      making the system lightweight and efficient. Both query columnar files in
+      place and exchange results as Arrow tables through{" "}
+      <Link text="Polars" url="https://pola.rs" />.
     </p>
     <p class="mt-2">
       The language model never touches the data. It reads a question once and
@@ -490,45 +488,42 @@ const spaceClasses = cntl`
   </Content>
   <BioCosmosArchitecture />
   <ul class="grid gap-3 sm:grid-cols-3">
-    {
-      biocosmosPrinciples.map((p, i) => (
-        <li class="rounded-2xl border border-forest-900/10 bg-forest-50/60 p-4 dark:border-forest-100/10 dark:bg-forest-900/30">
-          <span class="font-mono text-xs text-moss-700 dark:text-moss-300">
-            0{i + 1}
-          </span>
-          <h3 class="mt-1 font-semibold text-forest-900 dark:text-forest-50">
-            {p.title}
-          </h3>
-          <p class="mt-1 text-sm text-forest-800 dark:text-forest-200">
-            {p.text}
-          </p>
-        </li>
-      ))
-    }
+    {biocosmosPrinciples.map((p, i) => (
+      <li class="rounded-2xl border border-forest-900/10 bg-forest-50/60 p-4 dark:border-forest-100/10 dark:bg-forest-900/30">
+        <span class="font-mono text-xs text-moss-700 dark:text-moss-300">
+          0{i + 1}
+        </span>
+        <h3 class="mt-1 font-semibold text-forest-900 dark:text-forest-50">
+          {p.title}
+        </h3>
+        <p class="mt-1 text-sm text-forest-800 dark:text-forest-200">
+          {p.text}
+        </p>
+      </li>
+    ))}
   </ul>
   <Content>
     <p class="mt-4">
       Data preparation is handled by command-line packages that are decoupled
       from the backend and can run independently. This design enables the code
-      to be used outside Biocosmos. The packages share the same <Link
-        text="uv"
-        url="https://docs.astral.sh/uv/"
-      /> workspace, ensuring consistent dependency management and versioning across
-      the project. They match taxonomic names against the <Link
-        text="Catalogue of Life"
-        url="https://www.catalogueoflife.org"
-      />, validate coordinates against <Link
-        text="GADM"
-        url="https://gadm.org"
-      />, and precompute visual similarity and morphospace tables. Each run
-      writes a manifest containing the SHA-256 hash of every generated output,
-      providing a verifiable record for traceability and reproducibility. The
-      same workspace also benchmarks candidate planner models, which informed
-      the selection of the open-weight model used in production (see <a
+      to be used outside Biocosmos. The packages share the same{" "}
+      <Link text="uv" url="https://docs.astral.sh/uv/" /> workspace, ensuring
+      consistent dependency management and versioning across the project. They
+      match taxonomic names against the{" "}
+      <Link text="Catalogue of Life" url="https://www.catalogueoflife.org" />,
+      validate coordinates against <Link text="GADM" url="https://gadm.org" />,
+      and precompute visual similarity and morphospace tables. Each run writes a
+      manifest containing the SHA-256 hash of every generated output, providing
+      a verifiable record for traceability and reproducibility. The same
+      workspace also benchmarks candidate planner models, which informed the
+      selection of the open-weight model used in production (see{" "}
+      <a
         href="#llm-benchmark"
         class="text-mist-700 underline hover:text-mist-900 dark:text-mist-200 dark:hover:text-mist-100"
-        >the AI section</a
-      >).
+      >
+        the AI section
+      </a>
+      ).
     </p>
   </Content>
 
@@ -537,153 +532,149 @@ const spaceClasses = cntl`
     <p>
       Between assembling loci and inferring trees lies an often overlooked step:
       exploring the data. <Link text="SEGUL" url="https://segul.app" />
-      summarizes alignments, including taxon occupancy, missing data, and parsimony-informative
-      sites, as well as raw read and contigs. It also filters, concatenates, splits,
-      converts, and renames thousands of files in a single workflow. Its ability to
-      filter alignments by length, completeness, and informative sites is unique among
-      comparable tools. In an accompanying perspective, <Link
+      summarizes alignments, including taxon occupancy, missing data, and
+      parsimony-informative sites, as well as raw read and contigs. It also
+      filters, concatenates, splits, converts, and renames thousands of files in
+      a single workflow. Its ability to filter alignments by length,
+      completeness, and informative sites is unique among comparable tools. In
+      an accompanying perspective,{" "}
+      <Link
         text="Chan (2024)"
         url="https://doi.org/10.1111/1755-0998.13993"
-      /> described SEGUL as a proof of concept that efficient software can make genomic-scale
-      analyses more tractable and phylogenomics accessible to a broader range of users.
-      SEGUL received the 2024 <Link
+      />{" "}
+      described SEGUL as a proof of concept that efficient software can make
+      genomic-scale analyses more tractable and phylogenomics accessible to a
+      broader range of users. SEGUL received the 2024{" "}
+      <Link
         text="Ernst Mayr Award"
         url="https://www.systbio.org/ernst-mayr-award.html"
-      /> from the Society of Systematic Biologists. I am now extending SEGUL and
-      <Link text="ULLAR" url="https://github.com/hhandika/ullar" /> with automated
-      detection of outlier alignments and clearer diagnostics.
+      />{" "}
+      from the Society of Systematic Biologists. I am now extending SEGUL and
+      <Link text="ULLAR" url="https://github.com/hhandika/ullar" /> with
+      automated detection of outlier alignments and clearer diagnostics.
     </p>
   </Content>
   <ul class="my-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-    {
-      segulInterfaces.map((i) => (
-        <li class="flex flex-col rounded-2xl border border-forest-900/10 bg-forest-50/60 p-4 dark:border-forest-100/10 dark:bg-forest-900/30">
-          <h3 class="font-semibold text-forest-900 dark:text-forest-50">
-            {i.name}
-          </h3>
-          <p class="mt-1 flex-1 text-sm text-forest-800 dark:text-forest-200">
-            {i.text}
-          </p>
-          {i.url ? (
-            <a
-              href={i.url}
-              target="_blank" rel="noopener"
-              class="mt-3 block rounded-lg bg-forest-900/5 px-2 py-1 font-mono text-xs text-moss-800 underline hover:text-moss-950 dark:bg-white/5 dark:text-moss-200 dark:hover:text-moss-50"
-            >
+    {segulInterfaces.map((i) => (
+      <li class="flex flex-col rounded-2xl border border-forest-900/10 bg-forest-50/60 p-4 dark:border-forest-100/10 dark:bg-forest-900/30">
+        <h3 class="font-semibold text-forest-900 dark:text-forest-50">
+          {i.name}
+        </h3>
+        <p class="mt-1 flex-1 text-sm text-forest-800 dark:text-forest-200">
+          {i.text}
+        </p>
+        {i.url ? (
+          <a
+            href={i.url}
+            target="_blank"
+            rel="noopener"
+            class="mt-3 block rounded-lg bg-forest-900/5 px-2 py-1 font-mono text-xs text-moss-800 underline hover:text-moss-950 dark:bg-white/5 dark:text-moss-200 dark:hover:text-moss-50"
+          >
+            {i.install}
+          </a>
+        ) : (
+          <div class="mt-3 flex items-start gap-1 rounded-lg bg-forest-900/5 dark:bg-white/5">
+            <code class="min-w-0 flex-1 break-words py-1 pl-2 font-mono text-xs text-moss-800 dark:text-moss-200">
               {i.install}
-            </a>
-          ) : (
-            <div class="mt-3 flex items-start gap-1 rounded-lg bg-forest-900/5 dark:bg-white/5">
-              <code class="min-w-0 flex-1 break-words py-1 pl-2 font-mono text-xs text-moss-800 dark:text-moss-200">
-                {i.install}
-              </code>
-              <button
-                type="button"
-                class="copy-command grid h-7 w-7 shrink-0 place-items-center rounded-lg text-forest-700 transition-colors hover:bg-forest-900/10 hover:text-forest-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-moss-600 dark:text-forest-300 dark:hover:bg-white/10 dark:hover:text-forest-50 dark:focus-visible:outline-moss-400"
-                data-copy={i.install}
-                aria-label={`Copy command: ${i.install}`}
-                title="Copy"
+            </code>
+            <button
+              type="button"
+              class="copy-command grid h-7 w-7 shrink-0 place-items-center rounded-lg text-forest-700 transition-colors hover:bg-forest-900/10 hover:text-forest-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-moss-600 dark:text-forest-300 dark:hover:bg-white/10 dark:hover:text-forest-50 dark:focus-visible:outline-moss-400"
+              data-copy={i.install}
+              aria-label={`Copy command: ${i.install}`}
+              title="Copy"
+            >
+              <svg
+                viewBox="0 0 16 16"
+                class="icon-copy h-3.5 w-3.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                aria-hidden="true"
               >
-                <svg
-                  viewBox="0 0 16 16"
-                  class="icon-copy h-3.5 w-3.5"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  aria-hidden="true"
-                >
-                  <rect x="5.5" y="5.5" width="8" height="8" rx="1.5" />
-                  <path d="M10.5 5.5V3.5a1.5 1.5 0 0 0-1.5-1.5H3.5A1.5 1.5 0 0 0 2 3.5V9a1.5 1.5 0 0 0 1.5 1.5h2" />
-                </svg>
-                <svg
-                  viewBox="0 0 16 16"
-                  class="icon-check hidden h-3.5 w-3.5"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M3 8.5l3.2 3L13 4.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </button>
-            </div>
-          )}
-        </li>
-      ))
-    }
+                <rect x="5.5" y="5.5" width="8" height="8" rx="1.5" />
+                <path d="M10.5 5.5V3.5a1.5 1.5 0 0 0-1.5-1.5H3.5A1.5 1.5 0 0 0 2 3.5V9a1.5 1.5 0 0 0 1.5 1.5h2" />
+              </svg>
+              <svg
+                viewBox="0 0 16 16"
+                class="icon-check hidden h-3.5 w-3.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                aria-hidden="true"
+              >
+                <path
+                  d="M3 8.5l3.2 3L13 4.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+        )}
+      </li>
+    ))}
   </ul>
   <p class="copy-status sr-only" aria-live="polite"></p>
   <Content>
     <p>
       Every interface runs on the same high-performance Rust core, so users can
       choose whichever platform best fits their workflow without sacrificing
-      performance. I benchmarked SEGUL against widely used alternatives (<Link
-        text="AMAS"
-        url="https://github.com/marekborowiec/AMAS"
-      />, <Link text="goalign" url="https://github.com/evolbioinfo/goalign" />,
-      and <Link
-        text="Phyluce"
-        url="https://phyluce.readthedocs.io/en/latest/"
-      />) using six published datasets spanning {
-        bench.datasets.at(-1)!.mbases
-      }–{largest.mbases} million bases. Each benchmark was repeated {
-        bench.replicates
-      } times on a desktop ({bench.machine}), an iPad, and an Android device (<Link
+      performance. I benchmarked SEGUL against widely used alternatives (
+      <Link text="AMAS" url="https://github.com/marekborowiec/AMAS" />,{" "}
+      <Link text="goalign" url="https://github.com/evolbioinfo/goalign" />, and{" "}
+      <Link text="Phyluce" url="https://phyluce.readthedocs.io/en/latest/" />)
+      using six published datasets spanning {bench.datasets.at(-1)!.mbases}–
+      {largest.mbases} million bases. Each benchmark was repeated{" "}
+      {bench.replicates} times on a desktop ({bench.machine}), an iPad, and an
+      Android device (
+      <Link
         text="Handika & Esselstyn 2024"
         url="https://doi.org/10.1111/1755-0998.13964"
-      />). The interactive plot below lets you explore the results across tools,
+      />
+      ). The interactive plot below lets you explore the results across tools,
       datasets, and platforms.
     </p>
   </Content>
   <figure class={`not-prose my-6 ${figureClasses}`}>
     <SegulBenchPlot client:visible />
   </figure>
-  <div
-    class="grid items-start gap-4 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]"
-  >
+  <div class="grid items-start gap-4 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
     <div class="grid grid-cols-2 gap-3">
-      {
-        segulShots.map((shot) => (
-          <figure class="overflow-hidden rounded-[1.4rem] border border-forest-900/10 bg-forest-50 p-1.5 transition duration-500 hover:-translate-y-0.5 hover:shadow-lg dark:border-forest-100/10 dark:bg-forest-900/40">
-            <Image
-              src={shot.src}
-              alt={shot.alt}
-              width={360}
-              densities={[1, 2]}
-              loading="lazy"
-              class="rounded-[1.1rem]"
-            />
-            <figcaption class="flex flex-wrap items-baseline justify-between gap-x-2 px-1.5 pt-1.5 text-xs">
-              <span class="font-semibold text-forest-900 dark:text-forest-100">
-                {shot.caption}
-              </span>
-              <span class="font-mono text-[0.7rem] text-forest-600 dark:text-forest-400">
-                iPhone
-              </span>
-            </figcaption>
-          </figure>
-        ))
-      }
+      {segulShots.map((shot) => (
+        <figure class="overflow-hidden rounded-[1.4rem] border border-forest-900/10 bg-forest-50 p-1.5 transition duration-500 hover:-translate-y-0.5 hover:shadow-lg dark:border-forest-100/10 dark:bg-forest-900/40">
+          <Image
+            src={shot.src}
+            alt={shot.alt}
+            width={360}
+            densities={[1, 2]}
+            loading="lazy"
+            class="rounded-[1.1rem]"
+          />
+          <figcaption class="flex flex-wrap items-baseline justify-between gap-x-2 px-1.5 pt-1.5 text-xs">
+            <span class="font-semibold text-forest-900 dark:text-forest-100">
+              {shot.caption}
+            </span>
+            <span class="font-mono text-[0.7rem] text-forest-600 dark:text-forest-400">
+              iPhone
+            </span>
+          </figcaption>
+        </figure>
+      ))}
     </div>
     <div>
       <dl class="grid grid-cols-2 gap-3">
-        {
-          segulStats.map((s) => (
-            <div class="rounded-2xl border border-forest-900/10 px-3 py-3 dark:border-forest-100/10">
-              <dt class="sr-only">{s.label}</dt>
-              <dd class="font-serif text-xl font-semibold text-moss-700 dark:text-moss-300">
-                {s.value}
-              </dd>
-              <dd class="mt-1 text-xs text-forest-700 dark:text-forest-300">
-                {s.label}
-              </dd>
-            </div>
-          ))
-        }
+        {segulStats.map((s) => (
+          <div class="rounded-2xl border border-forest-900/10 px-3 py-3 dark:border-forest-100/10">
+            <dt class="sr-only">{s.label}</dt>
+            <dd class="font-serif text-xl font-semibold text-moss-700 dark:text-moss-300">
+              {s.value}
+            </dd>
+            <dd class="mt-1 text-xs text-forest-700 dark:text-forest-300">
+              {s.label}
+            </dd>
+          </div>
+        ))}
       </dl>
       <p class="mt-3 text-sm text-forest-800 dark:text-forest-200">
         On the same machine, the GUI finishes within about a second of the
@@ -695,7 +686,9 @@ const spaceClasses = cntl`
   </div>
 
   <Content>
-    <p class="mt-6 mb-1 font-semibold text-moss-800 dark:text-moss-200">Publications:</p>
+    <p class="mt-6 mb-1 font-semibold text-moss-800 dark:text-moss-200">
+      Publications:
+    </p>
     <ProjectPubs author="Handika and Esselstyn">
       <PubButton
         author="Handika, H. and Esselstyn, J. A"
@@ -721,91 +714,91 @@ const spaceClasses = cntl`
   <QuestionHead questions={questions} id="software-mdd" />
   <Content>
     <p>
-      I develop the website, cross-platform app, and data tooling for the <Link
+      I develop the website, cross-platform app, and data tooling for the{" "}
+      <Link
         text="Mammal Diversity Database"
         url="https://www.mammaldiversity.org"
       />
-      of the American Society of Mammalogists, which tracks taxonomic changes to every
-      living and recently extinct mammal species. Version 2.5 recognizes 6,904 species,
-      each with names, synonyms, distribution, and images.
+      of the American Society of Mammalogists, which tracks taxonomic changes to
+      every living and recently extinct mammal species. Version 2.5 recognizes
+      6,904 species, each with names, synonyms, distribution, and images.
     </p>
   </Content>
   <div class="my-6 grid gap-3 md:grid-cols-2">
-    {
-      [
-        {
-          src: mddHome,
-          alt: "Mammal Diversity Database home page with species search and summary counts",
-          caption: "Search and release summary",
-          url: "https://www.mammaldiversity.org",
-        },
-        {
-          src: mddTaxon,
-          alt: "Mammal Diversity Database species page for the aardvark, Orycteropus afer, with photo and country distribution map",
-          caption: "Species page",
-          url: "https://www.mammaldiversity.org/taxon/1000520",
-        },
-      ].map((shot) => (
-        <a
-          href={shot.url}
-          target="_blank" rel="noopener"
-          class="group overflow-hidden rounded-2xl border border-forest-900/10 bg-forest-50 p-1.5 transition duration-500 hover:-translate-y-0.5 hover:shadow-lg dark:border-forest-100/10 dark:bg-forest-900/40"
-        >
-          <Image
-            src={shot.src}
-            alt={shot.alt}
-            width={900}
-            loading="lazy"
-            class="rounded-xl"
-          />
-          <p class="flex justify-between px-2 pt-1.5 text-xs">
-            <span class="font-semibold text-forest-900 dark:text-forest-100">
-              {shot.caption}
-            </span>
-            <span class="font-mono text-forest-600 dark:text-forest-400">
-              mammaldiversity.org
-            </span>
-          </p>
-        </a>
-      ))
-    }
+    {[
+      {
+        src: mddHome,
+        alt: "Mammal Diversity Database home page with species search and summary counts",
+        caption: "Search and release summary",
+        url: "https://www.mammaldiversity.org",
+      },
+      {
+        src: mddTaxon,
+        alt: "Mammal Diversity Database species page for the aardvark, Orycteropus afer, with photo and country distribution map",
+        caption: "Species page",
+        url: "https://www.mammaldiversity.org/taxon/1000520",
+      },
+    ].map((shot) => (
+      <a
+        href={shot.url}
+        target="_blank"
+        rel="noopener"
+        class="group overflow-hidden rounded-2xl border border-forest-900/10 bg-forest-50 p-1.5 transition duration-500 hover:-translate-y-0.5 hover:shadow-lg dark:border-forest-100/10 dark:bg-forest-900/40"
+      >
+        <Image
+          src={shot.src}
+          alt={shot.alt}
+          width={900}
+          loading="lazy"
+          class="rounded-xl"
+        />
+        <p class="flex justify-between px-2 pt-1.5 text-xs">
+          <span class="font-semibold text-forest-900 dark:text-forest-100">
+            {shot.caption}
+          </span>
+          <span class="font-mono text-forest-600 dark:text-forest-400">
+            mammaldiversity.org
+          </span>
+        </p>
+      </a>
+    ))}
   </div>
   <p class="mb-3 text-sm text-forest-800 dark:text-forest-200">
-    The <Link
+    The{" "}
+    <Link
       text="MDD app"
       url="https://apps.apple.com/us/app/mammal-diversity/id6504446627"
-    /> brings the database offline, with a searchable taxonomy tree, the ASM Mammal
+    />{" "}
+    brings the database offline, with a searchable taxonomy tree, the ASM Mammal
     Images Library, GBIF occurrence maps, and description statistics.
   </p>
-  <div
-    class="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 md:mx-0 md:grid md:grid-cols-5 md:overflow-visible md:px-0"
-  >
-    {
-      mddAppShots.map((shot) => (
-        <figure class="w-[42%] shrink-0 snap-start overflow-hidden rounded-[1.4rem] border border-forest-900/10 bg-forest-50 p-1.5 transition duration-500 hover:-translate-y-0.5 hover:shadow-lg dark:border-forest-100/10 dark:bg-forest-900/40 sm:w-[30%] md:w-auto">
-          <Image
-            src={shot.src}
-            alt={shot.alt}
-            width={360}
-            densities={[1, 2]}
-            loading="lazy"
-            class="rounded-[1.1rem]"
-          />
-          <figcaption class="flex flex-wrap items-baseline justify-between gap-x-2 px-1.5 pt-1.5 text-xs">
-            <span class="font-semibold text-forest-900 dark:text-forest-100">
-              {shot.caption}
-            </span>
-            <span class="font-mono text-[0.7rem] text-forest-600 dark:text-forest-400">
-              iPhone
-            </span>
-          </figcaption>
-        </figure>
-      ))
-    }
+  <div class="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 md:mx-0 md:grid md:grid-cols-5 md:overflow-visible md:px-0">
+    {mddAppShots.map((shot) => (
+      <figure class="w-[42%] shrink-0 snap-start overflow-hidden rounded-[1.4rem] border border-forest-900/10 bg-forest-50 p-1.5 transition duration-500 hover:-translate-y-0.5 hover:shadow-lg dark:border-forest-100/10 dark:bg-forest-900/40 sm:w-[30%] md:w-auto">
+        <Image
+          src={shot.src}
+          alt={shot.alt}
+          width={360}
+          densities={[1, 2]}
+          loading="lazy"
+          class="rounded-[1.1rem]"
+        />
+        <figcaption class="flex flex-wrap items-baseline justify-between gap-x-2 px-1.5 pt-1.5 text-xs">
+          <span class="font-semibold text-forest-900 dark:text-forest-100">
+            {shot.caption}
+          </span>
+          <span class="font-mono text-[0.7rem] text-forest-600 dark:text-forest-400">
+            iPhone
+          </span>
+        </figcaption>
+      </figure>
+    ))}
   </div>
 
   <Content>
-    <p class="mt-6 mb-1 font-semibold text-moss-800 dark:text-moss-200">Publications:</p>
+    <p class="mt-6 mb-1 font-semibold text-moss-800 dark:text-moss-200">
+      Publications:
+    </p>
     <ProjectPubs author="Burgin et al.">
       <PubButton
         author="Burgin, C. J., Zijlstra, J. S., Becker, M. A., Handika, H., Widness, J., Liphardt, S., Huckaby, D. G., and Upham, N. S."
