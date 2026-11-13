@@ -16,7 +16,7 @@ import { Image } from "astro:assets";
 import SegulBenchPlot from "./software/SegulBenchPlot.tsx";
 import bench from "../../data/segul/bench.json";
 import seguiPhoneGenomics from "../../assets/img/segul/segui-phone-genomics.webp";
-import seguiPhoneAlignments from "../../assets/img/segul/segui-phone-alignments.webp";
+import seguiPhoneViewer from "../../assets/img/segul/segui-phone-alignment-viewer.webp";
 import mddHome from "../../assets/img/mdd/mdd-home.jpg";
 import mddTaxon from "../../assets/img/mdd/mdd-taxon.jpg";
 import mddAppTree from "../../assets/img/mdd/app-taxonomy-tree.webp";
@@ -120,16 +120,20 @@ const segulStats = [
     label: `to summarize ${largest.mbases} Mb of alignments on an Android device, vs ${Math.round(amasSummary.time!)} s for AMAS on a desktop`,
   },
 ];
+// The viewer shot: all Esselstyn 2021 loci concatenated in SEGUI on Android.
+const viewerShot = { taxa: 102, loci: 4040, sites: 5_398_947, at: 3_265_689 };
 const segulShots = [
   {
     src: seguiPhoneGenomics,
     alt: "SEGUL iPhone app, read summary tool with eight FASTQ files selected",
     caption: "Read summary",
+    device: "iPhone",
   },
   {
-    src: seguiPhoneAlignments,
-    alt: "SEGUL iPhone app, alignment concatenation tool with twelve alignments selected",
-    caption: "Alignment concatenation",
+    src: seguiPhoneViewer,
+    alt: `SEGUL Android app, alignment viewer showing the ${viewerShot.loci.toLocaleString("en")} concatenated Esselstyn 2021 loci, ${viewerShot.taxa} taxa by ${viewerShot.sites.toLocaleString("en")} sites, at site ${viewerShot.at.toLocaleString("en")}`,
+    caption: `Viewer, ${(viewerShot.sites / 1e6).toFixed(1)}M sites`,
+    device: "Android",
   },
 ];
 // One Rust core, exposed four ways.
@@ -656,7 +660,7 @@ const spaceClasses = cntl`
               {shot.caption}
             </span>
             <span class="font-mono text-[0.7rem] text-forest-600 dark:text-forest-400">
-              iPhone
+              {shot.device}
             </span>
           </figcaption>
         </figure>
