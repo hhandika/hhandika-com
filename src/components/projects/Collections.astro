@@ -6,6 +6,8 @@ import Link from "../Link.astro";
 import ProjectPubs from "../../layouts/ProjectPubs.astro";
 import herbarium from "../../assets/img/herbarium.jpg";
 import outreach from "../../assets/img/hh-lsu_outreach2.webp";
+import softwareTraining from "../../assets/img/software-training-interns.jpg";
+import labMentoring from "../../assets/img/leadership/lab-mentoring.jpg";
 import FieldworkMap from "../map/FieldworkMap";
 import FieldTraining from "./FieldTraining.astro";
 import { expeditions } from "../../scripts/fieldwork";
@@ -88,6 +90,27 @@ const pillars = [
     </p>
   </Content>
   <FieldTraining />
+
+  <SectionHead text="Software development training" />
+  <Content>
+    <p>
+      Computer science students are more often exposed to medical applications than to biodiversity science. With support from the <Link text="Florida Museum" url="https://www.floridamuseum.ufl.edu/" /> Undergraduate Internship Program, I train computer science undergraduates in software development for biodiversity research. They learn software architecture, practice on the large codebase of <Link text="BioCosmos" url="https://github.com/BioVisionLab/BioCosmos" />, and use programming and data science to study large museum collection datasets.
+    </p>
+  </Content>
+  <div class="mt-4 grid gap-3 sm:grid-cols-2">
+    <Image
+      src={labMentoring}
+      alt="Heru walking students through code and results on a monitor"
+      widths={[400, 800]}
+      sizes="(min-width: 640px) 50vw, 100vw"
+      class="aspect-[4/3] w-full rounded-xl object-cover object-[50%_35%]"
+    />
+    <Image
+      src={softwareTraining}
+      alt="Two interns at a desk reviewing code and a chart on a large monitor"
+      class="aspect-[4/3] w-full rounded-xl object-cover"
+    />
+  </div>
 
   <SectionHead text="Public engagement" />
   <Content>
