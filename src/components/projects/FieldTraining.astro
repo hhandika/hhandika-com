@@ -1,0 +1,119 @@
+---
+// Field mammalogy training timeline: each skill is learned with mentors for
+// one week, then practiced on the student's own until the end of training.
+// Geometry, the accessible description, and the caption come from `skills`.
+// Two layouts from the same data: labels beside the bars on wide screens,
+// labels above the bars on phones.
+const skills = [
+  "Measure specimens",
+  "Collect tissue samples",
+  "Trap rodents with experts",
+  "Prepare wet specimens",
+  "Prepare dry skins",
+  "Assist with logistics",
+];
+const weeks = skills.length;
+
+const spell = (n: number) =>
+  ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight"][n] ?? String(n);
+
+// The program was developed for these expeditions.
+const program = { year: 2023, region: "Sumatra" };
+
+const desc = `Training program for the ${program.year} ${program.region} expeditions. Over ${spell(weeks)} weeks, students learned one new skill each week with mentors, then kept practicing it on their own: ${skills
+  .map((s, i) => `${s.toLowerCase()} from week ${i + 1}`)
+  .join(", ")}.`;
+
+interface Layout {
+  id: string;
+  class: string;
+  W: number;
+  x0: number;
+  x1: number;
+  /** Label row height above each bar; 0 puts labels beside the bars. */
+  labelH: number;
+  barH: number;
+  gap: number;
+  font: number;
+  small: number;
+  legendGap: number;
+}
+
+const layouts: Layout[] = [
+  { id: "wide", class: "hidden sm:block", W: 680, x0: 210, x1: 670, labelH: 0, barH: 28, gap: 16, font: 15, small: 13, legendGap: 190 },
+  { id: "narrow", class: "sm:hidden", W: 340, x0: 8, x1: 332, labelH: 20, barH: 18, gap: 12, font: 13, small: 12, legendGap: 150 },
+];
+
+const geometry = (l: Layout) => {
+  const weekW = (l.x1 - l.x0) / weeks;
+  const rowH = l.labelH + l.barH + l.gap;
+  const top = 8;
+  const x = (w: number) => l.x0 + w * weekW;
+  const barY = (i: number) => top + i * rowH + l.labelH;
+  const axisY = top + weeks * rowH;
+  return { weekW, top, x, barY, axisY, H: axisY + 76 };
+};
+---
+
+<figure class="not-prose my-6 rounded-2xl border border-forest-900/10 bg-white/70 p-3 shadow-sm dark:border-forest-100/10 dark:bg-forest-950/40 sm:p-5">
+  {layouts.map((l) => {
+    const { weekW, top, x, barY, axisY, H } = geometry(l);
+    const hatch = `field-training-hatch-${l.id}`;
+    return (
+      <svg
+        viewBox={`0 0 ${l.W} ${H}`}
+        class={`h-auto w-full ${l.class}`}
+        role="img"
+        aria-labelledby={`field-training-title-${l.id} field-training-desc-${l.id}`}
+      >
+        <title id={`field-training-title-${l.id}`}>Field mammalogy training timeline</title>
+        <desc id={`field-training-desc-${l.id}`}>{desc}</desc>
+        <defs>
+          <pattern id={hatch} width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <line x1="0" y1="0" x2="0" y2="6" stroke="white" stroke-width="1.5" stroke-opacity="0.35"></line>
+          </pattern>
+        </defs>
+
+        <g class="stroke-forest-900/10 dark:stroke-forest-100/15" stroke-width="1">
+          {Array.from({ length: weeks + 1 }, (_, w) => (
+            <line x1={x(w)} x2={x(w)} y1={top - 4} y2={axisY - 6}></line>
+          ))}
+        </g>
+
+        {skills.map((skill, i) => (
+          <g>
+            {l.labelH > 0 ? (
+              <text x={l.x0} y={barY(i) - 6} font-size={l.font} class="fill-forest-900 font-medium dark:fill-forest-50">{skill}</text>
+            ) : (
+              <text x="0" y={barY(i) + l.barH / 2} dominant-baseline="central" font-size={l.font} class="fill-forest-900 font-medium dark:fill-forest-50">{skill}</text>
+            )}
+            {i + 1 < weeks && (
+              <rect x={x(i + 1)} y={barY(i)} width={x(weeks) - x(i + 1)} height={l.barH} rx="4" stroke-width="1" class="fill-moss-100 stroke-moss-600 dark:fill-moss-900/60 dark:stroke-moss-400"></rect>
+            )}
+            <rect x={x(i)} y={barY(i)} width={weekW} height={l.barH} rx="4" class="fill-moss-700 dark:fill-moss-500"></rect>
+            <rect x={x(i)} y={barY(i)} width={weekW} height={l.barH} rx="4" fill={`url(#${hatch})`}></rect>
+          </g>
+        ))}
+
+        <g font-size={l.small} class="fill-forest-700 dark:fill-forest-300" text-anchor="middle">
+          {Array.from({ length: weeks + 1 }, (_, w) => (
+            <text x={x(w)} y={axisY + 10}>{w}</text>
+          ))}
+          <text x={(l.x0 + l.x1) / 2} y={axisY + 32}>Week</text>
+        </g>
+
+        {/* Hatching as well as color separates the two states. */}
+        <g font-size={l.small} class="fill-forest-800 dark:fill-forest-200">
+          <rect x={l.x0} y={axisY + 50} width="20" height="13" rx="2" class="fill-moss-700 dark:fill-moss-500"></rect>
+          <rect x={l.x0} y={axisY + 50} width="20" height="13" rx="2" fill={`url(#${hatch})`}></rect>
+          <text x={l.x0 + 28} y={axisY + 57} dominant-baseline="central">Guided by mentors</text>
+          <rect x={l.x0 + l.legendGap} y={axisY + 50} width="20" height="13" rx="2" stroke-width="1" class="fill-moss-100 stroke-moss-600 dark:fill-moss-900/60 dark:stroke-moss-400"></rect>
+          <text x={l.x0 + l.legendGap + 28} y={axisY + 57} dominant-baseline="central">Practiced on their own</text>
+        </g>
+      </svg>
+    );
+  })}
+  <figcaption class="mt-3 text-pretty text-sm text-forest-700 dark:text-forest-300">
+    The {spell(weeks)}-week training program we developed for our {program.year} {program.region} expeditions. Students learned one new skill each week with mentors, from measuring specimens to helping with expedition logistics, and kept practicing earlier skills on their own.
+  </figcaption>
+</figure>

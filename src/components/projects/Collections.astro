@@ -7,6 +7,7 @@ import ProjectPubs from "../../layouts/ProjectPubs.astro";
 import herbarium from "../../assets/img/herbarium.jpg";
 import outreach from "../../assets/img/hh-lsu_outreach2.webp";
 import FieldworkMap from "../map/FieldworkMap";
+import FieldTraining from "./FieldTraining.astro";
 import { expeditions } from "../../scripts/fieldwork";
 
 const collecting = expeditions.filter((e) => e.kind === "collecting");
@@ -79,6 +80,14 @@ const pillars = [
       Localities from {collecting.length} field collecting expeditions in {collectingCountries} countries. Larger markers show repeat visits. For all fieldwork, including biodiversity surveys, see the <a href="/fieldwork" target="_blank" rel="noopener" class="text-mist-700 underline hover:text-mist-900 dark:text-mist-200 dark:hover:text-mist-100">Fieldwork page</a>.
     </figcaption>
   </figure>
+
+  <SectionHead text="Field mammalogy training" />
+  <Content>
+    <p>
+      My fieldwork has a dual intent: to study mammals in poorly surveyed regions, and to train students who live closest to those habitats. In collaboration with the Indonesian Research and Innovation Agency (<Link text="BRIN" url="https://www.brin.go.id/" />), we invited two undergraduates from the areas closest to our field sites to join our 2023 Sumatra expeditions. They started by measuring specimens and took on harder tasks each week, working alongside experienced mammalogists until they could prepare specimens on their own and help run the expedition.
+    </p>
+  </Content>
+  <FieldTraining />
 
   <SectionHead text="Public engagement" />
   <Content>
