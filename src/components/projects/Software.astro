@@ -5,7 +5,6 @@ import QuestionIndex from "./QuestionIndex.astro";
 import QuestionHead from "./QuestionHead.astro";
 import cntl from "cntl";
 import ProjectPubs from "../../layouts/ProjectPubs.astro";
-import PubButton from "../buttons/PubButton.astro";
 import Link from "../Link.astro";
 import LiveStat from "../github/LiveStat.astro";
 import PageSubtitle from "../PageSubtitle.astro";
@@ -324,9 +323,6 @@ const questions = [
   },
 ];
 
-const spaceClasses = cntl`
-  mr-1
-`;
 ---
 
 <div>
@@ -492,16 +488,7 @@ const spaceClasses = cntl`
     <p class="mt-6 mb-1 font-semibold text-moss-800 dark:text-moss-200">
       Publications:
     </p>
-    <ProjectPubs author="Handika et al.">
-      <PubButton
-        author="Handika, H., Moncrieff, A. E., Henderson, C., Dadaian, A., Gordon, C., Canton, R., Chipps, A. S., Inayah, N., Chornelia, A., Rego, M. A., Pérez-Amaya, N., Gan, L. B., Jaiswal, A. T., Lee, D. D., Yu, J., Aravind, A. J., Evangelista, D. R., Rutledge, S. L., Elías, D. J., Troyer, E. M., de Miranda, G. S., Vonnahme, L., Shi, B., Nations, J. A., Del-Rio, G., Thom, G., Porto, A., Esselstyn, J. A"
-        year="Submitted"
-        title="NAHPU: An integrated approach to natural history data acquisition and management in the extended specimen era"
-        doi="https://doi.org/10.32942/X21M6D"
-        codeUrl="https://github.com/nahpu/nahpu"
-        url="https://nahpu.app"
-      />
-    </ProjectPubs>
+    <ProjectPubs ids={["nahpu"]} />
   </Content>
 
   <QuestionHead questions={questions} id="biocosmos-architecture" />
@@ -601,16 +588,7 @@ const spaceClasses = cntl`
     <p class="mt-6 mb-1 font-semibold text-moss-800 dark:text-moss-200">
       Publications:
     </p>
-    <ProjectPubs author="Handika et al.">
-      <PubButton
-        author="Handika, H., Lürig, M. D., Nichtawitz, K. L., Dobon, O. M., Yarava, V. S., Sobayo, J. K., Shi, B., Elliott, M. J., Fortes, J. A. B., Porto, A"
-        year="Submitted"
-        title="BioCosmos: computer vision and large language models for large-scale image-based biodiversity data and trait exploration"
-        doi="https://doi.org/10.32942/X2C11R"
-        url="https://lepiverse.com"
-        codeUrl="https://github.com/BioVisionLab/BioCosmos"
-      />
-    </ProjectPubs>
+    <ProjectPubs ids={["biocosmos"]} />
   </Content>
 
   <QuestionHead questions={questions} id="software-segul" />
@@ -794,26 +772,8 @@ const spaceClasses = cntl`
     <p class="mt-6 mb-1 font-semibold text-moss-800 dark:text-moss-200">
       Publications:
     </p>
-    <ProjectPubs author="Handika and Esselstyn">
-      <PubButton
-        author="Handika, H. and Esselstyn, J. A"
-        year={2024}
-        title="SEGUL: Ultrafast, memory-efficient and mobile-friendly software for manipulating and summarizing phylogenomic datasets"
-        doi="https://doi.org/10.1111/1755-0998.13964"
-        pdfUrl="https://www.researchgate.net/publication/380125709_SEGUL_Ultrafast_memory-efficient_and_mobile-friendly_software_for_manipulating_and_summarizing_phylogenomic_datasets"
-        isRequest={true}
-        url="https://segul.app"
-        codeUrl="https://github.com/hhandika/segul"
-      />
-    </ProjectPubs>
-    <ProjectPubs author="Handika et al.">
-      <PubButton
-        author="Handika, H., Del-Rio, G. D., Esselstyn, J. A"
-        year="In prep"
-        title="ULLAR: An ULtrafast, scaLable, Accessible, and Reproducible phylogenomic pipeline"
-        codeUrl="https://github.com/hhandika/ullar"
-      />
-    </ProjectPubs>
+    <ProjectPubs ids={["segul"]} />
+    <ProjectPubs ids={["ullar"]} />
   </Content>
 
   <QuestionHead questions={questions} id="software-mdd" />
@@ -904,16 +864,7 @@ const spaceClasses = cntl`
     <p class="mt-6 mb-1 font-semibold text-moss-800 dark:text-moss-200">
       Publications:
     </p>
-    <ProjectPubs author="Burgin et al.">
-      <PubButton
-        author="Burgin, C. J., Zijlstra, J. S., Becker, M. A., Handika, H., Widness, J., Liphardt, S., Huckaby, D. G., and Upham, N. S."
-        year={2025}
-        title="How many mammal species are there now? Updates and trends in taxonomic, nomenclatural, and geographic knowledge"
-        doi="https://doi.org/10.1093/jmammal/gyaf047"
-        url="https://www.mammaldiversity.org"
-        codeUrl="https://github.com/mammaldiversity/mammaldiversity"
-      />
-    </ProjectPubs>
+    <ProjectPubs ids={["burgin2025"]} />
   </Content>
 </div>
 

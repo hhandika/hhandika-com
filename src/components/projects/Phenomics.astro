@@ -4,7 +4,6 @@ import SectionHead from "../SectionHead.astro";
 import QuestionIndex from "./QuestionIndex.astro";
 import QuestionHead from "./QuestionHead.astro";
 import ProjectPubs from "../../layouts/ProjectPubs.astro";
-import PubButton from "../buttons/PubButton.astro";
 import Link from "../Link.astro";
 import EmbeddingPipeline from "./software/EmbeddingPipeline.astro";
 import MorphospacePlot from "./biocosmos/MorphospacePlot.tsx";
@@ -312,16 +311,7 @@ const figureClasses =
   <p class="mt-6 mb-1 font-semibold text-moss-800 dark:text-moss-200">
     Publications:
   </p>
-  <ProjectPubs author="Handika et al.">
-    <PubButton
-      author="Handika, H., Lürig, M. D., Nichtawitz, K. L., Dobon, O. M., Yarava, V. S., Sobayo, J. K., Shi, B., Elliott, M. J., Fortes, J. A. B., Porto, A"
-      year="Submitted"
-      title="BioCosmos: computer vision and large language models for large-scale image-based biodiversity data and trait exploration"
-      doi="https://doi.org/10.32942/X2C11R"
-      url="https://lepiverse.com"
-      codeUrl="https://github.com/BioVisionLab/BioCosmos"
-    />
-  </ProjectPubs>
+  <ProjectPubs ids={["biocosmos"]} />
 </Content>
 
 <SectionHead text="Future directions" />

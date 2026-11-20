@@ -1,0 +1,13 @@
+authors:
+  - Handika, H.
+  - Esselstyn, J. A
+title: "SEGUL: Ultrafast, memory-efficient and mobile-friendly software for manipulating and summarizing phylogenomic datasets"
+year: 2024
+journal: Molecular Ecology Resources
+volume: "24"
+issue: "7"
+doi: 10.1111/1755-0998.13964
+pdf: https://www.researchgate.net/publication/380125709_SEGUL_Ultrafast_memory-efficient_and_mobile-friendly_software_for_manipulating_and_summarizing_phylogenomic_datasets
+pdfRequest: true
+github: https://github.com/hhandika/segul
+website: https://segul.app

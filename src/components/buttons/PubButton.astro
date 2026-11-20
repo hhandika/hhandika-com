@@ -4,30 +4,45 @@ import SendMessageButton from "./SendMessageButton.astro";
 import leadingIcon from "../../assets/icons/paper.svg";
 import cntl from "cntl";
 
-interface PubButton {
-  author: string;
-  year: string;
-  title: string;
-  doi?: string;
-  pdfUrl?: string;
-  isRequest: boolean;
-  url?: string;
-  codeUrl?: string;
-  /** Inferred from the DOI when omitted. */
-  type?: "article" | "preprint";
+import {
+  formatVolume,
+  plainTitle,
+  pubActions,
+  yearLabel,
+  type Publication,
+} from "../../lib/publications";
+
+interface Props {
+  pub: Publication;
+  /** Year as cited, e.g. "2024a" when one author has two papers that year. */
+  year?: string;
 }
 
-const { title, author, year, doi, pdfUrl, isRequest, url, codeUrl, type } =
-  Astro.props as PubButton;
+const { pub, year = yearLabel(pub) } = Astro.props;
+const title = plainTitle(pub.title);
+const volume = formatVolume(pub);
+const author =
+  pub.authors.length <= 2
+    ? pub.authors.join(" and ")
+    : `${pub.authors.slice(0, -1).join(", ")}, and ${pub.authors.at(-1)}`;
 
-// DOI prefixes of preprint servers: EcoEvoRxiv, bioRxiv, arXiv, OSF, Research
-// Square, and Preprints.org.
-const preprintDoi = /10\.(32942|1101|48550|31219|21203|20944)\//;
-const isPreprint = (type ?? (doi && preprintDoi.test(doi) ? "preprint" : "article")) === "preprint";
-const typeLabel = isPreprint ? "Preprint" : "Article";
-const typeClasses = isPreprint
+// Badge: a published version wins over a preprint.
+const typeLabel = pub.doi || pub.url
+  ? pub.type === "dataset" ? "Dataset" : "Article"
+  : pub.preprint ? "Preprint" : undefined;
+const typeClasses = typeLabel === "Preprint"
   ? "bg-mist-100 text-mist-800 dark:bg-mist-800 dark:text-mist-100"
   : "bg-moss-100 text-moss-800 dark:bg-moss-900 dark:text-moss-100";
+
+// The first action is primary and sits on the left.
+const actions = pubActions(pub);
+const labels = {
+  pdf: pub.pdfRequest ? "Request PDF" : "Download PDF",
+  article: pub.type === "dataset" ? "Dataset" : "Article",
+  preprint: "Preprint",
+  code: "Code",
+  website: "Website",
+};
 
 // Highlight the site author's name in the author string, as in the CV list.
 // Matches both "Handika, H." and "Handika H"; the capture group keeps the
@@ -117,77 +132,24 @@ const snackbarClasses = cntl`
 >
   <img src={leadingIcon.src} alt="" class="mt-0.5 h-8 w-8 shrink-0" />
   <div class="min-w-0 flex-1 text-start">
-    {doi && (
+    {typeLabel && (
       <span class={`mb-1 inline-block rounded-full px-2 py-0.5 text-[0.7rem] font-semibold uppercase tracking-wide ${typeClasses}`}>
         {typeLabel}
       </span>
     )}
-    <h3 id={`${id}-title`} class="font-semibold leading-snug">{title}</h3>
-    <div class="mt-1 text-xs text-forest-700 dark:text-forest-300">{authorParts.map((part, i) => (i % 2 ? <strong class={selfClasses}>{part}</strong> : part))}. {year}</div>
-    {
-      (() => {
-        let activeGiven = false;
-        const active = () => {
-          if (activeGiven) return false;
-          activeGiven = true;
-          return true;
-        };
-
-        return (
-          (doi || url || codeUrl) && (
-            <div class="mt-3 flex flex-wrap gap-2">
-              {doi && (
-                <>
-                  {pdfUrl &&
-                    (isRequest ? (
-                      <SendMessageButton
-                        text="Request PDF"
-                        url={pdfUrl}
-                        primary={active()}
-                      />
-                    ) : (
-                      <DownloadButton
-                        text="Download PDF"
-                        url={pdfUrl}
-                        isDownload="true"
-                        primary={active()}
-                      />
-                    ))}
-                  <DownloadButton
-                    text={typeLabel}
-                    url={doi}
-                    primary={!pdfUrl && active()}
-                  />
-                </>
-              )}
-              {url && (
-                <>
-                  <DownloadButton
-                    text="Website"
-                    url={url}
-                    primary={!isRequest && !doi && !pdfUrl && active()}
-                  />
-                  {codeUrl && (
-                    <DownloadButton
-                      text="Code"
-                      url={codeUrl}
-                      primary={!isRequest && !doi && !pdfUrl && !url && active()}
-                    />
-                  )}
-                </>
-              )}
-              {!url && codeUrl && !doi && (
-                <DownloadButton
-                  text="Code"
-                  url={codeUrl}
-                  primary={!isRequest && !doi && !pdfUrl && active()}
-                />
-              )}
-            </div>
-          )
-        );
-      })()
-    }
+    <h3 id={`${id}-title`} class="font-semibold leading-snug" set:html={pub.title} />
+    <div class="mt-1 text-xs text-forest-700 dark:text-forest-300">{authorParts.map((part, i) => (i % 2 ? <strong class={selfClasses}>{part}</strong> : part))}. {year}.{pub.journal && <> <em>{pub.journal}</em>{volume && `, ${volume}`}.</>}</div>
+    {actions.length > 0 && (
+      <div class="mt-3 flex flex-wrap gap-2">
+        {actions.map(({ kind, url }, i) =>
+          kind === "pdf" && pub.pdfRequest ? (
+            <SendMessageButton text={labels[kind]} url={url} primary={i === 0} />
+          ) : (
+            <DownloadButton text={labels[kind]} url={url} isDownload={kind === "pdf"} primary={i === 0} />
+          ),
+        )}
+      </div>
+    )}
   </div>
   <button type="button" class={`pub-close ${closeBtnClasses}`} aria-label="Close">
     <svg

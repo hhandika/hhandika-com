@@ -1,9 +1,37 @@
 ---
-const { author } = Astro.props;
+import PubButton from "../components/buttons/PubButton.astro";
+import { citeAuthor, getPublication, yearLabel } from "../lib/publications";
+
+interface Props {
+  /** Ids (file names) from src/content/publications/. */
+  ids: string[];
+}
+
+const pubs = await Promise.all(Astro.props.ids.map(getPublication));
+const label = citeAuthor(pubs[0]);
+
+// "2024a, 2024b" when the group cites one author twice in the same year.
+const counts = new Map<string, number>();
+pubs.forEach((p) => counts.set(yearLabel(p), (counts.get(yearLabel(p)) ?? 0) + 1));
+const seen = new Map<string, number>();
+const years = pubs.map((p) => {
+  const y = yearLabel(p);
+  if (counts.get(y)! < 2 || p.year === undefined) return y;
+  const n = seen.get(y) ?? 0;
+  seen.set(y, n + 1);
+  return `${y}${String.fromCharCode(97 + n)}`;
+});
 ---
 
 <!-- inline-flex drops the source whitespace between year buttons and their
      commas, so the list reads "(2019, 2021)" rather than "(2019 , 2021 )". -->
 <div class="mt-1">
-  {author} (<span class="inline-flex flex-wrap items-baseline"><slot /></span>)
+  {label} (<span class="inline-flex flex-wrap items-baseline">{
+    pubs.map((pub, i) => (
+      <>
+        {i > 0 && <span class="mr-1">,</span>}
+        <PubButton pub={pub} year={years[i]} />
+      </>
+    ))
+  }</span>)
 </div>

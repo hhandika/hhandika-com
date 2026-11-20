@@ -1,0 +1,55 @@
+---
+import WrapButton from "../../layouts/WrapButton.astro";
+import DownloadButton from "../buttons/DownloadButton.astro";
+import SendMessageButton from "../buttons/SendMessageButton.astro";
+import Authors from "./Authors.astro";
+import {
+  doiUrl,
+  formatVolume,
+  plainTitle,
+  pubActions,
+  yearLabel,
+  type Publication,
+} from "../../lib/publications";
+
+interface Props {
+  pub: Publication;
+}
+
+const { pub } = Astro.props;
+const context = plainTitle(pub.title);
+const volume = formatVolume(pub);
+const doi = doiUrl(pub.doi);
+// The first action is primary and sits on the left.
+const actions = pubActions(pub);
+const labels = {
+  pdf: pub.pdfRequest ? "Request PDF" : "Download PDF",
+  article: "View Article",
+  preprint: "View Preprint",
+  code: "View Code",
+  website: "Learn More",
+};
+---
+
+<div class={`my-2 ${pub.id}`}>
+  <p class="text-forest-950 dark:text-forest-50">
+    <Authors authors={pub.authors} />. {yearLabel(pub)}. <Fragment set:html={pub.title} />.{pub.journal && <> <em>{pub.journal}</em>{volume && `, ${volume}`}.</>}{doi && ` ${doi}`}
+  </p>
+  <WrapButton>
+    {
+      actions.map(({ kind, url }, i) =>
+        kind === "pdf" && pub.pdfRequest ? (
+          <SendMessageButton context={context} text={labels[kind]} url={url} primary={i === 0} />
+        ) : (
+          <DownloadButton
+            context={context}
+            text={labels[kind]}
+            url={url}
+            isDownload={kind === "pdf"}
+            primary={i === 0}
+          />
+        ),
+      )
+    }
+  </WrapButton>
+</div>

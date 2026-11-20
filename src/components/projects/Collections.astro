@@ -2,10 +2,8 @@
 import Image from "astro/components/Image.astro";
 import Content from "../Content.astro";
 import SectionHead from "../SectionHead.astro";
-import cntl from "cntl";
 import Link from "../Link.astro";
 import ProjectPubs from "../../layouts/ProjectPubs.astro";
-import PubButton from "../buttons/PubButton.astro";
 import herbarium from "../../assets/img/herbarium.jpg";
 import outreach from "../../assets/img/hh-lsu_outreach2.webp";
 import FieldworkMap from "../map/FieldworkMap";
@@ -13,10 +11,6 @@ import { expeditions } from "../../scripts/fieldwork";
 
 const collecting = expeditions.filter((e) => e.kind === "collecting");
 const collectingCountries = new Set(collecting.map((e) => e.country)).size;
-
-const spaceClasses = cntl`
-  mr-1
-`;
 
 const pillars = [
   {
@@ -120,27 +114,6 @@ const pillars = [
       accessible through the GBIF portal.
     </p>
     <div class="mt-4 mb-2 text-semibold">Published datasets:</div>
-    <ProjectPubs author="Nurainas et. al.">
-      <PubButton
-        author="Nurainas N, Amolia R R, Taufiq A, Handika H, Syamsuardi S"
-        year="2024a"
-        title="Flora of Sumatra : Vascular plant collection from Batang Toru Forest deposited in ANDA Herbarium"
-        doi="https://doi.org/10.15468/ue7xyn"
-      />
-      <span class={spaceClasses}>,</span>
-      <PubButton
-        author="Nurainas N, Taufiq A, Handika H, Syamsuardi S"
-        year="2024b"
-        title="Flora of Sumatra: Vascular plant collection of selected families deposited at Herbarium of Andalas University (ANDA)"
-        doi="https://doi.org/10.15468/sncpxn"
-      />
-      <span class={spaceClasses}>,</span>
-      <PubButton
-        author="Nurainas N, Taufiq A, Handika H, Harapan T S, Syamsuardi S"
-        year="2024c"
-        title="Flora Sumatra: Digitizing and data basing specimens of the Sumatran Flora deposited at Herbarium Universitas Andalas (ANDA)-Part 2"
-        doi="https://doi.org/10.15468/55evew "
-      />
-    </ProjectPubs>
+    <ProjectPubs ids={["nurainas2024a", "nurainas2024b", "nurainas2024c"]} />
   </Content>
 </div>
