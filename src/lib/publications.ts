@@ -85,7 +85,7 @@ export async function cvSections(): Promise<
 > {
   const all = (await getPublications()).filter((p) => p.type !== "dataset");
   const articles = all.filter((p) => p.type !== "chapter");
-  const statusRank = { Accepted: 0, "In revision": 1, Submitted: 2 } as const;
+  const statusRank = { Accepted: 0, "In revision": 1, "In review": 2, Submitted: 3 } as const;
   const forthcoming = articles
     .filter((p) => p.status && p.status !== "In prep")
     .sort(

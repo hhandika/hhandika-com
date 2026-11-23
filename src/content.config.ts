@@ -14,7 +14,7 @@ const publications = defineCollection({
       /** May contain <i> for taxon names. */
       title: z.string(),
       year: z.number().int().optional(),
-      status: z.enum(["Submitted", "Accepted", "In revision", "In prep"]).optional(),
+      status: z.enum(["Submitted", "In review", "Accepted", "In revision", "In prep"]).optional(),
       /** Journal; for a chapter the book line, for a dataset the publisher. */
       journal: z.string().optional(),
       volume: z.string().optional(),
