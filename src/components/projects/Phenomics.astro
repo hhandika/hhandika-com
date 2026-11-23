@@ -6,6 +6,7 @@ import QuestionHead from "./QuestionHead.astro";
 import ProjectPubs from "../../layouts/ProjectPubs.astro";
 import Link from "../Link.astro";
 import EmbeddingPipeline from "./software/EmbeddingPipeline.astro";
+import FoundationModel from "./software/FoundationModel.astro";
 import MorphospacePlot from "./biocosmos/MorphospacePlot.tsx";
 import PlannerPlot from "./biocosmos/PlannerPlot.tsx";
 import MimicryPlot from "./biocosmos/MimicryPlot.tsx";
@@ -28,11 +29,11 @@ const morphoStats = [
   {
     value: `${stats.generaSignificant}/${stats.genera}`,
     label:
-      "genera with integrated dorsal and ventral patterns (Mantel p < 0.05)",
+      "genera where dorsal and ventral visual features are correlated",
   },
   {
     value: `r = ${stats.scopeMantelR}`,
-    label: "dorso-ventral integration across all species",
+    label: "dorsal–ventral correlation across all species (Mantel r)",
   },
 ];
 
@@ -66,8 +67,8 @@ const questions = [
   {
     id: "ai-morphospace",
     question:
-      "Are dorsal and ventral wing patterns integrated or decoupled across butterflies?",
-    topic: "Dorso-ventral integration in the butterfly wing morphospace",
+      "Do the visual features of dorsal and ventral wings evolve together?",
+    topic: "Comparing dorsal and ventral visual features",
   },
   {
     id: "ai-mimicry",
@@ -107,7 +108,7 @@ const figureClasses =
     embeddings place visually similar specimens near one another in trait space.
     This makes appearance measurable across hundreds of thousands of digitized
     specimens. I use these embeddings to identify visually similar species, map
-    the morphospace of butterfly wing patterns, and test whether phenotypic
+    the morphospace of butterfly visual features, and test whether phenotypic
     similarity recovers known mimicry relationships. Combined with language
     models for natural-language search, this work shows how I use emerging AI
     tools to extract evolutionary information from natural history collections.
@@ -115,25 +116,46 @@ const figureClasses =
   <EmbeddingPipeline />
 </Content>
 
+<SectionHead text="Foundation models: one model, many questions" />
+<Content>
+  <p>
+    A foundation model is a large AI model trained once on a broad, general
+    dataset and then reused for tasks it was not specifically trained for. For
+    natural history collections, this means a new model does not need to be
+    built, or thousands of specimens labeled, for every question. I use
+    <Link text="UNICOM" url="https://github.com/deepglint/unicom" />, a vision
+    foundation model designed for fine-grained image retrieval, to generate the
+    embeddings behind the analyses on this page. The same embeddings support
+    similar-species search, the dorsal–ventral comparison, and the mimicry test
+    below.
+  </p>
+  <FoundationModel />
+</Content>
+
 <QuestionHead questions={questions} id="ai-morphospace" />
 <Content>
   <p>
-    Dorsal and ventral wing patterns are largely integrated but not locked
-    together. Across {stats.bothSides.toLocaleString()} species imaged on both
-    surfaces, distances between species on the dorsal side track their distances
-    on the ventral side (Mantel r = {stats.scopeMantelR}). Within genera, the
-    two surfaces are significantly integrated in {stats.generaSignificant}
-    of {stats.genera} genera (Mantel p &lt; 0.05); the rest diverge. This
-    partial decoupling is consistent with the two surfaces facing different
-    selection, such as signaling on the dorsal side and crypsis on the ventral
-    side at rest. Skippers (Hesperiidae) and whites and sulphurs (Pieridae)
-    separate clearly on both surfaces, whereas many lineages shift position
-    between them.
+    Many butterflies show strikingly different patterns on their dorsal and
+    ventral wings. To compare the two surfaces, I used UNICOM embeddings to
+    measure how similar species look on each side. Species
+    that resemble each other dorsally usually resemble each other ventrally as
+    well, across {stats.bothSides.toLocaleString()} species imaged on both
+    surfaces (Mantel r = {stats.scopeMantelR}) and within most genera
+    ({stats.generaSignificant} of {stats.genera}). In the remaining
+    {stats.genera - stats.generaSignificant} genera, dorsal and ventral visual
+    features vary independently. This decoupling fits the idea that the two surfaces are
+    shaped by different selective pressures: the
+    dorsal side often serves in signaling to mates or predators, while the
+    ventral side provides camouflage when the butterfly rests with its wings
+    closed. Skippers (Hesperiidae) and whites and sulphurs (Pieridae) stand
+    apart on both surfaces, whereas many other lineages look different depending
+    on the side.
   </p>
   <p class="mt-2">
-    Each point is a species centroid in a principal-component space of image
-    embeddings of digitized specimens. Switch surfaces, hover a point for its
-    name, or pick a family to highlight it.
+    In the interactive figure below, each point represents a species,
+    positioned by the average appearance of its wings. Species with similar
+    visual features plot close together. Toggle between dorsal and ventral views, hover over a point to see the species
+    name, or select a family to highlight it.
   </p>
 </Content>
 <figure class={`not-prose my-6 ${figureClasses}`}>

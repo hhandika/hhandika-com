@@ -7,6 +7,17 @@ export interface Question {
   id: string;
   question: string;
   topic: string;
+  // Overrides the "Question N" label, e.g. for a design approach that is not
+  // a research question. Labeled items are left out of the numbering.
+  label?: string;
+}
+
+/** Card and heading label: the custom label, or "Question N" counting only unlabeled items. */
+export function questionLabel(questions: Question[], index: number): string {
+  const q = questions[index];
+  if (q.label) return q.label;
+  const n = questions.slice(0, index + 1).filter((x) => !x.label).length;
+  return `Question ${n}`;
 }
 
 interface Props {
@@ -56,7 +67,7 @@ const cardClasses = cntl`
         <li>
           <a href={`#${q.id}`} class={cardClasses}>
             <span class="text-xs font-semibold uppercase tracking-wider text-moss-700 dark:text-moss-300">
-              Question {i + 1}
+              {questionLabel(questions, i)}
             </span>
             <span class="mt-1 text-balance font-serif text-lg text-moss-900 dark:text-moss-100" set:html={q.question} />
             <span class="mt-auto pt-3 text-sm text-forest-700 group-hover:underline dark:text-forest-300">

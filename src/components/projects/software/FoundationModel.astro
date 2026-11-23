@@ -1,0 +1,217 @@
+---
+// What a foundation model is: trained once on broad, general images, then
+// reused for many collection questions. Shares the visual language of the
+// embedding pipeline and architecture diagrams.
+import { tones, arrowHead, lineClass, type Tone } from "./diagram";
+
+type Glyph = "sun" | "mountain" | "leaf" | "house" | "fish" | "butterfly";
+
+// Pretraining images are mostly not specimens; one butterfly hides among them.
+const tiles: Glyph[] = [
+  "sun", "mountain", "leaf", "house",
+  "fish", "house", "butterfly", "sun",
+  "leaf", "fish", "mountain", "house",
+];
+const tileTones = [
+  { bg: "fill-forest-100 dark:fill-forest-800", mark: "fill-forest-500 dark:fill-forest-300" },
+  { bg: "fill-mist-100 dark:fill-mist-900", mark: "fill-mist-500 dark:fill-mist-300" },
+  { bg: "fill-moss-100 dark:fill-moss-900", mark: "fill-moss-500 dark:fill-moss-400" },
+];
+const grid = tiles.map((glyph, k) => ({
+  glyph,
+  tone: tileTones[(k + Math.floor(k / 4)) % 3],
+  x: (k % 4) * 56 + 8,
+  y: Math.floor(k / 4) * 56,
+}));
+
+// Encoder: a deep stack of fully connected layers.
+const layerCounts = [5, 6, 6, 5, 3];
+const layers = layerCounts.map((count, c) =>
+  Array.from({ length: count }, (_, j) => ({ x: 24 + c * 46, y: 74 + (j - (count - 1) / 2) * 24 })),
+);
+const synapses = layers.slice(1).flatMap((layer, c) =>
+  layer.flatMap((b) => layers[c].map((a) => ({ x1: a.x, y1: a.y, x2: b.x, y2: b.y }))),
+);
+
+// Downstream uses of the same embeddings.
+const uses = ["Similar-species search", "Dorsal–ventral comparison", "Mimicry tests", "New taxa and traits"];
+const chips = uses.map((label, i) => ({ label, y: 4 + i * 42 }));
+
+interface Stage {
+  id: "data" | "model" | "uses";
+  tone: Tone;
+  title: string;
+  sub: string;
+}
+
+const stages: Stage[] = [
+  { id: "data", tone: "dart", title: "Pretraining", sub: "Broad, general images" },
+  { id: "model", tone: "rust", title: "Foundation model", sub: "UNICOM, trained once" },
+  { id: "uses", tone: "data", title: "Reuse", sub: "Applied to new questions" },
+];
+
+// Content is drawn in a 240 × 176 box inside each card.
+const layouts = [
+  {
+    name: "wide",
+    class: "hidden md:block",
+    width: 960,
+    height: 296,
+    card: { w: 268, h: 256, scale: 1, contentY: 64 },
+    pos: [
+      [32, 20],
+      [346, 20],
+      [660, 20],
+    ],
+    edges: [
+      [300, 148, 346, 148],
+      [614, 148, 660, 148],
+    ],
+  },
+  {
+    name: "narrow",
+    class: "block md:hidden",
+    width: 360,
+    height: 740,
+    card: { w: 336, h: 212, scale: 0.8, contentY: 58 },
+    pos: [
+      [12, 12],
+      [12, 264],
+      [12, 516],
+    ],
+    edges: [
+      [180, 224, 180, 264],
+      [180, 476, 180, 516],
+    ],
+  },
+];
+
+const butterfly = [
+  "M26 25 C 19 10, 5 12, 7 22 C 8 29, 18 30, 26 25 Z",
+  "M26 25 C 33 10, 47 12, 45 22 C 44 29, 34 30, 26 25 Z",
+  "M26 27 C 19 30, 12 40, 18 42 C 22 43, 25 35, 26 27 Z",
+  "M26 27 C 33 30, 40 40, 34 42 C 30 43, 27 35, 26 27 Z",
+];
+---
+
+<figure class="not-prose my-6">
+  <div
+    class="rounded-2xl border border-forest-900/10 bg-white/70 p-3 shadow-sm dark:border-forest-100/10 dark:bg-forest-950/40 sm:p-5"
+  >
+    {
+      layouts.map((layout) => (
+        <svg
+          viewBox={`0 0 ${layout.width} ${layout.height}`}
+          class={`w-full h-auto font-sans ${layout.class}`}
+          role="img"
+          aria-label="A foundation model is trained once on a broad set of general images. The same model, UNICOM, is then reused to turn specimen photographs into embeddings for similar-species search, dorsal–ventral comparison, mimicry tests, and new taxa and traits."
+        >
+          {layout.edges.map(([x1, y1, x2, y2]) => (
+            <g>
+              <line x1={x1} y1={y1} x2={x2} y2={y2} class={`flow ${lineClass}`} stroke-width="1.75" />
+              <polygon points={arrowHead(x1, y1, x2, y2)} class="fill-forest-400 dark:fill-forest-500" />
+            </g>
+          ))}
+
+          {stages.map((s, i) => {
+            const [x, y] = layout.pos[i];
+            const t = tones[s.tone];
+            const { w, h, scale, contentY } = layout.card;
+            const cx = x + (w - 240 * scale) / 2;
+            return (
+              <g>
+                <rect x={x} y={y} width={w} height={h} rx="14" class={t.box} stroke-width="1.5" />
+                <circle cx={x + 24} cy={y + 24} r="11" class={t.badge} />
+                <text x={x + 24} y={y + 28} text-anchor="middle" font-size="12" class={`font-bold ${t.badgeText}`}>
+                  {i + 1}
+                </text>
+                <text x={x + 42} y={y + 29} font-size="15" class={`font-semibold ${t.title}`}>
+                  {s.title}
+                </text>
+                <text x={x + 14} y={y + 50} font-size="12" class={t.muted}>
+                  {s.sub}
+                </text>
+
+                <g transform={`translate(${cx} ${y + contentY}) scale(${scale})`}>
+                  {s.id === "data" && (
+                    <g>
+                      {grid.map((g) => (
+                        <g transform={`translate(${g.x} ${g.y})`}>
+                          <rect width="48" height="48" rx="8" class={g.tone.bg} />
+                          <g class={g.tone.mark}>
+                            {g.glyph === "sun" && <circle cx="24" cy="24" r="11" />}
+                            {g.glyph === "mountain" && <polygon points="7,38 19,16 27,27 33,20 42,38" />}
+                            {g.glyph === "leaf" && <path d="M24 9 C 38 16, 38 33, 24 40 C 10 33, 10 16, 24 9 Z" />}
+                            {g.glyph === "house" && <polygon points="11,24 24,11 37,24 37,38 11,38" />}
+                            {g.glyph === "fish" && (
+                              <g>
+                                <ellipse cx="21" cy="24" rx="12" ry="7.5" />
+                                <polygon points="31,24 41,16 41,32" />
+                              </g>
+                            )}
+                            {g.glyph === "butterfly" && (
+                              <g transform="translate(-2 -2)">
+                                {butterfly.map((d) => (
+                                  <path d={d} />
+                                ))}
+                              </g>
+                            )}
+                          </g>
+                        </g>
+                      ))}
+                    </g>
+                  )}
+
+                  {s.id === "model" && (
+                    <g>
+                      <rect x="2" y="2" width="236" height="144" rx="12" class="fill-moss-50/80 stroke-moss-200 dark:fill-moss-900/50 dark:stroke-moss-800" stroke-width="1" />
+                      {synapses.map((l) => (
+                        <line {...l} stroke-width="0.6" class="stroke-moss-400/60 dark:stroke-moss-600/60" />
+                      ))}
+                      {layers.flat().map((n) => (
+                        <circle cx={n.x} cy={n.y} r="5.5" class="fill-moss-500 stroke-white dark:fill-moss-400 dark:stroke-moss-950" stroke-width="1.5" />
+                      ))}
+                      <text x="120" y="170" text-anchor="middle" font-size="11" class="font-mono fill-moss-800 dark:fill-moss-200">
+                        image → embedding
+                      </text>
+                    </g>
+                  )}
+
+                  {s.id === "uses" && (
+                    <g>
+                      {chips.map((c) => (
+                        <g>
+                          <path
+                            d={`M0 82 C 18 82, 14 ${c.y + 15}, 32 ${c.y + 15}`}
+                            fill="none"
+                            stroke-width="1.25"
+                            class={lineClass}
+                          />
+                          <rect x="32" y={c.y} width="206" height="30" rx="15" class={tones.data.chip} stroke-width="1" />
+                          <text x="135" y={c.y + 19.5} text-anchor="middle" font-size="12" class={tones.data.chipText}>
+                            {c.label}
+                          </text>
+                        </g>
+                      ))}
+                    </g>
+                  )}
+                </g>
+              </g>
+            );
+          })}
+        </svg>
+      ))
+    }
+  </div>
+  <figcaption class="mx-auto mt-3 max-w-3xl px-4 text-center text-sm text-forest-800 dark:text-forest-200">
+    A foundation model learns general visual features from a broad image
+    collection once. The same model is then reused across many collection
+    questions, instead of training a new model for each one.
+  </figcaption>
+</figure>
+
+<style>
+  .flow {
+    stroke-dasharray: 4 5;
+  }
+</style>

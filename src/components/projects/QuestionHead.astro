@@ -1,5 +1,5 @@
 ---
-import type { Question } from "./QuestionIndex.astro";
+import { questionLabel, type Question } from "./QuestionIndex.astro";
 
 // Section heading led by its research question. The question is the heading
 // and reads larger than the section topic beneath it.
@@ -17,7 +17,7 @@ if (!q) throw new Error(`Unknown question id: ${id}`);
 
 <div id={q.id} class="clear-both mt-12 mb-3 scroll-mt-24">
   <p class="text-xs font-semibold uppercase tracking-wider text-moss-700 dark:text-moss-300">
-    Question {index + 1}
+    {questionLabel(questions, index)}
   </p>
   <h3
     class="mt-1 text-balance font-serif text-2xl font-semibold text-moss-900 dark:text-moss-100 sm:text-[1.75rem] sm:leading-snug"

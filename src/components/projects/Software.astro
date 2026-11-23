@@ -292,9 +292,10 @@ const biocosmosPrinciples = [
 const questions = [
   {
     id: "software-portable",
+    label: "Design approach",
     question:
-      "How can research software run anywhere and capture more in the field?",
-    topic: "Software that runs anywhere and captures more",
+      "Efficient tools that run on any device, from smartphones to HPC clusters",
+    topic: "Shared principles behind all my tools",
   },
   {
     id: "software-nahpu",
@@ -322,7 +323,6 @@ const questions = [
     topic: "Mammal Diversity Database: website, app, and tooling",
   },
 ];
-
 ---
 
 <div>
@@ -392,8 +392,8 @@ const questions = [
       research workflows. These include difficulties in preserving the breadth
       of information needed to understand complex biological systems,
       integrating genomic and other diverse data types, providing real-time
-      feedback to reduce observer bias in the field, and enabling contributions
-      from researchers with limited computational resources. These challenges
+      statistics to aid field research, and enabling contributions from
+      researchers with limited computational resources. These challenges
       motivate my software development efforts.
     </p>
     <p class="mt-2">
@@ -427,19 +427,18 @@ const questions = [
   <QuestionHead questions={questions} id="software-portable" />
   <Content>
     <p>
-      My tools work on anything, from a phone to a high-performance computing
-      cluster. It installs like everyday software, either with one click from
-      the app stores or a single command in the terminal, without requiring
-      additional applications, such as Docker or Singularity. Beyond speed, they
-      capture information that was difficult to record before. NAHPU, for
-      example, links every specimen part, field observation (e.g., habitat and
-      environmental conditions), parasite collection, and derivative data (e.g.,
-      audio, video, and photographs) to its voucher from the moment of
-      collection. It generates statistics that detects outlier measurements and
-      aids decision-making in the field. This includes prioritizing specimens
-      for complete tissue sampling when preservation resources are limited and
-      reducing observer bias toward specimens that are easier or more convenient
-      to collect.
+      My tools install like everyday software, either with one click from the
+      app stores or a single command in the terminal, without requiring
+      additional applications, such as Docker or Singularity. Each tool makes
+      biodiversity data easier to capture, explore, or share. For example, NAHPU
+      links every specimen part, field observation, parasite collection, and
+      derivative data (e.g., audio, video, and photographs) to its voucher from
+      the moment of collection, and its live statistics guide tissue sampling
+      and track collecting effort. SEGUL, on the other hand, summarizes and
+      filters thousands of genomic files in a single workflow, even on a phone.
+      I care deeply about how my tools, their supporting software, and
+      documentation are designed, tested, and maintained, so they remain usable
+      as software, hardware, and academic priorities change.
     </p>
   </Content>
 
